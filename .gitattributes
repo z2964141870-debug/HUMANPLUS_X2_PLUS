@@ -1,0 +1,15 @@
+* text=auto
+
+*.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Small scientific evidence files are intentionally versioned as binary.
+*.npz binary
+*.npy binary
+*.pkl binary
+

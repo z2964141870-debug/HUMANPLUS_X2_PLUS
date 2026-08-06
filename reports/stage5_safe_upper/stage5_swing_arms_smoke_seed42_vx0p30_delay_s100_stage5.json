@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "upper_scale": 0.25,
+  "control_json": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage5_safe_upper/stage5_control_seed42_vx0p30_delay_s100.json",
+  "candidate_json": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage5_safe_upper/stage5_swing_arms_smoke_seed42_vx0p30_delay_s100.json",
+  "zero_equivalent": null,
+  "passed": true,
+  "upper": {
+    "joint_order": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint"
+    ],
+    "target_excursion_rms_rad": 0.014169075526297092,
+    "target_excursion_max_rad": 0.06769244372844696,
+    "tracking_abs_mean_rad": 0.021476946771144867,
+    "tracking_abs_p95_rad": 0.07576696574687958,
+    "tracking_abs_max_rad": 0.14250779151916504
+  },
+  "metrics": {
+    "steps_completed": {
+      "control": 100.0,
+      "candidate": 100.0,
+      "delta": 0.0,
+      "relative_delta": 0.0
+    },
+    "forward_displacement_m": {
+      "control": 0.6796534061431885,
+      "candidate": 0.6842612624168396,
+      "delta": 0.004607856273651123,
+      "relative_delta": 0.0067797148252360055
+    },
+    "progress_ratio": {
+      "control": 1.1327556769053142,
+      "candidate": 1.1404354373613994,
+      "delta": 0.007679760456085205,
+      "relative_delta": 0.0067797148252360055
+    },
+    "body_vx_rmse_mps": {
+      "control": 0.09011033732240442,
+      "candidate": 0.09140485229068966,
+      "delta": 0.0012945149682852403,
+      "relative_delta": 0.014365887496942937
+    },
+    "heading_deviation_abs_max_rad": {
+      "control": 0.1385670006275177,
+      "candidate": 0.13851521909236908,
+      "delta": -5.1781535148620605e-05,
+      "relative_delta": -0.00037369312256252613
+    },
+    "lateral_drift_max_m": {
+      "control": 0.061244044452905655,
+      "candidate": 0.07278107851743698,
+      "delta": 0.011537034064531326,
+      "relative_delta": 0.18837805647213368
+    },
+    "base_tilt_max_rad": {
+      "control": 0.20079489052295685,
+      "candidate": 0.19516132771968842,
+      "delta": -0.005633562803268433,
+      "relative_delta": -0.028056305559350618
+    },
+    "left_foot_lift_max_m": {
+      "control": 0.023987382650375366,
+      "candidate": 0.026683643460273743,
+      "delta": 0.0026962608098983765,
+      "relative_delta": 0.11240329339792243
+    },
+    "right_foot_lift_max_m": {
+      "control": 0.03570973873138428,
+      "candidate": 0.035699740052223206,
+      "delta": -9.998679161071777e-06,
+      "relative_delta": -0.0002799986646859508
+    },
+    "single_support_fraction": {
+      "control": 0.59,
+      "candidate": 0.57,
+      "delta": -0.020000000000000018,
+      "relative_delta": -0.0338983050847458
+    },
+    "double_support_fraction": {
+      "control": 0.41,
+      "candidate": 0.43,
+      "delta": 0.020000000000000018,
+      "relative_delta": 0.04878048780487809
+    },
+    "flight_fraction": {
+      "control": 0.0,
+      "candidate": 0.0,
+      "delta": 0.0,
+      "relative_delta": 0.0
+    }
+  },
+  "gate": {
+    "survived": true,
+    "active_upper_target": true,
+    "upper_tracking_p95_le_0p35_rad": true,
+    "heading_degradation_le_0p15_rad": true,
+    "lateral_degradation_le_0p15_m": true,
+    "tilt_le_0p45_rad": true,
+    "both_feet_lift_ge_0p02_m": true
+  },
+  "trace_max_abs_delta_vs_control": null,
+  "stage5_safety": {
+    "limits": {
+      "max_excursion_rad": 0.12,
+      "max_velocity_radps": 0.2,
+      "tilt_fallback_rad": 0.35,
+      "height_fallback_m": 0.58
+    },
+    "metrics": {
+      "target_excursion_max_rad": 0.06769244372844696,
+      "target_velocity_abs_p95_radps": 0.11003501713275993,
+      "target_velocity_abs_max_radps": 0.15929378569126115,
+      "hazard_fraction": 0.0,
+      "hazard_first_time_s": null
+    },
+    "gate": {
+      "excursion_within_bound": true,
+      "velocity_within_bound": true,
+      "hazard_fraction_le_0p02": true
+    }
+  },
+  "stage4_comparison_passed": true
+}

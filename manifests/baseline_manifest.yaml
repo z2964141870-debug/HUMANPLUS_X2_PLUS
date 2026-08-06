@@ -1,0 +1,51 @@
+manifest_version: 1
+created_at: "2026-07-28T09:30:00+08:00"
+project: DC-PEFT
+source_project_mode: read_only
+checkpoint:
+  path: /home/humanplus/x2_teleop_final/x2_sonic/logs/ppo_dryrun/x2_stage152_B_pilot_seed0_v1/model_step_000200.pt
+  sha256: b73c345995c5d468c18d223de96b29fff4cd4866e4d56bb6d5296c4a68540679
+motion_set:
+  path: /home/humanplus/x2_teleop_final/x2_sonic/motion_lib_x2/stage72_official_true_forward4_v1
+  count: 4
+  start_from_first_frame: true
+  source_canonical_reference: true
+simulation:
+  robot: x2_ultra_31dof
+  pd_profile: foundation_stiff_lower
+  collision_profile: mesh
+  self_collisions: true
+  action_scale_profile: foundation_hybrid_mobility2x
+  sim_dt: 0.005
+  decimation: 4
+  control_dt: 0.02
+evaluation:
+  deterministic: true
+  seed: 0
+  steps: 260
+  num_envs: 4
+  purpose: full_rollout_trace_only
+  actor_learning_rate: 1.0e-12
+  critic_learning_rate: 0.0
+  # These deliberately loose thresholds match the historical Stage152 full-rollout
+  # panel.  The post-run auditor, not IsaacLab early termination, decides pass/fail.
+  rollout_termination_thresholds:
+    anchor_pos: 10.0
+    anchor_ori_full: 10.0
+    ee_body_pos: 10.0
+    foot_pos_xyz: 10.0
+  # Reward values are logged but do not affect the deterministic pre-update rollout.
+  # Do not interpret them as the Stage152 training reward configuration.
+  rollout_reward_non_causal: true
+  domains:
+    - ideal
+    - nominal_filter
+    - nominal_filter_delay
+    - nominal_filter_delay_noise
+  min_reference_displacement_m: 0.10
+repeatability:
+  repeats: 2
+  labels: [r1, r2]
+  max_metric_abs_diff: 0.0
+  tolerance: 1.0e-6
+  status: passed

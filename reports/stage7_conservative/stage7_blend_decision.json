@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "decision": "STATIC_BLEND_FAILED_HELDOUT",
+  "base": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage6_future_intent/stage6_base_gate5_panel_s400.json",
+  "candidate_paths": {
+    "0.25": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage7_conservative/stage7_future_blend0p25_panel_s400.json",
+    "0.5": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage7_conservative/stage7_future_blend0p50_panel_s400.json",
+    "0.75": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage7_conservative/stage7_future_blend0p75_panel_s400.json"
+  },
+  "selection_tags": [
+    "box_lift",
+    "knocking",
+    "swing_arms"
+  ],
+  "base_selection": {
+    "heading_mean_rad": 0.7352485855420431,
+    "lateral_mean_m": 1.0459258357683818
+  },
+  "selection_results": {
+    "0.25": {
+      "blend": 0.25,
+      "selection_heading_mean_rad": 0.6014876266320547,
+      "selection_lateral_mean_m": 0.9168759187062582,
+      "heading_improvement_fraction": 0.18192616965237218,
+      "lateral_improvement_fraction": 0.12338342992294293,
+      "normalized_score_lower_is_better": 1.694690400424685,
+      "checks": {
+        "survived_3_of_3": true,
+        "tilt_each_le_0p45": true,
+        "residual_within_scaled_budget": true,
+        "heading_improved_at_least_10pct": true,
+        "lateral_improved_at_least_10pct": true
+      },
+      "passed": true
+    },
+    "0.5": {
+      "blend": 0.5,
+      "selection_heading_mean_rad": 0.4893375039100647,
+      "selection_lateral_mean_m": 0.7451512217521667,
+      "heading_improvement_fraction": 0.3344597819942582,
+      "lateral_improvement_fraction": 0.287567821474888,
+      "normalized_score_lower_is_better": 1.3779723965308537,
+      "checks": {
+        "survived_3_of_3": true,
+        "tilt_each_le_0p45": true,
+        "residual_within_scaled_budget": true,
+        "heading_improved_at_least_10pct": true,
+        "lateral_improved_at_least_10pct": true
+      },
+      "passed": true
+    },
+    "0.75": {
+      "blend": 0.75,
+      "selection_heading_mean_rad": 0.4160967866579692,
+      "selection_lateral_mean_m": 0.5089513460795084,
+      "heading_improvement_fraction": 0.4340733258926128,
+      "lateral_improvement_fraction": 0.5133963339708394,
+      "normalized_score_lower_is_better": 1.0525303401365478,
+      "checks": {
+        "survived_3_of_3": true,
+        "tilt_each_le_0p45": true,
+        "residual_within_scaled_budget": true,
+        "heading_improved_at_least_10pct": true,
+        "lateral_improved_at_least_10pct": true
+      },
+      "passed": true
+    }
+  },
+  "locked_blend": 0.75,
+  "heldout_checks": {
+    "survival_count_not_below_base": true,
+    "all_base_normal_speed_survivors_preserved": true,
+    "no_normal_speed_heldout_regression": false,
+    "female_lift_steps_not_below_base": true,
+    "low_speed_steps_not_below_base": false,
+    "full_panel_mean_heading_better_than_base": true,
+    "full_panel_mean_lateral_better_than_base": true
+  },
+  "heldout_regressions": {
+    "wave_left_heldout__vx0.30": [
+      "heading_worse_than_base_plus_0p15",
+      "surviving_case_tilt_gt_0p45"
+    ]
+  },
+  "phase_b_risk_training_unlocked": true
+}

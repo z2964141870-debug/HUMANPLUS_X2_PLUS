@@ -1,0 +1,534 @@
+{
+  "thresholds": {
+    "min_reference_displacement_m": 0.1,
+    "min_progress_ratio": 0.5,
+    "max_progress_ratio": 1.5,
+    "min_direction_cosine": 0.7,
+    "max_root_xy_rmse_m": 0.5,
+    "max_foot_error_m": 0.2,
+    "fall_height_m": 0.45,
+    "fall_orientation_rad": 0.6324555320336759,
+    "min_contact_balanced_accuracy": 0.55,
+    "max_contact_cycle_count_error": null
+  },
+  "conditions": {
+    "ideal": {
+      "trace": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/logs/x2_stage19_round3_composed_b0_round3_composed_b0_ideal_teleop_ideal_v1_s260/x2_wrist_rollout_trace.jsonl",
+      "motion_count": 12,
+      "passed_count": 2,
+      "pass_rate": 0.16666666666666666,
+      "stable_count": 12,
+      "progress_ok_count": 2,
+      "contact_ok_count": 7,
+      "foot_ok_count": 12,
+      "root_xy_rmse_mean_m": 0.19256766642111156,
+      "progress_ratio_abs_error_mean": 2.0416529024409145,
+      "motions": [
+        {
+          "env_id": 0,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_B__10p97_15p77__mirror__upper__wave__wave_20260708_211740",
+          "samples": 240,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 239,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.17752413887508725,
+          "robot_displacement_m": 0.4065385211785681,
+          "along_progress_m": 0.40563616502140276,
+          "progress_ratio": 2.2849634285894145,
+          "direction_cosine": 0.9977803919920076,
+          "root_xy_rmse_m": 0.10405276572360422,
+          "max_foot_error_m": 0.15410283207893372,
+          "contact_balanced_accuracy": {
+            "left": 0.7793427230046948,
+            "right": 0.5695804195804195
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 2,
+              "measured": 2
+            },
+            "right": {
+              "reference": 5,
+              "measured": 3
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 0,
+            "right": 2
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 1,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_D__15p00_19p80__upper__wave__wave_20260708_211740",
+          "samples": 241,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 240,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 7.450580596923828e-09,
+          "reference_displacement_m": 0.1293478908596839,
+          "robot_displacement_m": 0.968458373552646,
+          "along_progress_m": 0.8522830675023929,
+          "progress_ratio": 6.589075877757809,
+          "direction_cosine": 0.8800409917216355,
+          "root_xy_rmse_m": 0.45985948102902113,
+          "max_foot_error_m": 0.16235783696174622,
+          "contact_balanced_accuracy": {
+            "left": 0.5594598318864545,
+            "right": 0.6037151702786377
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 7,
+              "measured": 6
+            },
+            "right": {
+              "reference": 6,
+              "measured": 5
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 1,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 2,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_D__15p00_19p80__upper__stand__stand_20260708_211440",
+          "samples": 241,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 240,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.12934792555085955,
+          "robot_displacement_m": 0.5195994749167826,
+          "along_progress_m": 0.4935476440986282,
+          "progress_ratio": 3.8156595244704214,
+          "direction_cosine": 0.9498617068034437,
+          "root_xy_rmse_m": 0.2590496089348037,
+          "max_foot_error_m": 0.15475641191005707,
+          "contact_balanced_accuracy": {
+            "left": 0.5907744246933995,
+            "right": 0.5537667698658411
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 7,
+              "measured": 8
+            },
+            "right": {
+              "reference": 6,
+              "measured": 7
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 1,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 3,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_B__10p97_15p77__upper__wave__wave_20260708_211740",
+          "samples": 240,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 239,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.17752413887508725,
+          "robot_displacement_m": 0.25128890192869746,
+          "along_progress_m": 0.2476210145777138,
+          "progress_ratio": 1.3948582775661251,
+          "direction_cosine": 0.9854037033755497,
+          "root_xy_rmse_m": 0.07408476529263285,
+          "max_foot_error_m": 0.17132976651191711,
+          "contact_balanced_accuracy": {
+            "left": 0.5909090909090909,
+            "right": 0.6335419926969222
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 5,
+              "measured": 6
+            },
+            "right": {
+              "reference": 2,
+              "measured": 3
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 1,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": true,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": true
+        },
+        {
+          "env_id": 4,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_D__15p00_19p80__mirror__upper__stand__stand_20260708_211440",
+          "samples": 241,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 240,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 7.450580596923828e-09,
+          "reference_displacement_m": 0.1293478908596839,
+          "robot_displacement_m": 0.3567768551488899,
+          "along_progress_m": 0.32882587935557006,
+          "progress_ratio": 2.542181995934353,
+          "direction_cosine": 0.9216569814158619,
+          "root_xy_rmse_m": 0.17375977963499448,
+          "max_foot_error_m": 0.18750767409801483,
+          "contact_balanced_accuracy": {
+            "left": 0.516202270381837,
+            "right": 0.5099214551467548
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 6,
+              "measured": 6
+            },
+            "right": {
+              "reference": 7,
+              "measured": 6
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 0,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": false,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 5,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_B__10p97_15p77__mirror__upper__balance_shift__balance_shift_20260708_211847",
+          "samples": 240,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 239,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.17752413887508725,
+          "robot_displacement_m": 0.5142380676179014,
+          "along_progress_m": 0.5126516969999471,
+          "progress_ratio": 2.8877858540728836,
+          "direction_cosine": 0.9969151046609545,
+          "root_xy_rmse_m": 0.15816944181718445,
+          "max_foot_error_m": 0.1483653038740158,
+          "contact_balanced_accuracy": {
+            "left": 0.723526343244653,
+            "right": 0.5503496503496503
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 2,
+              "measured": 5
+            },
+            "right": {
+              "reference": 5,
+              "measured": 3
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 3,
+            "right": 2
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 6,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_D__15p00_19p80__mirror__upper__wave__wave_20260708_211740",
+          "samples": 241,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 240,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.12934798221116692,
+          "robot_displacement_m": 0.44539026890297423,
+          "along_progress_m": 0.39824492331448236,
+          "progress_ratio": 3.078864598477679,
+          "direction_cosine": 0.8941482360972682,
+          "root_xy_rmse_m": 0.19912482276178028,
+          "max_foot_error_m": 0.15954753756523132,
+          "contact_balanced_accuracy": {
+            "left": 0.5573271413828689,
+            "right": 0.5215998346424142
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 6,
+              "measured": 6
+            },
+            "right": {
+              "reference": 7,
+              "measured": 7
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 0,
+            "right": 0
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": false,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 7,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_B__10p97_15p77__mirror__upper__stand__stand_20260708_211440",
+          "samples": 240,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 239,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 7.450580596923828e-09,
+          "reference_displacement_m": 0.17752419971545816,
+          "robot_displacement_m": 0.4256521400532821,
+          "along_progress_m": 0.4236032035148792,
+          "progress_ratio": 2.3861715991050505,
+          "direction_cosine": 0.9951863591284974,
+          "root_xy_rmse_m": 0.13185035942273676,
+          "max_foot_error_m": 0.15475067496299744,
+          "contact_balanced_accuracy": {
+            "left": 0.6864893062076161,
+            "right": 0.5479020979020979
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 2,
+              "measured": 3
+            },
+            "right": {
+              "reference": 5,
+              "measured": 3
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 1,
+            "right": 2
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": false,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 8,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_D__15p00_19p80__mirror__upper__balance_shift__balance_shift_20260708_211847",
+          "samples": 241,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 240,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.12934794520726553,
+          "robot_displacement_m": 0.4944924452081986,
+          "along_progress_m": 0.40567766629741453,
+          "progress_ratio": 3.1363286494220044,
+          "direction_cosine": 0.8203920408260434,
+          "root_xy_rmse_m": 0.20809924629097307,
+          "max_foot_error_m": 0.17285804450511932,
+          "contact_balanced_accuracy": {
+            "left": 0.5810113519091847,
+            "right": 0.5273873501446878
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 6,
+              "measured": 4
+            },
+            "right": {
+              "reference": 7,
+              "measured": 5
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 2,
+            "right": 2
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": false,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 9,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_D__15p00_19p80__upper__balance_shift__balance_shift_20260708_211847",
+          "samples": 241,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 240,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.12934788854694196,
+          "robot_displacement_m": 0.628160572440983,
+          "along_progress_m": 0.6119255677685107,
+          "progress_ratio": 4.730850844514832,
+          "direction_cosine": 0.9741546900828488,
+          "root_xy_rmse_m": 0.3554631203429746,
+          "max_foot_error_m": 0.154839888215065,
+          "contact_balanced_accuracy": {
+            "left": 0.47912360479537,
+            "right": 0.6171310629514963
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 7,
+              "measured": 7
+            },
+            "right": {
+              "reference": 6,
+              "measured": 5
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 0,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": false,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 10,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_B__10p97_15p77__upper__balance_shift__balance_shift_20260708_211847",
+          "samples": 240,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 239,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 3.725290298461914e-09,
+          "reference_displacement_m": 0.177524140180474,
+          "robot_displacement_m": 0.432556654831808,
+          "along_progress_m": 0.42634135287648006,
+          "progress_ratio": 2.4015964952318845,
+          "direction_cosine": 0.9856312418595325,
+          "root_xy_rmse_m": 0.11123414159911678,
+          "max_foot_error_m": 0.1658499538898468,
+          "contact_balanced_accuracy": {
+            "left": 0.6290209790209791,
+            "right": 0.6635367762128326
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 5,
+              "measured": 4
+            },
+            "right": {
+              "reference": 2,
+              "measured": 3
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 1,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": false,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": false
+        },
+        {
+          "env_id": 11,
+          "motion_key": "compose__official_x2__19_walk_forward_short_pulses_B__10p97_15p77__upper__stand__stand_20260708_211440",
+          "samples": 240,
+          "raw_samples": 260,
+          "episode_end_reason": "done",
+          "episode_end_step": 239,
+          "world_anchor_reference_source": "explicit_motion_anchor",
+          "world_anchor_contract_gap_max_m": 0.0,
+          "reference_displacement_m": 0.17752413887508725,
+          "robot_displacement_m": 0.22776479639733746,
+          "along_progress_m": 0.22217104868263093,
+          "progress_ratio": 1.2514976841485144,
+          "direction_cosine": 0.9754406835332526,
+          "root_xy_rmse_m": 0.07606446420351634,
+          "max_foot_error_m": 0.16710242629051208,
+          "contact_balanced_accuracy": {
+            "left": 0.5562937062937063,
+            "right": 0.6379760041731872
+          },
+          "contact_cycles": {
+            "left": {
+              "reference": 5,
+              "measured": 5
+            },
+            "right": {
+              "reference": 2,
+              "measured": 3
+            }
+          },
+          "contact_cycle_count_error": {
+            "left": 0,
+            "right": 1
+          },
+          "contact_cycle_ok": true,
+          "first_fall_step": null,
+          "stable": true,
+          "progress_ok": true,
+          "contact_ok": true,
+          "foot_ok": true,
+          "passed": true
+        }
+      ]
+    }
+  }
+}

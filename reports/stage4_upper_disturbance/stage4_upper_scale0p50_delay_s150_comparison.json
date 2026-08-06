@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "upper_scale": 0.5,
+  "control_json": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage4_upper_disturbance/stage4_control_delay_s150.json",
+  "candidate_json": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage4_upper_disturbance/stage4_upper_scale0p50_delay_s150.json",
+  "zero_equivalent": null,
+  "passed": true,
+  "upper": {
+    "joint_order": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint"
+    ],
+    "target_excursion_rms_rad": 0.03868822380900383,
+    "target_excursion_max_rad": 0.20773828029632568,
+    "tracking_abs_mean_rad": 0.031523313373327255,
+    "tracking_abs_p95_rad": 0.11550431698560715,
+    "tracking_abs_max_rad": 0.2888540029525757
+  },
+  "metrics": {
+    "steps_completed": {
+      "control": 150.0,
+      "candidate": 150.0,
+      "delta": 0.0,
+      "relative_delta": 0.0
+    },
+    "forward_displacement_m": {
+      "control": 1.062755823135376,
+      "candidate": 1.060766577720642,
+      "delta": -0.0019892454147338867,
+      "relative_delta": -0.001871780301203292
+    },
+    "progress_ratio": {
+      "control": 1.1808398034837513,
+      "candidate": 1.1786295308007135,
+      "delta": -0.0022102726830377506,
+      "relative_delta": -0.0018717803012033754
+    },
+    "body_vx_rmse_mps": {
+      "control": 0.0918722397588904,
+      "candidate": 0.09155295854645559,
+      "delta": -0.00031928121243481045,
+      "relative_delta": -0.0034752740683446095
+    },
+    "heading_deviation_abs_max_rad": {
+      "control": 0.1431208997964859,
+      "candidate": 0.2341342568397522,
+      "delta": 0.0910133570432663,
+      "relative_delta": 0.6359194022164817
+    },
+    "lateral_drift_max_m": {
+      "control": 0.061244044452905655,
+      "candidate": 0.12984514236450195,
+      "delta": 0.0686010979115963,
+      "relative_delta": 1.1201268388528445
+    },
+    "base_tilt_max_rad": {
+      "control": 0.21276414394378662,
+      "candidate": 0.21274861693382263,
+      "delta": -1.5527009963989258e-05,
+      "relative_delta": -7.297756885244524e-05
+    },
+    "left_foot_lift_max_m": {
+      "control": 0.03807958960533142,
+      "candidate": 0.035857245326042175,
+      "delta": -0.0022223442792892456,
+      "relative_delta": -0.05836051024505005
+    },
+    "right_foot_lift_max_m": {
+      "control": 0.039364203810691833,
+      "candidate": 0.03686394542455673,
+      "delta": -0.0025002583861351013,
+      "relative_delta": -0.06351604107526743
+    },
+    "single_support_fraction": {
+      "control": 0.6133333333333333,
+      "candidate": 0.5866666666666667,
+      "delta": -0.026666666666666616,
+      "relative_delta": -0.04347826086956514
+    },
+    "double_support_fraction": {
+      "control": 0.38666666666666666,
+      "candidate": 0.41333333333333333,
+      "delta": 0.026666666666666672,
+      "relative_delta": 0.06896551724137932
+    },
+    "flight_fraction": {
+      "control": 0.0,
+      "candidate": 0.0,
+      "delta": 0.0,
+      "relative_delta": 0.0
+    }
+  },
+  "gate": {
+    "survived": true,
+    "active_upper_target": true,
+    "upper_tracking_p95_le_0p35_rad": true,
+    "heading_degradation_le_0p15_rad": true,
+    "lateral_degradation_le_0p15_m": true,
+    "tilt_le_0p45_rad": true,
+    "both_feet_lift_ge_0p02_m": true
+  },
+  "trace_max_abs_delta_vs_control": null
+}

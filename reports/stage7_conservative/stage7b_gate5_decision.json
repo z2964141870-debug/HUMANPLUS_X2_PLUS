@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "decision": "STOP_RISK_KEEP_NEUTRAL_FOR_ROBUSTNESS",
+  "risk_gate5_passed": false,
+  "risk_gate_checks": {
+    "survival_not_below_neutral": true,
+    "steps_not_below_neutral": false,
+    "heading_not_above_neutral": false,
+    "lateral_not_above_neutral": false,
+    "base_normal_survivors_preserved": true,
+    "wave_left_heading_and_tilt_safe": true,
+    "heldout_heading_or_survival_improved_vs_neutral": true
+  },
+  "neutral_pareto_candidate": true,
+  "neutral_candidate_checks": {
+    "survival_not_below_base": true,
+    "steps_not_below_base": true,
+    "low_speed_steps_not_below_base": true,
+    "heading_better_than_base": true,
+    "lateral_better_than_base": true,
+    "base_normal_survivors_preserved": true,
+    "no_normal_heldout_regression": true,
+    "residual_within_0p05": true
+  },
+  "neutral_normal_heldout_regressions": {},
+  "summaries": {
+    "BASE": {
+      "survived": 5,
+      "steps": 3176,
+      "low_speed_steps": 962,
+      "heading_mean_rad": 0.6566617488861084,
+      "lateral_mean_m": 0.5258634487787882,
+      "tilt_mean_rad": 0.5383690670132637,
+      "residual_abs_max": 0.0
+    },
+    "NEUTRAL05": {
+      "survived": 5,
+      "steps": 3248,
+      "low_speed_steps": 974,
+      "heading_mean_rad": 0.603076753516992,
+      "lateral_mean_m": 0.49964609121282894,
+      "tilt_mean_rad": 0.554425273090601,
+      "residual_abs_max": 0.03697214275598526
+    },
+    "RISK05": {
+      "survived": 5,
+      "steps": 3175,
+      "low_speed_steps": 966,
+      "heading_mean_rad": 0.6482231716314951,
+      "lateral_mean_m": 0.5072113461792469,
+      "tilt_mean_rad": 0.5446247768898805,
+      "residual_abs_max": 0.04105299711227417
+    }
+  }
+}

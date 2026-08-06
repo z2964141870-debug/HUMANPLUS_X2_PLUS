@@ -1,0 +1,58 @@
+# Python/test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments and editor state
+.venv/
+venv/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Secrets and machine-local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credential*
+*token*
+
+# Generated training/evaluation payloads.  Keep compact reports/manifests in Git.
+/logs/
+/checkpoints/
+/videos/
+/wandb/
+/runs/
+
+# Model and deployment binaries must use an external artifact store.
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.engine
+*.plan
+
+# Raw robot/simulator captures and downloaded archives
+*.bag
+*.mcap
+*.db3
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.zip
+*.7z
+
+# Generic runtime debris
+*.log
+core
+core.*
+.DS_Store
+

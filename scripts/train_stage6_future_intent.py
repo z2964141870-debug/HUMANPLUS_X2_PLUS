@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+"""Run legacy Stage172 PPO with the local Stage6 environment and adapter."""
+
+from __future__ import annotations
+
+import importlib.util
+import os
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+OLD_SCRIPT = Path(
+    os.environ.get(
+        "CWI_STAGE6_BASE_TRAIN",
+        "/home/humanplus/x2_teleop_final/x2_sonic/scripts/"
+        "train_x2_stage172_lower_velocity.py",
+    )
+)
+
+
+def main() -> None:
+    spec = importlib.util.spec_from_file_location("_cwi_stage6_base_train", OLD_SCRIPT)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load legacy trainer: {OLD_SCRIPT}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    from cwi_x2.future_intent import (
+        X2FutureIntentActorCriticCfg,
+        X2FutureIntentFlatEnvCfg,
+    )
+    from cwi_x2.future_intent_actor_critic import FutureIntentActorCritic
+
+    mode = os.environ.get("CWI_STAGE6_ADAPTER_MODE", "future")
+    coordination_blend = float(
+        os.environ.get("CWI_STAGE6_COORDINATION_BLEND", "1.0")
+    )
+    velocity_min = float(os.environ.get("CWI_STAGE6_VELOCITY_MIN", "0.20"))
+    velocity_max = float(os.environ.get("CWI_STAGE6_VELOCITY_MAX", "0.45"))
+    if not 0.0 <= velocity_min <= velocity_max:
+        raise ValueError(
+            "CWI Stage6 velocity range must satisfy 0 <= min <= max"
+        )
+    if not 0.0 <= coordination_blend <= 1.0:
+        raise ValueError("CWI Stage6 coordination blend must lie in [0, 1]")
+    original_runner_cfg = module.X2LowerVelocityFlatPPORunnerCfg
+    original_manager_env = module.ManagerBasedRLEnv
+
+    def runner_cfg_factory():
+        cfg = original_runner_cfg()
+        cfg.save_interval = int(os.environ.get("CWI_STAGE6_SAVE_INTERVAL", "1"))
+        return cfg
+
+    def policy_cfg_factory():
+        cfg = X2FutureIntentActorCriticCfg()
+        cfg.class_name = "ResponseHistoryActorCritic"
+        cfg.adapter_mode = mode
+        cfg.coordination_blend = coordination_blend
+        return cfg
+
+    def manager_env_factory(*args, **kwargs):
+        cfg = kwargs.get("cfg")
+        if cfg is None:
+            raise RuntimeError("Stage6 requires ManagerBasedRLEnv(cfg=...)")
+        cfg.commands.base_velocity.ranges.lin_vel_x = (
+            velocity_min,
+            velocity_max,
+        )
+        return original_manager_env(*args, **kwargs)
+
+    module.X2LowerVelocityFlatPPORunnerCfg = runner_cfg_factory
+    module.X2LowerVelocityTeacherPhaseTemplateResponseHistoryFlatEnvCfg = (
+        X2FutureIntentFlatEnvCfg
+    )
+    module.X2ResponseHistoryActorCriticCfg = policy_cfg_factory
+    module.ResponseHistoryActorCritic = FutureIntentActorCritic
+    module.ManagerBasedRLEnv = manager_env_factory
+    # Keep all generated logs/checkpoints inside this new project.
+    module.__file__ = str(Path(__file__).resolve())
+    try:
+        module.main()
+    finally:
+        module.simulation_app.close()
+
+
+if __name__ == "__main__":
+    main()

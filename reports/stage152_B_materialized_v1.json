@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/logs/ppo_dryrun/x2_stage152_B_pilot_seed0_v1/model_step_000200.pt",
+  "source_sha256": "b73c345995c5d468c18d223de96b29fff4cd4866e4d56bb6d5296c4a68540679",
+  "fallback_alpha": 16.0,
+  "states": {
+    "policy_state_dict": {
+      "detected": true,
+      "input_tensor_count": 90,
+      "output_tensor_count": 55,
+      "merged_layer_count": 7,
+      "used_explicit_scaling_count": 7,
+      "used_fallback_scaling_count": 0,
+      "layers": [
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.0",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            2048,
+            1062
+          ],
+          "selected_output_count": 2048,
+          "has_frozen_residual": true
+        },
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.10",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            512,
+            512
+          ],
+          "selected_output_count": 512,
+          "has_frozen_residual": true
+        },
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.12",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            31,
+            512
+          ],
+          "selected_output_count": 29,
+          "has_frozen_residual": true
+        },
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.2",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            2048,
+            2048
+          ],
+          "selected_output_count": 2048,
+          "has_frozen_residual": true
+        },
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.4",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            1024,
+            2048
+          ],
+          "selected_output_count": 1024,
+          "has_frozen_residual": true
+        },
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.6",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            1024,
+            1024
+          ],
+          "selected_output_count": 1024,
+          "has_frozen_residual": true
+        },
+        {
+          "stem": "actor_module.decoders.g1_dyn.module.8",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            512,
+            1024
+          ],
+          "selected_output_count": 512,
+          "has_frozen_residual": true
+        }
+      ]
+    },
+    "value_state_dict": {
+      "detected": true,
+      "input_tensor_count": 45,
+      "output_tensor_count": 17,
+      "merged_layer_count": 7,
+      "used_explicit_scaling_count": 7,
+      "used_fallback_scaling_count": 0,
+      "layers": [
+        {
+          "stem": "critic_module.module.0",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            2048,
+            1745
+          ],
+          "selected_output_count": 2048,
+          "has_frozen_residual": false
+        },
+        {
+          "stem": "critic_module.module.10",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            512,
+            512
+          ],
+          "selected_output_count": 512,
+          "has_frozen_residual": false
+        },
+        {
+          "stem": "critic_module.module.12",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            1,
+            512
+          ],
+          "selected_output_count": 1,
+          "has_frozen_residual": false
+        },
+        {
+          "stem": "critic_module.module.2",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            2048,
+            2048
+          ],
+          "selected_output_count": 2048,
+          "has_frozen_residual": false
+        },
+        {
+          "stem": "critic_module.module.4",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            1024,
+            2048
+          ],
+          "selected_output_count": 1024,
+          "has_frozen_residual": false
+        },
+        {
+          "stem": "critic_module.module.6",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            1024,
+            1024
+          ],
+          "selected_output_count": 1024,
+          "has_frozen_residual": false
+        },
+        {
+          "stem": "critic_module.module.8",
+          "rank": 8,
+          "scaling": 2.0,
+          "weight_shape": [
+            512,
+            1024
+          ],
+          "selected_output_count": 512,
+          "has_frozen_residual": false
+        }
+      ]
+    }
+  },
+  "optimizer_state_intentionally_omitted": true,
+  "output_path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/checkpoints/stage152_B_materialized_v1.pt",
+  "output_sha256": "e9c779df8b332d4d22e54bb69ff33401eda9f9c303374ac92b14b6d073931979"
+}

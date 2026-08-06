@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "reference": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage5_safe_upper/stage5_swing_arms_smoke_seed42_vx0p30_delay_s100.npz",
+  "candidate": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/stage6_future_intent/stage6_zero_init_swing_seed42_vx0p30_delay_s100.npz",
+  "absolute_tolerance": 0.0,
+  "only_in_reference": [],
+  "only_in_candidate": [],
+  "common_array_count": 39,
+  "max_numeric_difference": 0.0,
+  "all_arrays_within_tolerance": true,
+  "arrays": {
+    "action_joint_order": {
+      "reference_shape": [
+        15
+      ],
+      "candidate_shape": [
+        15
+      ],
+      "reference_dtype": "<U23",
+      "candidate_dtype": "<U23",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "actor_symmetry_projection_delta": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "all_joint_order": {
+      "reference_shape": [
+        31
+      ],
+      "candidate_shape": [
+        31
+      ],
+      "reference_dtype": "<U26",
+      "candidate_dtype": "<U26",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "all_joint_pos_rad": {
+      "reference_shape": [
+        100,
+        31
+      ],
+      "candidate_shape": [
+        100,
+        31
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "all_joint_target_rad": {
+      "reference_shape": [
+        100,
+        31
+      ],
+      "candidate_shape": [
+        100,
+        31
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "arms_filtered_target_rad": {
+      "reference_shape": [
+        100,
+        14
+      ],
+      "candidate_shape": [
+        100,
+        14
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "arms_joint_order": {
+      "reference_shape": [
+        14
+      ],
+      "candidate_shape": [
+        14
+      ],
+      "reference_dtype": "<U26",
+      "candidate_dtype": "<U26",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "base_actor_action": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "base_tilt_rad": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "combined_action": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "desired_contact": {
+      "reference_shape": [
+        100,
+        2
+      ],
+      "candidate_shape": [
+        100,
+        2
+      ],
+      "reference_dtype": "bool",
+      "candidate_dtype": "bool",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "feet_filtered_target_rad": {
+      "reference_shape": [
+        100,
+        4
+      ],
+      "candidate_shape": [
+        100,
+        4
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "feet_joint_order": {
+      "reference_shape": [
+        4
+      ],
+      "candidate_shape": [
+        4
+      ],
+      "reference_dtype": "<U23",
+      "candidate_dtype": "<U23",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "foot_contact": {
+      "reference_shape": [
+        100,
+        2
+      ],
+      "candidate_shape": [
+        100,
+        2
+      ],
+      "reference_dtype": "bool",
+      "candidate_dtype": "bool",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "foot_force_n": {
+      "reference_shape": [
+        100,
+        2
+      ],
+      "candidate_shape": [
+        100,
+        2
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "foot_lift_m": {
+      "reference_shape": [
+        100,
+        2
+      ],
+      "candidate_shape": [
+        100,
+        2
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "foot_z_w_m": {
+      "reference_shape": [
+        100,
+        2
+      ],
+      "candidate_shape": [
+        100,
+        2
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "gait_phase": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "heading_delta_rad": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "heading_error_integral_rad_s": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "heading_error_rad": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "heading_integral_contribution_radps": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "joint_pos_rad": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "joint_target_rad": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "joint_vel_radps": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "legs_filtered_target_rad": {
+      "reference_shape": [
+        100,
+        8
+      ],
+      "candidate_shape": [
+        100,
+        8
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "legs_joint_order": {
+      "reference_shape": [
+        8
+      ],
+      "candidate_shape": [
+        8
+      ],
+      "reference_dtype": "<U21",
+      "candidate_dtype": "<U21",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "policy_action": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "response_adapter_residual": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "root_ang_vel_w_radps": {
+      "reference_shape": [
+        100,
+        3
+      ],
+      "candidate_shape": [
+        100,
+        3
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "root_lin_vel_b_mps": {
+      "reference_shape": [
+        100,
+        3
+      ],
+      "candidate_shape": [
+        100,
+        3
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "root_pos_w_m": {
+      "reference_shape": [
+        100,
+        3
+      ],
+      "candidate_shape": [
+        100,
+        3
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "root_quat_wxyz": {
+      "reference_shape": [
+        100,
+        4
+      ],
+      "candidate_shape": [
+        100,
+        4
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "time_s": {
+      "reference_shape": [
+        100
+      ],
+      "candidate_shape": [
+        100
+      ],
+      "reference_dtype": "float64",
+      "candidate_dtype": "float64",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "unprojected_policy_action": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "velocity_command_b": {
+      "reference_shape": [
+        100,
+        3
+      ],
+      "candidate_shape": [
+        100,
+        3
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "waist_filtered_target_rad": {
+      "reference_shape": [
+        100,
+        3
+      ],
+      "candidate_shape": [
+        100,
+        3
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    },
+    "waist_joint_order": {
+      "reference_shape": [
+        3
+      ],
+      "candidate_shape": [
+        3
+      ],
+      "reference_dtype": "<U17",
+      "candidate_dtype": "<U17",
+      "max_abs_difference": null,
+      "within_tolerance": true
+    },
+    "yaw_basis_residual": {
+      "reference_shape": [
+        100,
+        15
+      ],
+      "candidate_shape": [
+        100,
+        15
+      ],
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "max_abs_difference": 0.0,
+      "within_tolerance": true
+    }
+  },
+  "passed": true
+}

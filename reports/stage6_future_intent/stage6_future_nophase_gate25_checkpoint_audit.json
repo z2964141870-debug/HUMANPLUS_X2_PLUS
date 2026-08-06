@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "source_checkpoint": "/home/humanplus/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_04-12-50_stage208_sole12_selfoff_ideal075_delay025_resume2450_to2600_v1/model_2550.pt",
+  "trained_checkpoint": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/logs/rsl_rl/x2_lower_velocity_flat/2026-07-28_16-30-22_stage6_future_nophase_gate25_cpu32_v1/model_2575.pt",
+  "source_iteration": 2550,
+  "trained_iteration": 2575,
+  "adapter_mode": "future_no_phase",
+  "seed": 20260728,
+  "probe_batch_size": 4096,
+  "max_frozen_actor_tensor_difference": 0.0,
+  "max_critic_tensor_difference": 0.14061757922172546,
+  "all_checkpoint_tensors_finite": true,
+  "nonfinite_tensor_names": [],
+  "actor_frozen_after_reload": true,
+  "adapter_tensor_count": 4,
+  "adapter_parameter_l2": 3.626173496246338,
+  "adapter_parameter_abs_max": 0.30986323952674866,
+  "probe_residual_abs_max": 0.0735805407166481,
+  "residual_budget": 0.1,
+  "masked_residual_abs_max": 0.0,
+  "actor_tensor_differences": {
+    "actor.0.weight": 0.0,
+    "actor.0.bias": 0.0,
+    "actor.2.weight": 0.0,
+    "actor.2.bias": 0.0,
+    "actor.4.weight": 0.0,
+    "actor.4.bias": 0.0,
+    "actor.6.weight": 0.0,
+    "actor.6.bias": 0.0
+  },
+  "critic_tensor_differences": {
+    "critic.0.weight": 0.14061757922172546,
+    "critic.0.bias": 0.04466443881392479,
+    "critic.2.weight": 0.12313751876354218,
+    "critic.2.bias": 0.045674607157707214,
+    "critic.4.weight": 0.08495789766311646,
+    "critic.4.bias": 0.029509752988815308,
+    "critic.6.weight": 0.055320024490356445,
+    "critic.6.bias": 0.003937356173992157
+  },
+  "passed": true
+}
