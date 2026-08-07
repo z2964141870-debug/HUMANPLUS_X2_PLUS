@@ -128,6 +128,25 @@ LOWER_SCALE = np.asarray(
 )
 
 
+def _mirror_joint_sign(name: str) -> float:
+    return -1.0 if any(axis in name for axis in ("_roll_", "_yaw_")) else 1.0
+
+
+def _mirror_joint_vector(values: np.ndarray, names: tuple[str, ...]) -> np.ndarray:
+    """Reflect a named joint vector across the robot sagittal plane."""
+    index = {name: i for i, name in enumerate(names)}
+    mirrored = np.empty_like(values)
+    for output_index, name in enumerate(names):
+        if name.startswith("left_"):
+            source_name = "right_" + name[len("left_") :]
+        elif name.startswith("right_"):
+            source_name = "left_" + name[len("right_") :]
+        else:
+            source_name = name
+        mirrored[output_index] = _mirror_joint_sign(name) * values[index[source_name]]
+    return mirrored
+
+
 def gravity_body(imu: Imu) -> np.ndarray:
     q = imu.orientation
     return np.asarray(
@@ -214,25 +233,38 @@ class Stage208OfficialAdapter(Node):
                     for index, name in enumerate(self.replay_joint_names)
                 }
 
-        qos = QoSProfile(
+        state_qos = QoSProfile(
+            history=HistoryPolicy.KEEP_LAST,
+            depth=args.state_qos_depth,
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+        )
+        command_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
             depth=10,
             reliability=ReliabilityPolicy.BEST_EFFORT,
         )
         self.joints: dict[str, tuple[float, float]] = {}
+        self.joint_sample_times: dict[str, float] = {}
+        self.joint_callback_wall_times: dict[str, float] = {}
         self.imu: Imu | None = None
         self.odom: Odometry | None = None
+        self.imu_sample_time: float | None = None
+        self.odom_sample_time: float | None = None
+        self.imu_callback_wall_time: float | None = None
+        self.odom_callback_wall_time: float | None = None
         for area in ("leg", "waist", "arm", "head"):
             self.create_subscription(
                 JointStateArray,
                 f"/aima/hal/joint/{area}/state",
                 self._joint_callback,
-                qos,
+                state_qos,
             )
-        self.create_subscription(Imu, "/aima/hal/imu/torso/state", self._imu_callback, qos)
-        self.create_subscription(Odometry, "/aima/hal/odom/state", self._odom_callback, qos)
+        self.create_subscription(Imu, "/aima/hal/imu/torso/state", self._imu_callback, state_qos)
+        self.create_subscription(Odometry, "/aima/hal/odom/state", self._odom_callback, state_qos)
         self.command_publishers = {
-            area: self.create_publisher(JointCommandArray, f"/aima/hal/joint/{area}/command", qos)
+            area: self.create_publisher(
+                JointCommandArray, f"/aima/hal/joint/{area}/command", command_qos
+            )
             for area in ("leg", "waist", "arm", "head")
         }
 
@@ -244,26 +276,66 @@ class Stage208OfficialAdapter(Node):
             "main": np.zeros(15, dtype=np.float32),
             "stationary": np.zeros(15, dtype=np.float32),
         }
+        self.issued_actions = {
+            "main": np.zeros(15, dtype=np.float32),
+            "stationary": np.zeros(15, dtype=np.float32),
+        }
         self.last_move_targets: dict[str, float] | None = None
         self.stop_hold_targets: dict[str, float] | None = None
         self.stop_hold_latch_s: float | None = None
         self.heading_target_rad: float | None = None
+        self.heading_origin_xy: tuple[float, float] | None = None
+        self.move_heading_initialized = False
+        self.stop_policy_initialized = False
+        self.lateral_recovery_state = "off"
+        self.lateral_recovery_bias = np.zeros(2, dtype=np.float32)
+        self.heading_recovery_active = False
         self.ready_wall_time: float | None = None
         self.prepare_start_q: dict[str, float] = {}
+        self.sequence_step = 0
         self.control_steps = 0
+        # Optional fixed-horizon state prediction for deployment stacks whose
+        # joint/IMU/odometry sample reaches the 50 Hz actor slightly late.  The
+        # raw history is kept in the actor's physical coordinates and updated
+        # at most once per control tick, so multi-policy stop transitions do
+        # not manufacture a zero-dt acceleration sample.
+        self.previous_physical_observation: np.ndarray | None = None
+        self.predicted_physical_observation: np.ndarray | None = None
+        self.predicted_physical_step = -1
+        self.current_control_wall_time: float | None = None
+        self.previous_control_wall_time: float | None = None
+        self.current_control_wall_dt: float | None = None
         self.trace: list[dict[str, float | list[float] | str]] = []
         self.finished = False
         self.timer = self.create_timer(0.02, self._control)
 
     def _joint_callback(self, msg: JointStateArray) -> None:
+        sample_time = self._message_sample_time(msg)
+        callback_time = time.monotonic()
         for joint in msg.joints:
             self.joints[joint.name] = (float(joint.position), float(joint.velocity))
+            self.joint_sample_times[joint.name] = sample_time
+            self.joint_callback_wall_times[joint.name] = callback_time
 
     def _imu_callback(self, msg: Imu) -> None:
         self.imu = msg
+        self.imu_sample_time = self._message_sample_time(msg)
+        self.imu_callback_wall_time = time.monotonic()
 
     def _odom_callback(self, msg: Odometry) -> None:
         self.odom = msg
+        self.odom_sample_time = self._message_sample_time(msg)
+        self.odom_callback_wall_time = time.monotonic()
+
+    @staticmethod
+    def _message_sample_time(msg: object) -> float:
+        header = getattr(msg, "header", None)
+        stamp = getattr(header, "meas_stamp", None)
+        if stamp is None:
+            stamp = getattr(header, "stamp", None)
+        if stamp is None:
+            return 0.0
+        return float(stamp.sec) + 1.0e-9 * float(stamp.nanosec)
 
     def _state_ready(self) -> bool:
         return all(name in self.joints for name in ISAAC_JOINTS) and self.imu is not None and self.odom is not None
@@ -339,6 +411,53 @@ class Stage208OfficialAdapter(Node):
         upper = (lower + 1) % bins
         return (1.0 - blend) * self.template[lower] + blend * self.template[upper]
 
+    def _predict_physical_observation(
+        self,
+        base_lin_vel: np.ndarray,
+        base_ang_vel: np.ndarray,
+        projected_gravity: np.ndarray,
+        joint_pos: np.ndarray,
+        joint_vel: np.ndarray,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Extrapolate a delayed physical sample by a small fixed horizon.
+
+        This mirrors the intervention that was first falsified in the direct
+        vendor-MJCF loop.  Commands, gait phase and previous action are not
+        predicted: only deploy-observed physical state is advanced.
+        """
+        physical = np.concatenate(
+            (base_lin_vel, base_ang_vel, projected_gravity, joint_pos, joint_vel)
+        ).astype(np.float32)
+        tau = self.args.state_prediction_seconds
+        if tau <= 0.0:
+            return base_lin_vel, base_ang_vel, projected_gravity, joint_pos, joint_vel
+        if self.predicted_physical_step == self.sequence_step:
+            assert self.predicted_physical_observation is not None
+            predicted = self.predicted_physical_observation.copy()
+        else:
+            acceleration = np.zeros_like(physical)
+            if self.previous_physical_observation is not None:
+                acceleration = (physical - self.previous_physical_observation) / 0.02
+            predicted = physical.copy()
+            delayed_joint_velocity = physical[40:71].copy()
+            predicted[0:6] += tau * acceleration[0:6]
+            predicted[40:71] += tau * acceleration[40:71]
+            omega = predicted[3:6].copy()
+            gravity = physical[6:9].copy() - tau * np.cross(omega, physical[6:9])
+            norm = float(np.linalg.norm(gravity))
+            if norm > 1.0e-8:
+                predicted[6:9] = gravity / norm
+            predicted[9:40] += (
+                tau * delayed_joint_velocity + 0.5 * tau * tau * acceleration[40:71]
+            )
+            self.previous_physical_observation = physical.copy()
+            self.predicted_physical_observation = predicted.copy()
+            self.predicted_physical_step = self.sequence_step
+        return (
+            predicted[0:3], predicted[3:6], predicted[6:9],
+            predicted[9:40], predicted[40:71],
+        )
+
     def _policy_targets(
         self,
         phase_elapsed: float,
@@ -350,6 +469,8 @@ class Stage208OfficialAdapter(Node):
         policy_slot: str = "main",
     ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
         assert self.imu is not None and self.odom is not None
+        if force_moving or abs(command_vx) > 0.1:
+            phase_elapsed += self.args.phase_offset
         twist = self.odom.twist.twist
         base_lin_vel_w = np.asarray([twist.linear.x, twist.linear.y, twist.linear.z], dtype=np.float32)
         base_lin_vel = world_vector_to_body(self.odom, base_lin_vel_w)
@@ -358,13 +479,46 @@ class Stage208OfficialAdapter(Node):
         current_yaw = yaw_from_quaternion(self.odom)
         if self.heading_target_rad is None:
             self.heading_target_rad = current_yaw
+            self.heading_origin_xy = (
+                float(self.odom.pose.pose.position.x),
+                float(self.odom.pose.pose.position.y),
+            )
+        path_heading_offset = 0.0
+        if self.args.cross_track_heading_gain != 0.0 and self.heading_origin_xy is not None:
+            position = self.odom.pose.pose.position
+            dx = float(position.x) - self.heading_origin_xy[0]
+            dy = float(position.y) - self.heading_origin_xy[1]
+            cross_track = -math.sin(self.heading_target_rad) * dx + math.cos(self.heading_target_rad) * dy
+            path_heading_offset = math.atan(-self.args.cross_track_heading_gain * cross_track)
+            path_heading_offset = float(
+                np.clip(
+                    path_heading_offset,
+                    -self.args.cross_track_heading_limit,
+                    self.args.cross_track_heading_limit,
+                )
+            )
+        effective_heading_target = self.heading_target_rad + path_heading_offset
         heading_error = math.atan2(
-            math.sin(self.heading_target_rad - current_yaw),
-            math.cos(self.heading_target_rad - current_yaw),
+            math.sin(effective_heading_target - current_yaw),
+            math.cos(effective_heading_target - current_yaw),
         )
+        heading_control_error = heading_error
+        if self.args.heading_recovery_enter_rad is not None:
+            if (
+                not self.heading_recovery_active
+                and abs(heading_error) >= self.args.heading_recovery_enter_rad
+            ):
+                self.heading_recovery_active = True
+            elif (
+                self.heading_recovery_active
+                and abs(heading_error) <= self.args.heading_recovery_exit_rad
+            ):
+                self.heading_recovery_active = False
+            if not self.heading_recovery_active:
+                heading_control_error = 0.0
         command_wz = float(
             np.clip(
-                self.args.heading_gain * heading_error,
+                self.args.heading_gain * heading_control_error,
                 -self.args.heading_rate_limit,
                 self.args.heading_rate_limit,
             )
@@ -374,11 +528,29 @@ class Stage208OfficialAdapter(Node):
         command = np.asarray([command_vx, command_vy, command_wz], dtype=np.float32)
         joint_pos = np.asarray([self.joints[name][0] - self.default[name] for name in ISAAC_JOINTS], dtype=np.float32)
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
+        projected_gravity = gravity_body(self.imu)
+        (
+            base_lin_vel,
+            base_ang_vel,
+            projected_gravity,
+            joint_pos,
+            joint_vel,
+        ) = self._predict_physical_observation(
+            base_lin_vel, base_ang_vel, projected_gravity, joint_pos, joint_vel
+        )
         moving = force_moving or abs(command_vx) > 0.1
         phase = self._phase_features(phase_elapsed, moving=moving)
         previous_action = self.previous_actions[policy_slot]
+        if self.args.mirror_policy:
+            base_lin_vel = base_lin_vel * np.asarray([1.0, -1.0, 1.0], dtype=np.float32)
+            base_ang_vel = base_ang_vel * np.asarray([-1.0, 1.0, -1.0], dtype=np.float32)
+            projected_gravity = projected_gravity * np.asarray([1.0, -1.0, 1.0], dtype=np.float32)
+            command = command * np.asarray([1.0, -1.0, -1.0], dtype=np.float32)
+            joint_pos = _mirror_joint_vector(joint_pos, ISAAC_JOINTS)
+            joint_vel = _mirror_joint_vector(joint_vel, ISAAC_JOINTS)
+            previous_action = _mirror_joint_vector(previous_action, LOWER_JOINTS)
         obs = np.concatenate(
-            (base_lin_vel, base_ang_vel, gravity_body(self.imu), command, joint_pos, joint_vel, previous_action, phase)
+            (base_lin_vel, base_ang_vel, projected_gravity, command, joint_pos, joint_vel, previous_action, phase)
         ).astype(np.float32)
         if obs.shape != (93,):
             raise RuntimeError(f"invalid Stage208 observation shape {obs.shape}")
@@ -390,21 +562,35 @@ class Stage208OfficialAdapter(Node):
             and self.args.stationary_blend < 1.0
         ):
             main_obs = obs.copy()
-            main_obs[74:89] = self.previous_actions["main"]
+            main_obs[74:89] = (
+                _mirror_joint_vector(self.previous_actions["main"], LOWER_JOINTS)
+                if self.args.mirror_policy
+                else self.previous_actions["main"]
+            )
             main_action = self.session.run(["actions"], {"obs": main_obs[None]})[0][0].astype(np.float32)
             alpha = self.args.stationary_blend
             raw_action = (1.0 - alpha) * main_action + alpha * raw_action
         residual = raw_action.copy()
+        if self.args.mirror_policy:
+            residual = _mirror_joint_vector(residual, LOWER_JOINTS)
         if self.args.control_mode == "template_only":
             residual.fill(0.0)
+        template_cycle = self._template_bias(phase_elapsed)
+        if self.args.mirror_policy:
+            template_cycle = _mirror_joint_vector(template_cycle, LOWER_JOINTS)
         template_bias = (
-            0.15 * template_multiplier * self._template_bias(phase_elapsed) / LOWER_SCALE
+            0.15 * template_multiplier * template_cycle / LOWER_SCALE
             if moving
             else np.zeros(15, dtype=np.float32)
         )
         if self.args.control_mode == "actor_only":
             template_bias.fill(0.0)
         combined_preclip = residual + template_bias
+        if moving and self.args.ankle_roll_common_bias != 0.0:
+            combined_preclip[[5, 11]] += self.args.ankle_roll_common_bias * template_multiplier
+        if moving:
+            combined_preclip[2] += self.args.left_hip_yaw_bias * template_multiplier
+            combined_preclip[8] += self.args.right_hip_yaw_bias * template_multiplier
         if moving and self.args.action_bias_mode == "hip_yaw_feedback":
             feedback_bias = float(
                 np.clip(
@@ -414,15 +600,143 @@ class Stage208OfficialAdapter(Node):
                 )
             )
             combined_preclip[[2, 8]] += feedback_bias
+        elif moving and self.args.action_bias_mode == "turn_progress_feedback":
+            if self.args.fixed_wz is None:
+                raise RuntimeError("turn_progress_feedback requires --fixed-wz")
+            actual_yaw_progress = math.atan2(
+                math.sin(current_yaw - self.heading_target_rad),
+                math.cos(current_yaw - self.heading_target_rad),
+            )
+            desired_yaw_progress = self.args.fixed_wz * min(
+                max(phase_elapsed, 0.0), self.args.move_seconds
+            )
+            progress_error = math.atan2(
+                math.sin(desired_yaw_progress - actual_yaw_progress),
+                math.cos(desired_yaw_progress - actual_yaw_progress),
+            )
+            correction = float(
+                np.clip(
+                    self.args.yaw_action_gain * progress_error,
+                    -self.args.action_bias,
+                    self.args.action_bias,
+                )
+            ) * template_multiplier
+            if self.args.fixed_wz >= 0.0:
+                # Positive yaw was empirically controllable through a bounded
+                # common hip-yaw mode in the official X2 model.
+                combined_preclip[[2, 8]] += correction
+            else:
+                # Negative yaw needs the asymmetric pair; a common negative
+                # bias consistently drove the body backwards in controls.
+                if correction <= 0.0:
+                    magnitude = -correction
+                    combined_preclip[2] += magnitude
+                    combined_preclip[8] -= magnitude
+                else:
+                    # Once the left turn overshoots, the verified positive
+                    # common mode supplies a bounded counter-yaw correction.
+                    combined_preclip[[2, 8]] += correction
+        elif moving and self.args.action_bias_mode == "ankle_roll_lateral_feedback":
+            assert self.heading_origin_xy is not None
+            position = self.odom.pose.pose.position
+            dx = float(position.x) - self.heading_origin_xy[0]
+            dy = float(position.y) - self.heading_origin_xy[1]
+            cross_track = -math.sin(self.heading_target_rad) * dx + math.cos(self.heading_target_rad) * dy
+            feedback_bias = float(
+                np.clip(
+                    -self.args.lateral_position_gain * cross_track
+                    - self.args.lateral_velocity_gain * float(base_lin_vel[1]),
+                    -self.args.action_bias,
+                    self.args.action_bias,
+                )
+            )
+            combined_preclip[[5, 11]] += feedback_bias
+        elif moving and self.args.action_bias_mode == "lateral_recovery_supervisor":
+            assert self.heading_origin_xy is not None
+            position = self.odom.pose.pose.position
+            dx = float(position.x) - self.heading_origin_xy[0]
+            dy = float(position.y) - self.heading_origin_xy[1]
+            cross_track = -math.sin(self.heading_target_rad) * dx + math.cos(self.heading_target_rad) * dy
+            if self.lateral_recovery_state == "off":
+                if cross_track <= -self.args.recovery_enter_m:
+                    self.lateral_recovery_state = "right"
+                elif cross_track >= self.args.recovery_enter_m:
+                    self.lateral_recovery_state = "left"
+            elif self.lateral_recovery_state == "right" and cross_track >= -self.args.recovery_exit_m:
+                self.lateral_recovery_state = "off"
+            elif self.lateral_recovery_state == "left" and cross_track <= self.args.recovery_exit_m:
+                self.lateral_recovery_state = "off"
+            if self.lateral_recovery_state == "right":
+                target_bias = np.asarray([self.args.action_bias, self.args.action_bias], dtype=np.float32)
+            elif self.lateral_recovery_state == "left":
+                target_bias = np.asarray([self.args.action_bias, -self.args.action_bias], dtype=np.float32)
+            else:
+                target_bias = np.zeros(2, dtype=np.float32)
+            max_step = self.args.recovery_slew_rate_per_s * 0.02
+            self.lateral_recovery_bias += np.clip(
+                target_bias - self.lateral_recovery_bias,
+                -max_step,
+                max_step,
+            )
+            combined_preclip[[2, 8]] += self.lateral_recovery_bias
         elif moving and self.args.action_bias != 0.0:
+            bias_ramp = (
+                min(1.0, max(0.0, phase_elapsed) / self.args.action_bias_ramp_seconds)
+                if self.args.action_bias_ramp_seconds > 0.0
+                else 1.0
+            )
+            action_bias = self.args.action_bias * bias_ramp * template_multiplier
             if self.args.action_bias_mode == "hip_yaw_common":
-                combined_preclip[[2, 8]] += self.args.action_bias
+                combined_preclip[[2, 8]] += action_bias
+            elif self.args.action_bias_mode == "left_hip_yaw":
+                combined_preclip[2] += action_bias
+            elif self.args.action_bias_mode == "right_hip_yaw":
+                combined_preclip[8] += action_bias
+            elif self.args.action_bias_mode == "hip_yaw_left_stance":
+                if phase[2] > 0.5 and phase[3] < 0.5:
+                    combined_preclip[[2, 8]] += action_bias
+            elif self.args.action_bias_mode == "hip_yaw_right_stance":
+                if phase[3] > 0.5 and phase[2] < 0.5:
+                    combined_preclip[[2, 8]] += action_bias
+            elif self.args.action_bias_mode == "hip_yaw_pair_left_stance":
+                if phase[2] > 0.5 and phase[3] < 0.5:
+                    combined_preclip[2] += action_bias
+                    combined_preclip[8] -= action_bias
+            elif self.args.action_bias_mode == "hip_yaw_pair_right_stance":
+                if phase[3] > 0.5 and phase[2] < 0.5:
+                    combined_preclip[2] += action_bias
+                    combined_preclip[8] -= action_bias
             elif self.args.action_bias_mode == "waist_yaw":
-                combined_preclip[12] += self.args.action_bias
+                combined_preclip[12] += action_bias
             elif self.args.action_bias_mode == "hip_waist_counter":
-                combined_preclip[[2, 8]] += self.args.action_bias
-                combined_preclip[12] -= self.args.action_bias
+                combined_preclip[[2, 8]] += action_bias
+                combined_preclip[12] -= action_bias
+            elif self.args.action_bias_mode == "hip_roll_common":
+                combined_preclip[[1, 7]] += action_bias
+            elif self.args.action_bias_mode == "ankle_roll_common":
+                combined_preclip[[5, 11]] += action_bias
+            elif self.args.action_bias_mode == "ankle_roll_lstance_boost":
+                phase_boost = (
+                    self.args.phase_action_boost
+                    if phase[2] > 0.5 and phase[3] < 0.5
+                    else 0.0
+                )
+                combined_preclip[[5, 11]] += action_bias + phase_boost
+            elif self.args.action_bias_mode == "left_ankle_roll":
+                combined_preclip[5] += action_bias
+            elif self.args.action_bias_mode == "right_ankle_roll":
+                combined_preclip[11] += action_bias
+            elif self.args.action_bias_mode == "hip_ankle_roll_counter":
+                combined_preclip[[1, 7]] += action_bias
+                combined_preclip[[5, 11]] -= action_bias
+            elif self.args.action_bias_mode == "waist_roll":
+                combined_preclip[14] += action_bias
         combined = np.clip(combined_preclip, -1.0, 1.0)
+        if self.args.action_ema_alpha < 1.0:
+            alpha = self.args.action_ema_alpha
+            combined = alpha * combined + (1.0 - alpha) * self.issued_actions[policy_slot]
+        combined[[13, 14]] *= self.args.waist_tilt_action_multiplier
+        self.issued_actions[policy_slot] = combined.copy()
         targets = dict(self.default)
         for index, name in enumerate(LOWER_JOINTS):
             targets[name] = self.default[name] + float(combined[index] * LOWER_SCALE[index])
@@ -474,6 +788,23 @@ class Stage208OfficialAdapter(Node):
         assert self.odom is not None
         pose = self.odom.pose.pose
         twist = self.odom.twist.twist
+        sample_times = [self.joint_sample_times[name] for name in ISAAC_JOINTS]
+        sample_times.extend([self.imu_sample_time or 0.0, self.odom_sample_time or 0.0])
+        callback_times = [self.joint_callback_wall_times[name] for name in ISAAC_JOINTS]
+        callback_times.extend([
+            self.imu_callback_wall_time or 0.0,
+            self.odom_callback_wall_time or 0.0,
+        ])
+        valid_sample_times = [value for value in sample_times if value > 0.0]
+        valid_callback_times = [value for value in callback_times if value > 0.0]
+        source_meas_skew = (
+            max(valid_sample_times) - min(valid_sample_times) if valid_sample_times else None
+        )
+        source_callback_age = (
+            (self.current_control_wall_time or time.monotonic()) - min(valid_callback_times)
+            if valid_callback_times
+            else None
+        )
         self.trace.append(
             {
                 "stage": stage,
@@ -488,6 +819,9 @@ class Stage208OfficialAdapter(Node):
                 "root_vx_b_mps": None if obs is None else float(obs[0]),
                 "root_vy_b_mps": None if obs is None else float(obs[1]),
                 "root_yaw_rate_radps": float(twist.angular.z),
+                "control_wall_dt_s": self.current_control_wall_dt,
+                "source_meas_skew_s": source_meas_skew,
+                "source_callback_age_max_s": source_callback_age,
                 "obs": [] if obs is None else obs.tolist(),
                 "action": [] if action is None else action.tolist(),
             }
@@ -497,13 +831,25 @@ class Stage208OfficialAdapter(Node):
         if self.finished or not self._state_ready():
             return
         now = time.monotonic()
+        self.current_control_wall_time = now
+        self.current_control_wall_dt = (
+            None if self.previous_control_wall_time is None else now - self.previous_control_wall_time
+        )
+        self.previous_control_wall_time = now
         if self.ready_wall_time is None:
             self.ready_wall_time = now
             self.prepare_start_q = {name: self.joints[name][0] for name in ISAAC_JOINTS}
             self.get_logger().info(
                 f"state ready; begin {self.args.prepare_seconds:.2f} s matched-pose interpolation"
             )
-        elapsed = now - self.ready_wall_time
+        if self.args.clock_mode == "step":
+            # Gate runs must not depend on host scheduling jitter.  Advance the
+            # controller contract at the policy's exact 50 Hz cadence even if
+            # a ROS wall timer callback arrives a little early or late.
+            elapsed = self.sequence_step * 0.02
+        else:
+            elapsed = now - self.ready_wall_time
+        self.sequence_step += 1
 
         if elapsed < self.args.prepare_seconds:
             alpha = min(1.0, elapsed / self.args.prepare_seconds)
@@ -534,11 +880,29 @@ class Stage208OfficialAdapter(Node):
             return
 
         move_elapsed = stand_elapsed - self.args.stand_seconds
+        if not self.move_heading_initialized:
+            assert self.odom is not None
+            # The first locomotion target must be filtered from the action
+            # actually being executed by the stand actor, not from zeros.
+            self.issued_actions["main"] = self.issued_actions["stationary"].copy()
+            self.heading_target_rad = yaw_from_quaternion(self.odom)
+            self.heading_origin_xy = (
+                float(self.odom.pose.pose.position.x),
+                float(self.odom.pose.pose.position.y),
+            )
+            self.move_heading_initialized = True
         if move_elapsed >= self.args.move_seconds:
             stop_elapsed = move_elapsed - self.args.move_seconds
             if stop_elapsed >= self.args.stop_seconds:
                 self._finish()
                 return
+            if not self.stop_policy_initialized:
+                # The stationary actor observes previous_action.  Carry the
+                # actual last moving action across the controller handoff;
+                # otherwise it receives the stale action from the stand phase.
+                self.previous_actions["stationary"] = self.previous_actions["main"].copy()
+                self.issued_actions["stationary"] = self.issued_actions["main"].copy()
+                self.stop_policy_initialized = True
             if self.args.stop_controller == "event_hold":
                 if self.stop_hold_targets is None:
                     targets, obs, action = self._policy_targets(self.args.move_seconds, 0.0)
@@ -615,6 +979,31 @@ class Stage208OfficialAdapter(Node):
                     force_moving=True,
                     template_multiplier=ramp,
                 )
+            elif self.args.stop_controller == "blend_to_policy":
+                transition = max(self.args.stop_transition_seconds, 1.0e-6)
+                if stop_elapsed < transition:
+                    ramp = max(0.0, 1.0 - stop_elapsed / transition)
+                    moving_targets, _, _ = self._policy_targets(
+                        self.args.move_seconds + stop_elapsed,
+                        self.args.vx * ramp,
+                        force_moving=True,
+                        template_multiplier=ramp,
+                    )
+                    stationary_targets, obs, action = self._policy_targets(
+                        0.0,
+                        0.0,
+                        policy_slot="stationary",
+                    )
+                    targets = {
+                        name: ramp * moving_targets[name] + (1.0 - ramp) * stationary_targets[name]
+                        for name in ISAAC_JOINTS
+                    }
+                else:
+                    targets, obs, action = self._policy_targets(
+                        0.0,
+                        0.0,
+                        policy_slot="stationary",
+                    )
             else:
                 targets, obs, action = self._policy_targets(
                     self.args.move_seconds,
@@ -652,20 +1041,40 @@ class Stage208OfficialAdapter(Node):
             "stationary_model": self.args.stationary_model or self.args.model,
             "stationary_warmup_seconds": self.args.stationary_warmup_seconds,
             "stationary_blend": self.args.stationary_blend,
+            "state_prediction_seconds": self.args.state_prediction_seconds,
+            "state_qos_depth": self.args.state_qos_depth,
             "template": self.args.template,
             "command_vx_mps": self.args.vx,
+            "phase_offset_s": self.args.phase_offset,
             "control_mode": self.args.control_mode,
             "replay_loop": self.args.replay_loop,
             "pd_profile": self.args.pd_profile,
             "default_pose_profile": self.args.default_pose_profile,
             "heading_gain": self.args.heading_gain,
+            "heading_recovery_enter_rad": self.args.heading_recovery_enter_rad,
+            "heading_recovery_exit_rad": self.args.heading_recovery_exit_rad,
+            "cross_track_heading_gain": self.args.cross_track_heading_gain,
+            "cross_track_heading_limit_rad": self.args.cross_track_heading_limit,
             "heading_rate_limit_radps": self.args.heading_rate_limit,
             "fixed_wz_radps": self.args.fixed_wz,
             "action_bias_mode": self.args.action_bias_mode,
             "action_bias": self.args.action_bias,
+            "action_bias_ramp_seconds": self.args.action_bias_ramp_seconds,
+            "ankle_roll_common_bias": self.args.ankle_roll_common_bias,
+            "left_hip_yaw_bias": self.args.left_hip_yaw_bias,
+            "right_hip_yaw_bias": self.args.right_hip_yaw_bias,
             "yaw_action_gain": self.args.yaw_action_gain,
+            "lateral_position_gain": self.args.lateral_position_gain,
+            "lateral_velocity_gain": self.args.lateral_velocity_gain,
+            "recovery_enter_m": self.args.recovery_enter_m,
+            "recovery_exit_m": self.args.recovery_exit_m,
+            "recovery_slew_rate_per_s": self.args.recovery_slew_rate_per_s,
+            "phase_action_boost": self.args.phase_action_boost,
+            "action_ema_alpha": self.args.action_ema_alpha,
+            "waist_tilt_action_multiplier": self.args.waist_tilt_action_multiplier,
             "stationary_controller": self.args.stationary_controller,
             "stop_controller": self.args.stop_controller,
+            "stop_transition_seconds": self.args.stop_transition_seconds,
             "stop_hold_latch_s": self.stop_hold_latch_s,
             "stop_brake_gain": self.args.stop_brake_gain,
             "stop_brake_limit_mps": self.args.stop_brake_limit,
@@ -676,6 +1085,8 @@ class Stage208OfficialAdapter(Node):
             "move_seconds": self.args.move_seconds,
             "stop_seconds": self.args.stop_seconds,
             "control_steps": len(move),
+            "clock_mode": self.args.clock_mode,
+            "mirror_policy": self.args.mirror_policy,
             "observation_contract": "Stage208 deterministic 93D",
             "action_contract": "15D lower/waist residual + template_scale=0.15",
             "root_z_min_m": float(root_z.min()) if root_z.size else None,
@@ -694,15 +1105,37 @@ class Stage208OfficialAdapter(Node):
                 "stand_tail_speed_max_mps": 0.03,
                 "move_root_z_min_m": 0.45,
                 "move_tilt_max_rad": 0.40,
+                "startup_window_s": 1.0,
+                "startup_root_z_min_m": 0.60,
+                "startup_tilt_max_rad": 0.30,
+                "startup_forward_min_m": 0.10,
+                "startup_backward_excursion_max_m": 0.03,
                 "move_forward_min_m": 0.50,
                 "move_lateral_max_m": 0.30,
                 "move_heading_max_rad": 0.30,
+                "turn_yaw_progress_ratio_min": 0.50,
+                "turn_yaw_progress_ratio_max": 1.50,
+                "turn_body_vx_mean_min_mps": 0.15,
                 "stop_root_z_min_m": 0.45,
                 "stop_tilt_max_rad": 0.30,
                 "stop_xy_drift_max_m": 0.15,
                 "stop_tail_speed_max_mps": 0.03,
             },
         }
+        timing_fields = (
+            "control_wall_dt_s",
+            "source_meas_skew_s",
+            "source_callback_age_max_s",
+        )
+        for field in timing_fields:
+            values = np.asarray(
+                [float(row[field]) for row in self.trace if row.get(field) is not None],
+                dtype=np.float64,
+            )
+            if values.size:
+                summary[f"{field}_p50"] = float(np.quantile(values, 0.50))
+                summary[f"{field}_p95"] = float(np.quantile(values, 0.95))
+                summary[f"{field}_max"] = float(values.max())
         if stand:
             stand_z = np.asarray([row["root_z_m"] for row in stand], dtype=np.float64)
             stand_tilt = np.asarray([row["root_tilt_rad"] for row in stand], dtype=np.float64)
@@ -738,26 +1171,93 @@ class Stage208OfficialAdapter(Node):
             dy = float(y[-1] - y[0])
             forward = math.cos(start_yaw) * dx + math.sin(start_yaw) * dy
             lateral = -math.sin(start_yaw) * dx + math.cos(start_yaw) * dy
+            startup = [row for row in move if float(row["elapsed_s"]) <= 1.0001]
+            startup_forward = np.asarray(
+                [
+                    math.cos(start_yaw) * (float(row["root_x_m"]) - float(x[0]))
+                    + math.sin(start_yaw) * (float(row["root_y_m"]) - float(y[0]))
+                    for row in startup
+                ],
+                dtype=np.float64,
+            )
+            startup_z = np.asarray(
+                [float(row["root_z_m"]) for row in startup], dtype=np.float64
+            )
+            startup_tilt = np.asarray(
+                [float(row["root_tilt_rad"]) for row in startup], dtype=np.float64
+            )
+            startup_backward_excursion = (
+                float(max(0.0, -startup_forward.min())) if startup_forward.size else None
+            )
+            startup_gate_pass = bool(
+                startup_forward.size
+                and startup_z.min() >= 0.60
+                and startup_tilt.max() <= 0.30
+                and startup_forward[-1] >= 0.10
+                and startup_backward_excursion is not None
+                and startup_backward_excursion <= 0.03
+            )
             heading_max = float(np.max(np.abs(move_yaw - move_yaw[0])))
             body_vx_values = [row["root_vx_b_mps"] for row in move if row["root_vx_b_mps"] is not None]
             body_vx = np.asarray(body_vx_values, dtype=np.float64)
+            yaw_rate_values = [row["root_yaw_rate_radps"] for row in move]
+            body_yaw_rate = np.asarray(yaw_rate_values, dtype=np.float64)
             move_tilt_max = float(tilt.max())
+            yaw_progress = float(move_yaw[-1] - move_yaw[0])
+            expected_yaw_progress = (
+                float(self.args.fixed_wz * self.args.move_seconds)
+                if self.args.fixed_wz is not None
+                else 0.0
+            )
+            turn_progress_ratio = (
+                yaw_progress / expected_yaw_progress
+                if abs(expected_yaw_progress) > 1.0e-6
+                else None
+            )
+            turn_mode = self.args.fixed_wz is not None and abs(self.args.fixed_wz) > 1.0e-6
+            straight_gate_pass = bool(
+                root_z.min() >= 0.45
+                and move_tilt_max <= 0.40
+                and forward >= 0.50
+                and abs(lateral) <= 0.30
+                and heading_max <= 0.30
+            )
+            turn_gate_pass = bool(
+                root_z.min() >= 0.45
+                and move_tilt_max <= 0.40
+                and body_vx.size
+                and body_vx.mean() >= 0.15
+                and turn_progress_ratio is not None
+                and turn_progress_ratio >= 0.50
+                and turn_progress_ratio <= 1.50
+            )
             summary.update(
                 {
                     "move_forward_displacement_m": forward,
                     "move_lateral_displacement_m": lateral,
+                    "startup_window_s": 1.0,
+                    "startup_root_z_min_m": float(startup_z.min()) if startup_z.size else None,
+                    "startup_tilt_max_rad": (
+                        float(startup_tilt.max()) if startup_tilt.size else None
+                    ),
+                    "startup_forward_displacement_m": (
+                        float(startup_forward[-1]) if startup_forward.size else None
+                    ),
+                    "startup_backward_excursion_m": startup_backward_excursion,
+                    "startup_gate_pass": startup_gate_pass,
                     "move_heading_max_deviation_rad": heading_max,
+                    "move_yaw_progress_rad": yaw_progress,
+                    "expected_yaw_progress_rad": expected_yaw_progress,
+                    "turn_yaw_progress_ratio": turn_progress_ratio,
+                    "move_yaw_rate_mean_radps": (
+                        float(body_yaw_rate.mean()) if body_yaw_rate.size else None
+                    ),
                     "move_body_vx_mean_mps": float(body_vx.mean()) if body_vx.size else None,
                     "move_body_vx_rmse_mps": (
                         float(np.sqrt(np.mean((body_vx - self.args.vx) ** 2))) if body_vx.size else None
                     ),
-                    "move_gate_pass": bool(
-                        root_z.min() >= 0.45
-                        and move_tilt_max <= 0.40
-                        and forward >= 0.50
-                        and abs(lateral) <= 0.30
-                        and heading_max <= 0.30
-                    ),
+                    "move_gate_kind": "turn" if turn_mode else "straight",
+                    "move_gate_pass": turn_gate_pass if turn_mode else straight_gate_pass,
                 }
             )
         if stop:
@@ -799,6 +1299,7 @@ class Stage208OfficialAdapter(Node):
         if stand:
             required_gates.append(bool(summary.get("stand_gate_pass")))
         if move:
+            required_gates.append(bool(summary.get("startup_gate_pass")))
             required_gates.append(bool(summary.get("move_gate_pass")))
         if stop:
             required_gates.append(bool(summary.get("stop_gate_pass")))
@@ -819,6 +1320,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--template", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--vx", type=float, default=0.30)
+    parser.add_argument(
+        "--phase-offset",
+        type=float,
+        default=0.0,
+        help="Gait-clock offset in seconds; used to align locomotion onset with the standing state.",
+    )
+    parser.add_argument(
+        "--clock-mode",
+        choices=("wall", "step"),
+        default="wall",
+        help="Use exact 50 Hz step time for reproducible gates or legacy wall time.",
+    )
+    parser.add_argument(
+        "--mirror-policy",
+        action="store_true",
+        help="Mirror observations, gait phase, template, and actor action across the sagittal plane.",
+    )
     parser.add_argument(
         "--control-mode",
         choices=("full", "template_only", "actor_only", "isaac_target_replay"),
@@ -852,16 +1370,88 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--move-seconds", type=float, default=8.0)
     parser.add_argument("--stop-seconds", type=float, default=0.0)
+    parser.add_argument(
+        "--state-qos-depth",
+        type=int,
+        default=10,
+        help="KEEP_LAST depth for high-rate state topics; 1 consumes only the newest sample.",
+    )
+    parser.add_argument(
+        "--state-prediction-seconds",
+        type=float,
+        default=0.0,
+        help=(
+            "Fixed physical-state extrapolation horizon for delayed deploy observations; "
+            "0 preserves the baseline observation contract."
+        ),
+    )
     parser.add_argument("--heading-gain", type=float, default=0.0)
+    parser.add_argument(
+        "--heading-recovery-enter-rad",
+        type=float,
+        help="Enable heading feedback only after absolute yaw error reaches this threshold.",
+    )
+    parser.add_argument("--heading-recovery-exit-rad", type=float, default=0.08)
+    parser.add_argument("--cross-track-heading-gain", type=float, default=0.0)
+    parser.add_argument("--cross-track-heading-limit", type=float, default=0.30)
     parser.add_argument("--heading-rate-limit", type=float, default=0.5)
     parser.add_argument("--fixed-wz", type=float)
     parser.add_argument(
         "--action-bias-mode",
-        choices=("none", "hip_yaw_common", "waist_yaw", "hip_waist_counter", "hip_yaw_feedback"),
+        choices=(
+            "none",
+            "hip_yaw_common",
+            "left_hip_yaw",
+            "right_hip_yaw",
+            "hip_yaw_left_stance",
+            "hip_yaw_right_stance",
+            "hip_yaw_pair_left_stance",
+            "hip_yaw_pair_right_stance",
+            "waist_yaw",
+            "hip_waist_counter",
+            "hip_yaw_feedback",
+            "turn_progress_feedback",
+            "hip_roll_common",
+            "ankle_roll_common",
+            "ankle_roll_lstance_boost",
+            "left_ankle_roll",
+            "right_ankle_roll",
+            "hip_ankle_roll_counter",
+            "waist_roll",
+            "ankle_roll_lateral_feedback",
+            "lateral_recovery_supervisor",
+        ),
         default="none",
     )
     parser.add_argument("--action-bias", type=float, default=0.0)
+    parser.add_argument("--action-bias-ramp-seconds", type=float, default=0.0)
+    parser.add_argument(
+        "--ankle-roll-common-bias",
+        type=float,
+        default=0.0,
+        help="Independent bounded common ankle-roll bias, allowing a turn residual to be tested separately.",
+    )
+    parser.add_argument("--left-hip-yaw-bias", type=float, default=0.0)
+    parser.add_argument("--right-hip-yaw-bias", type=float, default=0.0)
     parser.add_argument("--yaw-action-gain", type=float, default=0.0)
+    parser.add_argument("--lateral-position-gain", type=float, default=0.8)
+    parser.add_argument("--lateral-velocity-gain", type=float, default=0.2)
+    parser.add_argument("--recovery-enter-m", type=float, default=0.12)
+    parser.add_argument("--recovery-exit-m", type=float, default=0.04)
+    parser.add_argument("--recovery-slew-rate-per-s", type=float, default=1.0)
+    parser.add_argument("--phase-action-boost", type=float, default=0.0)
+    parser.add_argument(
+        "--action-ema-alpha",
+        type=float,
+        default=1.0,
+        help="EMA coefficient for the issued normalized 15-D action; 1 disables filtering.",
+    )
+    parser.add_argument(
+        "--waist-tilt-action-multiplier",
+        type=float,
+        default=1.0,
+        help="Scale only waist pitch/roll normalized targets after clipping; waist yaw and legs are unchanged.",
+    )
     parser.add_argument(
         "--stationary-controller",
         choices=("policy", "default_pose"),
@@ -874,6 +1464,7 @@ def parse_args() -> argparse.Namespace:
             "policy",
             "default_pose",
             "ramp_policy",
+            "blend_to_policy",
             "hold_last",
             "ramp_then_hold",
             "event_hold",
@@ -882,6 +1473,12 @@ def parse_args() -> argparse.Namespace:
         ),
         default="policy",
         help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",
+    )
+    parser.add_argument(
+        "--stop-transition-seconds",
+        type=float,
+        default=1.0,
+        help="Duration of the moving-to-stationary target blend used by blend_to_policy.",
     )
     parser.add_argument("--event-hold-min-seconds", type=float, default=0.5)
     parser.add_argument("--event-hold-speed", type=float, default=0.05)
@@ -909,6 +1506,23 @@ def parse_args() -> argparse.Namespace:
         parser.error("--stationary-blend must be in [0, 1]")
     if args.stationary_warmup_seconds < 0.0:
         parser.error("--stationary-warmup-seconds must be non-negative")
+    if args.action_bias_ramp_seconds < 0.0:
+        parser.error("--action-bias-ramp-seconds must be non-negative")
+    if not 0.0 <= args.state_prediction_seconds <= 0.02:
+        parser.error("--state-prediction-seconds must be in [0, 0.02]")
+    if args.state_qos_depth < 1:
+        parser.error("--state-qos-depth must be positive")
+    if args.heading_recovery_enter_rad is not None:
+        if not 0.0 <= args.heading_recovery_exit_rad < args.heading_recovery_enter_rad:
+            parser.error("heading recovery requires 0 <= exit < enter")
+    if not 0.0 <= args.recovery_exit_m < args.recovery_enter_m:
+        parser.error("recovery thresholds require 0 <= exit < enter")
+    if args.recovery_slew_rate_per_s <= 0.0:
+        parser.error("--recovery-slew-rate-per-s must be positive")
+    if not 0.0 < args.action_ema_alpha <= 1.0:
+        parser.error("--action-ema-alpha must be in (0, 1]")
+    if not 0.0 <= args.waist_tilt_action_multiplier <= 1.0:
+        parser.error("--waist-tilt-action-multiplier must be in [0, 1]")
     return args
 
 

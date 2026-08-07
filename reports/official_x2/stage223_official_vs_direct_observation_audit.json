@@ -1,0 +1,28 @@
+{
+  "official": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage219_closed_loop_gate_v5_straight_r1.json",
+  "direct": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/official_x2/stage223_direct_mujoco_closed_loop_straight_r1.json",
+  "stand_rows": 100,
+  "stand": {
+    "base_lin_vel_rmse": 0.008441119281496436,
+    "base_ang_vel_rmse": 0.03097378788851469,
+    "projected_gravity_rmse": 0.0014396076135783067,
+    "command_rmse": 0.0,
+    "joint_pos_rmse": 0.004133111140496734,
+    "joint_vel_rmse": 0.04094536233824663,
+    "previous_action_rmse": 0.025256157521595254,
+    "phase_rmse": 0.0,
+    "action_rmse": 0.024577725942982714
+  },
+  "move_first_0p5s_rows": 26,
+  "move_first_0p5s": {
+    "base_lin_vel_rmse": 0.05043785674714296,
+    "base_ang_vel_rmse": 0.2878611773559034,
+    "projected_gravity_rmse": 0.00685408233269678,
+    "command_rmse": 0.0,
+    "joint_pos_rmse": 0.013539281324294999,
+    "joint_vel_rmse": 0.3828624424275937,
+    "previous_action_rmse": 0.3094224187920963,
+    "phase_rmse": 0.1386750490563087,
+    "action_rmse": 0.17036306181044886
+  }
+}
