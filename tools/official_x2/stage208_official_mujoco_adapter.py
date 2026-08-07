@@ -178,6 +178,11 @@ class Stage208OfficialAdapter(Node):
         self.args = args
         self.default = default_pose(args.default_pose_profile)
         self.session = ort.InferenceSession(args.model, providers=["CPUExecutionProvider"])
+        self.stationary_session = (
+            ort.InferenceSession(args.stationary_model, providers=["CPUExecutionProvider"])
+            if args.stationary_model
+            else self.session
+        )
         archive = np.load(args.template, allow_pickle=False)
         if tuple(archive["joint_names_15"].tolist()) != LOWER_JOINTS:
             raise RuntimeError("gait-template joint order does not match Stage208")
@@ -231,7 +236,14 @@ class Stage208OfficialAdapter(Node):
             for area in ("leg", "waist", "arm", "head")
         }
 
-        self.previous_action = np.zeros(15, dtype=np.float32)
+        # Keep recurrent observation state separate across skills.  Both actors
+        # are feed-forward, but last_action is part of the 93-D observation.
+        # Sharing it across a handoff would inject the locomotion actor's final
+        # action into a stand actor that was trained from a zero-action reset.
+        self.previous_actions = {
+            "main": np.zeros(15, dtype=np.float32),
+            "stationary": np.zeros(15, dtype=np.float32),
+        }
         self.last_move_targets: dict[str, float] | None = None
         self.stop_hold_targets: dict[str, float] | None = None
         self.stop_hold_latch_s: float | None = None
@@ -335,6 +347,7 @@ class Stage208OfficialAdapter(Node):
         command_vy: float = 0.0,
         force_moving: bool = False,
         template_multiplier: float = 1.0,
+        policy_slot: str = "main",
     ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
         assert self.imu is not None and self.odom is not None
         twist = self.odom.twist.twist
@@ -363,12 +376,24 @@ class Stage208OfficialAdapter(Node):
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
         moving = force_moving or abs(command_vx) > 0.1
         phase = self._phase_features(phase_elapsed, moving=moving)
+        previous_action = self.previous_actions[policy_slot]
         obs = np.concatenate(
-            (base_lin_vel, base_ang_vel, gravity_body(self.imu), command, joint_pos, joint_vel, self.previous_action, phase)
+            (base_lin_vel, base_ang_vel, gravity_body(self.imu), command, joint_pos, joint_vel, previous_action, phase)
         ).astype(np.float32)
         if obs.shape != (93,):
             raise RuntimeError(f"invalid Stage208 observation shape {obs.shape}")
-        raw_action = self.session.run(["actions"], {"obs": obs[None]})[0][0].astype(np.float32)
+        session = self.stationary_session if policy_slot == "stationary" else self.session
+        raw_action = session.run(["actions"], {"obs": obs[None]})[0][0].astype(np.float32)
+        if (
+            policy_slot == "stationary"
+            and self.stationary_session is not self.session
+            and self.args.stationary_blend < 1.0
+        ):
+            main_obs = obs.copy()
+            main_obs[74:89] = self.previous_actions["main"]
+            main_action = self.session.run(["actions"], {"obs": main_obs[None]})[0][0].astype(np.float32)
+            alpha = self.args.stationary_blend
+            raw_action = (1.0 - alpha) * main_action + alpha * raw_action
         residual = raw_action.copy()
         if self.args.control_mode == "template_only":
             residual.fill(0.0)
@@ -403,7 +428,11 @@ class Stage208OfficialAdapter(Node):
             targets[name] = self.default[name] + float(combined[index] * LOWER_SCALE[index])
         # IsaacLab's last_action observation is the unbounded raw policy action;
         # clipping happens only after adding the normalized gait-template bias.
-        self.previous_action = residual.copy()
+        self.previous_actions[policy_slot] = residual.copy()
+        if policy_slot == "stationary":
+            # Both actors observe the action that was actually issued, not an
+            # unexecuted branch-specific proposal.
+            self.previous_actions["main"] = residual.copy()
         return targets, obs, combined
 
     def _brake_command(self) -> tuple[float, float, float]:
@@ -456,6 +485,8 @@ class Stage208OfficialAdapter(Node):
                 "root_yaw_rad": yaw_from_quaternion(self.odom),
                 "root_vx_w_mps": float(twist.linear.x),
                 "root_vy_w_mps": float(twist.linear.y),
+                "root_vx_b_mps": None if obs is None else float(obs[0]),
+                "root_vy_b_mps": None if obs is None else float(obs[1]),
                 "root_yaw_rate_radps": float(twist.angular.z),
                 "obs": [] if obs is None else obs.tolist(),
                 "action": [] if action is None else action.tolist(),
@@ -490,9 +521,14 @@ class Stage208OfficialAdapter(Node):
             if self.args.stationary_controller == "default_pose":
                 targets = dict(self.default)
                 obs = action = None
-                self.previous_action.fill(0.0)
+                self.previous_actions["stationary"].fill(0.0)
             else:
-                targets, obs, action = self._policy_targets(0.0, 0.0)
+                use_stationary = stand_elapsed >= self.args.stationary_warmup_seconds
+                targets, obs, action = self._policy_targets(
+                    0.0,
+                    0.0,
+                    policy_slot="stationary" if use_stationary else "main",
+                )
             self._publish(targets)
             self._record("stand", stand_elapsed, obs, action)
             return
@@ -570,7 +606,7 @@ class Stage208OfficialAdapter(Node):
             elif self.args.stop_controller == "default_pose":
                 targets = dict(self.default)
                 obs = action = None
-                self.previous_action.fill(0.0)
+                self.previous_actions["stationary"].fill(0.0)
             elif self.args.stop_controller == "ramp_policy":
                 ramp = max(0.0, 1.0 - stop_elapsed / self.args.stop_seconds)
                 targets, obs, action = self._policy_targets(
@@ -580,7 +616,11 @@ class Stage208OfficialAdapter(Node):
                     template_multiplier=ramp,
                 )
             else:
-                targets, obs, action = self._policy_targets(self.args.move_seconds, 0.0)
+                targets, obs, action = self._policy_targets(
+                    self.args.move_seconds,
+                    0.0,
+                    policy_slot="stationary",
+                )
             self._publish(targets)
             self._record("stop", stop_elapsed, obs, action)
             return
@@ -609,6 +649,9 @@ class Stage208OfficialAdapter(Node):
         summary = {
             "domain": "aimdk_x2_v1_official_mujoco",
             "model": self.args.model,
+            "stationary_model": self.args.stationary_model or self.args.model,
+            "stationary_warmup_seconds": self.args.stationary_warmup_seconds,
+            "stationary_blend": self.args.stationary_blend,
             "template": self.args.template,
             "command_vx_mps": self.args.vx,
             "control_mode": self.args.control_mode,
@@ -644,6 +687,21 @@ class Stage208OfficialAdapter(Node):
                 "Official odometry linear velocity is rotated from world into the pelvis/body frame.",
                 "This first adapter smoke does not yet claim an IsaacLab matched-domain comparison.",
             ],
+            "gate_thresholds": {
+                "stand_root_z_min_m": 0.45,
+                "stand_tilt_max_rad": 0.25,
+                "stand_xy_drift_max_m": 0.10,
+                "stand_tail_speed_max_mps": 0.03,
+                "move_root_z_min_m": 0.45,
+                "move_tilt_max_rad": 0.40,
+                "move_forward_min_m": 0.50,
+                "move_lateral_max_m": 0.30,
+                "move_heading_max_rad": 0.30,
+                "stop_root_z_min_m": 0.45,
+                "stop_tilt_max_rad": 0.30,
+                "stop_xy_drift_max_m": 0.15,
+                "stop_tail_speed_max_mps": 0.03,
+            },
         }
         if stand:
             stand_z = np.asarray([row["root_z_m"] for row in stand], dtype=np.float64)
@@ -665,6 +723,41 @@ class Stage208OfficialAdapter(Node):
                     ),
                     "stand_last_1s_mean_speed_mps": float(stand_speed[-tail_count:].mean()),
                     "survived_stand_height_gate": bool(stand_z.min() >= 0.45),
+                    "stand_gate_pass": bool(
+                        stand_z.min() >= 0.45
+                        and stand_tilt.max() <= 0.25
+                        and math.hypot(stand_x[-1] - stand_x[0], stand_y[-1] - stand_y[0]) <= 0.10
+                        and stand_speed[-tail_count:].mean() <= 0.03
+                    ),
+                }
+            )
+        if move:
+            move_yaw = np.unwrap(np.asarray([row["root_yaw_rad"] for row in move], dtype=np.float64))
+            start_yaw = float(move_yaw[0])
+            dx = float(x[-1] - x[0])
+            dy = float(y[-1] - y[0])
+            forward = math.cos(start_yaw) * dx + math.sin(start_yaw) * dy
+            lateral = -math.sin(start_yaw) * dx + math.cos(start_yaw) * dy
+            heading_max = float(np.max(np.abs(move_yaw - move_yaw[0])))
+            body_vx_values = [row["root_vx_b_mps"] for row in move if row["root_vx_b_mps"] is not None]
+            body_vx = np.asarray(body_vx_values, dtype=np.float64)
+            move_tilt_max = float(tilt.max())
+            summary.update(
+                {
+                    "move_forward_displacement_m": forward,
+                    "move_lateral_displacement_m": lateral,
+                    "move_heading_max_deviation_rad": heading_max,
+                    "move_body_vx_mean_mps": float(body_vx.mean()) if body_vx.size else None,
+                    "move_body_vx_rmse_mps": (
+                        float(np.sqrt(np.mean((body_vx - self.args.vx) ** 2))) if body_vx.size else None
+                    ),
+                    "move_gate_pass": bool(
+                        root_z.min() >= 0.45
+                        and move_tilt_max <= 0.40
+                        and forward >= 0.50
+                        and abs(lateral) <= 0.30
+                        and heading_max <= 0.30
+                    ),
                 }
             )
         if stop:
@@ -672,15 +765,44 @@ class Stage208OfficialAdapter(Node):
             stop_tilt = np.asarray([row["root_tilt_rad"] for row in stop], dtype=np.float64)
             stop_x = np.asarray([row["root_x_m"] for row in stop], dtype=np.float64)
             stop_y = np.asarray([row["root_y_m"] for row in stop], dtype=np.float64)
+            stop_speed = np.hypot(
+                np.asarray([row["root_vx_w_mps"] for row in stop], dtype=np.float64),
+                np.asarray([row["root_vy_w_mps"] for row in stop], dtype=np.float64),
+            )
+            tail_count = min(50, stop_speed.size)
+            settle_time = None
+            for index in range(stop_speed.size):
+                window = stop_speed[index : min(index + 50, stop_speed.size)]
+                if window.size == 50 and np.all(window <= 0.03):
+                    settle_time = index * 0.02
+                    break
+            stop_drift = float(math.hypot(stop_x[-1] - stop_x[0], stop_y[-1] - stop_y[0]))
+            stop_tilt_max = float(stop_tilt.max())
             summary.update(
                 {
                     "stop_root_z_min_m": float(stop_z.min()),
                     "stop_root_z_final_m": float(stop_z[-1]),
-                    "stop_root_tilt_max_rad": float(stop_tilt.max()),
-                    "stop_root_xy_drift_m": float(math.hypot(stop_x[-1] - stop_x[0], stop_y[-1] - stop_y[0])),
+                    "stop_root_tilt_max_rad": stop_tilt_max,
+                    "stop_root_xy_drift_m": stop_drift,
+                    "stop_last_1s_mean_speed_mps": float(stop_speed[-tail_count:].mean()),
+                    "stop_settle_time_s": settle_time,
                     "survived_stop_height_gate": bool(stop_z.min() >= 0.45),
+                    "stop_gate_pass": bool(
+                        stop_z.min() >= 0.45
+                        and stop_tilt_max <= 0.30
+                        and stop_drift <= 0.15
+                        and stop_speed[-tail_count:].mean() <= 0.03
+                    ),
                 }
             )
+        required_gates = []
+        if stand:
+            required_gates.append(bool(summary.get("stand_gate_pass")))
+        if move:
+            required_gates.append(bool(summary.get("move_gate_pass")))
+        if stop:
+            required_gates.append(bool(summary.get("stop_gate_pass")))
+        summary["full_gate_pass"] = bool(required_gates and all(required_gates))
         output = Path(self.args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps({"summary": summary, "trace": self.trace}, indent=2) + "\n", encoding="utf-8")
@@ -690,6 +812,10 @@ class Stage208OfficialAdapter(Node):
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True)
+    parser.add_argument(
+        "--stationary-model",
+        help="Optional ONNX actor used for zero-command stand/stop phases.",
+    )
     parser.add_argument("--template", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--vx", type=float, default=0.30)
@@ -712,6 +838,18 @@ def parse_args() -> argparse.Namespace:
         help="Equilibrium pose used for joint_pos_rel and action targets.",
     )
     parser.add_argument("--stand-seconds", type=float, default=2.0)
+    parser.add_argument(
+        "--stationary-warmup-seconds",
+        type=float,
+        default=0.0,
+        help="Use the main actor for this many seconds before handing stand to --stationary-model.",
+    )
+    parser.add_argument(
+        "--stationary-blend",
+        type=float,
+        default=1.0,
+        help="Blend fraction of the stationary actor after handoff (0=main actor, 1=stationary actor).",
+    )
     parser.add_argument("--move-seconds", type=float, default=8.0)
     parser.add_argument("--stop-seconds", type=float, default=0.0)
     parser.add_argument("--heading-gain", type=float, default=0.0)
@@ -766,7 +904,12 @@ def parse_args() -> argparse.Namespace:
         default="stage208",
         help="Lower/waist PD gains; all other control semantics remain fixed.",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    if not 0.0 <= args.stationary_blend <= 1.0:
+        parser.error("--stationary-blend must be in [0, 1]")
+    if args.stationary_warmup_seconds < 0.0:
+        parser.error("--stationary-warmup-seconds must be non-negative")
+    return args
 
 
 def main() -> None:
