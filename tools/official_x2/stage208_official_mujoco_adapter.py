@@ -189,6 +189,9 @@ class Stage208OfficialAdapter(Node):
         }
 
         self.previous_action = np.zeros(15, dtype=np.float32)
+        self.last_move_targets: dict[str, float] | None = None
+        self.stop_hold_targets: dict[str, float] | None = None
+        self.stop_hold_latch_s: float | None = None
         self.heading_target_rad: float | None = None
         self.ready_wall_time: float | None = None
         self.prepare_start_q: dict[str, float] = {}
@@ -279,7 +282,14 @@ class Stage208OfficialAdapter(Node):
         upper = (lower + 1) % bins
         return (1.0 - blend) * self.template[lower] + blend * self.template[upper]
 
-    def _policy_targets(self, phase_elapsed: float, command_vx: float) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
+    def _policy_targets(
+        self,
+        phase_elapsed: float,
+        command_vx: float,
+        *,
+        force_moving: bool = False,
+        template_multiplier: float = 1.0,
+    ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
         assert self.imu is not None and self.odom is not None
         twist = self.odom.twist.twist
         base_lin_vel_w = np.asarray([twist.linear.x, twist.linear.y, twist.linear.z], dtype=np.float32)
@@ -305,7 +315,7 @@ class Stage208OfficialAdapter(Node):
         command = np.asarray([command_vx, 0.0, command_wz], dtype=np.float32)
         joint_pos = np.asarray([self.joints[name][0] - DEFAULT[name] for name in ISAAC_JOINTS], dtype=np.float32)
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
-        moving = abs(command_vx) > 0.1
+        moving = force_moving or abs(command_vx) > 0.1
         phase = self._phase_features(phase_elapsed, moving=moving)
         obs = np.concatenate(
             (base_lin_vel, base_ang_vel, gravity_body(self.imu), command, joint_pos, joint_vel, self.previous_action, phase)
@@ -317,7 +327,7 @@ class Stage208OfficialAdapter(Node):
         if self.args.control_mode == "template_only":
             residual.fill(0.0)
         template_bias = (
-            0.15 * self._template_bias(phase_elapsed) / LOWER_SCALE
+            0.15 * template_multiplier * self._template_bias(phase_elapsed) / LOWER_SCALE
             if moving
             else np.zeros(15, dtype=np.float32)
         )
@@ -404,7 +414,12 @@ class Stage208OfficialAdapter(Node):
 
         stand_elapsed = elapsed - self.args.prepare_seconds
         if stand_elapsed < self.args.stand_seconds:
-            targets, obs, action = self._policy_targets(0.0, 0.0)
+            if self.args.stationary_controller == "default_pose":
+                targets = dict(DEFAULT)
+                obs = action = None
+                self.previous_action.fill(0.0)
+            else:
+                targets, obs, action = self._policy_targets(0.0, 0.0)
             self._publish(targets)
             self._record("stand", stand_elapsed, obs, action)
             return
@@ -415,7 +430,54 @@ class Stage208OfficialAdapter(Node):
             if stop_elapsed >= self.args.stop_seconds:
                 self._finish()
                 return
-            targets, obs, action = self._policy_targets(self.args.move_seconds, 0.0)
+            if self.args.stop_controller == "event_hold":
+                if self.stop_hold_targets is None:
+                    targets, obs, action = self._policy_targets(self.args.move_seconds, 0.0)
+                    assert self.odom is not None
+                    twist = self.odom.twist.twist
+                    speed = math.hypot(twist.linear.x, twist.linear.y)
+                    tilt = tilt_from_quaternion(self.odom)
+                    if (
+                        stop_elapsed >= self.args.event_hold_min_seconds
+                        and speed <= self.args.event_hold_speed
+                        and tilt <= self.args.event_hold_tilt
+                    ):
+                        self.stop_hold_targets = dict(targets)
+                        self.stop_hold_latch_s = stop_elapsed
+                else:
+                    targets = dict(self.stop_hold_targets)
+                    obs = action = None
+            elif self.args.stop_controller == "ramp_then_hold":
+                ramp_seconds = 0.5 * self.args.stop_seconds
+                if stop_elapsed < ramp_seconds:
+                    ramp = max(0.0, 1.0 - stop_elapsed / ramp_seconds)
+                    targets, obs, action = self._policy_targets(
+                        self.args.move_seconds + stop_elapsed,
+                        self.args.vx * ramp,
+                        force_moving=True,
+                        template_multiplier=ramp,
+                    )
+                    self.stop_hold_targets = dict(targets)
+                else:
+                    targets = dict(self.stop_hold_targets or self.last_move_targets or DEFAULT)
+                    obs = action = None
+            elif self.args.stop_controller == "hold_last":
+                targets = dict(self.last_move_targets or DEFAULT)
+                obs = action = None
+            elif self.args.stop_controller == "default_pose":
+                targets = dict(DEFAULT)
+                obs = action = None
+                self.previous_action.fill(0.0)
+            elif self.args.stop_controller == "ramp_policy":
+                ramp = max(0.0, 1.0 - stop_elapsed / self.args.stop_seconds)
+                targets, obs, action = self._policy_targets(
+                    self.args.move_seconds + stop_elapsed,
+                    self.args.vx * ramp,
+                    force_moving=True,
+                    template_multiplier=ramp,
+                )
+            else:
+                targets, obs, action = self._policy_targets(self.args.move_seconds, 0.0)
             self._publish(targets)
             self._record("stop", stop_elapsed, obs, action)
             return
@@ -427,6 +489,7 @@ class Stage208OfficialAdapter(Node):
             targets, obs, action = self._policy_targets(move_elapsed, self.args.vx)
             self._publish(targets)
             self._record("move", move_elapsed, obs, action)
+        self.last_move_targets = dict(targets)
         self.control_steps += 1
 
     def _finish(self) -> None:
@@ -452,6 +515,9 @@ class Stage208OfficialAdapter(Node):
             "action_bias_mode": self.args.action_bias_mode,
             "action_bias": self.args.action_bias,
             "yaw_action_gain": self.args.yaw_action_gain,
+            "stationary_controller": self.args.stationary_controller,
+            "stop_controller": self.args.stop_controller,
+            "stop_hold_latch_s": self.stop_hold_latch_s,
             "prepare_seconds": self.args.prepare_seconds,
             "stand_seconds": self.args.stand_seconds,
             "move_seconds": self.args.move_seconds,
@@ -515,6 +581,21 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--action-bias", type=float, default=0.0)
     parser.add_argument("--yaw-action-gain", type=float, default=0.0)
+    parser.add_argument(
+        "--stationary-controller",
+        choices=("policy", "default_pose"),
+        default="policy",
+        help="Controller used while commanded velocity is zero during stand and stop phases.",
+    )
+    parser.add_argument(
+        "--stop-controller",
+        choices=("policy", "default_pose", "ramp_policy", "hold_last", "ramp_then_hold", "event_hold"),
+        default="policy",
+        help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",
+    )
+    parser.add_argument("--event-hold-min-seconds", type=float, default=0.5)
+    parser.add_argument("--event-hold-speed", type=float, default=0.05)
+    parser.add_argument("--event-hold-tilt", type=float, default=0.10)
     parser.add_argument(
         "--pd-profile",
         choices=(
