@@ -92,6 +92,36 @@ for name in ("left_shoulder_pitch_joint", "right_shoulder_pitch_joint"):
 for name in ("left_elbow_joint", "right_elbow_joint"):
     DEFAULT[name] = -1.2
 
+
+def default_pose(profile: str) -> dict[str, float]:
+    """Return the Stage208 or official v1.0 equilibrium pose.
+
+    The official SDK uses a visibly deeper lower-body crouch than the
+    IsaacLab substrate on which Stage208 was trained.  Keeping this as an
+    explicit evaluation switch lets us test the physical equilibrium without
+    silently changing the frozen actor or its observation contract.
+    """
+    pose = dict(DEFAULT)
+    if profile == "stage208":
+        return pose
+    if profile != "official_v1":
+        raise ValueError(f"unknown default-pose profile: {profile}")
+    for name in ("left_hip_pitch_joint", "right_hip_pitch_joint"):
+        pose[name] = -0.312
+    for name in ("left_knee_joint", "right_knee_joint"):
+        pose[name] = 0.669
+    for name in ("left_ankle_pitch_joint", "right_ankle_pitch_joint"):
+        pose[name] = -0.363
+    # Match the official RL deploy default rather than its separate generic
+    # stand configuration.  Uncontrolled joints are still held deterministically.
+    for name in ("left_shoulder_pitch_joint", "right_shoulder_pitch_joint"):
+        pose[name] = 0.2
+    for name in ("left_shoulder_roll_joint", "right_shoulder_roll_joint"):
+        pose[name] = 0.2 if name.startswith("left") else -0.2
+    for name in ("left_elbow_joint", "right_elbow_joint"):
+        pose[name] = -0.3
+    return pose
+
 LOWER_SCALE = np.asarray(
     [0.4, 0.4, 0.4, 0.4, 0.12, 0.08, 0.4, 0.4, 0.4, 0.4, 0.12, 0.08, 0.4, 0.16, 0.16],
     dtype=np.float32,
@@ -146,6 +176,7 @@ class Stage208OfficialAdapter(Node):
     def __init__(self, args: argparse.Namespace):
         super().__init__("stage208_official_mujoco_adapter")
         self.args = args
+        self.default = default_pose(args.default_pose_profile)
         self.session = ort.InferenceSession(args.model, providers=["CPUExecutionProvider"])
         archive = np.load(args.template, allow_pickle=False)
         if tuple(archive["joint_names_15"].tolist()) != LOWER_JOINTS:
@@ -156,15 +187,27 @@ class Stage208OfficialAdapter(Node):
         self.period = float(archive["period_s"])
         self.double_support_fraction = float(archive["double_support_fraction"])
         self.replay_targets: np.ndarray | None = None
+        self.replay_joint_names: tuple[str, ...] = LOWER_JOINTS
+        self.replay_pd: dict[str, tuple[float, float]] = {}
         if args.control_mode == "isaac_target_replay":
             if not args.joint_target_trace:
                 raise ValueError("--joint-target-trace is required for isaac_target_replay")
             replay = np.load(args.joint_target_trace, allow_pickle=False)
-            if tuple(replay["action_joint_order"].tolist()) != LOWER_JOINTS:
-                raise RuntimeError("Isaac replay target joint order does not match Stage208")
+            self.replay_joint_names = tuple(replay["action_joint_order"].tolist())
+            if self.replay_joint_names not in (LOWER_JOINTS, ISAAC_JOINTS):
+                raise RuntimeError("Isaac replay target joint order must be exact lower-15 or full-31 order")
             self.replay_targets = replay["joint_target_rad"].astype(np.float32)
-            if self.replay_targets.ndim != 2 or self.replay_targets.shape[1] != 15:
+            if self.replay_targets.ndim != 2 or self.replay_targets.shape[1] != len(self.replay_joint_names):
                 raise RuntimeError(f"invalid replay target shape {self.replay_targets.shape}")
+            if "joint_kp" in replay.files and "joint_kd" in replay.files:
+                replay_kp = np.asarray(replay["joint_kp"], dtype=np.float32)
+                replay_kd = np.asarray(replay["joint_kd"], dtype=np.float32)
+                if replay_kp.shape != (len(self.replay_joint_names),) or replay_kd.shape != replay_kp.shape:
+                    raise RuntimeError("replay PD arrays do not match replay joint order")
+                self.replay_pd = {
+                    name: (float(replay_kp[index]), float(replay_kd[index]))
+                    for index, name in enumerate(self.replay_joint_names)
+                }
 
         qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
@@ -214,6 +257,8 @@ class Stage208OfficialAdapter(Node):
         return all(name in self.joints for name in ISAAC_JOINTS) and self.imu is not None and self.odom is not None
 
     def _pd(self, name: str) -> tuple[float, float]:
+        if name in self.replay_pd:
+            return self.replay_pd[name]
         if name in LOWER_JOINTS:
             if self.args.pd_profile == "official_native":
                 return OFFICIAL_NATIVE_LOWER_PD[name]
@@ -314,7 +359,7 @@ class Stage208OfficialAdapter(Node):
         if self.args.fixed_wz is not None and abs(command_vx) > 0.1:
             command_wz = self.args.fixed_wz
         command = np.asarray([command_vx, command_vy, command_wz], dtype=np.float32)
-        joint_pos = np.asarray([self.joints[name][0] - DEFAULT[name] for name in ISAAC_JOINTS], dtype=np.float32)
+        joint_pos = np.asarray([self.joints[name][0] - self.default[name] for name in ISAAC_JOINTS], dtype=np.float32)
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
         moving = force_moving or abs(command_vx) > 0.1
         phase = self._phase_features(phase_elapsed, moving=moving)
@@ -353,9 +398,9 @@ class Stage208OfficialAdapter(Node):
                 combined_preclip[[2, 8]] += self.args.action_bias
                 combined_preclip[12] -= self.args.action_bias
         combined = np.clip(combined_preclip, -1.0, 1.0)
-        targets = dict(DEFAULT)
+        targets = dict(self.default)
         for index, name in enumerate(LOWER_JOINTS):
-            targets[name] = DEFAULT[name] + float(combined[index] * LOWER_SCALE[index])
+            targets[name] = self.default[name] + float(combined[index] * LOWER_SCALE[index])
         # IsaacLab's last_action observation is the unbounded raw policy action;
         # clipping happens only after adding the normalized gait-template bias.
         self.previous_action = residual.copy()
@@ -386,9 +431,13 @@ class Stage208OfficialAdapter(Node):
 
     def _replay_target(self, elapsed: float) -> dict[str, float]:
         assert self.replay_targets is not None
-        index = min(int(elapsed / 0.02), self.replay_targets.shape[0] - 1)
-        targets = dict(DEFAULT)
-        for joint_index, name in enumerate(LOWER_JOINTS):
+        raw_index = int(elapsed / 0.02)
+        if self.args.replay_loop:
+            index = raw_index % self.replay_targets.shape[0]
+        else:
+            index = min(raw_index, self.replay_targets.shape[0] - 1)
+        targets = dict(self.default)
+        for joint_index, name in enumerate(self.replay_joint_names):
             targets[name] = float(self.replay_targets[index, joint_index])
         return targets
 
@@ -429,7 +478,7 @@ class Stage208OfficialAdapter(Node):
             alpha = min(1.0, elapsed / self.args.prepare_seconds)
             alpha = alpha * alpha * (3.0 - 2.0 * alpha)
             targets = {
-                name: self.prepare_start_q[name] + alpha * (DEFAULT[name] - self.prepare_start_q[name])
+                name: self.prepare_start_q[name] + alpha * (self.default[name] - self.prepare_start_q[name])
                 for name in ISAAC_JOINTS
             }
             self._publish(targets)
@@ -439,7 +488,7 @@ class Stage208OfficialAdapter(Node):
         stand_elapsed = elapsed - self.args.prepare_seconds
         if stand_elapsed < self.args.stand_seconds:
             if self.args.stationary_controller == "default_pose":
-                targets = dict(DEFAULT)
+                targets = dict(self.default)
                 obs = action = None
                 self.previous_action.fill(0.0)
             else:
@@ -513,13 +562,13 @@ class Stage208OfficialAdapter(Node):
                     )
                     self.stop_hold_targets = dict(targets)
                 else:
-                    targets = dict(self.stop_hold_targets or self.last_move_targets or DEFAULT)
+                    targets = dict(self.stop_hold_targets or self.last_move_targets or self.default)
                     obs = action = None
             elif self.args.stop_controller == "hold_last":
-                targets = dict(self.last_move_targets or DEFAULT)
+                targets = dict(self.last_move_targets or self.default)
                 obs = action = None
             elif self.args.stop_controller == "default_pose":
-                targets = dict(DEFAULT)
+                targets = dict(self.default)
                 obs = action = None
                 self.previous_action.fill(0.0)
             elif self.args.stop_controller == "ramp_policy":
@@ -550,6 +599,7 @@ class Stage208OfficialAdapter(Node):
         if self.finished:
             return
         self.finished = True
+        stand = [row for row in self.trace if row["stage"] == "stand"]
         move = [row for row in self.trace if row["stage"] == "move"]
         stop = [row for row in self.trace if row["stage"] == "stop"]
         root_z = np.asarray([row["root_z_m"] for row in move], dtype=np.float64)
@@ -562,7 +612,9 @@ class Stage208OfficialAdapter(Node):
             "template": self.args.template,
             "command_vx_mps": self.args.vx,
             "control_mode": self.args.control_mode,
+            "replay_loop": self.args.replay_loop,
             "pd_profile": self.args.pd_profile,
+            "default_pose_profile": self.args.default_pose_profile,
             "heading_gain": self.args.heading_gain,
             "heading_rate_limit_radps": self.args.heading_rate_limit,
             "fixed_wz_radps": self.args.fixed_wz,
@@ -593,6 +645,28 @@ class Stage208OfficialAdapter(Node):
                 "This first adapter smoke does not yet claim an IsaacLab matched-domain comparison.",
             ],
         }
+        if stand:
+            stand_z = np.asarray([row["root_z_m"] for row in stand], dtype=np.float64)
+            stand_tilt = np.asarray([row["root_tilt_rad"] for row in stand], dtype=np.float64)
+            stand_x = np.asarray([row["root_x_m"] for row in stand], dtype=np.float64)
+            stand_y = np.asarray([row["root_y_m"] for row in stand], dtype=np.float64)
+            stand_speed = np.hypot(
+                np.asarray([row["root_vx_w_mps"] for row in stand], dtype=np.float64),
+                np.asarray([row["root_vy_w_mps"] for row in stand], dtype=np.float64),
+            )
+            tail_count = min(50, stand_speed.size)
+            summary.update(
+                {
+                    "stand_root_z_min_m": float(stand_z.min()),
+                    "stand_root_z_final_m": float(stand_z[-1]),
+                    "stand_root_tilt_max_rad": float(stand_tilt.max()),
+                    "stand_root_xy_drift_m": float(
+                        math.hypot(stand_x[-1] - stand_x[0], stand_y[-1] - stand_y[0])
+                    ),
+                    "stand_last_1s_mean_speed_mps": float(stand_speed[-tail_count:].mean()),
+                    "survived_stand_height_gate": bool(stand_z.min() >= 0.45),
+                }
+            )
         if stop:
             stop_z = np.asarray([row["root_z_m"] for row in stop], dtype=np.float64)
             stop_tilt = np.asarray([row["root_tilt_rad"] for row in stop], dtype=np.float64)
@@ -625,7 +699,18 @@ def parse_args() -> argparse.Namespace:
         default="full",
     )
     parser.add_argument("--joint-target-trace")
+    parser.add_argument(
+        "--replay-loop",
+        action="store_true",
+        help="Loop an Isaac target replay instead of holding its final frame.",
+    )
     parser.add_argument("--prepare-seconds", type=float, default=3.0)
+    parser.add_argument(
+        "--default-pose-profile",
+        choices=("stage208", "official_v1"),
+        default="stage208",
+        help="Equilibrium pose used for joint_pos_rel and action targets.",
+    )
     parser.add_argument("--stand-seconds", type=float, default=2.0)
     parser.add_argument("--move-seconds", type=float, default=8.0)
     parser.add_argument("--stop-seconds", type=float, default=0.0)
