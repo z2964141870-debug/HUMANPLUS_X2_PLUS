@@ -53,3 +53,4 @@
 | R7C-ROBUST | complete/rejected | Stage208 vs NEUTRAL05 | frozen eval | n/a | n/a | 3 seeds×12 paired×400 | 初态 max diff0；生存15→17、heading改善，但 lateral 0.4657→0.4872、0/3 seed 三项不劣 |
 | R7D-MATCHED | complete/diagnostic | Stage208 vs NEUTRAL05 | frozen eval | n/a | n/a | 36 paired traces | matched lateral max略好、时间均值略差；删失偏差仅部分成立，停止当前 objective |
 | R7-LONG | locked/stopped | n/a | n/a | n/a | n/a | 0 | 不解锁同目标25/200/1000；Stage208 retained，NEUTRAL05仅研究候选 |
+| STAGE8-CONTRACT | complete | Stage208-s2550 | frozen | BASE/FUTURE/FUTURE-PHASE | event-gate | 0 | 冻结最小原生后端门禁；既有证据覆盖0/6核心事件，待BASE事件矩阵 |

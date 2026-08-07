@@ -1,0 +1,55 @@
+{
+  "stage": "stage8_x2_native_backend_gate",
+  "version": "v1",
+  "created": "2026-08-07",
+  "training_authorized": false,
+  "real_robot_authorized": false,
+  "baseline": {
+    "name": "STAGE208",
+    "checkpoint": "/home/humanplus/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_04-12-50_stage208_sole12_selfoff_ideal075_delay025_resume2450_to2600_v1/model_2550.pt",
+    "sha256": "df845bdbc78331fabdc9eba318fd244b81fa46f149631777b8abcd209866cac9"
+  },
+  "methods": [
+    {"name": "BASE", "adapter": "none", "phase_input": "backend_internal"},
+    {"name": "FUTURE_NOPHASE", "adapter": "future_upper_intent", "phase_input": "backend_internal"},
+    {"name": "FUTURE_PHASE", "adapter": "future_upper_intent", "phase_input": "backend_internal_explicit"}
+  ],
+  "scenarios": [
+    {"name": "stand", "target_speeds_mps": [0.0]},
+    {"name": "start_walk", "target_speeds_mps": [0.2, 0.3]},
+    {"name": "straight_walk", "target_speeds_mps": [0.2, 0.3]},
+    {"name": "turn_left", "target_speeds_mps": [0.2, 0.3]},
+    {"name": "turn_right", "target_speeds_mps": [0.2, 0.3]},
+    {"name": "stop", "target_speeds_mps": [0.2, 0.3]}
+  ],
+  "actuator_domains": [
+    {"name": "nominal_delay", "status": "needs_config_hash_audit"},
+    {"name": "stage208_randomized", "source_config": "ideal075_delay025", "status": "needs_config_hash_audit"}
+  ],
+  "upper_disturbances": [
+    {"name": "fixed", "scale": 0.0, "time_scale": null},
+    {"name": "slow", "scale": 0.25, "time_scale": 0.5, "max_excursion_rad": 0.12, "max_velocity_radps": 0.2},
+    {"name": "fast", "scale": 0.25, "time_scale": 1.0, "max_excursion_rad": 0.12, "max_velocity_radps": 0.2}
+  ],
+  "seeds": [17, 42, 73],
+  "metrics": [
+    "survival",
+    "root_velocity_rmse",
+    "heading_error",
+    "lateral_drift",
+    "contact_timing",
+    "stance_foot_slip",
+    "swing_foot_clearance",
+    "action_delta",
+    "action_jerk",
+    "stop_settle_time",
+    "upper_disturbance_degradation"
+  ],
+  "hard_gates": {
+    "no_early_termination": true,
+    "stance_foot_slip_max_mps": 0.1,
+    "stop_settle_time_max_s": 2.0,
+    "heldout_event_required": true,
+    "candidate_survival_not_below_baseline": true
+  }
+}

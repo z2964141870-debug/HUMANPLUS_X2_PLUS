@@ -47,3 +47,7 @@
 - 不因生存时长不同事后撤销 Stage7C 失败；Stage7D 只诊断删失偏差，不改变晋级门。
 - Stage7D 证实删失偏差只解释部分横漂：共同窗口 lateral max 略好，但 lateral 时间均值仍略差，且一个共同生存 wave 横漂回归 0.1513 m。
 - 当前 Future-Adapter objective 停止；NEUTRAL05 仅作 research candidate。下一轮若开，只允许 predictive gate / mode-conditioned selective intervention，不允许继续同目标 25/200/1000 updates。
+- Stage8 固定为“X2 最小原生后端能力门禁”：先验证 stand/start/straight/turn/stop，再决定是否生成 Silver 或训练；不把现有固定速度窗口误称为完整后端能力。
+- Stage8 正式 BASE 固定为 Stage208-s2550（SHA-256 见 `configs/x2_native_backend_gate_v1.json`）；FUTURE_NOPHASE/FUTURE_PHASE 只能作为同矩阵候选对照。
+- gait phase、接触、支撑脚、COM/DCM 归 X2 backend 内部；不得混入设备无关 HumanIntent。
+- Stage8 未完成 BASE 事件矩阵前，禁止大规模 AMASS 重定向、PPO 长训、真实 SONIC 上肢注入和真机部署。

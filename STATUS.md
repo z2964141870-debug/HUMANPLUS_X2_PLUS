@@ -244,3 +244,24 @@ Future+phase 的局部闭环收益跨随机初态复现，说明迁移仍有研�
 下一步：
 只有独立预注册的 predictive gate / mode-conditioned selective intervention
 值得继续：先预测 BASE 与候选谁更安全，再选择性介入；禁止继续同目标长训。
+
+## Phase 8.0：X2 最小原生后端能力门禁（已建立，尚未跑完整矩阵）
+
+目标：冻结 Stage208，验证有界慢速意图下 X2 是否能完成站立、起步、直行、左右转向和停止，并在执行器变化与上肢扰动下保持安全。
+
+已完成：
+
+- 固定 BASE checkpoint、SHA-256、三种方法契约和设备无关 HumanIntent 边界；
+- 固定事件场景、速度、执行器域、上肢扰动、seed 和指标清单；
+- 将 gait phase 明确留在 X2 backend 内部，不混入 HumanIntent；
+- 对已有 Stage5/6/7 证据做覆盖审计，确认它们不能替代 start/turn/stop 门禁。
+
+当前结果：
+
+- Stage8 门禁合同已冻结；
+- 既有结果对六个核心事件均不构成完整证据（覆盖 `0/6`）；
+- 尚未训练、尚未生成 Silver、尚未连接真机。
+
+下一步：
+
+先完成 BASE 的 fixed-upper、nominal-delay 事件矩阵和缺失指标，再重放 FUTURE_NOPHASE/FUTURE_PHASE；只有后端事件闭环有完整证据，才考虑小规模 Silver 或短训。
