@@ -1,0 +1,65 @@
+{
+  "stage": "stage251_upper_straight_panel",
+  "domain": "AimDK X2 v1.0 official MuJoCo",
+  "profiles": {
+    "fixed": "Stage244 exact fixed-arm baseline",
+    "slow": "real X2-retargeted swing-arms, scale=0.25, time_scale=0.5, slew<=0.20 rad/s",
+    "fast": "same motion, scale=0.25, time_scale=1.0, slew<=0.40 rad/s"
+  },
+  "summary": {
+    "fixed": {
+      "runs": 3,
+      "full_gate_passes": 3,
+      "fallback_steps_total": 0,
+      "move_forward_displacement_m_median": 1.1957860459073313,
+      "move_forward_displacement_m_worst_abs": 1.2035124850006946,
+      "move_lateral_displacement_m_median": -0.09918193446268816,
+      "move_lateral_displacement_m_worst_abs": -0.1083502594594273,
+      "root_tilt_max_rad_median": 0.24922004684696214,
+      "root_tilt_max_rad_worst_abs": 0.2501560020977926,
+      "stop_settle_time_s_median": 1.96,
+      "stop_settle_time_s_worst_abs": 1.96
+    },
+    "slow": {
+      "runs": 3,
+      "full_gate_passes": 3,
+      "fallback_steps_total": 0,
+      "move_forward_displacement_m_median": 1.2181808059160404,
+      "move_forward_displacement_m_worst_abs": 1.2432244820019822,
+      "move_lateral_displacement_m_median": -0.11978363181612647,
+      "move_lateral_displacement_m_worst_abs": -0.12219892404063198,
+      "root_tilt_max_rad_median": 0.2499443296795468,
+      "root_tilt_max_rad_worst_abs": 0.2524450710241599,
+      "stop_settle_time_s_median": 2.1,
+      "stop_settle_time_s_worst_abs": 2.12,
+      "upper_tracking_rmse_rad_median": 0.03849005594351245,
+      "upper_tracking_rmse_rad_worst_abs": 0.038514580601325565,
+      "upper_target_excursion_abs_max_rad_median": 0.10353549718856814,
+      "upper_target_excursion_abs_max_rad_worst_abs": 0.10353549718856814,
+      "upper_target_speed_abs_max_radps_median": 0.20000040531158447,
+      "upper_target_speed_abs_max_radps_worst_abs": 0.20000040531158447
+    },
+    "fast": {
+      "runs": 3,
+      "full_gate_passes": 3,
+      "fallback_steps_total": 0,
+      "move_forward_displacement_m_median": 1.201388130284364,
+      "move_forward_displacement_m_worst_abs": 1.2035194901594537,
+      "move_lateral_displacement_m_median": -0.151704320247849,
+      "move_lateral_displacement_m_worst_abs": -0.16697354228553557,
+      "root_tilt_max_rad_median": 0.2625633334973805,
+      "root_tilt_max_rad_worst_abs": 0.26462579552888116,
+      "stop_settle_time_s_median": 1.8800000000000001,
+      "stop_settle_time_s_worst_abs": 1.9000000000000001,
+      "upper_tracking_rmse_rad_median": 0.039921320967481036,
+      "upper_tracking_rmse_rad_worst_abs": 0.039970780688225925,
+      "upper_target_excursion_abs_max_rad_median": 0.10349824428558352,
+      "upper_target_excursion_abs_max_rad_worst_abs": 0.10349824428558352,
+      "upper_target_speed_abs_max_radps_median": 0.39999932050704956,
+      "upper_target_speed_abs_max_radps_worst_abs": 0.39999932050704956
+    }
+  },
+  "all_profiles_full_gate_pass": true,
+  "no_upper_health_fallback": true,
+  "panel_pass": true
+}

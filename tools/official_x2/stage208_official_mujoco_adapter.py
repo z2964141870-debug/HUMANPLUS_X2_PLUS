@@ -147,6 +147,17 @@ def _mirror_joint_vector(values: np.ndarray, names: tuple[str, ...]) -> np.ndarr
     return mirrored
 
 
+def _sample_upper_track(q_rad: np.ndarray, fps: float, time_s: float, *, loop: bool) -> np.ndarray:
+    """Linearly sample a portable frames-by-14 upper-body trajectory."""
+    last = q_rad.shape[0] - 1
+    frame = time_s * fps
+    frame = frame % last if loop else float(np.clip(frame, 0.0, float(last)))
+    lower = int(math.floor(frame))
+    upper = min(lower + 1, last)
+    blend = frame - lower
+    return ((1.0 - blend) * q_rad[lower] + blend * q_rad[upper]).astype(np.float32)
+
+
 def gravity_body(imu: Imu) -> np.ndarray:
     q = imu.orientation
     return np.asarray(
@@ -232,6 +243,47 @@ class Stage208OfficialAdapter(Node):
                     name: (float(replay_kp[index]), float(replay_kd[index]))
                     for index, name in enumerate(self.replay_joint_names)
                 }
+
+        self.upper_q_rad: np.ndarray | None = None
+        self.upper_fps: float | None = None
+        self.upper_source: str | None = None
+        self.upper_baseline: np.ndarray | None = None
+        self.upper_previous_target = np.asarray(
+            [self.default[name] for name in ARM_JOINTS], dtype=np.float32
+        )
+        self.upper_last_target = self.upper_previous_target.copy()
+        self.upper_fallback_steps = 0
+        self.upper_fallback_active = False
+        self.upper_fallback_first_step: int | None = None
+        if args.upper_motion:
+            upper_archive = np.load(args.upper_motion, allow_pickle=False)
+            upper_names = tuple(upper_archive["joint_names"].tolist())
+            if upper_names != ARM_JOINTS:
+                raise RuntimeError(
+                    f"upper-motion joint order mismatch: {upper_names} != {ARM_JOINTS}"
+                )
+            self.upper_q_rad = np.asarray(upper_archive["q_rad"], dtype=np.float32)
+            self.upper_fps = float(upper_archive["fps"])
+            if self.upper_q_rad.ndim != 2 or self.upper_q_rad.shape[1] != len(ARM_JOINTS):
+                raise RuntimeError(f"invalid upper-motion shape {self.upper_q_rad.shape}")
+            if self.upper_q_rad.shape[0] < 2 or self.upper_fps <= 0.0:
+                raise RuntimeError("upper-motion must contain at least two timed frames")
+            duration_s = (self.upper_q_rad.shape[0] - 1) / self.upper_fps
+            if not 0.0 <= args.upper_start_seconds <= duration_s:
+                raise ValueError(
+                    f"upper start {args.upper_start_seconds} outside [0,{duration_s}]"
+                )
+            self.upper_source = (
+                str(upper_archive["source"].item())
+                if "source" in upper_archive.files
+                else str(args.upper_motion)
+            )
+            self.upper_baseline = _sample_upper_track(
+                self.upper_q_rad,
+                self.upper_fps,
+                args.upper_start_seconds,
+                loop=args.upper_loop,
+            )
 
         state_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
@@ -344,30 +396,38 @@ class Stage208OfficialAdapter(Node):
 
     def _pd(self, name: str) -> tuple[float, float]:
         if name in self.replay_pd:
-            return self.replay_pd[name]
-        if name in LOWER_JOINTS:
+            kp, kd = self.replay_pd[name]
+        elif name in LOWER_JOINTS:
             if self.args.pd_profile == "official_native":
-                return OFFICIAL_NATIVE_LOWER_PD[name]
-            if self.args.pd_profile == "official_kp_only":
-                return OFFICIAL_NATIVE_LOWER_PD[name][0], 20.0
-            if self.args.pd_profile == "official_kd_only":
-                return 300.0, OFFICIAL_NATIVE_LOWER_PD[name][1]
-            group_match = (
-                self.args.pd_profile == "official_kp_proximal"
-                and any(token in name for token in ("hip", "knee"))
-            ) or (
-                self.args.pd_profile == "official_kp_ankle" and "ankle" in name
-            ) or (
-                self.args.pd_profile == "official_kp_waist" and "waist" in name
-            )
-            if group_match:
-                return OFFICIAL_NATIVE_LOWER_PD[name][0], 20.0
-            return 300.0, 20.0
-        if "shoulder" in name or "elbow" in name:
-            return 40.0, 5.0
-        if "wrist" in name:
-            return 30.0, 3.0
-        return 50.0, 5.0
+                kp, kd = OFFICIAL_NATIVE_LOWER_PD[name]
+            elif self.args.pd_profile == "official_kp_only":
+                kp, kd = OFFICIAL_NATIVE_LOWER_PD[name][0], 20.0
+            elif self.args.pd_profile == "official_kd_only":
+                kp, kd = 300.0, OFFICIAL_NATIVE_LOWER_PD[name][1]
+            else:
+                group_match = (
+                    self.args.pd_profile == "official_kp_proximal"
+                    and any(token in name for token in ("hip", "knee"))
+                ) or (
+                    self.args.pd_profile == "official_kp_ankle" and "ankle" in name
+                ) or (
+                    self.args.pd_profile == "official_kp_waist" and "waist" in name
+                )
+                kp, kd = (
+                    (OFFICIAL_NATIVE_LOWER_PD[name][0], 20.0)
+                    if group_match
+                    else (300.0, 20.0)
+                )
+        elif "shoulder" in name or "elbow" in name:
+            kp, kd = 40.0, 5.0
+        elif "wrist" in name:
+            kp, kd = 30.0, 3.0
+        else:
+            kp, kd = 50.0, 5.0
+        if name in LOWER_JOINTS:
+            kp *= self.args.pd_kp_multiplier
+            kd *= self.args.pd_kd_multiplier
+        return kp, kd
 
     def _publish_group(self, area: str, names: tuple[str, ...], targets: dict[str, float]) -> None:
         message = JointCommandArray()
@@ -385,7 +445,84 @@ class Stage208OfficialAdapter(Node):
         message.joints = commands
         self.command_publishers[area].publish(message)
 
-    def _publish(self, targets: dict[str, float]) -> None:
+    def _apply_upper_motion(
+        self,
+        targets: dict[str, float],
+        *,
+        elapsed: float | None,
+        return_to_default: bool,
+    ) -> None:
+        """Apply bounded upper intent without changing the lower actor path."""
+        if self.upper_q_rad is None:
+            return
+        default = np.asarray([self.default[name] for name in ARM_JOINTS], dtype=np.float32)
+        desired = default.copy()
+        if elapsed is not None:
+            assert self.upper_fps is not None and self.upper_baseline is not None
+            sample = _sample_upper_track(
+                self.upper_q_rad,
+                self.upper_fps,
+                self.args.upper_start_seconds + elapsed * self.args.upper_time_scale,
+                loop=self.args.upper_loop,
+            )
+            desired += self.args.upper_scale * (sample - self.upper_baseline)
+            desired = default + np.clip(
+                desired - default,
+                -self.args.upper_max_excursion_rad,
+                self.args.upper_max_excursion_rad,
+            )
+            assert self.odom is not None
+            healthy = (
+                tilt_from_quaternion(self.odom) <= self.args.upper_fallback_tilt_rad
+                and float(self.odom.pose.pose.position.z) >= self.args.upper_fallback_height_m
+            )
+            if (
+                healthy
+                and self.heading_target_rad is not None
+                and (self.args.fixed_wz is None or abs(self.args.fixed_wz) <= 1.0e-6)
+            ):
+                heading_error = math.atan2(
+                    math.sin(yaw_from_quaternion(self.odom) - self.heading_target_rad),
+                    math.cos(yaw_from_quaternion(self.odom) - self.heading_target_rad),
+                )
+                healthy = abs(heading_error) <= self.args.upper_fallback_heading_rad
+            if self.args.upper_fallback_latch and not healthy:
+                self.upper_fallback_active = True
+            fallback = self.upper_fallback_active or not healthy
+            if fallback:
+                desired = default
+                self.upper_fallback_steps += 1
+                if self.upper_fallback_first_step is None:
+                    self.upper_fallback_first_step = self.sequence_step
+        elif not return_to_default:
+            # Prepare/stand owns its own exact target path.  Synchronize the
+            # slew state without changing those targets.
+            self.upper_previous_target = np.asarray(
+                [targets[name] for name in ARM_JOINTS], dtype=np.float32
+            )
+            self.upper_last_target = self.upper_previous_target.copy()
+            return
+        if return_to_default and self.args.upper_stop_mode == "hold_last":
+            desired = self.upper_previous_target.copy()
+        max_step = self.args.upper_max_velocity_radps * 0.02
+        bounded = self.upper_previous_target + np.clip(
+            desired - self.upper_previous_target, -max_step, max_step
+        )
+        self.upper_previous_target = bounded.astype(np.float32, copy=False)
+        self.upper_last_target = self.upper_previous_target.copy()
+        for index, name in enumerate(ARM_JOINTS):
+            targets[name] = float(self.upper_last_target[index])
+
+    def _publish(
+        self,
+        targets: dict[str, float],
+        *,
+        upper_elapsed: float | None = None,
+        upper_return: bool = False,
+    ) -> None:
+        self._apply_upper_motion(
+            targets, elapsed=upper_elapsed, return_to_default=upper_return
+        )
         self._publish_group("leg", LEG_JOINTS, targets)
         self._publish_group("waist", WAIST_JOINTS, targets)
         self._publish_group("arm", ARM_JOINTS, targets)
@@ -868,6 +1005,8 @@ class Stage208OfficialAdapter(Node):
                 "source_callback_age_max_s": source_callback_age,
                 "obs": [] if obs is None else obs.tolist(),
                 "action": [] if action is None else action.tolist(),
+                "upper_target_rad": self.upper_last_target.tolist(),
+                "upper_actual_rad": [float(self.joints[name][0]) for name in ARM_JOINTS],
             }
         )
 
@@ -1054,12 +1193,12 @@ class Stage208OfficialAdapter(Node):
                     0.0,
                     policy_slot="stationary",
                 )
-            self._publish(targets)
+            self._publish(targets, upper_return=True)
             self._record("stop", stop_elapsed, obs, action)
             return
         if self.args.control_mode == "isaac_target_replay":
             targets = self._replay_target(move_elapsed)
-            self._publish(targets)
+            self._publish(targets, upper_elapsed=move_elapsed)
             self._record("move", move_elapsed)
         else:
             policy_vx = math.copysign(
@@ -1070,7 +1209,7 @@ class Stage208OfficialAdapter(Node):
                 policy_vx,
                 template_multiplier=self.args.move_template_multiplier,
             )
-            self._publish(targets)
+            self._publish(targets, upper_elapsed=move_elapsed)
             self._record("move", move_elapsed, obs, action)
         self.last_move_targets = dict(targets)
         self.control_steps += 1
@@ -1101,6 +1240,8 @@ class Stage208OfficialAdapter(Node):
             "control_mode": self.args.control_mode,
             "replay_loop": self.args.replay_loop,
             "pd_profile": self.args.pd_profile,
+            "pd_kp_multiplier": self.args.pd_kp_multiplier,
+            "pd_kd_multiplier": self.args.pd_kd_multiplier,
             "default_pose_profile": self.args.default_pose_profile,
             "heading_gain": self.args.heading_gain,
             "heading_recovery_enter_rad": self.args.heading_recovery_enter_rad,
@@ -1129,6 +1270,19 @@ class Stage208OfficialAdapter(Node):
             "phase_action_boost": self.args.phase_action_boost,
             "action_ema_alpha": self.args.action_ema_alpha,
             "waist_tilt_action_multiplier": self.args.waist_tilt_action_multiplier,
+            "upper_motion": self.args.upper_motion,
+            "upper_motion_source": self.upper_source,
+            "upper_scale": self.args.upper_scale,
+            "upper_time_scale": self.args.upper_time_scale,
+            "upper_max_excursion_rad": self.args.upper_max_excursion_rad,
+            "upper_max_velocity_radps": self.args.upper_max_velocity_radps,
+            "upper_fallback_tilt_rad": self.args.upper_fallback_tilt_rad,
+            "upper_fallback_height_m": self.args.upper_fallback_height_m,
+            "upper_fallback_heading_rad": self.args.upper_fallback_heading_rad,
+            "upper_fallback_latch": self.args.upper_fallback_latch,
+            "upper_fallback_steps": self.upper_fallback_steps,
+            "upper_fallback_first_step": self.upper_fallback_first_step,
+            "upper_stop_mode": self.args.upper_stop_mode,
             "stationary_controller": self.args.stationary_controller,
             "stop_controller": self.args.stop_controller,
             "stop_transition_seconds": self.args.stop_transition_seconds,
@@ -1226,6 +1380,29 @@ class Stage208OfficialAdapter(Node):
                 }
             )
         if move:
+            upper_target = np.asarray([row["upper_target_rad"] for row in move], dtype=np.float64)
+            upper_actual = np.asarray([row["upper_actual_rad"] for row in move], dtype=np.float64)
+            upper_default = np.asarray([self.default[name] for name in ARM_JOINTS], dtype=np.float64)
+            upper_error = upper_actual - upper_target
+            upper_target_speed = (
+                np.diff(upper_target, axis=0) / 0.02
+                if upper_target.shape[0] > 1
+                else np.zeros((0, len(ARM_JOINTS)), dtype=np.float64)
+            )
+            summary.update(
+                {
+                    "upper_target_excursion_abs_max_rad": float(
+                        np.max(np.abs(upper_target - upper_default))
+                    ),
+                    "upper_target_speed_abs_max_radps": (
+                        float(np.max(np.abs(upper_target_speed)))
+                        if upper_target_speed.size
+                        else 0.0
+                    ),
+                    "upper_tracking_rmse_rad": float(np.sqrt(np.mean(upper_error**2))),
+                    "upper_tracking_abs_p95_rad": float(np.quantile(np.abs(upper_error), 0.95)),
+                }
+            )
             move_yaw = np.unwrap(np.asarray([row["root_yaw_rad"] for row in move], dtype=np.float64))
             start_yaw = float(move_yaw[0])
             dx = float(x[-1] - x[0])
@@ -1411,6 +1588,26 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--joint-target-trace")
     parser.add_argument(
+        "--upper-motion",
+        help="Portable NPZ containing a 14-joint X2 upper-body reference.",
+    )
+    parser.add_argument("--upper-scale", type=float, default=0.25)
+    parser.add_argument("--upper-start-seconds", type=float, default=0.0)
+    parser.add_argument("--upper-time-scale", type=float, default=0.5)
+    parser.add_argument("--upper-max-excursion-rad", type=float, default=0.12)
+    parser.add_argument("--upper-max-velocity-radps", type=float, default=0.20)
+    parser.add_argument("--upper-fallback-tilt-rad", type=float, default=0.35)
+    parser.add_argument("--upper-fallback-height-m", type=float, default=0.58)
+    parser.add_argument("--upper-fallback-heading-rad", type=float, default=float("inf"))
+    parser.add_argument("--upper-fallback-latch", action="store_true")
+    parser.add_argument("--upper-loop", action="store_true")
+    parser.add_argument(
+        "--upper-stop-mode",
+        choices=("return", "hold_last"),
+        default="return",
+        help="Return arms to default at locomotion stop, or preserve the last teleoperation pose.",
+    )
+    parser.add_argument(
         "--replay-loop",
         action="store_true",
         help="Loop an Isaac target replay instead of holding its final frame.",
@@ -1578,6 +1775,18 @@ def parse_args() -> argparse.Namespace:
         default="stage208",
         help="Lower/waist PD gains; all other control semantics remain fixed.",
     )
+    parser.add_argument(
+        "--pd-kp-multiplier",
+        type=float,
+        default=1.0,
+        help="Multiply every emitted lower/waist Kp after selecting the named PD profile.",
+    )
+    parser.add_argument(
+        "--pd-kd-multiplier",
+        type=float,
+        default=1.0,
+        help="Multiply every emitted lower/waist Kd after selecting the named PD profile.",
+    )
     args = parser.parse_args()
     if not 0.0 <= args.stationary_blend <= 1.0:
         parser.error("--stationary-blend must be in [0, 1]")
@@ -1611,6 +1820,20 @@ def parse_args() -> argparse.Namespace:
         parser.error("--action-ema-alpha must be in (0, 1]")
     if not 0.0 <= args.waist_tilt_action_multiplier <= 1.0:
         parser.error("--waist-tilt-action-multiplier must be in [0, 1]")
+    if args.upper_scale < 0.0:
+        parser.error("--upper-scale must be non-negative")
+    if args.upper_start_seconds < 0.0:
+        parser.error("--upper-start-seconds must be non-negative")
+    if args.upper_time_scale <= 0.0:
+        parser.error("--upper-time-scale must be positive")
+    if args.upper_max_excursion_rad <= 0.0 or args.upper_max_velocity_radps <= 0.0:
+        parser.error("upper excursion and velocity limits must be positive")
+    if args.upper_fallback_heading_rad <= 0.0:
+        parser.error("--upper-fallback-heading-rad must be positive")
+    if not 0.5 <= args.pd_kp_multiplier <= 1.5:
+        parser.error("--pd-kp-multiplier must be in [0.5, 1.5]")
+    if not 0.5 <= args.pd_kd_multiplier <= 1.5:
+        parser.error("--pd-kd-multiplier must be in [0.5, 1.5]")
     return args
 
 

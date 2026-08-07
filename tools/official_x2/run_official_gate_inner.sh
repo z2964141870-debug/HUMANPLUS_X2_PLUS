@@ -11,6 +11,8 @@ CONTROL_MODE="${CONTROL_MODE:-full}"
 CLOCK_MODE="${CLOCK_MODE:-step}"
 MIRROR_POLICY="${MIRROR_POLICY:-false}"
 PD_PROFILE="${PD_PROFILE:-official_kp_ankle}"
+PD_KP_MULTIPLIER="${PD_KP_MULTIPLIER:-1.0}"
+PD_KD_MULTIPLIER="${PD_KD_MULTIPLIER:-1.0}"
 DEFAULT_POSE_PROFILE="${DEFAULT_POSE_PROFILE:-stage208}"
 PREPARE_SECONDS="${PREPARE_SECONDS:-0.2}"
 STAND_SECONDS="${STAND_SECONDS:-2.0}"
@@ -60,6 +62,18 @@ MODEL_PATH="${MODEL_PATH:-/models/stage219_s2600_actor.onnx}"
 STATIONARY_MODEL_PATH="${STATIONARY_MODEL_PATH:-/models/stand_backend_scratch_i150_actor.onnx}"
 STATIONARY_WARMUP_SECONDS="${STATIONARY_WARMUP_SECONDS:-0.0}"
 STATIONARY_BLEND="${STATIONARY_BLEND:-0.50}"
+UPPER_MOTION="${UPPER_MOTION:-}"
+UPPER_SCALE="${UPPER_SCALE:-0.25}"
+UPPER_START_SECONDS="${UPPER_START_SECONDS:-0.0}"
+UPPER_TIME_SCALE="${UPPER_TIME_SCALE:-0.5}"
+UPPER_MAX_EXCURSION_RAD="${UPPER_MAX_EXCURSION_RAD:-0.12}"
+UPPER_MAX_VELOCITY_RADPS="${UPPER_MAX_VELOCITY_RADPS:-0.20}"
+UPPER_FALLBACK_TILT_RAD="${UPPER_FALLBACK_TILT_RAD:-0.35}"
+UPPER_FALLBACK_HEIGHT_M="${UPPER_FALLBACK_HEIGHT_M:-0.58}"
+UPPER_FALLBACK_HEADING_RAD="${UPPER_FALLBACK_HEADING_RAD:-inf}"
+UPPER_FALLBACK_LATCH="${UPPER_FALLBACK_LATCH:-false}"
+UPPER_LOOP="${UPPER_LOOP:-false}"
+UPPER_STOP_MODE="${UPPER_STOP_MODE:-return}"
 
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 export LD_LIBRARY_PATH="$ROOT/install/aimdk_msgs/lib:$SIM/bin:$SIM/lib:/opt/ros/humble/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/onnxruntime/lib"
@@ -98,6 +112,9 @@ EXTRA_ARGS=()
 [[ -n "$HEADING_ACTION_RECOVERY_ENTER_RAD" ]] && EXTRA_ARGS+=(--heading-action-recovery-enter-rad "$HEADING_ACTION_RECOVERY_ENTER_RAD")
 [[ -n "$STATIONARY_MODEL_PATH" ]] && EXTRA_ARGS+=(--stationary-model "$STATIONARY_MODEL_PATH")
 [[ "$MIRROR_POLICY" == "true" ]] && EXTRA_ARGS+=(--mirror-policy)
+[[ -n "$UPPER_MOTION" ]] && EXTRA_ARGS+=(--upper-motion "$UPPER_MOTION")
+[[ "$UPPER_LOOP" == "true" ]] && EXTRA_ARGS+=(--upper-loop)
+[[ "$UPPER_FALLBACK_LATCH" == "true" ]] && EXTRA_ARGS+=(--upper-fallback-latch)
 
 cd /repo
 python3 tools/official_x2/stage208_official_mujoco_adapter.py \
@@ -105,7 +122,8 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --output "${OUTPUT_ROOT}/${CASE_NAME}.json" --vx "$COMMAND_VX" \
   --policy-vx-floor "$POLICY_VX_FLOOR" \
   --phase-offset "$PHASE_OFFSET" --clock-mode "$CLOCK_MODE" --control-mode "$CONTROL_MODE" \
-  --pd-profile "$PD_PROFILE" --default-pose-profile "$DEFAULT_POSE_PROFILE" \
+  --pd-profile "$PD_PROFILE" --pd-kp-multiplier "$PD_KP_MULTIPLIER" \
+  --pd-kd-multiplier "$PD_KD_MULTIPLIER" --default-pose-profile "$DEFAULT_POSE_PROFILE" \
   --prepare-seconds "$PREPARE_SECONDS" --stand-seconds "$STAND_SECONDS" \
   --stationary-warmup-seconds "$STATIONARY_WARMUP_SECONDS" --stationary-blend "$STATIONARY_BLEND" \
   --move-seconds "$MOVE_SECONDS" --stop-seconds "$STOP_SECONDS" \
@@ -128,6 +146,13 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --recovery-slew-rate-per-s "$RECOVERY_SLEW_RATE_PER_S" --phase-action-boost "$PHASE_ACTION_BOOST" \
   --action-ema-alpha "$ACTION_EMA_ALPHA" \
   --waist-tilt-action-multiplier "$WAIST_TILT_ACTION_MULTIPLIER" \
+  --upper-scale "$UPPER_SCALE" --upper-start-seconds "$UPPER_START_SECONDS" \
+  --upper-time-scale "$UPPER_TIME_SCALE" --upper-max-excursion-rad "$UPPER_MAX_EXCURSION_RAD" \
+  --upper-max-velocity-radps "$UPPER_MAX_VELOCITY_RADPS" \
+  --upper-fallback-tilt-rad "$UPPER_FALLBACK_TILT_RAD" \
+  --upper-fallback-height-m "$UPPER_FALLBACK_HEIGHT_M" \
+  --upper-fallback-heading-rad "$UPPER_FALLBACK_HEADING_RAD" \
+  --upper-stop-mode "$UPPER_STOP_MODE" \
   --stationary-controller "$STATIONARY_CONTROLLER" --stop-controller "$STOP_CONTROLLER" \
   --stop-transition-seconds "$STOP_TRANSITION_SECONDS" \
   --stop-brake-gain "$STOP_BRAKE_GAIN" --stop-brake-limit "$STOP_BRAKE_LIMIT" \
