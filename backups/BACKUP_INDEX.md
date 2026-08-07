@@ -1,5 +1,15 @@
 # X2 大文件备份索引
 
+## 2026-08-08 / task 40
+
+- Git：`bea845f`，已推送 `origin/main`。
+- 本地包：`x2_official_rsl_contract_task40_20260808.tar.gz`
+- 大小：`25,742,161 bytes`（约 `24.55 MiB`）。
+- SHA256：`9b591d42f14413be62df10bd27734170317647dccc30560957a77e3da0b500d2`
+- 内容：Stage219 ONNX、修复后中低速 24/24 官方 trace、腰缩放和旧转向负例、Stage250 报告、复现/分析/录屏脚本、三动作前后对比 MP4、内部 `SHA256SUMS`。
+- 完整性：本地解包后 47 个 payload 的 `sha256sum -c SHA256SUMS` 全部通过。
+- 百度：已创建 `/HUMAN+/HUMANPLUS_X2_PLUS/2026-08-08/`；上传 4 次均在传输前返回“获取用户 uk 错误/缺 STOKEN”，远端未误报成功。本地包保留，刷新 BDUSS+STOKEN 后可直接重传。
+
 ## 2026-08-08 / task 30
 
 - Git：`331fefe`，已推送 `origin/main`。
