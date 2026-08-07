@@ -287,6 +287,7 @@ class Stage208OfficialAdapter(Node):
         phase_elapsed: float,
         command_vx: float,
         *,
+        command_vy: float = 0.0,
         force_moving: bool = False,
         template_multiplier: float = 1.0,
     ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
@@ -312,7 +313,7 @@ class Stage208OfficialAdapter(Node):
         )
         if self.args.fixed_wz is not None and abs(command_vx) > 0.1:
             command_wz = self.args.fixed_wz
-        command = np.asarray([command_vx, 0.0, command_wz], dtype=np.float32)
+        command = np.asarray([command_vx, command_vy, command_wz], dtype=np.float32)
         joint_pos = np.asarray([self.joints[name][0] - DEFAULT[name] for name in ISAAC_JOINTS], dtype=np.float32)
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
         moving = force_moving or abs(command_vx) > 0.1
@@ -359,6 +360,29 @@ class Stage208OfficialAdapter(Node):
         # clipping happens only after adding the normalized gait-template bias.
         self.previous_action = residual.copy()
         return targets, obs, combined
+
+    def _brake_command(self) -> tuple[float, float, float]:
+        """Return bounded body-frame velocity feedback for a stop transition.
+
+        The official simulator's foot-contact publisher is an empty binary
+        stub, so the deployable stop teacher cannot wait on that topic.  This
+        controller instead uses odometry already present in the Stage208
+        observation contract.  It asks the frozen velocity policy to oppose
+        the measured horizontal velocity while keeping the gait phase alive.
+        """
+        assert self.odom is not None
+        twist = self.odom.twist.twist
+        body_velocity = world_vector_to_body(
+            self.odom,
+            np.asarray([twist.linear.x, twist.linear.y, twist.linear.z], dtype=np.float32),
+        )
+        command_xy = np.clip(
+            -self.args.stop_brake_gain * body_velocity[:2],
+            -self.args.stop_brake_limit,
+            self.args.stop_brake_limit,
+        )
+        speed = float(np.linalg.norm(body_velocity[:2]))
+        return float(command_xy[0]), float(command_xy[1]), speed
 
     def _replay_target(self, elapsed: float) -> dict[str, float]:
         assert self.replay_targets is not None
@@ -447,6 +471,36 @@ class Stage208OfficialAdapter(Node):
                 else:
                     targets = dict(self.stop_hold_targets)
                     obs = action = None
+            elif self.args.stop_controller in ("velocity_brake", "brake_then_policy"):
+                command_vx, command_vy, measured_speed = self._brake_command()
+                phase_elapsed = self.args.move_seconds + stop_elapsed
+                phase = self._phase_features(phase_elapsed, moving=True)
+                double_support = bool(phase[2] > 0.5 and phase[3] > 0.5)
+                if (
+                    self.args.stop_controller == "brake_then_policy"
+                    and self.stop_hold_latch_s is None
+                    and stop_elapsed >= self.args.event_hold_min_seconds
+                    and measured_speed <= self.args.event_hold_speed
+                    and double_support
+                ):
+                    self.stop_hold_latch_s = stop_elapsed
+                if self.stop_hold_latch_s is not None:
+                    targets, obs, action = self._policy_targets(0.0, 0.0)
+                else:
+                    template_multiplier = float(
+                        np.clip(
+                            measured_speed / max(self.args.stop_brake_template_speed, 1.0e-6),
+                            self.args.stop_brake_template_floor,
+                            1.0,
+                        )
+                    )
+                    targets, obs, action = self._policy_targets(
+                        phase_elapsed,
+                        command_vx,
+                        command_vy=command_vy,
+                        force_moving=True,
+                        template_multiplier=template_multiplier,
+                    )
             elif self.args.stop_controller == "ramp_then_hold":
                 ramp_seconds = 0.5 * self.args.stop_seconds
                 if stop_elapsed < ramp_seconds:
@@ -518,6 +572,10 @@ class Stage208OfficialAdapter(Node):
             "stationary_controller": self.args.stationary_controller,
             "stop_controller": self.args.stop_controller,
             "stop_hold_latch_s": self.stop_hold_latch_s,
+            "stop_brake_gain": self.args.stop_brake_gain,
+            "stop_brake_limit_mps": self.args.stop_brake_limit,
+            "stop_brake_template_speed_mps": self.args.stop_brake_template_speed,
+            "stop_brake_template_floor": self.args.stop_brake_template_floor,
             "prepare_seconds": self.args.prepare_seconds,
             "stand_seconds": self.args.stand_seconds,
             "move_seconds": self.args.move_seconds,
@@ -589,13 +647,26 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--stop-controller",
-        choices=("policy", "default_pose", "ramp_policy", "hold_last", "ramp_then_hold", "event_hold"),
+        choices=(
+            "policy",
+            "default_pose",
+            "ramp_policy",
+            "hold_last",
+            "ramp_then_hold",
+            "event_hold",
+            "velocity_brake",
+            "brake_then_policy",
+        ),
         default="policy",
         help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",
     )
     parser.add_argument("--event-hold-min-seconds", type=float, default=0.5)
     parser.add_argument("--event-hold-speed", type=float, default=0.05)
     parser.add_argument("--event-hold-tilt", type=float, default=0.10)
+    parser.add_argument("--stop-brake-gain", type=float, default=0.8)
+    parser.add_argument("--stop-brake-limit", type=float, default=0.30)
+    parser.add_argument("--stop-brake-template-speed", type=float, default=0.30)
+    parser.add_argument("--stop-brake-template-floor", type=float, default=0.25)
     parser.add_argument(
         "--pd-profile",
         choices=(

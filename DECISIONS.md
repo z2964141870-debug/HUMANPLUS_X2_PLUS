@@ -51,3 +51,10 @@
 - Stage8 正式 BASE 固定为 Stage208-s2550（SHA-256 见 `configs/x2_native_backend_gate_v1.json`）；FUTURE_NOPHASE/FUTURE_PHASE 只能作为同矩阵候选对照。
 - gait phase、接触、支撑脚、COM/DCM 归 X2 backend 内部；不得混入设备无关 HumanIntent。
 - Stage8 未完成 BASE 事件矩阵前，禁止大规模 AMASS 重定向、PPO 长训、真实 SONIC 上肢注入和真机部署。
+
+## 2026-08-08
+
+- 封存 AimDK v1.0 `/aima/hal/foot/contact` 配置修复路线：官方 `ImuFootDataPublisher::Publish()` 在发布二进制中是空函数，非 MJCF/YAML/QoS 错误。
+- 仿真中允许用 odom + gait phase 构造 contact proxy，但必须标注为“模型估计”，不得写成官方足底真值。
+- `velocity_brake K=1.0~1.5` 保留为当前最好的 4 s 停止过渡，但不通过 stop gate：延长至 8 s 仍会倒地。
+- 不再用 locomotion Stage208 同时承担长时站立；后续将 brake transition 和 stand/recovery backend 拆分，只在 stand 单独通过 20~60 s 后测试切换。

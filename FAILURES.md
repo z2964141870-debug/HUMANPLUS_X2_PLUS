@@ -114,3 +114,15 @@
   个别新增跌倒交换收益；不是可靠迁移模型。
 - 处理：保留 Stage208 为正式基线、NEUTRAL05 为互补研究候选；删除失败的
   RISK05 checkpoint，不沿当前 objective 续训。
+
+## 官方 foot-contact publisher 为空实现（2026-08-08）
+
+- 独立 variant 已成功加载 8 个 MuJoCo touch sensor，ROS topic、类型和 500 Hz worker 都能注册，但无任何消息。
+- 反汇编证实 `ImuFootDataPublisher<Float64MultiArray>::Publish()` 仅有 `ret`，没有读取 model contact 或发布数据。
+- 处理：不再扫 sensor grouping、QoS 或 print interval；需新 SDK/源码才能恢复该 topic。
+
+## Stage208 减速后缺少稳定站立接管域（2026-08-08）
+
+- `velocity_brake` 在 4 s 内存活，`K=1.0/1.5` 的 drift 为 `0.449/0.366 m`，比 2 s ramp 的 `0.541 m` 更好。
+- 但 `K=1.0` 延长到 8 s 后倒地；在 1.96 s、0.07 m/s、预测双支撑处切回零速 policy 后，又新增约 `1.063 m` 漂移。
+- 处理：停止问题拆成 brake transition 与 stand/recovery skill；不再把阈值扫描或固定末帧当作站立解法。
