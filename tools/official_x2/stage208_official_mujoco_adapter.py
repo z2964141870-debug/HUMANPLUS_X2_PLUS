@@ -290,6 +290,8 @@ class Stage208OfficialAdapter(Node):
         self.lateral_recovery_state = "off"
         self.lateral_recovery_bias = np.zeros(2, dtype=np.float32)
         self.heading_recovery_active = False
+        self.heading_action_recovery_active = False
+        self.heading_action_recovery_steps = 0
         self.ready_wall_time: float | None = None
         self.prepare_start_q: dict[str, float] = {}
         self.sequence_step = 0
@@ -570,7 +572,13 @@ class Stage208OfficialAdapter(Node):
             main_action = self.session.run(["actions"], {"obs": main_obs[None]})[0][0].astype(np.float32)
             alpha = self.args.stationary_blend
             raw_action = (1.0 - alpha) * main_action + alpha * raw_action
-        residual = raw_action.copy()
+        # RslRlVecEnvWrapper clips the actor output before env.step().  The
+        # gait-template action term therefore receives a clipped policy action,
+        # and its raw_actions buffer (used by the next last_action observation)
+        # is clipped as well.  Feeding the unbounded ONNX mean back here creates
+        # a deploy-only positive feedback loop: values above one are re-observed
+        # even though they never existed in the IsaacLab training contract.
+        residual = np.clip(raw_action, -1.0, 1.0)
         if self.args.mirror_policy:
             residual = _mirror_joint_vector(residual, LOWER_JOINTS)
         if self.args.control_mode == "template_only":
@@ -588,6 +596,35 @@ class Stage208OfficialAdapter(Node):
         combined_preclip = residual + template_bias
         if moving and self.args.ankle_roll_common_bias != 0.0:
             combined_preclip[[5, 11]] += self.args.ankle_roll_common_bias * template_multiplier
+        if moving and self.args.heading_action_recovery_enter_rad is not None:
+            if (
+                not self.heading_action_recovery_active
+                and abs(heading_error) >= self.args.heading_action_recovery_enter_rad
+            ):
+                self.heading_action_recovery_active = True
+            elif (
+                self.heading_action_recovery_active
+                and abs(heading_error) <= self.args.heading_action_recovery_exit_rad
+            ):
+                self.heading_action_recovery_active = False
+            if self.heading_action_recovery_active:
+                self.heading_action_recovery_steps += 1
+                correction = float(
+                    np.clip(
+                        self.args.heading_action_recovery_gain * heading_error,
+                        -self.args.heading_action_recovery_limit,
+                        self.args.heading_action_recovery_limit,
+                    )
+                )
+                if correction >= 0.0:
+                    # Positive yaw authority is the verified common hip-yaw mode.
+                    combined_preclip[[2, 8]] += correction
+                else:
+                    # Negative yaw authority uses the asymmetric pair validated
+                    # by the left-turn contract; common negative yaw was unstable.
+                    magnitude = -correction
+                    combined_preclip[2] += magnitude
+                    combined_preclip[8] -= magnitude
         if moving:
             combined_preclip[2] += self.args.left_hip_yaw_bias * template_multiplier
             combined_preclip[8] += self.args.right_hip_yaw_bias * template_multiplier
@@ -626,9 +663,15 @@ class Stage208OfficialAdapter(Node):
                 # common hip-yaw mode in the official X2 model.
                 combined_preclip[[2, 8]] += correction
             else:
-                # Negative yaw needs the asymmetric pair; a common negative
-                # bias consistently drove the body backwards in controls.
-                if correction <= 0.0:
+                # The mirrored left-turn policy uses the already-validated
+                # common negative hip-yaw contract.  Applying the unmirrored
+                # asymmetric negative-yaw mode here changes the sign again and
+                # can make a requested left turn move right.
+                if self.args.mirror_policy and correction <= 0.0:
+                    combined_preclip[[2, 8]] += correction
+                elif correction <= 0.0:
+                    # For an unmirrored negative-yaw request, retain the
+                    # asymmetric pair validated by the straight recovery path.
                     magnitude = -correction
                     combined_preclip[2] += magnitude
                     combined_preclip[8] -= magnitude
@@ -740,8 +783,9 @@ class Stage208OfficialAdapter(Node):
         targets = dict(self.default)
         for index, name in enumerate(LOWER_JOINTS):
             targets[name] = self.default[name] + float(combined[index] * LOWER_SCALE[index])
-        # IsaacLab's last_action observation is the unbounded raw policy action;
-        # clipping happens only after adding the normalized gait-template bias.
+        # Match RslRlVecEnvWrapper + GaitTemplateLowerBodyJointPositionAction:
+        # next-step last_action is the wrapper-clipped policy output, while the
+        # template is added afterward and clipped independently for execution.
         self.previous_actions[policy_slot] = residual.copy()
         if policy_slot == "stationary":
             # Both actors observe the action that was actually issued, not an
@@ -1018,7 +1062,14 @@ class Stage208OfficialAdapter(Node):
             self._publish(targets)
             self._record("move", move_elapsed)
         else:
-            targets, obs, action = self._policy_targets(move_elapsed, self.args.vx)
+            policy_vx = math.copysign(
+                max(abs(self.args.vx), self.args.policy_vx_floor), self.args.vx
+            )
+            targets, obs, action = self._policy_targets(
+                move_elapsed,
+                policy_vx,
+                template_multiplier=self.args.move_template_multiplier,
+            )
             self._publish(targets)
             self._record("move", move_elapsed, obs, action)
         self.last_move_targets = dict(targets)
@@ -1045,6 +1096,7 @@ class Stage208OfficialAdapter(Node):
             "state_qos_depth": self.args.state_qos_depth,
             "template": self.args.template,
             "command_vx_mps": self.args.vx,
+            "policy_vx_floor_mps": self.args.policy_vx_floor,
             "phase_offset_s": self.args.phase_offset,
             "control_mode": self.args.control_mode,
             "replay_loop": self.args.replay_loop,
@@ -1053,6 +1105,11 @@ class Stage208OfficialAdapter(Node):
             "heading_gain": self.args.heading_gain,
             "heading_recovery_enter_rad": self.args.heading_recovery_enter_rad,
             "heading_recovery_exit_rad": self.args.heading_recovery_exit_rad,
+            "heading_action_recovery_enter_rad": self.args.heading_action_recovery_enter_rad,
+            "heading_action_recovery_exit_rad": self.args.heading_action_recovery_exit_rad,
+            "heading_action_recovery_gain": self.args.heading_action_recovery_gain,
+            "heading_action_recovery_limit": self.args.heading_action_recovery_limit,
+            "heading_action_recovery_steps": self.heading_action_recovery_steps,
             "cross_track_heading_gain": self.args.cross_track_heading_gain,
             "cross_track_heading_limit_rad": self.args.cross_track_heading_limit,
             "heading_rate_limit_radps": self.args.heading_rate_limit,
@@ -1083,12 +1140,16 @@ class Stage208OfficialAdapter(Node):
             "prepare_seconds": self.args.prepare_seconds,
             "stand_seconds": self.args.stand_seconds,
             "move_seconds": self.args.move_seconds,
+            "move_template_multiplier": self.args.move_template_multiplier,
             "stop_seconds": self.args.stop_seconds,
             "control_steps": len(move),
             "clock_mode": self.args.clock_mode,
             "mirror_policy": self.args.mirror_policy,
             "observation_contract": "Stage208 deterministic 93D",
-            "action_contract": "15D lower/waist residual + template_scale=0.15",
+            "action_contract": (
+                "RSL actor clip [-1,1] -> 15D lower/waist residual + "
+                "template_scale=0.15 -> execution clip [-1,1]"
+            ),
             "root_z_min_m": float(root_z.min()) if root_z.size else None,
             "root_z_final_m": float(root_z[-1]) if root_z.size else None,
             "root_tilt_max_rad": float(tilt.max()) if tilt.size else None,
@@ -1321,6 +1382,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", required=True)
     parser.add_argument("--vx", type=float, default=0.30)
     parser.add_argument(
+        "--policy-vx-floor",
+        type=float,
+        default=0.0,
+        help="Map a nonzero external speed request to at least this actor-command magnitude.",
+    )
+    parser.add_argument(
         "--phase-offset",
         type=float,
         default=0.0,
@@ -1369,6 +1436,12 @@ def parse_args() -> argparse.Namespace:
         help="Blend fraction of the stationary actor after handoff (0=main actor, 1=stationary actor).",
     )
     parser.add_argument("--move-seconds", type=float, default=8.0)
+    parser.add_argument(
+        "--move-template-multiplier",
+        type=float,
+        default=1.0,
+        help="Scale the gait template and coupled bounded gait biases during steady movement.",
+    )
     parser.add_argument("--stop-seconds", type=float, default=0.0)
     parser.add_argument(
         "--state-qos-depth",
@@ -1392,6 +1465,10 @@ def parse_args() -> argparse.Namespace:
         help="Enable heading feedback only after absolute yaw error reaches this threshold.",
     )
     parser.add_argument("--heading-recovery-exit-rad", type=float, default=0.08)
+    parser.add_argument("--heading-action-recovery-enter-rad", type=float)
+    parser.add_argument("--heading-action-recovery-exit-rad", type=float, default=0.10)
+    parser.add_argument("--heading-action-recovery-gain", type=float, default=1.0)
+    parser.add_argument("--heading-action-recovery-limit", type=float, default=0.25)
     parser.add_argument("--cross-track-heading-gain", type=float, default=0.0)
     parser.add_argument("--cross-track-heading-limit", type=float, default=0.30)
     parser.add_argument("--heading-rate-limit", type=float, default=0.5)
@@ -1512,9 +1589,20 @@ def parse_args() -> argparse.Namespace:
         parser.error("--state-prediction-seconds must be in [0, 0.02]")
     if args.state_qos_depth < 1:
         parser.error("--state-qos-depth must be positive")
+    if not 0.0 <= args.move_template_multiplier <= 1.5:
+        parser.error("--move-template-multiplier must be in [0, 1.5]")
+    if not 0.0 <= args.policy_vx_floor <= 0.60:
+        parser.error("--policy-vx-floor must be in [0, 0.60]")
     if args.heading_recovery_enter_rad is not None:
         if not 0.0 <= args.heading_recovery_exit_rad < args.heading_recovery_enter_rad:
             parser.error("heading recovery requires 0 <= exit < enter")
+    if args.heading_action_recovery_enter_rad is not None:
+        if not 0.0 <= args.heading_action_recovery_exit_rad < args.heading_action_recovery_enter_rad:
+            parser.error("heading action recovery requires 0 <= exit < enter")
+        if args.heading_action_recovery_gain <= 0.0:
+            parser.error("--heading-action-recovery-gain must be positive")
+        if not 0.0 < args.heading_action_recovery_limit <= 0.5:
+            parser.error("--heading-action-recovery-limit must be in (0, 0.5]")
     if not 0.0 <= args.recovery_exit_m < args.recovery_enter_m:
         parser.error("recovery thresholds require 0 <= exit < enter")
     if args.recovery_slew_rate_per_s <= 0.0:

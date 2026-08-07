@@ -5,6 +5,7 @@ ROOT=/workspace
 SIM="$ROOT/x2_rl_deploy_mujoco"
 CASE_NAME="${CASE_NAME:?CASE_NAME is required}"
 COMMAND_VX="${COMMAND_VX:-0.30}"
+POLICY_VX_FLOOR="${POLICY_VX_FLOOR:-0.0}"
 PHASE_OFFSET="${PHASE_OFFSET:-0.0}"
 CONTROL_MODE="${CONTROL_MODE:-full}"
 CLOCK_MODE="${CLOCK_MODE:-step}"
@@ -14,12 +15,17 @@ DEFAULT_POSE_PROFILE="${DEFAULT_POSE_PROFILE:-stage208}"
 PREPARE_SECONDS="${PREPARE_SECONDS:-0.2}"
 STAND_SECONDS="${STAND_SECONDS:-2.0}"
 MOVE_SECONDS="${MOVE_SECONDS:-4.0}"
+MOVE_TEMPLATE_MULTIPLIER="${MOVE_TEMPLATE_MULTIPLIER:-1.0}"
 STOP_SECONDS="${STOP_SECONDS:-8.0}"
 STATE_PREDICTION_SECONDS="${STATE_PREDICTION_SECONDS:-0.0}"
 STATE_QOS_DEPTH="${STATE_QOS_DEPTH:-10}"
 HEADING_GAIN="${HEADING_GAIN:-0.0}"
 HEADING_RECOVERY_ENTER_RAD="${HEADING_RECOVERY_ENTER_RAD:-}"
 HEADING_RECOVERY_EXIT_RAD="${HEADING_RECOVERY_EXIT_RAD:-0.08}"
+HEADING_ACTION_RECOVERY_ENTER_RAD="${HEADING_ACTION_RECOVERY_ENTER_RAD:-}"
+HEADING_ACTION_RECOVERY_EXIT_RAD="${HEADING_ACTION_RECOVERY_EXIT_RAD:-0.10}"
+HEADING_ACTION_RECOVERY_GAIN="${HEADING_ACTION_RECOVERY_GAIN:-1.0}"
+HEADING_ACTION_RECOVERY_LIMIT="${HEADING_ACTION_RECOVERY_LIMIT:-0.25}"
 CROSS_TRACK_HEADING_GAIN="${CROSS_TRACK_HEADING_GAIN:-0.0}"
 CROSS_TRACK_HEADING_LIMIT="${CROSS_TRACK_HEADING_LIMIT:-0.30}"
 HEADING_RATE_LIMIT="${HEADING_RATE_LIMIT:-0.5}"
@@ -89,6 +95,7 @@ export DISPLAY=:99
 EXTRA_ARGS=()
 [[ -n "$FIXED_WZ" ]] && EXTRA_ARGS+=(--fixed-wz "$FIXED_WZ")
 [[ -n "$HEADING_RECOVERY_ENTER_RAD" ]] && EXTRA_ARGS+=(--heading-recovery-enter-rad "$HEADING_RECOVERY_ENTER_RAD")
+[[ -n "$HEADING_ACTION_RECOVERY_ENTER_RAD" ]] && EXTRA_ARGS+=(--heading-action-recovery-enter-rad "$HEADING_ACTION_RECOVERY_ENTER_RAD")
 [[ -n "$STATIONARY_MODEL_PATH" ]] && EXTRA_ARGS+=(--stationary-model "$STATIONARY_MODEL_PATH")
 [[ "$MIRROR_POLICY" == "true" ]] && EXTRA_ARGS+=(--mirror-policy)
 
@@ -96,15 +103,20 @@ cd /repo
 python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --model "$MODEL_PATH" --template /template.npz \
   --output "${OUTPUT_ROOT}/${CASE_NAME}.json" --vx "$COMMAND_VX" \
+  --policy-vx-floor "$POLICY_VX_FLOOR" \
   --phase-offset "$PHASE_OFFSET" --clock-mode "$CLOCK_MODE" --control-mode "$CONTROL_MODE" \
   --pd-profile "$PD_PROFILE" --default-pose-profile "$DEFAULT_POSE_PROFILE" \
   --prepare-seconds "$PREPARE_SECONDS" --stand-seconds "$STAND_SECONDS" \
   --stationary-warmup-seconds "$STATIONARY_WARMUP_SECONDS" --stationary-blend "$STATIONARY_BLEND" \
   --move-seconds "$MOVE_SECONDS" --stop-seconds "$STOP_SECONDS" \
+  --move-template-multiplier "$MOVE_TEMPLATE_MULTIPLIER" \
   --state-prediction-seconds "$STATE_PREDICTION_SECONDS" \
   --state-qos-depth "$STATE_QOS_DEPTH" \
   --heading-gain "$HEADING_GAIN" --cross-track-heading-gain "$CROSS_TRACK_HEADING_GAIN" \
   --heading-recovery-exit-rad "$HEADING_RECOVERY_EXIT_RAD" \
+  --heading-action-recovery-exit-rad "$HEADING_ACTION_RECOVERY_EXIT_RAD" \
+  --heading-action-recovery-gain "$HEADING_ACTION_RECOVERY_GAIN" \
+  --heading-action-recovery-limit "$HEADING_ACTION_RECOVERY_LIMIT" \
   --cross-track-heading-limit "$CROSS_TRACK_HEADING_LIMIT" --heading-rate-limit "$HEADING_RATE_LIMIT" \
   --action-bias-mode "$ACTION_BIAS_MODE" --action-bias "$ACTION_BIAS" \
   --action-bias-ramp-seconds "$ACTION_BIAS_RAMP_SECONDS" \

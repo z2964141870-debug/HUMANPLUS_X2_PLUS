@@ -8,6 +8,7 @@ PREFIX="${PREFIX:?PREFIX is required}"
 REPEATS="${REPEATS:-6}"
 BASE_DOMAIN_ID="${BASE_DOMAIN_ID:-190}"
 RESUME="${RESUME:-true}"
+COMMAND_VX="${COMMAND_VX:-0.30}"
 
 if (( BASE_DOMAIN_ID < 0 || BASE_DOMAIN_ID + REPEATS - 1 > 232 )); then
   echo "invalid ROS domain range" >&2
@@ -27,7 +28,7 @@ PY
   fi
   if ! env CASE_NAME="${PREFIX}_straight_r${repeat}" \
     ROS_DOMAIN_ID="$((BASE_DOMAIN_ID + repeat - 1))" RESULT_ROOT="$RESULT_ROOT" \
-    MODEL_PATH=/models/stage219_s2600_actor.onnx COMMAND_VX=0.30 \
+    MODEL_PATH=/models/stage219_s2600_actor.onnx COMMAND_VX="$COMMAND_VX" \
     MOVE_SECONDS=4.0 STOP_SECONDS=8.0 \
     ACTION_BIAS_MODE=lateral_recovery_supervisor ACTION_BIAS=0.50 \
     ANKLE_ROLL_COMMON_BIAS=0.20 RECOVERY_ENTER_M=0.12 RECOVERY_EXIT_M=0.04 \
