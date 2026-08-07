@@ -19,6 +19,7 @@
 - [`ROUND7_RESULT_CARD.md`](ROUND7_RESULT_CARD.md)：当前最新裁决；
 - [`DECISIONS.md`](DECISIONS.md)：不可事后修改的关键决策；
 - [`FAILURES.md`](FAILURES.md)：失败假设与反例；
+- [`history/legacy_x2_migration/INDEX.md`](history/legacy_x2_migration/INDEX.md)：Stage 0–163 旧迁移历史、关键报告与完整归档恢复入口；
 - [`ARTIFACT_STORAGE.md`](ARTIFACT_STORAGE.md)：大文件存储与恢复规则。
 
 ## 仓库边界
@@ -44,4 +45,3 @@ conda run --no-capture-output -n x2-sonic-isaaclab python -m pytest -q
 
 完整 IsaacLab 运行仍依赖本机旧工程、X2 资产和 `x2-sonic-isaaclab` 环境；
 仓库本身不复制这些第三方/旧工程资产。
-
