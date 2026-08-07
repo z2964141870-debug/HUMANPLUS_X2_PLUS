@@ -189,6 +189,7 @@ class Stage208OfficialAdapter(Node):
         }
 
         self.previous_action = np.zeros(15, dtype=np.float32)
+        self.heading_target_rad: float | None = None
         self.ready_wall_time: float | None = None
         self.prepare_start_q: dict[str, float] = {}
         self.control_steps = 0
@@ -285,7 +286,23 @@ class Stage208OfficialAdapter(Node):
         base_lin_vel = world_vector_to_body(self.odom, base_lin_vel_w)
         omega = self.imu.angular_velocity
         base_ang_vel = np.asarray([omega.x, omega.y, omega.z], dtype=np.float32)
-        command = np.asarray([command_vx, 0.0, 0.0], dtype=np.float32)
+        current_yaw = yaw_from_quaternion(self.odom)
+        if self.heading_target_rad is None:
+            self.heading_target_rad = current_yaw
+        heading_error = math.atan2(
+            math.sin(self.heading_target_rad - current_yaw),
+            math.cos(self.heading_target_rad - current_yaw),
+        )
+        command_wz = float(
+            np.clip(
+                self.args.heading_gain * heading_error,
+                -self.args.heading_rate_limit,
+                self.args.heading_rate_limit,
+            )
+        )
+        if self.args.fixed_wz is not None and abs(command_vx) > 0.1:
+            command_wz = self.args.fixed_wz
+        command = np.asarray([command_vx, 0.0, command_wz], dtype=np.float32)
         joint_pos = np.asarray([self.joints[name][0] - DEFAULT[name] for name in ISAAC_JOINTS], dtype=np.float32)
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
         moving = abs(command_vx) > 0.1
@@ -306,7 +323,25 @@ class Stage208OfficialAdapter(Node):
         )
         if self.args.control_mode == "actor_only":
             template_bias.fill(0.0)
-        combined = np.clip(residual + template_bias, -1.0, 1.0)
+        combined_preclip = residual + template_bias
+        if moving and self.args.action_bias_mode == "hip_yaw_feedback":
+            feedback_bias = float(
+                np.clip(
+                    self.args.yaw_action_gain * heading_error,
+                    -self.args.action_bias,
+                    self.args.action_bias,
+                )
+            )
+            combined_preclip[[2, 8]] += feedback_bias
+        elif moving and self.args.action_bias != 0.0:
+            if self.args.action_bias_mode == "hip_yaw_common":
+                combined_preclip[[2, 8]] += self.args.action_bias
+            elif self.args.action_bias_mode == "waist_yaw":
+                combined_preclip[12] += self.args.action_bias
+            elif self.args.action_bias_mode == "hip_waist_counter":
+                combined_preclip[[2, 8]] += self.args.action_bias
+                combined_preclip[12] -= self.args.action_bias
+        combined = np.clip(combined_preclip, -1.0, 1.0)
         targets = dict(DEFAULT)
         for index, name in enumerate(LOWER_JOINTS):
             targets[name] = DEFAULT[name] + float(combined[index] * LOWER_SCALE[index])
@@ -411,6 +446,12 @@ class Stage208OfficialAdapter(Node):
             "command_vx_mps": self.args.vx,
             "control_mode": self.args.control_mode,
             "pd_profile": self.args.pd_profile,
+            "heading_gain": self.args.heading_gain,
+            "heading_rate_limit_radps": self.args.heading_rate_limit,
+            "fixed_wz_radps": self.args.fixed_wz,
+            "action_bias_mode": self.args.action_bias_mode,
+            "action_bias": self.args.action_bias,
+            "yaw_action_gain": self.args.yaw_action_gain,
             "prepare_seconds": self.args.prepare_seconds,
             "stand_seconds": self.args.stand_seconds,
             "move_seconds": self.args.move_seconds,
@@ -464,6 +505,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stand-seconds", type=float, default=2.0)
     parser.add_argument("--move-seconds", type=float, default=8.0)
     parser.add_argument("--stop-seconds", type=float, default=0.0)
+    parser.add_argument("--heading-gain", type=float, default=0.0)
+    parser.add_argument("--heading-rate-limit", type=float, default=0.5)
+    parser.add_argument("--fixed-wz", type=float)
+    parser.add_argument(
+        "--action-bias-mode",
+        choices=("none", "hip_yaw_common", "waist_yaw", "hip_waist_counter", "hip_yaw_feedback"),
+        default="none",
+    )
+    parser.add_argument("--action-bias", type=float, default=0.0)
+    parser.add_argument("--yaw-action-gain", type=float, default=0.0)
     parser.add_argument(
         "--pd-profile",
         choices=(
