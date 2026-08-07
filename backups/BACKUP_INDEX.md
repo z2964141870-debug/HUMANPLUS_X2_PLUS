@@ -1,5 +1,15 @@
 # X2 大文件备份索引
 
+## 2026-08-08 / task 50
+
+- Git：`71a834c`，已推送 `origin/main`。
+- 本地包：`x2_official_upper_pd_task50_20260808.tar.gz`
+- 大小：`67,647,558 bytes`（约 `64.51 MiB`）。
+- SHA256：`0ffe79bdc8d5c08dc644576ca5f9bda8431d3eba7eabeb46fc27c236b1ca5073`
+- 内容：Stage219 ONNX、真实 X2 上肢轨迹小资产、Stage251–263 官方 MuJoCo 上肢/转向/PD 联合门禁结果、Stage264 长训解锁裁决、复现与汇总脚本、内部 `SHA256SUMS`。
+- 完整性：本地解包后 106 个 payload 的 `sha256sum -c SHA256SUMS` 全部通过。
+- 百度：`who` 与远端目录读取正常，但上传在传输前仍返回“获取用户 uk 错误”；未误报成功。本地包保留。这表明 BDUSS 仍可读目录，但上传所需 STOKEN 已失效或不完整，只有实际上传失败时才需刷新，不必机械地每天刷新。
+
 ## 2026-08-08 / task 40
 
 - Git：`bea845f`，已推送 `origin/main`。
