@@ -1,0 +1,10 @@
+{
+  "status": "already_present_same_size",
+  "local_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage306_s2657_transition_head_actor.onnx",
+  "remote_path_relative_to_apps_bdpan": "x2-project-backups/2026-08-08/stage306_s2657_transition_head_actor.onnx",
+  "local_size": 329334,
+  "remote_size": 329334,
+  "local_sha256": "90ed28485cbf8664af6c2a85f4de0917b0bd97b1c5afc640881def53ea5d31e6",
+  "verification": "remote path and byte size only; cryptographic readback pending",
+  "uploaded_at": "2026-08-08T12:27:40+08:00"
+}
