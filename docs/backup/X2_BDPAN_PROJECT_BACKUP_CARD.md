@@ -51,13 +51,13 @@ bash "/home/humanplus/projects/Human+智能服装动作捕捉系统/tools/bdpan-
 ```bash
 bash "$UPLOAD" \
   /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/checkpoints/model.pt \
-  x2-project-backups/2026-08-08
+  'HUMAN+/HUMANPLUS_X2_PLUS/2026-08-08/checkpoints'
 ```
 
 上述远端目录实际显示为：
 
 ```text
-我的应用数据/bdpan/x2-project-backups/2026-08-08/
+我的应用数据/bdpan/HUMAN+/HUMANPLUS_X2_PLUS/2026-08-08/checkpoints/
 ```
 
 脚本行为：
@@ -101,9 +101,20 @@ Git commit、文件路径、大小、SHA-256、网盘相对路径
 | `stage306_s2657_transition_head_actor.onnx` | 329,334 | 封装脚本上传成功，重复运行正确跳过 |
 | `stage152_B_dual_equal_split_init.pt` | 193,683,894 | 上传成功，远端大小一致 |
 
-远端目录：
+上述三份早期验证文件仍保留在旧验证目录，未擅自移动：
 
 [打开 X2 2026-08-08 归档](https://pan.baidu.com/disk/main#/index?category=all&path=%2Fapps%2Fbdpan%2Fx2-project-backups%2F2026-08-08)
+
+后续正式归档统一使用：
+
+```text
+我的应用数据/bdpan/HUMAN+/HUMANPLUS_X2_PLUS/YYYY-MM-DD/
+├── checkpoints/
+├── models/
+├── reports/
+├── videos/
+└── manifests/
+```
 
 ## 恢复策略
 

@@ -66,7 +66,11 @@ list_remote() {
 
 remote_size_from_json() {
   jq -r --arg name "$remote_name" \
-    '.[] | select(.server_filename == $name and .isdir == false) | .size' \
+    'if type == "array" then
+       .[] | select(.server_filename == $name and .isdir == false) | .size
+     else
+       empty
+     end' \
     | head -n 1
 }
 
@@ -96,19 +100,32 @@ write_manifest() {
 }
 
 existing_json=""
-if existing_json="$(list_remote 2>/dev/null)"; then
-  existing_size="$(printf '%s\n' "$existing_json" | remote_size_from_json)"
-  if [[ -n "$existing_size" ]]; then
-    if [[ "$existing_size" == "$local_size" ]]; then
-      write_manifest "already_present_same_size" "$existing_size"
-      echo "remote artifact already exists with matching size: $remote_path"
-      echo "manifest: $manifest_path"
-      exit 0
-    fi
-    echo "refusing to overwrite remote artifact with different size: $remote_path" >&2
-    echo "remote=$existing_size local=$local_size" >&2
-    exit 73
+preflight_ok="false"
+for preflight_attempt in 1 2 3; do
+  if existing_json="$(list_remote 2>/dev/null)" \
+    && printf '%s\n' "$existing_json" | jq -e 'type == "array"' >/dev/null; then
+    preflight_ok="true"
+    break
   fi
+  sleep 2
+done
+
+if [[ "$preflight_ok" != "true" ]]; then
+  echo "remote preflight list did not return a valid array; refusing to upload." >&2
+  exit 4
+fi
+
+existing_size="$(printf '%s\n' "$existing_json" | remote_size_from_json)"
+if [[ -n "$existing_size" ]]; then
+  if [[ "$existing_size" == "$local_size" ]]; then
+    write_manifest "already_present_same_size" "$existing_size"
+    echo "remote artifact already exists with matching size: $remote_path"
+    echo "manifest: $manifest_path"
+    exit 0
+  fi
+  echo "refusing to overwrite remote artifact with different size: $remote_path" >&2
+  echo "remote=$existing_size local=$local_size" >&2
+  exit 73
 fi
 
 delays=(2 5 15)
