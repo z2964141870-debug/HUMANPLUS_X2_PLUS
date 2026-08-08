@@ -39,6 +39,7 @@ ANKLE_ROLL_COMMON_BIAS="${ANKLE_ROLL_COMMON_BIAS:-0.0}"
 LEFT_HIP_YAW_BIAS="${LEFT_HIP_YAW_BIAS:-0.0}"
 RIGHT_HIP_YAW_BIAS="${RIGHT_HIP_YAW_BIAS:-0.0}"
 YAW_ACTION_GAIN="${YAW_ACTION_GAIN:-0.0}"
+TURN_FEEDBACK_FADE_SECONDS="${TURN_FEEDBACK_FADE_SECONDS:-0.0}"
 LATERAL_POSITION_GAIN="${LATERAL_POSITION_GAIN:-0.8}"
 LATERAL_VELOCITY_GAIN="${LATERAL_VELOCITY_GAIN:-0.2}"
 RECOVERY_ENTER_M="${RECOVERY_ENTER_M:-0.12}"
@@ -51,6 +52,7 @@ STATIONARY_CONTROLLER="${STATIONARY_CONTROLLER:-policy}"
 STOP_CONTROLLER="${STOP_CONTROLLER:-policy}"
 STOP_TRANSITION_SECONDS="${STOP_TRANSITION_SECONDS:-1.0}"
 STOP_INTENT_DECELERATE_SECONDS="${STOP_INTENT_DECELERATE_SECONDS:-2.0}"
+FUTURE_STOP_PREVIEW_SECONDS="${FUTURE_STOP_PREVIEW_SECONDS:-0.0}"
 STOP_BRAKE_GAIN="${STOP_BRAKE_GAIN:-0.8}"
 STOP_BRAKE_LIMIT="${STOP_BRAKE_LIMIT:-0.30}"
 STOP_BRAKE_TEMPLATE_SPEED="${STOP_BRAKE_TEMPLATE_SPEED:-0.30}"
@@ -65,6 +67,7 @@ STATIONARY_WARMUP_SECONDS="${STATIONARY_WARMUP_SECONDS:-0.0}"
 STATIONARY_BLEND="${STATIONARY_BLEND:-0.50}"
 UPPER_MOTION="${UPPER_MOTION:-}"
 UPPER_SCALE="${UPPER_SCALE:-0.25}"
+UPPER_INTENT_SCALE="${UPPER_INTENT_SCALE:-}"
 UPPER_START_SECONDS="${UPPER_START_SECONDS:-0.0}"
 UPPER_TIME_SCALE="${UPPER_TIME_SCALE:-0.5}"
 UPPER_MAX_EXCURSION_RAD="${UPPER_MAX_EXCURSION_RAD:-0.12}"
@@ -114,6 +117,7 @@ EXTRA_ARGS=()
 [[ -n "$STATIONARY_MODEL_PATH" ]] && EXTRA_ARGS+=(--stationary-model "$STATIONARY_MODEL_PATH")
 [[ "$MIRROR_POLICY" == "true" ]] && EXTRA_ARGS+=(--mirror-policy)
 [[ -n "$UPPER_MOTION" ]] && EXTRA_ARGS+=(--upper-motion "$UPPER_MOTION")
+[[ -n "$UPPER_INTENT_SCALE" ]] && EXTRA_ARGS+=(--upper-intent-scale "$UPPER_INTENT_SCALE")
 [[ "$UPPER_LOOP" == "true" ]] && EXTRA_ARGS+=(--upper-loop)
 [[ "$UPPER_FALLBACK_LATCH" == "true" ]] && EXTRA_ARGS+=(--upper-fallback-latch)
 
@@ -142,6 +146,7 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --ankle-roll-common-bias "$ANKLE_ROLL_COMMON_BIAS" \
   --left-hip-yaw-bias "$LEFT_HIP_YAW_BIAS" --right-hip-yaw-bias "$RIGHT_HIP_YAW_BIAS" \
   --yaw-action-gain "$YAW_ACTION_GAIN" \
+  --turn-feedback-fade-seconds "$TURN_FEEDBACK_FADE_SECONDS" \
   --lateral-position-gain "$LATERAL_POSITION_GAIN" --lateral-velocity-gain "$LATERAL_VELOCITY_GAIN" \
   --recovery-enter-m "$RECOVERY_ENTER_M" --recovery-exit-m "$RECOVERY_EXIT_M" \
   --recovery-slew-rate-per-s "$RECOVERY_SLEW_RATE_PER_S" --phase-action-boost "$PHASE_ACTION_BOOST" \
@@ -157,6 +162,7 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --stationary-controller "$STATIONARY_CONTROLLER" --stop-controller "$STOP_CONTROLLER" \
   --stop-transition-seconds "$STOP_TRANSITION_SECONDS" \
   --stop-intent-decelerate-seconds "$STOP_INTENT_DECELERATE_SECONDS" \
+  --future-stop-preview-seconds "$FUTURE_STOP_PREVIEW_SECONDS" \
   --stop-brake-gain "$STOP_BRAKE_GAIN" --stop-brake-limit "$STOP_BRAKE_LIMIT" \
   --stop-brake-template-speed "$STOP_BRAKE_TEMPLATE_SPEED" \
   --stop-brake-template-floor "$STOP_BRAKE_TEMPLATE_FLOOR" \

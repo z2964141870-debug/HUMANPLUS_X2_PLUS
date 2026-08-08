@@ -1,0 +1,111 @@
+{
+  "stage": "stage328_balance_arm_scale_panel",
+  "domain": "official_mujoco_stiff1p2",
+  "upper_intent_scale": 0.0,
+  "future_stop_preview_seconds": 0.5,
+  "attempt_failures": 3,
+  "groups": {
+    "0.10": {
+      "passes": 3,
+      "valid": 5,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.20698087756838995,
+          "stop_drift_m": 0.13586620507004668,
+          "upper_excursion_rad": 0.041399294137954734
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.19083063332977523,
+          "stop_drift_m": 0.1271853466882557,
+          "upper_excursion_rad": 0.041399294137954734
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.2823369500621188,
+          "stop_drift_m": 0.11796735061120356,
+          "upper_excursion_rad": 0.041399294137954734
+        },
+        {
+          "repeat": 4,
+          "result": "fail",
+          "move": true,
+          "stop": false,
+          "heading_max_rad": 0.11431073625828247,
+          "stop_drift_m": 0.5649869172859816,
+          "upper_excursion_rad": 0.041399294137954734
+        },
+        {
+          "repeat": 5,
+          "result": "fail",
+          "move": true,
+          "stop": false,
+          "heading_max_rad": 0.13127809464189524,
+          "stop_drift_m": 0.5679903729344881,
+          "upper_excursion_rad": 0.041399294137954734
+        }
+      ]
+    },
+    "0.15": {
+      "passes": 3,
+      "valid": 5,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.10330450438366218,
+          "stop_drift_m": 0.13461481148461374,
+          "upper_excursion_rad": 0.06209894418716433
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.12649176519559843,
+          "stop_drift_m": 0.13197177299552196,
+          "upper_excursion_rad": 0.06209894418716433
+        },
+        {
+          "repeat": 3,
+          "result": "fail",
+          "move": true,
+          "stop": false,
+          "heading_max_rad": 0.10418900658529007,
+          "stop_drift_m": 0.6279871343812446,
+          "upper_excursion_rad": 0.06209894418716433
+        },
+        {
+          "repeat": 4,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.1508867232995953,
+          "stop_drift_m": 0.10460841866352312,
+          "upper_excursion_rad": 0.06209894418716433
+        },
+        {
+          "repeat": 5,
+          "result": "fail",
+          "move": false,
+          "stop": true,
+          "heading_max_rad": 0.3281038044222552,
+          "stop_drift_m": 0.12521385333989915,
+          "upper_excursion_rad": 0.06209894418716433
+        }
+      ]
+    }
+  }
+}

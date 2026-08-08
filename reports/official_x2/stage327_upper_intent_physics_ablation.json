@@ -1,0 +1,74 @@
+{
+  "stage": "stage327_upper_intent_physics_ablation",
+  "domain": "official_mujoco_stiff1p2",
+  "future_stop_preview_seconds": 0.5,
+  "attempt_failures": 1,
+  "groups": {
+    "intent_only": {
+      "passes": 2,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.29453019812566916,
+          "stop_drift_m": 0.11213970165339462,
+          "stop_root_z_min_m": 0.6314609572709032
+        },
+        {
+          "repeat": 2,
+          "result": "fail",
+          "move": false,
+          "stop": true,
+          "heading_max_rad": 0.3230484778121884,
+          "stop_drift_m": 0.13386359662304875,
+          "stop_root_z_min_m": 0.6320630972377228
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.24269642538193295,
+          "stop_drift_m": 0.08422690926415351,
+          "stop_root_z_min_m": 0.627207696143957
+        }
+      ]
+    },
+    "physical_only": {
+      "passes": 3,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.28320109427002227,
+          "stop_drift_m": 0.10122303018915174,
+          "stop_root_z_min_m": 0.6322413356443453
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.1701746206214794,
+          "stop_drift_m": 0.10682912843621152,
+          "stop_root_z_min_m": 0.6341439016591185
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "move": true,
+          "stop": true,
+          "heading_max_rad": 0.10998058956961279,
+          "stop_drift_m": 0.07191978997040352,
+          "stop_root_z_min_m": 0.6319562845617046
+        }
+      ]
+    }
+  }
+}

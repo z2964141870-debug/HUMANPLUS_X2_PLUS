@@ -1,0 +1,115 @@
+{
+  "stage": "stage316_right_yaw_gain_panel",
+  "prefix": "stage316_s2652_split_intent_nominal_right_yaw_gain",
+  "attempt_failures": 0,
+  "groups": {
+    "2.5": {
+      "passes": 3,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "yaw_ratio": 0.6606539742988671,
+          "heading_max_deviation_rad": 0.3987475735556919,
+          "stop_drift_m": 0.07954877712665931
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "yaw_ratio": 0.5743654544194078,
+          "heading_max_deviation_rad": 0.3552477949830211,
+          "stop_drift_m": 0.06742013602267727
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "yaw_ratio": 0.6479849946111109,
+          "heading_max_deviation_rad": 0.40311063731047503,
+          "stop_drift_m": 0.06524657547536494
+        }
+      ]
+    },
+    "3.0": {
+      "passes": 3,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "yaw_ratio": 0.7469055947151436,
+          "heading_max_deviation_rad": 0.45981226013157117,
+          "stop_drift_m": 0.06058312852952002
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "yaw_ratio": 0.6942556565414658,
+          "heading_max_deviation_rad": 0.42685927589226913,
+          "stop_drift_m": 0.06976109146753373
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "yaw_ratio": 0.8400151621709411,
+          "heading_max_deviation_rad": 0.5040090973025646,
+          "stop_drift_m": 0.08944332107791501
+        }
+      ]
+    },
+    "3.5": {
+      "passes": 0,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "yaw_ratio": 0.8676078382680252,
+          "heading_max_deviation_rad": 0.530689215413504,
+          "stop_drift_m": 0.546770805583166
+        },
+        {
+          "repeat": 2,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "yaw_ratio": 0.8400472572129951,
+          "heading_max_deviation_rad": 0.5104107623698684,
+          "stop_drift_m": 0.5761067588966332
+        },
+        {
+          "repeat": 3,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "yaw_ratio": 0.9684196127148889,
+          "heading_max_deviation_rad": 0.581822549910039,
+          "stop_drift_m": 0.5397780887003405
+        }
+      ]
+    }
+  }
+}

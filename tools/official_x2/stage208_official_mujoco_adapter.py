@@ -571,7 +571,12 @@ class Stage208OfficialAdapter(Node):
                 reference_time,
                 loop=self.args.upper_loop,
             )
-            delta = self.args.upper_scale * (sample - self.upper_baseline)
+            intent_scale = (
+                self.args.upper_scale
+                if self.args.upper_intent_scale is None
+                else self.args.upper_intent_scale
+            )
+            delta = intent_scale * (sample - self.upper_baseline)
             return np.clip(
                 delta,
                 -self.args.upper_max_excursion_rad,
@@ -903,6 +908,17 @@ class Stage208OfficialAdapter(Node):
                     self.args.action_bias,
                 )
             ) * template_multiplier
+            if self.args.turn_feedback_fade_seconds > 0.0:
+                remaining = self.args.move_seconds - phase_elapsed
+                fade = float(
+                    np.clip(
+                        remaining / self.args.turn_feedback_fade_seconds,
+                        0.0,
+                        1.0,
+                    )
+                )
+                fade = fade * fade * (3.0 - 2.0 * fade)
+                correction *= fade
             if self.args.fixed_wz >= 0.0:
                 # Positive yaw was empirically controllable through a bounded
                 # common hip-yaw mode in the official X2 model.
@@ -1397,9 +1413,26 @@ class Stage208OfficialAdapter(Node):
             policy_vx = math.copysign(
                 max(abs(self.args.vx), self.args.policy_vx_floor), self.args.vx
             )
+            future_policy_vx = None
+            if self.args.future_stop_preview_seconds > 0.0:
+                time_to_stop = self.args.move_seconds - move_elapsed
+                fraction = float(
+                    np.clip(
+                        time_to_stop / self.args.future_stop_preview_seconds,
+                        0.0,
+                        1.0,
+                    )
+                )
+                smooth = fraction * fraction * (3.0 - 2.0 * fraction)
+                future_policy_vx = policy_vx * smooth
             targets, obs, action = self._policy_targets(
                 move_elapsed,
                 policy_vx,
+                # The Stage306 123-D actor owns a future-intent channel, but
+                # previewing a stop too early can destabilize an otherwise
+                # valid gait.  Keep this deployment contract explicit and
+                # default-off so every preview horizon has a matched A/B.
+                future_command_vx=future_policy_vx,
                 template_multiplier=self.args.move_template_multiplier,
             )
             self._publish(targets, upper_elapsed=move_elapsed)
@@ -1457,6 +1490,7 @@ class Stage208OfficialAdapter(Node):
             "left_hip_yaw_bias": self.args.left_hip_yaw_bias,
             "right_hip_yaw_bias": self.args.right_hip_yaw_bias,
             "yaw_action_gain": self.args.yaw_action_gain,
+            "turn_feedback_fade_seconds": self.args.turn_feedback_fade_seconds,
             "lateral_position_gain": self.args.lateral_position_gain,
             "lateral_velocity_gain": self.args.lateral_velocity_gain,
             "recovery_enter_m": self.args.recovery_enter_m,
@@ -1468,6 +1502,7 @@ class Stage208OfficialAdapter(Node):
             "upper_motion": self.args.upper_motion,
             "upper_motion_source": self.upper_source,
             "upper_scale": self.args.upper_scale,
+            "upper_intent_scale": self.args.upper_intent_scale,
             "upper_time_scale": self.args.upper_time_scale,
             "upper_max_excursion_rad": self.args.upper_max_excursion_rad,
             "upper_max_velocity_radps": self.args.upper_max_velocity_radps,
@@ -1482,6 +1517,7 @@ class Stage208OfficialAdapter(Node):
             "stop_controller": self.args.stop_controller,
             "stop_transition_seconds": self.args.stop_transition_seconds,
             "stop_intent_decelerate_seconds": self.args.stop_intent_decelerate_seconds,
+            "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
             "stop_hold_latch_s": self.stop_hold_latch_s,
             "stop_brake_gain": self.args.stop_brake_gain,
             "stop_brake_limit_mps": self.args.stop_brake_limit,
@@ -1788,6 +1824,14 @@ def parse_args() -> argparse.Namespace:
         help="Portable NPZ containing a 14-joint X2 upper-body reference.",
     )
     parser.add_argument("--upper-scale", type=float, default=0.25)
+    parser.add_argument(
+        "--upper-intent-scale",
+        type=float,
+        help=(
+            "Ablation-only scale for the actor's upper-intent suffix; when "
+            "omitted it exactly matches --upper-scale used by arm commands."
+        ),
+    )
     parser.add_argument("--upper-start-seconds", type=float, default=0.0)
     parser.add_argument("--upper-time-scale", type=float, default=0.5)
     parser.add_argument("--upper-max-excursion-rad", type=float, default=0.12)
@@ -1904,6 +1948,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--left-hip-yaw-bias", type=float, default=0.0)
     parser.add_argument("--right-hip-yaw-bias", type=float, default=0.0)
     parser.add_argument("--yaw-action-gain", type=float, default=0.0)
+    parser.add_argument(
+        "--turn-feedback-fade-seconds",
+        type=float,
+        default=0.0,
+        help=(
+            "Smoothly remove turn-progress action feedback near the end of "
+            "movement so the stop controller does not inherit a late yaw impulse."
+        ),
+    )
     parser.add_argument("--lateral-position-gain", type=float, default=0.8)
     parser.add_argument("--lateral-velocity-gain", type=float, default=0.2)
     parser.add_argument("--recovery-enter-m", type=float, default=0.12)
@@ -1958,6 +2011,15 @@ def parse_args() -> argparse.Namespace:
         default=2.0,
         help="C1 high-level intent horizon used by the Stage306 transition adapter.",
     )
+    parser.add_argument(
+        "--future-stop-preview-seconds",
+        type=float,
+        default=0.0,
+        help=(
+            "Expose a smooth future-vx transition during the final part of the "
+            "move phase for 123-D future-intent actors; 0 preserves the baseline."
+        ),
+    )
     parser.add_argument("--event-hold-min-seconds", type=float, default=0.5)
     parser.add_argument("--event-hold-speed", type=float, default=0.05)
     parser.add_argument("--event-hold-tilt", type=float, default=0.10)
@@ -1998,6 +2060,10 @@ def parse_args() -> argparse.Namespace:
         parser.error("--stationary-warmup-seconds must be non-negative")
     if args.action_bias_ramp_seconds < 0.0:
         parser.error("--action-bias-ramp-seconds must be non-negative")
+    if args.future_stop_preview_seconds < 0.0:
+        parser.error("--future-stop-preview-seconds must be non-negative")
+    if args.turn_feedback_fade_seconds < 0.0:
+        parser.error("--turn-feedback-fade-seconds must be non-negative")
     if not 0.0 <= args.state_prediction_seconds <= 0.02:
         parser.error("--state-prediction-seconds must be in [0, 0.02]")
     if args.state_qos_depth < 1:
@@ -2026,6 +2092,8 @@ def parse_args() -> argparse.Namespace:
         parser.error("--waist-tilt-action-multiplier must be in [0, 1]")
     if args.upper_scale < 0.0:
         parser.error("--upper-scale must be non-negative")
+    if args.upper_intent_scale is not None and args.upper_intent_scale < 0.0:
+        parser.error("--upper-intent-scale must be non-negative")
     if args.upper_start_seconds < 0.0:
         parser.error("--upper-start-seconds must be non-negative")
     if args.upper_time_scale <= 0.0:
