@@ -50,6 +50,7 @@ WAIST_TILT_ACTION_MULTIPLIER="${WAIST_TILT_ACTION_MULTIPLIER:-1.0}"
 STATIONARY_CONTROLLER="${STATIONARY_CONTROLLER:-policy}"
 STOP_CONTROLLER="${STOP_CONTROLLER:-policy}"
 STOP_TRANSITION_SECONDS="${STOP_TRANSITION_SECONDS:-1.0}"
+STOP_INTENT_DECELERATE_SECONDS="${STOP_INTENT_DECELERATE_SECONDS:-2.0}"
 STOP_BRAKE_GAIN="${STOP_BRAKE_GAIN:-0.8}"
 STOP_BRAKE_LIMIT="${STOP_BRAKE_LIMIT:-0.30}"
 STOP_BRAKE_TEMPLATE_SPEED="${STOP_BRAKE_TEMPLATE_SPEED:-0.30}"
@@ -155,6 +156,7 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --upper-stop-mode "$UPPER_STOP_MODE" \
   --stationary-controller "$STATIONARY_CONTROLLER" --stop-controller "$STOP_CONTROLLER" \
   --stop-transition-seconds "$STOP_TRANSITION_SECONDS" \
+  --stop-intent-decelerate-seconds "$STOP_INTENT_DECELERATE_SECONDS" \
   --stop-brake-gain "$STOP_BRAKE_GAIN" --stop-brake-limit "$STOP_BRAKE_LIMIT" \
   --stop-brake-template-speed "$STOP_BRAKE_TEMPLATE_SPEED" \
   --stop-brake-template-floor "$STOP_BRAKE_TEMPLATE_FLOOR" \

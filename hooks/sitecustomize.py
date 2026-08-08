@@ -61,6 +61,9 @@ def _patch_actions_module(module) -> None:
         latch_fallback = os.environ.get("CWI_UPPER_LATCH_FALLBACK", "0") == "1"
         randomize_clip = os.environ.get("CWI_UPPER_RANDOMIZE_CLIP", "0") == "1"
         loop = os.environ.get("CWI_UPPER_LOOP", "0") == "1"
+        stop_with_command = (
+            os.environ.get("CWI_UPPER_STOP_WITH_COMMAND", "0") == "1"
+        )
         if scale < 0.0:
             raise ValueError("CWI_UPPER_SCALE must be non-negative")
         for start_s, clip in zip(start_values, clips, strict=True):
@@ -101,6 +104,7 @@ def _patch_actions_module(module) -> None:
         self._cwi_upper_heading_fallback = heading_fallback
         self._cwi_upper_latch_fallback = latch_fallback
         self._cwi_upper_loop = loop
+        self._cwi_upper_stop_with_command = stop_with_command
         start_s = self._cwi_upper_start_by_clip[self._cwi_upper_clip_ids]
         self._cwi_upper_baseline = self._cwi_sample_upper(
             start_s
@@ -180,6 +184,10 @@ def _patch_actions_module(module) -> None:
         time_s = self._cwi_reference_time()
         default = self._asset.data.default_joint_pos[:, self._cwi_upper_joint_ids]
         target = default + self._cwi_bounded_intent_delta(time_s)
+        if self._cwi_upper_stop_with_command:
+            command = self._env.command_manager.get_command(self.cfg.command_name)
+            moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.1
+            target = torch.where(moving.unsqueeze(-1), target, default)
         root_quat = self._asset.data.root_quat_w
         root_up_z = 1.0 - 2.0 * (
             root_quat[:, 1].square() + root_quat[:, 2].square()

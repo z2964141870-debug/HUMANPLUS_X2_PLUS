@@ -219,7 +219,7 @@ class Stage208OfficialAdapter(Node):
             ("main", self.model_input_dim),
             ("stationary", self.stationary_input_dim),
         ):
-            if width not in (93, 121):
+            if width not in (93, 121, 123):
                 raise RuntimeError(f"unsupported {label} actor input width: {width}")
         archive = np.load(args.template, allow_pickle=False)
         if tuple(archive["joint_names_15"].tolist()) != LOWER_JOINTS:
@@ -593,6 +593,11 @@ class Stage208OfficialAdapter(Node):
         base_obs: np.ndarray,
         *,
         upper_elapsed: float,
+        phase_elapsed: float = 0.0,
+        command_vx: float = 0.0,
+        locomotion_intent_vx: float | None = None,
+        future_command_vx: float | None = None,
+        force_moving: bool = False,
     ) -> np.ndarray:
         width = int(session.get_inputs()[0].shape[-1])
         if width == 93:
@@ -607,6 +612,32 @@ class Stage208OfficialAdapter(Node):
                     ),
                 )
             ).astype(np.float32)
+        if width == 123:
+            upper = self._upper_intent_features(
+                upper_elapsed,
+                mirror=self.args.mirror_policy,
+            )
+            intent_vx = (
+                command_vx if locomotion_intent_vx is None else locomotion_intent_vx
+            )
+            future_vx = intent_vx if future_command_vx is None else future_command_vx
+            if (
+                force_moving
+                and locomotion_intent_vx is None
+                and future_command_vx is None
+            ):
+                time_to_stop = self.args.move_seconds - phase_elapsed
+                if time_to_stop <= 0.0:
+                    future_vx = 0.0
+                elif time_to_stop < 1.0:
+                    fraction = max(0.0, min(1.0, time_to_stop / 1.0))
+                    blend = fraction * fraction * (3.0 - 2.0 * fraction)
+                    future_vx = command_vx * blend
+            locomotion = np.asarray(
+                [intent_vx / 0.5, (future_vx - intent_vx) / 0.5],
+                dtype=np.float32,
+            )
+            return np.concatenate((base_obs, upper, locomotion)).astype(np.float32)
         raise RuntimeError(f"unsupported actor input width: {width}")
 
     def _predict_physical_observation(
@@ -662,6 +693,8 @@ class Stage208OfficialAdapter(Node):
         command_vx: float,
         *,
         command_vy: float = 0.0,
+        locomotion_intent_vx: float | None = None,
+        future_command_vx: float | None = None,
         force_moving: bool = False,
         template_multiplier: float = 1.0,
         policy_slot: str = "main",
@@ -758,6 +791,11 @@ class Stage208OfficialAdapter(Node):
             session,
             obs,
             upper_elapsed=upper_elapsed if policy_slot == "main" else 0.0,
+            phase_elapsed=phase_elapsed,
+            command_vx=command_vx,
+            locomotion_intent_vx=locomotion_intent_vx,
+            future_command_vx=future_command_vx,
+            force_moving=force_moving,
         )
         raw_action = session.run(["actions"], {"obs": model_obs[None]})[0][0].astype(np.float32)
         if (
@@ -1023,6 +1061,13 @@ class Stage208OfficialAdapter(Node):
         speed = float(np.linalg.norm(body_velocity[:2]))
         return float(command_xy[0]), float(command_xy[1]), speed
 
+    def _curriculum_stop_speed(self, stop_elapsed: float) -> float:
+        """Match the C1 positive-to-zero schedule used by Stage306 training."""
+        duration = max(self.args.stop_intent_decelerate_seconds, 1.0e-6)
+        phase = float(np.clip(stop_elapsed / duration, 0.0, 1.0))
+        smooth = phase * phase * (3.0 - 2.0 * phase)
+        return float(self.args.vx * (1.0 - smooth))
+
     def _replay_target(self, elapsed: float) -> dict[str, float]:
         assert self.replay_targets is not None
         raw_index = int(elapsed / 0.02)
@@ -1206,10 +1251,16 @@ class Stage208OfficialAdapter(Node):
                             1.0,
                         )
                     )
+                    intent_vx = self._curriculum_stop_speed(stop_elapsed)
+                    future_intent_vx = self._curriculum_stop_speed(
+                        stop_elapsed + 1.0
+                    )
                     brake_targets, brake_obs, brake_action = self._policy_targets(
                         phase_elapsed,
                         command_vx,
                         command_vy=command_vy,
+                        locomotion_intent_vx=intent_vx,
+                        future_command_vx=future_intent_vx,
                         force_moving=True,
                         template_multiplier=template_multiplier,
                     )
@@ -1260,6 +1311,42 @@ class Stage208OfficialAdapter(Node):
                 targets = dict(self.default)
                 obs = action = None
                 self.previous_actions["stationary"].fill(0.0)
+            elif self.args.stop_controller == "curriculum_then_policy":
+                transition = max(self.args.stop_transition_seconds, 1.0e-6)
+                if stop_elapsed < transition:
+                    command_vx = self._curriculum_stop_speed(stop_elapsed)
+                    future_vx = self._curriculum_stop_speed(stop_elapsed + 1.0)
+                    template_multiplier = float(
+                        np.clip(
+                            abs(command_vx) / max(abs(self.args.vx), 1.0e-6),
+                            0.0,
+                            1.0,
+                        )
+                    )
+                    targets, obs, action = self._policy_targets(
+                        self.args.move_seconds + stop_elapsed,
+                        command_vx,
+                        future_command_vx=future_vx,
+                        force_moving=True,
+                        template_multiplier=template_multiplier,
+                    )
+                else:
+                    if self.stop_hold_latch_s is None:
+                        # Carry the action that was actually executed at the
+                        # end of the matched deceleration into the stationary
+                        # policy's last-action observation.
+                        self.previous_actions["stationary"] = self.previous_actions[
+                            "main"
+                        ].copy()
+                        self.issued_actions["stationary"] = self.issued_actions[
+                            "main"
+                        ].copy()
+                        self.stop_hold_latch_s = stop_elapsed
+                    targets, obs, action = self._policy_targets(
+                        0.0,
+                        0.0,
+                        policy_slot="stationary",
+                    )
             elif self.args.stop_controller == "ramp_policy":
                 ramp = max(0.0, 1.0 - stop_elapsed / self.args.stop_seconds)
                 targets, obs, action = self._policy_targets(
@@ -1394,6 +1481,7 @@ class Stage208OfficialAdapter(Node):
             "stationary_controller": self.args.stationary_controller,
             "stop_controller": self.args.stop_controller,
             "stop_transition_seconds": self.args.stop_transition_seconds,
+            "stop_intent_decelerate_seconds": self.args.stop_intent_decelerate_seconds,
             "stop_hold_latch_s": self.stop_hold_latch_s,
             "stop_brake_gain": self.args.stop_brake_gain,
             "stop_brake_limit_mps": self.args.stop_brake_limit,
@@ -1853,6 +1941,7 @@ def parse_args() -> argparse.Namespace:
             "velocity_brake",
             "brake_then_policy",
             "brake_blend_to_policy",
+            "curriculum_then_policy",
         ),
         default="policy",
         help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",
@@ -1862,6 +1951,12 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=1.0,
         help="Duration of the moving-to-stationary target blend used by blend_to_policy.",
+    )
+    parser.add_argument(
+        "--stop-intent-decelerate-seconds",
+        type=float,
+        default=2.0,
+        help="C1 high-level intent horizon used by the Stage306 transition adapter.",
     )
     parser.add_argument("--event-hold-min-seconds", type=float, default=0.5)
     parser.add_argument("--event-hold-speed", type=float, default=0.05)

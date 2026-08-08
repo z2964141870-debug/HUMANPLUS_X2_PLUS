@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a Stage6 future-intent checkpoint as one deployable 121-D ONNX actor."""
+"""Export a Stage6 future-intent checkpoint as one deployable ONNX actor."""
 
 from __future__ import annotations
 
@@ -16,7 +16,9 @@ from torch import nn
 from cwi_x2.future_intent_actor_critic import (
     BASE_ACTOR_OBS_DIM,
     COMMAND_OBS_START,
+    DYNAMIC_INTENT_DIM,
     GAIT_PHASE_DIM,
+    LOCOMOTION_INTENT_DIM,
     NUM_COORDINATION_MODES,
     NUM_LOWER_ACTIONS,
     RESPONSE_CONTEXT_DIM,
@@ -34,9 +36,15 @@ def sha256(path: Path) -> str:
 class FutureIntentDeployActor(nn.Module):
     """Exact deterministic inference path of FutureIntentActorCritic."""
 
-    def __init__(self, *, response_adapter_enabled: bool = False) -> None:
+    def __init__(
+        self,
+        *,
+        response_adapter_enabled: bool = False,
+        transition_adapter_enabled: bool = False,
+    ) -> None:
         super().__init__()
         self.response_adapter_enabled = bool(response_adapter_enabled)
+        self.transition_adapter_enabled = bool(transition_adapter_enabled)
         self.actor = nn.Sequential(
             nn.Linear(93, 256), nn.ELU(),
             nn.Linear(256, 128), nn.ELU(),
@@ -44,21 +52,36 @@ class FutureIntentDeployActor(nn.Module):
             nn.Linear(128, 15),
         )
         self.coordination_adapter = nn.Sequential(
-            nn.Linear(32, 32), nn.ELU(), nn.Linear(32, NUM_COORDINATION_MODES)
+            nn.Linear(DYNAMIC_INTENT_DIM + GAIT_PHASE_DIM, 32),
+            nn.ELU(),
+            nn.Linear(32, NUM_COORDINATION_MODES),
         )
         if self.response_adapter_enabled:
             self.response_adapter = nn.Sequential(
-                nn.Linear(RESPONSE_CONTEXT_DIM + GAIT_PHASE_DIM, 32),
+                nn.Linear(
+                    RESPONSE_CONTEXT_DIM + LOCOMOTION_INTENT_DIM + GAIT_PHASE_DIM,
+                    32,
+                ),
                 nn.ELU(),
                 nn.Linear(32, NUM_COORDINATION_MODES),
             )
         else:
             self.response_adapter = None
+        if self.transition_adapter_enabled:
+            self.transition_adapter = nn.Sequential(
+                nn.Linear(LOCOMOTION_INTENT_DIM + GAIT_PHASE_DIM, 16),
+                nn.ELU(),
+                nn.Linear(16, NUM_COORDINATION_MODES),
+            )
+        else:
+            self.transition_adapter = None
         self.register_buffer("coordination_basis", build_coordination_basis())
 
     def forward(self, obs: torch.Tensor) -> torch.Tensor:
         base = obs[..., :BASE_ACTOR_OBS_DIM]
         intent = obs[..., BASE_ACTOR_OBS_DIM:]
+        upper_intent = intent[..., :UPPER_INTENT_DIM]
+        locomotion_intent = intent[..., UPPER_INTENT_DIM:]
         phase = base[..., -GAIT_PHASE_DIM:]
         coefficients = torch.tanh(
             self.coordination_adapter(torch.cat((intent, phase), dim=-1))
@@ -69,7 +92,7 @@ class FutureIntentDeployActor(nn.Module):
             max=0.10,
         )
         gate = torch.clamp(
-            torch.amax(torch.abs(intent), dim=-1, keepdim=True) / 0.02,
+            torch.amax(torch.abs(upper_intent), dim=-1, keepdim=True) / 0.02,
             min=0.0,
             max=1.0,
         )
@@ -86,7 +109,7 @@ class FutureIntentDeployActor(nn.Module):
         response_residual = torch.zeros_like(future_residual)
         if self.response_adapter is not None:
             response_input = torch.cat(
-                (lower_response_context(base), phase),
+                (lower_response_context(base), locomotion_intent, phase),
                 dim=-1,
             )
             response_coefficients = torch.tanh(self.response_adapter(response_input))
@@ -101,8 +124,29 @@ class FutureIntentDeployActor(nn.Module):
                 min=-0.05,
                 max=0.05,
             ) * locomotion_gate
+        transition_residual = torch.zeros_like(future_residual)
+        if self.transition_adapter is not None:
+            transition_coefficients = torch.tanh(
+                self.transition_adapter(torch.cat((locomotion_intent, phase), dim=-1))
+            )
+            response_mode_mask = torch.as_tensor(
+                RESPONSE_MODE_MASK,
+                device=transition_coefficients.device,
+                dtype=transition_coefficients.dtype,
+            )
+            transition_coefficients = transition_coefficients * response_mode_mask
+            transition_gate = torch.clamp(
+                torch.abs(locomotion_intent[..., 1:2]) / 0.10,
+                min=0.0,
+                max=1.0,
+            )
+            transition_residual = torch.clamp(
+                transition_coefficients @ self.coordination_basis,
+                min=-0.03,
+                max=0.03,
+            ) * transition_gate
         combined_residual = torch.clamp(
-            future_residual + response_residual,
+            future_residual + response_residual + transition_residual,
             min=-0.10,
             max=0.10,
         )
@@ -122,18 +166,42 @@ def main() -> None:
     response_adapter_enabled = any(
         key.startswith("response_adapter.") for key in state
     )
+    transition_adapter_enabled = any(
+        key.startswith("transition_adapter.") for key in state
+    )
     model = FutureIntentDeployActor(
-        response_adapter_enabled=response_adapter_enabled
+        response_adapter_enabled=response_adapter_enabled,
+        transition_adapter_enabled=transition_adapter_enabled,
     )
     selected_prefixes = ["actor.", "coordination_adapter."]
     if response_adapter_enabled:
         selected_prefixes.append("response_adapter.")
+    if transition_adapter_enabled:
+        selected_prefixes.append("transition_adapter.")
     selected = {
         key: value
         for key, value in state.items()
         if key.startswith(tuple(selected_prefixes))
     }
-    expected = set(model.state_dict()) - {"coordination_basis"}
+    current_state = model.state_dict()
+    for name, prefix_dim in (
+        ("coordination_adapter.0.weight", UPPER_INTENT_DIM),
+        ("response_adapter.0.weight", RESPONSE_CONTEXT_DIM),
+    ):
+        if name not in selected:
+            continue
+        old_weight = selected[name]
+        new_weight = current_state[name]
+        if old_weight.shape == new_weight.shape:
+            continue
+        if old_weight.shape[1] + LOCOMOTION_INTENT_DIM == new_weight.shape[1]:
+            migrated = torch.zeros_like(new_weight)
+            migrated[:, :prefix_dim] = old_weight[:, :prefix_dim]
+            migrated[:, prefix_dim + LOCOMOTION_INTENT_DIM :] = old_weight[
+                :, prefix_dim:
+            ]
+            selected[name] = migrated
+    expected = set(current_state) - {"coordination_basis"}
     if set(selected) != expected:
         raise RuntimeError(
             f"future-intent state mismatch: {sorted(set(selected) ^ expected)}"
@@ -145,7 +213,7 @@ def main() -> None:
     sample = torch.linspace(
         -0.2,
         0.2,
-        BASE_ACTOR_OBS_DIM + UPPER_INTENT_DIM,
+        BASE_ACTOR_OBS_DIM + DYNAMIC_INTENT_DIM,
         dtype=torch.float32,
     ).reshape(1, -1)
     torch.onnx.export(
@@ -169,6 +237,7 @@ def main() -> None:
             :,
             COMMAND_OBS_START : COMMAND_OBS_START + 1,
         ] = 0.0
+        zero_command[:, -LOCOMOTION_INTENT_DIM:] = 0.0
         stopped_output = model(zero_command)
         stopped_base_output = model.actor(zero_command[:, :BASE_ACTOR_OBS_DIM])
         zero_command_error = float(
@@ -196,15 +265,28 @@ def main() -> None:
         "onnx_sha256": sha256(output),
         "adapter_mode": "future",
         "response_adapter_enabled": response_adapter_enabled,
+        "transition_adapter_enabled": transition_adapter_enabled,
         "base_actor_frozen": True,
-        "input": {"name": "obs", "shape": ["batch", 121], "dtype": "float32"},
+        "input": {
+            "name": "obs",
+            "shape": ["batch", BASE_ACTOR_OBS_DIM + DYNAMIC_INTENT_DIM],
+            "dtype": "float32",
+        },
         "output": {"name": "actions", "shape": ["batch", NUM_LOWER_ACTIONS], "dtype": "float32"},
-        "upper_intent_contract": "14 current deltas + 14 future-minus-current deltas at 0.6 s",
+        "dynamic_intent_contract": (
+            "14 upper current deltas + 14 upper future deltas + normalized "
+            "current vx and 1.0s future-minus-current vx"
+        ),
         "coordination_output_abs_max": 0.10,
         "response_output_abs_max": 0.05 if response_adapter_enabled else 0.0,
         "response_context_contract": (
-            "normalized lower q/dq plus previous 15-D action and gait phase"
+            "normalized lower q/dq plus previous 15-D action, locomotion intent, "
+            "and gait phase"
             if response_adapter_enabled else None
+        ),
+        "transition_adapter_contract": (
+            "2-D locomotion intent plus gait phase to bounded no-yaw 8-mode residual"
+            if transition_adapter_enabled else None
         ),
         "response_mode_contract": (
             "hip pitch/roll common+differential plus waist roll; no yaw correction"

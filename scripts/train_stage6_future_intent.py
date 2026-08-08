@@ -44,6 +44,16 @@ def env_flag(name: str, default: bool = False) -> bool:
     raise ValueError(f"{name} must be a boolean flag")
 
 
+def optional_positive_int(name: str) -> int | None:
+    raw = os.environ.get(name)
+    if raw is None:
+        return None
+    value = int(raw)
+    if value <= 0:
+        raise ValueError(f"{name} must be positive")
+    return value
+
+
 ROOT = Path(__file__).resolve().parents[1]
 OLD_SCRIPT = Path(
     os.environ.get(
@@ -79,6 +89,17 @@ def main() -> None:
     learning_rate = optional_positive_float("CWI_STAGE6_LEARNING_RATE")
     desired_kl = optional_positive_float("CWI_STAGE6_DESIRED_KL")
     response_adapter_enabled = env_flag("CWI_STAGE6_RESPONSE_ADAPTER")
+    locomotion_intent_only = env_flag("CWI_STAGE6_LOCOMOTION_INTENT_ONLY")
+    transition_adapter_enabled = env_flag("CWI_STAGE6_TRANSITION_ADAPTER")
+    transition_curriculum_enabled = env_flag(
+        "CWI_STAGE6_TRANSITION_CURRICULUM"
+    )
+    steps_per_env = optional_positive_int("CWI_STAGE6_STEPS_PER_ENV")
+    transition_phase_offset_max_s = float(
+        os.environ.get("CWI_STAGE6_TRANSITION_PHASE_OFFSET_MAX_S", "0.0")
+    )
+    if transition_phase_offset_max_s < 0.0:
+        raise ValueError("transition phase offset maximum must be non-negative")
     if not 0.0 <= velocity_min <= velocity_max:
         raise ValueError(
             "CWI Stage6 velocity range must satisfy 0 <= min <= max"
@@ -91,6 +112,8 @@ def main() -> None:
     def runner_cfg_factory():
         cfg = original_runner_cfg()
         cfg.save_interval = int(os.environ.get("CWI_STAGE6_SAVE_INTERVAL", "1"))
+        if steps_per_env is not None:
+            cfg.num_steps_per_env = steps_per_env
         if learning_rate is not None:
             cfg.algorithm.learning_rate = learning_rate
         if desired_kl is not None:
@@ -103,6 +126,8 @@ def main() -> None:
         cfg.adapter_mode = mode
         cfg.coordination_blend = coordination_blend
         cfg.response_adapter_enabled = response_adapter_enabled
+        cfg.locomotion_intent_only = locomotion_intent_only
+        cfg.transition_adapter_enabled = transition_adapter_enabled
         return cfg
 
     def manager_env_factory(*args, **kwargs):
@@ -113,6 +138,42 @@ def main() -> None:
             velocity_min,
             velocity_max,
         )
+        if transition_curriculum_enabled:
+            from cwi_x2.transition_command import (
+                stopped_base_speed_l2,
+                transition_velocity_cfg,
+            )
+
+            source_command = cfg.commands.base_velocity
+            cfg.commands.base_velocity = transition_velocity_cfg(
+                source_command,
+                ideal_env_fraction=float(
+                    getattr(source_command, "ideal_env_fraction", 0.0)
+                ),
+                ideal_heading_control_stiffness=float(
+                    getattr(
+                        source_command,
+                        "ideal_heading_control_stiffness",
+                        source_command.heading_control_stiffness,
+                    )
+                ),
+                response_heading_control_stiffness=float(
+                    getattr(
+                        source_command,
+                        "response_heading_control_stiffness",
+                        source_command.heading_control_stiffness,
+                    )
+                ),
+                maximum_phase_offset_s=transition_phase_offset_max_s,
+            )
+            cfg.episode_length_s = 12.0
+            cfg.rewards.stand_lin_vel_xy_l2.func = stopped_base_speed_l2
+            cfg.rewards.stand_lin_vel_xy_l2.weight = -3.0
+            cfg.rewards.stand_lin_vel_xy_l2.params = {
+                "command_name": "base_velocity",
+                "command_threshold": 0.05,
+                "asset_cfg": SceneEntityCfg("robot"),
+            }
         if gain_range is not None:
             cfg.events.randomize_actuator_gains = EventTermCfg(
                 func=mdp.randomize_actuator_gains,

@@ -5,6 +5,7 @@ import pytest
 from scripts.train_stage6_future_intent import (
     gain_randomization_range,
     env_flag,
+    optional_positive_int,
     optional_positive_float,
 )
 
@@ -56,3 +57,20 @@ def test_env_flag(monkeypatch):
     monkeypatch.setenv("CWI_STAGE6_RESPONSE_ADAPTER", "maybe")
     with pytest.raises(ValueError, match="boolean"):
         env_flag("CWI_STAGE6_RESPONSE_ADAPTER")
+
+
+def test_transition_curriculum_flag_defaults_off(monkeypatch):
+    monkeypatch.delenv("CWI_STAGE6_TRANSITION_CURRICULUM", raising=False)
+    assert env_flag("CWI_STAGE6_TRANSITION_CURRICULUM") is False
+    monkeypatch.setenv("CWI_STAGE6_TRANSITION_CURRICULUM", "1")
+    assert env_flag("CWI_STAGE6_TRANSITION_CURRICULUM") is True
+
+
+def test_optional_positive_int(monkeypatch):
+    monkeypatch.delenv("CWI_STAGE6_STEPS_PER_ENV", raising=False)
+    assert optional_positive_int("CWI_STAGE6_STEPS_PER_ENV") is None
+    monkeypatch.setenv("CWI_STAGE6_STEPS_PER_ENV", "48")
+    assert optional_positive_int("CWI_STAGE6_STEPS_PER_ENV") == 48
+    monkeypatch.setenv("CWI_STAGE6_STEPS_PER_ENV", "0")
+    with pytest.raises(ValueError, match="positive"):
+        optional_positive_int("CWI_STAGE6_STEPS_PER_ENV")
