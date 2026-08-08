@@ -1,0 +1,57 @@
+{
+  "stage": "stage278_hard_gate",
+  "domain": "AimDK X2 v1.0 official MuJoCo",
+  "condition": "PD=0.9 + fast upper + vx=0.30 m/s + brake-blend-to-stand",
+  "contract": {
+    "future_checkpoint": "Stage267 model_2620",
+    "stop_controller": "brake_blend_to_policy",
+    "stop_transition_seconds": 1.0,
+    "stop_brake_gain": 1.5,
+    "stand_switch_speed_mps": 0.1,
+    "evaluation_thresholds_unchanged": true
+  },
+  "runs": [
+    {
+      "file": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage278_s2620_brakeblend10_soft0p9_fast_r1.json",
+      "full_gate_pass": false,
+      "move_gate_pass": false,
+      "stop_gate_pass": true,
+      "heading_max_rad": 0.3123639239095109,
+      "stop_drift_m": 0.14043888421675962,
+      "stop_z_min_m": 0.6166961354710968,
+      "stop_settle_s": 3.42
+    },
+    {
+      "file": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage278_s2620_brakeblend10_soft0p9_fast_r2.json",
+      "full_gate_pass": true,
+      "move_gate_pass": true,
+      "stop_gate_pass": true,
+      "heading_max_rad": 0.2998310815751076,
+      "stop_drift_m": 0.1349271720845252,
+      "stop_z_min_m": 0.615405527458752,
+      "stop_settle_s": 2.9
+    },
+    {
+      "file": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage278_s2620_brakeblend10_soft0p9_fast_r3.json",
+      "full_gate_pass": true,
+      "move_gate_pass": true,
+      "stop_gate_pass": true,
+      "heading_max_rad": 0.297403631499968,
+      "stop_drift_m": 0.14534118931339512,
+      "stop_z_min_m": 0.6147137055563282,
+      "stop_settle_s": 1.86
+    }
+  ],
+  "summary": {
+    "full_gate_passes": 2,
+    "move_gate_passes": 2,
+    "stop_gate_passes": 3,
+    "heading_max_worst_rad": 0.3123639239095109,
+    "heading_max_median_rad": 0.2998310815751076,
+    "stop_drift_worst_m": 0.14534118931339512,
+    "stop_z_min_worst_m": 0.6147137055563282,
+    "stop_settle_worst_s": 3.42,
+    "compound_stop_ready": true,
+    "compound_full_ready": false
+  }
+}

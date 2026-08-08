@@ -8,6 +8,20 @@ import os
 from pathlib import Path
 
 
+def gain_randomization_range() -> tuple[float, float] | None:
+    """Read the opt-in Stage6 lower-body PD curriculum contract."""
+    lower = os.environ.get("CWI_STAGE6_GAIN_MIN")
+    upper = os.environ.get("CWI_STAGE6_GAIN_MAX")
+    if lower is None and upper is None:
+        return None
+    if lower is None or upper is None:
+        raise ValueError("both CWI_STAGE6_GAIN_MIN and CWI_STAGE6_GAIN_MAX are required")
+    bounds = (float(lower), float(upper))
+    if not 0.0 < bounds[0] <= bounds[1]:
+        raise ValueError("Stage6 gain range must satisfy 0 < min <= max")
+    return bounds
+
+
 ROOT = Path(__file__).resolve().parents[1]
 OLD_SCRIPT = Path(
     os.environ.get(
@@ -30,6 +44,8 @@ def main() -> None:
         X2FutureIntentFlatEnvCfg,
     )
     from cwi_x2.future_intent_actor_critic import FutureIntentActorCritic
+    from isaaclab.envs import mdp
+    from isaaclab.managers import EventTermCfg, SceneEntityCfg
 
     mode = os.environ.get("CWI_STAGE6_ADAPTER_MODE", "future")
     coordination_blend = float(
@@ -37,6 +53,7 @@ def main() -> None:
     )
     velocity_min = float(os.environ.get("CWI_STAGE6_VELOCITY_MIN", "0.20"))
     velocity_max = float(os.environ.get("CWI_STAGE6_VELOCITY_MAX", "0.45"))
+    gain_range = gain_randomization_range()
     if not 0.0 <= velocity_min <= velocity_max:
         raise ValueError(
             "CWI Stage6 velocity range must satisfy 0 <= min <= max"
@@ -66,6 +83,26 @@ def main() -> None:
             velocity_min,
             velocity_max,
         )
+        if gain_range is not None:
+            cfg.events.randomize_actuator_gains = EventTermCfg(
+                func=mdp.randomize_actuator_gains,
+                mode="startup",
+                params={
+                    "asset_cfg": SceneEntityCfg(
+                        "robot",
+                        joint_names=[
+                            ".*_hip_.*_joint",
+                            ".*_knee_joint",
+                            ".*_ankle_.*_joint",
+                            "waist_.*_joint",
+                        ],
+                    ),
+                    "stiffness_distribution_params": gain_range,
+                    "damping_distribution_params": gain_range,
+                    "operation": "scale",
+                    "distribution": "uniform",
+                },
+            )
         return original_manager_env(*args, **kwargs)
 
     module.X2LowerVelocityFlatPPORunnerCfg = runner_cfg_factory

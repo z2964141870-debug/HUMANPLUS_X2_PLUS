@@ -17,6 +17,7 @@ UPPER_INTENT_DIM = 28
 GAIT_PHASE_DIM = 4
 NUM_LOWER_ACTIONS = 15
 NUM_COORDINATION_MODES = 8
+COMMAND_OBS_START = 9
 
 
 def build_coordination_basis(
@@ -69,6 +70,7 @@ class FutureIntentActorCritic(ActorCritic):
         coordination_output_scale=0.10,
         coordination_blend=1.0,
         intent_gate_scale_rad=0.02,
+        locomotion_gate_scale=0.10,
         adapter_mode="future",
         **kwargs,
     ):
@@ -86,6 +88,8 @@ class FutureIntentActorCritic(ActorCritic):
             raise ValueError("coordination blend must lie in [0, 1]")
         if intent_gate_scale_rad <= 0.0:
             raise ValueError("intent gate scale must be positive")
+        if locomotion_gate_scale <= 0.0:
+            raise ValueError("locomotion gate scale must be positive")
 
         super().__init__(
             obs,
@@ -107,6 +111,7 @@ class FutureIntentActorCritic(ActorCritic):
         self.coordination_output_scale = float(coordination_output_scale)
         self.coordination_blend = float(coordination_blend)
         self.intent_gate_scale_rad = float(intent_gate_scale_rad)
+        self.locomotion_gate_scale = float(locomotion_gate_scale)
         self.adapter_mode = str(adapter_mode)
         expected_actor_dim = self.base_actor_obs_dim + self.upper_intent_dim
         actual_actor_dim = sum(
@@ -185,7 +190,15 @@ class FutureIntentActorCritic(ActorCritic):
         )
         if self.adapter_mode == "disabled":
             intent_gate = torch.zeros_like(intent_gate)
-        residual = self.coordination_blend * intent_gate * residual
+        forward_command = base_obs[..., COMMAND_OBS_START : COMMAND_OBS_START + 1]
+        locomotion_gate = torch.clamp(
+            torch.abs(forward_command) / self.locomotion_gate_scale,
+            min=0.0,
+            max=1.0,
+        )
+        residual = (
+            self.coordination_blend * intent_gate * locomotion_gate * residual
+        )
         self._last_coordination_residual = residual
         return self.actor(base_obs) + residual
 

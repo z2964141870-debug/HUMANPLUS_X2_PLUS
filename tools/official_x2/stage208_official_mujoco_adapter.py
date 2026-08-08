@@ -213,6 +213,14 @@ class Stage208OfficialAdapter(Node):
             if args.stationary_model
             else self.session
         )
+        self.model_input_dim = int(self.session.get_inputs()[0].shape[-1])
+        self.stationary_input_dim = int(self.stationary_session.get_inputs()[0].shape[-1])
+        for label, width in (
+            ("main", self.model_input_dim),
+            ("stationary", self.stationary_input_dim),
+        ):
+            if width not in (93, 121):
+                raise RuntimeError(f"unsupported {label} actor input width: {width}")
         archive = np.load(args.template, allow_pickle=False)
         if tuple(archive["joint_names_15"].tolist()) != LOWER_JOINTS:
             raise RuntimeError("gait-template joint order does not match Stage208")
@@ -550,6 +558,57 @@ class Stage208OfficialAdapter(Node):
         upper = (lower + 1) % bins
         return (1.0 - blend) * self.template[lower] + blend * self.template[upper]
 
+    def _upper_intent_features(self, elapsed: float, *, mirror: bool) -> np.ndarray:
+        """Match the Stage6 current-plus-0.6s-future upper intent suffix."""
+        if self.upper_q_rad is None:
+            return np.zeros(28, dtype=np.float32)
+        assert self.upper_fps is not None and self.upper_baseline is not None
+
+        def bounded_delta(reference_time: float) -> np.ndarray:
+            sample = _sample_upper_track(
+                self.upper_q_rad,
+                self.upper_fps,
+                reference_time,
+                loop=self.args.upper_loop,
+            )
+            delta = self.args.upper_scale * (sample - self.upper_baseline)
+            return np.clip(
+                delta,
+                -self.args.upper_max_excursion_rad,
+                self.args.upper_max_excursion_rad,
+            ).astype(np.float32)
+
+        reference_time = self.args.upper_start_seconds + elapsed * self.args.upper_time_scale
+        current = bounded_delta(reference_time)
+        future = bounded_delta(reference_time + 0.6 * self.args.upper_time_scale)
+        future_delta = future - current
+        if mirror:
+            current = _mirror_joint_vector(current, ARM_JOINTS)
+            future_delta = _mirror_joint_vector(future_delta, ARM_JOINTS)
+        return np.concatenate((current, future_delta)).astype(np.float32)
+
+    def _session_observation(
+        self,
+        session: ort.InferenceSession,
+        base_obs: np.ndarray,
+        *,
+        upper_elapsed: float,
+    ) -> np.ndarray:
+        width = int(session.get_inputs()[0].shape[-1])
+        if width == 93:
+            return base_obs
+        if width == 121:
+            return np.concatenate(
+                (
+                    base_obs,
+                    self._upper_intent_features(
+                        upper_elapsed,
+                        mirror=self.args.mirror_policy,
+                    ),
+                )
+            ).astype(np.float32)
+        raise RuntimeError(f"unsupported actor input width: {width}")
+
     def _predict_physical_observation(
         self,
         base_lin_vel: np.ndarray,
@@ -608,6 +667,7 @@ class Stage208OfficialAdapter(Node):
         policy_slot: str = "main",
     ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
         assert self.imu is not None and self.odom is not None
+        upper_elapsed = phase_elapsed
         if force_moving or abs(command_vx) > 0.1:
             phase_elapsed += self.args.phase_offset
         twist = self.odom.twist.twist
@@ -694,7 +754,12 @@ class Stage208OfficialAdapter(Node):
         if obs.shape != (93,):
             raise RuntimeError(f"invalid Stage208 observation shape {obs.shape}")
         session = self.stationary_session if policy_slot == "stationary" else self.session
-        raw_action = session.run(["actions"], {"obs": obs[None]})[0][0].astype(np.float32)
+        model_obs = self._session_observation(
+            session,
+            obs,
+            upper_elapsed=upper_elapsed if policy_slot == "main" else 0.0,
+        )
+        raw_action = session.run(["actions"], {"obs": model_obs[None]})[0][0].astype(np.float32)
         if (
             policy_slot == "stationary"
             and self.stationary_session is not self.session
@@ -706,7 +771,12 @@ class Stage208OfficialAdapter(Node):
                 if self.args.mirror_policy
                 else self.previous_actions["main"]
             )
-            main_action = self.session.run(["actions"], {"obs": main_obs[None]})[0][0].astype(np.float32)
+            main_model_obs = self._session_observation(
+                self.session,
+                main_obs,
+                upper_elapsed=0.0,
+            )
+            main_action = self.session.run(["actions"], {"obs": main_model_obs[None]})[0][0].astype(np.float32)
             alpha = self.args.stationary_blend
             raw_action = (1.0 - alpha) * main_action + alpha * raw_action
         # RslRlVecEnvWrapper clips the actor output before env.step().  The
@@ -1103,20 +1173,30 @@ class Stage208OfficialAdapter(Node):
                 else:
                     targets = dict(self.stop_hold_targets)
                     obs = action = None
-            elif self.args.stop_controller in ("velocity_brake", "brake_then_policy"):
+            elif self.args.stop_controller in (
+                "velocity_brake",
+                "brake_then_policy",
+                "brake_blend_to_policy",
+            ):
                 command_vx, command_vy, measured_speed = self._brake_command()
                 phase_elapsed = self.args.move_seconds + stop_elapsed
                 phase = self._phase_features(phase_elapsed, moving=True)
                 double_support = bool(phase[2] > 0.5 and phase[3] > 0.5)
                 if (
-                    self.args.stop_controller == "brake_then_policy"
+                    self.args.stop_controller in (
+                        "brake_then_policy",
+                        "brake_blend_to_policy",
+                    )
                     and self.stop_hold_latch_s is None
                     and stop_elapsed >= self.args.event_hold_min_seconds
                     and measured_speed <= self.args.event_hold_speed
                     and double_support
                 ):
                     self.stop_hold_latch_s = stop_elapsed
-                if self.stop_hold_latch_s is not None:
+                if (
+                    self.stop_hold_latch_s is not None
+                    and self.args.stop_controller == "brake_then_policy"
+                ):
                     targets, obs, action = self._policy_targets(0.0, 0.0)
                 else:
                     template_multiplier = float(
@@ -1126,13 +1206,39 @@ class Stage208OfficialAdapter(Node):
                             1.0,
                         )
                     )
-                    targets, obs, action = self._policy_targets(
+                    brake_targets, brake_obs, brake_action = self._policy_targets(
                         phase_elapsed,
                         command_vx,
                         command_vy=command_vy,
                         force_moving=True,
                         template_multiplier=template_multiplier,
                     )
+                    if (
+                        self.stop_hold_latch_s is not None
+                        and self.args.stop_controller == "brake_blend_to_policy"
+                    ):
+                        transition = max(self.args.stop_transition_seconds, 1.0e-6)
+                        brake_weight = max(
+                            0.0,
+                            1.0
+                            - (stop_elapsed - self.stop_hold_latch_s) / transition,
+                        )
+                        stationary_targets, obs, action = self._policy_targets(
+                            0.0,
+                            0.0,
+                            policy_slot="stationary",
+                        )
+                        targets = {
+                            name: brake_weight * brake_targets[name]
+                            + (1.0 - brake_weight) * stationary_targets[name]
+                            for name in ISAAC_JOINTS
+                        }
+                    else:
+                        targets, obs, action = (
+                            brake_targets,
+                            brake_obs,
+                            brake_action,
+                        )
             elif self.args.stop_controller == "ramp_then_hold":
                 ramp_seconds = 0.5 * self.args.stop_seconds
                 if stop_elapsed < ramp_seconds:
@@ -1238,6 +1344,8 @@ class Stage208OfficialAdapter(Node):
             "policy_vx_floor_mps": self.args.policy_vx_floor,
             "phase_offset_s": self.args.phase_offset,
             "control_mode": self.args.control_mode,
+            "model_input_dim": self.model_input_dim,
+            "stationary_model_input_dim": self.stationary_input_dim,
             "replay_loop": self.args.replay_loop,
             "pd_profile": self.args.pd_profile,
             "pd_kp_multiplier": self.args.pd_kp_multiplier,
@@ -1744,6 +1852,7 @@ def parse_args() -> argparse.Namespace:
             "event_hold",
             "velocity_brake",
             "brake_then_policy",
+            "brake_blend_to_policy",
         ),
         default="policy",
         help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",

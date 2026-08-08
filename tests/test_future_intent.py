@@ -65,6 +65,53 @@ def test_zero_intent_hard_gates_a_nonzero_adapter():
     )
 
 
+def test_zero_locomotion_command_hard_gates_a_nonzero_adapter():
+    torch.manual_seed(10)
+    model = _model("future")
+    torch.nn.init.normal_(model.coordination_adapter[-1].weight)
+    torch.nn.init.normal_(model.coordination_adapter[-1].bias)
+    base = torch.randn(3, BASE_ACTOR_OBS_DIM)
+    base[:, 9:12] = 0.0
+    intent = torch.ones(3, UPPER_INTENT_DIM)
+    torch.testing.assert_close(
+        model._mean_from_actor_observation(torch.cat((base, intent), dim=-1)),
+        model.actor(base),
+        rtol=0.0,
+        atol=0.0,
+    )
+
+
+def test_yaw_recovery_command_does_not_keep_adapter_active_at_stop():
+    torch.manual_seed(11)
+    model = _model("future")
+    torch.nn.init.normal_(model.coordination_adapter[-1].weight)
+    torch.nn.init.normal_(model.coordination_adapter[-1].bias)
+    base = torch.randn(3, BASE_ACTOR_OBS_DIM)
+    base[:, 9:12] = torch.tensor([0.0, 0.0, 0.5])
+    intent = torch.ones(3, UPPER_INTENT_DIM)
+    torch.testing.assert_close(
+        model._mean_from_actor_observation(torch.cat((base, intent), dim=-1)),
+        model.actor(base),
+        rtol=0.0,
+        atol=0.0,
+    )
+
+
+def test_locomotion_gate_scales_residual_below_command_threshold():
+    torch.manual_seed(12)
+    model = _model("future")
+    torch.nn.init.normal_(model.coordination_adapter[-1].weight, std=0.2)
+    torch.nn.init.normal_(model.coordination_adapter[-1].bias, std=0.2)
+    base = torch.randn(2, BASE_ACTOR_OBS_DIM)
+    intent = torch.ones(2, UPPER_INTENT_DIM)
+    base[:, 9:12] = torch.tensor([0.10, 0.0, 0.0])
+    model._mean_from_actor_observation(torch.cat((base, intent), dim=-1))
+    full = model._last_coordination_residual.clone()
+    base[:, 9:12] = torch.tensor([0.05, 0.0, 0.0])
+    model._mean_from_actor_observation(torch.cat((base, intent), dim=-1))
+    torch.testing.assert_close(model._last_coordination_residual, 0.5 * full)
+
+
 def test_residual_is_bounded_and_anatomically_masked():
     torch.manual_seed(11)
     model = _model("future")
