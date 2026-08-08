@@ -6,13 +6,17 @@ from cwi_x2.future_intent_actor_critic import (
     BASE_ACTOR_OBS_DIM,
     NUM_COORDINATION_MODES,
     NUM_LOWER_ACTIONS,
+    RESPONSE_CONTEXT_DIM,
     UPPER_INTENT_DIM,
     FutureIntentActorCritic,
     build_coordination_basis,
+    lower_response_context,
 )
 
 
-def _model(mode: str = "future") -> FutureIntentActorCritic:
+def _model(
+    mode: str = "future", *, response_adapter: bool = False
+) -> FutureIntentActorCritic:
     obs = {
         "policy": torch.zeros(2, BASE_ACTOR_OBS_DIM + UPPER_INTENT_DIM),
         "critic": torch.zeros(2, BASE_ACTOR_OBS_DIM),
@@ -22,6 +26,7 @@ def _model(mode: str = "future") -> FutureIntentActorCritic:
         obs_groups={"policy": ["policy"], "critic": ["critic"]},
         num_actions=NUM_LOWER_ACTIONS,
         adapter_mode=mode,
+        response_adapter_enabled=response_adapter,
     )
 
 
@@ -34,6 +39,59 @@ def test_coordination_basis_is_orthonormal_and_sparse():
     )
     # Knee and ankle columns are never directly modified.
     assert torch.count_nonzero(basis[:, [3, 4, 5, 9, 10, 11, 13]]) == 0
+
+
+def test_lower_response_context_is_bounded_and_deployable():
+    base = 100.0 * torch.randn(4, BASE_ACTOR_OBS_DIM)
+    context = lower_response_context(base)
+    assert context.shape == (4, RESPONSE_CONTEXT_DIM)
+    assert float(torch.max(torch.abs(context[..., : 2 * NUM_LOWER_ACTIONS]))) <= 1.0
+    torch.testing.assert_close(
+        context[..., -NUM_LOWER_ACTIONS:],
+        base[..., 74:89],
+    )
+
+
+def test_zero_initialized_response_branch_preserves_trained_future_branch():
+    torch.manual_seed(5)
+    legacy = _model("future")
+    torch.nn.init.normal_(legacy.coordination_adapter[-1].weight, std=0.2)
+    torch.nn.init.normal_(legacy.coordination_adapter[-1].bias, std=0.2)
+    response = _model("future", response_adapter=True)
+    response.load_state_dict(legacy.state_dict(), strict=True)
+    base = torch.randn(4, BASE_ACTOR_OBS_DIM)
+    base[:, 9] = 0.3
+    intent = 0.03 * torch.randn(4, UPPER_INTENT_DIM)
+    observation = torch.cat((base, intent), dim=-1)
+    torch.testing.assert_close(
+        response._mean_from_actor_observation(observation),
+        legacy._mean_from_actor_observation(observation),
+        rtol=0.0,
+        atol=0.0,
+    )
+    assert not any(p.requires_grad for p in response.coordination_adapter.parameters())
+    assert all(p.requires_grad for p in response.response_adapter.parameters())
+
+
+def test_response_branch_can_act_without_upper_intent_but_is_bounded():
+    torch.manual_seed(6)
+    model = _model("future", response_adapter=True)
+    torch.nn.init.normal_(model.response_adapter[-1].weight, std=10.0)
+    torch.nn.init.normal_(model.response_adapter[-1].bias, std=10.0)
+    base = torch.randn(3, BASE_ACTOR_OBS_DIM)
+    base[:, 9] = 0.3
+    intent = torch.zeros(3, UPPER_INTENT_DIM)
+    output = model._mean_from_actor_observation(torch.cat((base, intent), dim=-1))
+    residual = output - model.actor(base)
+    assert float(torch.max(torch.abs(residual)).detach()) <= 0.050001
+    torch.testing.assert_close(
+        residual[:, [3, 4, 5, 9, 10, 11, 13]],
+        torch.zeros_like(residual[:, [3, 4, 5, 9, 10, 11, 13]]),
+    )
+    torch.testing.assert_close(
+        residual[:, [2, 8, 12]],
+        torch.zeros_like(residual[:, [2, 8, 12]]),
+    )
 
 
 def test_zero_initialized_adapter_is_exact_base_actor():

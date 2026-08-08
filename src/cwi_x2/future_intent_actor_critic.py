@@ -18,6 +18,17 @@ GAIT_PHASE_DIM = 4
 NUM_LOWER_ACTIONS = 15
 NUM_COORDINATION_MODES = 8
 COMMAND_OBS_START = 9
+JOINT_POS_OBS_START = 12
+JOINT_VEL_OBS_START = 43
+LAST_ACTION_OBS_START = 74
+LOWER_ISAAC_INDICES = (0, 3, 6, 9, 14, 19, 1, 4, 7, 10, 15, 20, 2, 5, 8)
+LOWER_ACTION_SCALES = (
+    0.4, 0.4, 0.4, 0.4, 0.12, 0.08,
+    0.4, 0.4, 0.4, 0.4, 0.12, 0.08,
+    0.4, 0.16, 0.16,
+)
+RESPONSE_CONTEXT_DIM = 3 * NUM_LOWER_ACTIONS
+RESPONSE_MODE_MASK = (1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0)
 
 
 def build_coordination_basis(
@@ -43,6 +54,31 @@ def build_coordination_basis(
     basis[6, 12] = 1.0  # waist yaw
     basis[7, 14] = 1.0  # waist roll
     return basis
+
+
+def lower_response_context(base_obs: torch.Tensor) -> torch.Tensor:
+    """Return deployable normalized lower q/dq/last-action response context."""
+    if base_obs.shape[-1] != BASE_ACTOR_OBS_DIM:
+        raise ValueError(f"expected {BASE_ACTOR_OBS_DIM}D base observation")
+    indices = torch.as_tensor(
+        LOWER_ISAAC_INDICES,
+        device=base_obs.device,
+        dtype=torch.long,
+    )
+    scales = torch.as_tensor(
+        LOWER_ACTION_SCALES,
+        device=base_obs.device,
+        dtype=base_obs.dtype,
+    )
+    q = torch.index_select(base_obs, -1, indices + JOINT_POS_OBS_START)
+    dq = torch.index_select(base_obs, -1, indices + JOINT_VEL_OBS_START)
+    last_action = base_obs[
+        ...,
+        LAST_ACTION_OBS_START : LAST_ACTION_OBS_START + NUM_LOWER_ACTIONS,
+    ]
+    q_normalized = 0.5 * torch.clamp(q / scales, min=-2.0, max=2.0)
+    dq_normalized = torch.clamp(dq / 5.0, min=-1.0, max=1.0)
+    return torch.cat((q_normalized, dq_normalized, last_action), dim=-1)
 
 
 class FutureIntentActorCritic(ActorCritic):
@@ -71,6 +107,8 @@ class FutureIntentActorCritic(ActorCritic):
         coordination_blend=1.0,
         intent_gate_scale_rad=0.02,
         locomotion_gate_scale=0.10,
+        response_adapter_enabled=False,
+        response_output_scale=0.05,
         adapter_mode="future",
         **kwargs,
     ):
@@ -90,6 +128,10 @@ class FutureIntentActorCritic(ActorCritic):
             raise ValueError("intent gate scale must be positive")
         if locomotion_gate_scale <= 0.0:
             raise ValueError("locomotion gate scale must be positive")
+        if not 0.0 < response_output_scale <= coordination_output_scale:
+            raise ValueError(
+                "response output scale must lie in (0, coordination output scale]"
+            )
 
         super().__init__(
             obs,
@@ -112,6 +154,8 @@ class FutureIntentActorCritic(ActorCritic):
         self.coordination_blend = float(coordination_blend)
         self.intent_gate_scale_rad = float(intent_gate_scale_rad)
         self.locomotion_gate_scale = float(locomotion_gate_scale)
+        self.response_adapter_enabled = bool(response_adapter_enabled)
+        self.response_output_scale = float(response_output_scale)
         self.adapter_mode = str(adapter_mode)
         expected_actor_dim = self.base_actor_obs_dim + self.upper_intent_dim
         actual_actor_dim = sum(
@@ -142,6 +186,21 @@ class FutureIntentActorCritic(ActorCritic):
         )
         nn.init.zeros_(self.coordination_adapter[-1].weight)
         nn.init.zeros_(self.coordination_adapter[-1].bias)
+        if self.response_adapter_enabled:
+            for parameter in self.coordination_adapter.parameters():
+                parameter.requires_grad_(False)
+            self.response_adapter = nn.Sequential(
+                nn.Linear(
+                    RESPONSE_CONTEXT_DIM + self.gait_phase_dim,
+                    int(coordination_hidden_dim),
+                ),
+                nn.ELU(),
+                nn.Linear(int(coordination_hidden_dim), NUM_COORDINATION_MODES),
+            )
+            nn.init.zeros_(self.response_adapter[-1].weight)
+            nn.init.zeros_(self.response_adapter[-1].bias)
+        else:
+            self.response_adapter = None
         self.register_buffer(
             "coordination_basis",
             build_coordination_basis(),
@@ -196,11 +255,34 @@ class FutureIntentActorCritic(ActorCritic):
             min=0.0,
             max=1.0,
         )
-        residual = (
+        future_residual = (
             self.coordination_blend * intent_gate * locomotion_gate * residual
         )
-        self._last_coordination_residual = residual
-        return self.actor(base_obs) + residual
+        response_residual = torch.zeros_like(future_residual)
+        if self.response_adapter is not None:
+            response_input = torch.cat(
+                (lower_response_context(base_obs), phase),
+                dim=-1,
+            )
+            response_coefficients = torch.tanh(self.response_adapter(response_input))
+            response_mode_mask = torch.as_tensor(
+                RESPONSE_MODE_MASK,
+                device=response_coefficients.device,
+                dtype=response_coefficients.dtype,
+            )
+            response_coefficients = response_coefficients * response_mode_mask
+            response_residual = torch.clamp(
+                response_coefficients @ self.coordination_basis,
+                min=-self.response_output_scale,
+                max=self.response_output_scale,
+            ) * locomotion_gate
+        combined_residual = torch.clamp(
+            future_residual + response_residual,
+            min=-self.coordination_output_scale,
+            max=self.coordination_output_scale,
+        )
+        self._last_coordination_residual = combined_residual
+        return self.actor(base_obs) + combined_residual
 
     def update_distribution(self, obs):
         mean = self._mean_from_actor_observation(obs)
@@ -223,7 +305,7 @@ class FutureIntentActorCritic(ActorCritic):
         missing = [
             name
             for name in incompatible.missing_keys
-            if not name.startswith("coordination_adapter.")
+            if not name.startswith(("coordination_adapter.", "response_adapter."))
         ]
         unexpected = list(incompatible.unexpected_keys)
         if strict and (missing or unexpected):

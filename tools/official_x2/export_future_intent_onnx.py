@@ -19,8 +19,11 @@ from cwi_x2.future_intent_actor_critic import (
     GAIT_PHASE_DIM,
     NUM_COORDINATION_MODES,
     NUM_LOWER_ACTIONS,
+    RESPONSE_CONTEXT_DIM,
+    RESPONSE_MODE_MASK,
     UPPER_INTENT_DIM,
     build_coordination_basis,
+    lower_response_context,
 )
 
 
@@ -31,8 +34,9 @@ def sha256(path: Path) -> str:
 class FutureIntentDeployActor(nn.Module):
     """Exact deterministic inference path of FutureIntentActorCritic."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, response_adapter_enabled: bool = False) -> None:
         super().__init__()
+        self.response_adapter_enabled = bool(response_adapter_enabled)
         self.actor = nn.Sequential(
             nn.Linear(93, 256), nn.ELU(),
             nn.Linear(256, 128), nn.ELU(),
@@ -42,6 +46,14 @@ class FutureIntentDeployActor(nn.Module):
         self.coordination_adapter = nn.Sequential(
             nn.Linear(32, 32), nn.ELU(), nn.Linear(32, NUM_COORDINATION_MODES)
         )
+        if self.response_adapter_enabled:
+            self.response_adapter = nn.Sequential(
+                nn.Linear(RESPONSE_CONTEXT_DIM + GAIT_PHASE_DIM, 32),
+                nn.ELU(),
+                nn.Linear(32, NUM_COORDINATION_MODES),
+            )
+        else:
+            self.response_adapter = None
         self.register_buffer("coordination_basis", build_coordination_basis())
 
     def forward(self, obs: torch.Tensor) -> torch.Tensor:
@@ -51,7 +63,7 @@ class FutureIntentDeployActor(nn.Module):
         coefficients = torch.tanh(
             self.coordination_adapter(torch.cat((intent, phase), dim=-1))
         )
-        residual = torch.clamp(
+        future_residual = torch.clamp(
             coefficients @ self.coordination_basis,
             min=-0.10,
             max=0.10,
@@ -70,7 +82,31 @@ class FutureIntentDeployActor(nn.Module):
             min=0.0,
             max=1.0,
         )
-        return self.actor(base) + gate * locomotion_gate * residual
+        future_residual = gate * locomotion_gate * future_residual
+        response_residual = torch.zeros_like(future_residual)
+        if self.response_adapter is not None:
+            response_input = torch.cat(
+                (lower_response_context(base), phase),
+                dim=-1,
+            )
+            response_coefficients = torch.tanh(self.response_adapter(response_input))
+            response_mode_mask = torch.as_tensor(
+                RESPONSE_MODE_MASK,
+                device=response_coefficients.device,
+                dtype=response_coefficients.dtype,
+            )
+            response_coefficients = response_coefficients * response_mode_mask
+            response_residual = torch.clamp(
+                response_coefficients @ self.coordination_basis,
+                min=-0.05,
+                max=0.05,
+            ) * locomotion_gate
+        combined_residual = torch.clamp(
+            future_residual + response_residual,
+            min=-0.10,
+            max=0.10,
+        )
+        return self.actor(base) + combined_residual
 
 
 def main() -> None:
@@ -83,11 +119,19 @@ def main() -> None:
     output = Path(args.output).resolve()
     payload = torch.load(checkpoint, map_location="cpu", weights_only=False)
     state = payload["model_state_dict"]
-    model = FutureIntentDeployActor()
+    response_adapter_enabled = any(
+        key.startswith("response_adapter.") for key in state
+    )
+    model = FutureIntentDeployActor(
+        response_adapter_enabled=response_adapter_enabled
+    )
+    selected_prefixes = ["actor.", "coordination_adapter."]
+    if response_adapter_enabled:
+        selected_prefixes.append("response_adapter.")
     selected = {
         key: value
         for key, value in state.items()
-        if key.startswith(("actor.", "coordination_adapter."))
+        if key.startswith(tuple(selected_prefixes))
     }
     expected = set(model.state_dict()) - {"coordination_basis"}
     if set(selected) != expected:
@@ -135,7 +179,7 @@ def main() -> None:
     max_error = float(np.max(np.abs(torch_output - onnx_output)))
     if (
         max_error > 2.0e-6
-        or zero_intent_error != 0.0
+        or (not response_adapter_enabled and zero_intent_error != 0.0)
         or zero_command_error != 0.0
     ):
         raise RuntimeError(
@@ -151,11 +195,21 @@ def main() -> None:
         "onnx": str(output),
         "onnx_sha256": sha256(output),
         "adapter_mode": "future",
+        "response_adapter_enabled": response_adapter_enabled,
         "base_actor_frozen": True,
         "input": {"name": "obs", "shape": ["batch", 121], "dtype": "float32"},
         "output": {"name": "actions", "shape": ["batch", NUM_LOWER_ACTIONS], "dtype": "float32"},
         "upper_intent_contract": "14 current deltas + 14 future-minus-current deltas at 0.6 s",
         "coordination_output_abs_max": 0.10,
+        "response_output_abs_max": 0.05 if response_adapter_enabled else 0.0,
+        "response_context_contract": (
+            "normalized lower q/dq plus previous 15-D action and gait phase"
+            if response_adapter_enabled else None
+        ),
+        "response_mode_contract": (
+            "hip pitch/roll common+differential plus waist roll; no yaw correction"
+            if response_adapter_enabled else None
+        ),
         "locomotion_gate": "abs(vx) / 0.10; zero forward command returns exact base actor",
         "pytorch_onnx_max_abs_error": max_error,
         "zero_intent_base_actor_max_abs_error": zero_intent_error,

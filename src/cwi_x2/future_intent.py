@@ -89,4 +89,6 @@ class X2FutureIntentActorCriticCfg(RslRlPpoActorCriticCfg):
     coordination_output_scale: float = 0.10
     coordination_blend: float = 1.0
     intent_gate_scale_rad: float = 0.02
+    response_adapter_enabled: bool = False
+    response_output_scale: float = 0.05
     adapter_mode: str = "future"

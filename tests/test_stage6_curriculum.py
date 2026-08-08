@@ -4,6 +4,7 @@ import pytest
 
 from scripts.train_stage6_future_intent import (
     gain_randomization_range,
+    env_flag,
     optional_positive_float,
 )
 
@@ -45,3 +46,13 @@ def test_optional_positive_float(monkeypatch):
     monkeypatch.setenv("CWI_STAGE6_LEARNING_RATE", "0")
     with pytest.raises(ValueError, match="must be positive"):
         optional_positive_float("CWI_STAGE6_LEARNING_RATE")
+
+
+def test_env_flag(monkeypatch):
+    monkeypatch.delenv("CWI_STAGE6_RESPONSE_ADAPTER", raising=False)
+    assert env_flag("CWI_STAGE6_RESPONSE_ADAPTER") is False
+    monkeypatch.setenv("CWI_STAGE6_RESPONSE_ADAPTER", "true")
+    assert env_flag("CWI_STAGE6_RESPONSE_ADAPTER") is True
+    monkeypatch.setenv("CWI_STAGE6_RESPONSE_ADAPTER", "maybe")
+    with pytest.raises(ValueError, match="boolean"):
+        env_flag("CWI_STAGE6_RESPONSE_ADAPTER")

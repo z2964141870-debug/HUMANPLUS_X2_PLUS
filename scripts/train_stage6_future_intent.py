@@ -33,6 +33,17 @@ def optional_positive_float(name: str) -> float | None:
     return value
 
 
+def env_flag(name: str, default: bool = False) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    if raw.lower() in {"1", "true", "yes", "on"}:
+        return True
+    if raw.lower() in {"0", "false", "no", "off"}:
+        return False
+    raise ValueError(f"{name} must be a boolean flag")
+
+
 ROOT = Path(__file__).resolve().parents[1]
 OLD_SCRIPT = Path(
     os.environ.get(
@@ -67,6 +78,7 @@ def main() -> None:
     gain_range = gain_randomization_range()
     learning_rate = optional_positive_float("CWI_STAGE6_LEARNING_RATE")
     desired_kl = optional_positive_float("CWI_STAGE6_DESIRED_KL")
+    response_adapter_enabled = env_flag("CWI_STAGE6_RESPONSE_ADAPTER")
     if not 0.0 <= velocity_min <= velocity_max:
         raise ValueError(
             "CWI Stage6 velocity range must satisfy 0 <= min <= max"
@@ -90,6 +102,7 @@ def main() -> None:
         cfg.class_name = "ResponseHistoryActorCritic"
         cfg.adapter_mode = mode
         cfg.coordination_blend = coordination_blend
+        cfg.response_adapter_enabled = response_adapter_enabled
         return cfg
 
     def manager_env_factory(*args, **kwargs):
