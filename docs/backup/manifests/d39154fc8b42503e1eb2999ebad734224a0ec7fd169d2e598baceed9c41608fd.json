@@ -1,0 +1,10 @@
+{
+  "status": "uploaded_size_verified",
+  "local_path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/official_x2/OFFICIAL_X2_STAGE316_328_FUTURE_PREVIEW_AND_STIFF_AUDIT_20260808.md",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-08/reports/OFFICIAL_X2_STAGE316_328_FUTURE_PREVIEW_AND_STIFF_AUDIT_20260808.md",
+  "local_size": 7490,
+  "remote_size": 7490,
+  "local_sha256": "ac4673e97404cdc98ab044b6cec6727becdcf9dcab74262d69027117f022d0e5",
+  "verification": "remote path and byte size only; cryptographic readback pending",
+  "uploaded_at": "2026-08-08T13:59:26+08:00"
+}
