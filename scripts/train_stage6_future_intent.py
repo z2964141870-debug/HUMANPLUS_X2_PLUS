@@ -22,6 +22,17 @@ def gain_randomization_range() -> tuple[float, float] | None:
     return bounds
 
 
+def optional_positive_float(name: str) -> float | None:
+    """Read an optional strictly-positive scalar override."""
+    raw = os.environ.get(name)
+    if raw is None:
+        return None
+    value = float(raw)
+    if value <= 0.0:
+        raise ValueError(f"{name} must be positive")
+    return value
+
+
 ROOT = Path(__file__).resolve().parents[1]
 OLD_SCRIPT = Path(
     os.environ.get(
@@ -54,6 +65,8 @@ def main() -> None:
     velocity_min = float(os.environ.get("CWI_STAGE6_VELOCITY_MIN", "0.20"))
     velocity_max = float(os.environ.get("CWI_STAGE6_VELOCITY_MAX", "0.45"))
     gain_range = gain_randomization_range()
+    learning_rate = optional_positive_float("CWI_STAGE6_LEARNING_RATE")
+    desired_kl = optional_positive_float("CWI_STAGE6_DESIRED_KL")
     if not 0.0 <= velocity_min <= velocity_max:
         raise ValueError(
             "CWI Stage6 velocity range must satisfy 0 <= min <= max"
@@ -66,6 +79,10 @@ def main() -> None:
     def runner_cfg_factory():
         cfg = original_runner_cfg()
         cfg.save_interval = int(os.environ.get("CWI_STAGE6_SAVE_INTERVAL", "1"))
+        if learning_rate is not None:
+            cfg.algorithm.learning_rate = learning_rate
+        if desired_kl is not None:
+            cfg.algorithm.desired_kl = desired_kl
         return cfg
 
     def policy_cfg_factory():
