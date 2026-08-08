@@ -109,6 +109,7 @@ class X2FutureIntentActorCriticCfg(RslRlPpoActorCriticCfg):
     response_adapter_enabled: bool = False
     locomotion_intent_only: bool = False
     transition_adapter_enabled: bool = False
+    transition_upper_conditioned: bool = False
     transition_output_scale: float = 0.03
     response_output_scale: float = 0.05
     adapter_mode: str = "future"

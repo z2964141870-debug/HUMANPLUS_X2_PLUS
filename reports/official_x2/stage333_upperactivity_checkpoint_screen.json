@@ -1,0 +1,117 @@
+{
+  "stage": "stage330_zero_upper_checkpoint_screen",
+  "hypothesis": "matched zero-upper training improves stiff fixed stop stability",
+  "domain": "official_mujoco_stiff1p2",
+  "future_stop_preview_seconds": 0.5,
+  "attempt_failures": 5,
+  "checkpoints": {
+    "2653": {
+      "passes": 1,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13863257541587462,
+          "stop_tilt_max_rad": 1.5273095571696518,
+          "stop_drift_m": 0.5771193704305614
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.620557812393367,
+          "stop_tilt_max_rad": 0.22018113995800923,
+          "stop_drift_m": 0.11416385253643141
+        },
+        {
+          "repeat": 3,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13862132740495517,
+          "stop_tilt_max_rad": 1.5392417106140772,
+          "stop_drift_m": 0.5730520569989485
+        }
+      ]
+    },
+    "2655": {
+      "passes": 1,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.14055126628587927,
+          "stop_tilt_max_rad": 1.5594024926939367,
+          "stop_drift_m": 0.62151074371392
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6306047391204022,
+          "stop_tilt_max_rad": 0.2155115617396583,
+          "stop_drift_m": 0.11491060587520706
+        },
+        {
+          "repeat": 3,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13867940245148172,
+          "stop_tilt_max_rad": 1.5499874141656809,
+          "stop_drift_m": 0.5736568067243635
+        }
+      ]
+    },
+    "2657": {
+      "passes": 2,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13999999647851089,
+          "stop_tilt_max_rad": 1.546433888933411,
+          "stop_drift_m": 0.6379387437776967
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6305815489558629,
+          "stop_tilt_max_rad": 0.22153641524874038,
+          "stop_drift_m": 0.1363364540928626
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6274501895494493,
+          "stop_tilt_max_rad": 0.21672633720868004,
+          "stop_drift_m": 0.13315124895712888
+        }
+      ]
+    }
+  }
+}

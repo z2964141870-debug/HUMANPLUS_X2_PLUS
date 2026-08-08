@@ -64,8 +64,11 @@ def _patch_actions_module(module) -> None:
         stop_with_command = (
             os.environ.get("CWI_UPPER_STOP_WITH_COMMAND", "0") == "1"
         )
+        zero_fraction = float(os.environ.get("CWI_UPPER_ZERO_FRACTION", "0"))
         if scale < 0.0:
             raise ValueError("CWI_UPPER_SCALE must be non-negative")
+        if not 0.0 <= zero_fraction <= 1.0:
+            raise ValueError("CWI_UPPER_ZERO_FRACTION must lie in [0, 1]")
         for start_s, clip in zip(start_values, clips, strict=True):
             if start_s < 0.0 or start_s > clip.duration_s:
                 raise ValueError(
@@ -105,6 +108,16 @@ def _patch_actions_module(module) -> None:
         self._cwi_upper_latch_fallback = latch_fallback
         self._cwi_upper_loop = loop
         self._cwi_upper_stop_with_command = stop_with_command
+        self._cwi_upper_zero_fraction = zero_fraction
+        # Keep the default contract bit-exact: with the opt-in fraction left
+        # at zero no environment is masked.  A deterministic initial split
+        # also guarantees that a short curriculum batch contains both fixed
+        # and moving upper-body conditions before the first explicit reset.
+        zero_count = int(round(self._env.num_envs * zero_fraction))
+        self._cwi_upper_zero_mask = torch.zeros(
+            self._env.num_envs, device=self.device, dtype=torch.bool
+        )
+        self._cwi_upper_zero_mask[:zero_count] = True
         start_s = self._cwi_upper_start_by_clip[self._cwi_upper_clip_ids]
         self._cwi_upper_baseline = self._cwi_sample_upper(
             start_s
@@ -167,6 +180,11 @@ def _patch_actions_module(module) -> None:
                 min=-self._cwi_upper_max_excursion,
                 max=self._cwi_upper_max_excursion,
             )
+        delta = torch.where(
+            self._cwi_upper_zero_mask.unsqueeze(-1),
+            torch.zeros_like(delta),
+            delta,
+        )
         return delta
 
     def upper_intent_features(self, horizon_s=0.6):
@@ -267,6 +285,11 @@ def _patch_actions_module(module) -> None:
                 len(self._cwi_upper_clips),
                 (env_index.numel(),),
                 device=self.device,
+            )
+        if env_index.numel() and self._cwi_upper_zero_fraction > 0.0:
+            self._cwi_upper_zero_mask[env_index] = (
+                torch.rand(env_index.numel(), device=self.device)
+                < self._cwi_upper_zero_fraction
             )
         start_s = self._cwi_upper_start_by_clip[self._cwi_upper_clip_ids]
         baseline = self._cwi_sample_upper(start_s)

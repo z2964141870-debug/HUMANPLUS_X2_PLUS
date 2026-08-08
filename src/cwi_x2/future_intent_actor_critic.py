@@ -14,6 +14,7 @@ from rsl_rl.networks import MLP
 
 BASE_ACTOR_OBS_DIM = 93
 UPPER_INTENT_DIM = 28
+UPPER_ACTIVITY_DIM = 2
 LOCOMOTION_INTENT_DIM = 2
 DYNAMIC_INTENT_DIM = UPPER_INTENT_DIM + LOCOMOTION_INTENT_DIM
 GAIT_PHASE_DIM = 4
@@ -31,6 +32,33 @@ LOWER_ACTION_SCALES = (
 )
 RESPONSE_CONTEXT_DIM = 3 * NUM_LOWER_ACTIONS
 RESPONSE_MODE_MASK = (1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0)
+
+
+def upper_activity_features(upper_intent: torch.Tensor) -> torch.Tensor:
+    """Summarize known current/future upper intent for stop conditioning.
+
+    The two bounded scalars are available both in training and deployment and
+    distinguish a physically fixed upper body from an actively moving one
+    without exposing the small transition head to all 28 arm coordinates.
+    """
+    if upper_intent.shape[-1] != UPPER_INTENT_DIM:
+        raise ValueError(f"expected {UPPER_INTENT_DIM}D upper intent")
+    current, future_delta = torch.chunk(upper_intent, 2, dim=-1)
+    return torch.cat(
+        (
+            torch.clamp(
+                torch.amax(torch.abs(current), dim=-1, keepdim=True) / 0.12,
+                min=0.0,
+                max=1.0,
+            ),
+            torch.clamp(
+                torch.amax(torch.abs(future_delta), dim=-1, keepdim=True) / 0.12,
+                min=0.0,
+                max=1.0,
+            ),
+        ),
+        dim=-1,
+    )
 
 
 def build_coordination_basis(
@@ -112,6 +140,7 @@ class FutureIntentActorCritic(ActorCritic):
         response_adapter_enabled=False,
         locomotion_intent_only=False,
         transition_adapter_enabled=False,
+        transition_upper_conditioned=False,
         transition_output_scale=0.03,
         response_output_scale=0.05,
         adapter_mode="future",
@@ -162,6 +191,7 @@ class FutureIntentActorCritic(ActorCritic):
         self.response_adapter_enabled = bool(response_adapter_enabled)
         self.locomotion_intent_only = bool(locomotion_intent_only)
         self.transition_adapter_enabled = bool(transition_adapter_enabled)
+        self.transition_upper_conditioned = bool(transition_upper_conditioned)
         self.transition_output_scale = float(transition_output_scale)
         if not 0.0 < self.transition_output_scale <= coordination_output_scale:
             raise ValueError(
@@ -237,7 +267,16 @@ class FutureIntentActorCritic(ActorCritic):
             for parameter in self.response_adapter.parameters():
                 parameter.requires_grad_(False)
             self.transition_adapter = nn.Sequential(
-                nn.Linear(LOCOMOTION_INTENT_DIM + self.gait_phase_dim, 16),
+                nn.Linear(
+                    LOCOMOTION_INTENT_DIM
+                    + self.gait_phase_dim
+                    + (
+                        UPPER_ACTIVITY_DIM
+                        if self.transition_upper_conditioned
+                        else 0
+                    ),
+                    16,
+                ),
                 nn.ELU(),
                 nn.Linear(16, NUM_COORDINATION_MODES),
             )
@@ -259,7 +298,13 @@ class FutureIntentActorCritic(ActorCritic):
         if self.locomotion_intent_only:
             print("Response adapter update mask: locomotion-intent input columns only")
         if self.transition_adapter_enabled:
-            print("Transition adapter: locomotion intent + gait phase, no yaw modes")
+            condition = (
+                " + upper activity" if self.transition_upper_conditioned else ""
+            )
+            print(
+                "Transition adapter: locomotion intent + gait phase"
+                f"{condition}, no yaw modes"
+            )
 
     def _mean_from_actor_observation(self, actor_obs: torch.Tensor) -> torch.Tensor:
         expected = self.base_actor_obs_dim + self.upper_intent_dim
@@ -329,8 +374,12 @@ class FutureIntentActorCritic(ActorCritic):
             ) * locomotion_gate
         transition_residual = torch.zeros_like(future_residual)
         if self.transition_adapter is not None:
+            transition_parts = [locomotion_intent]
+            if self.transition_upper_conditioned:
+                transition_parts.append(upper_activity_features(upper_intent))
+            transition_parts.append(phase)
             transition_coefficients = torch.tanh(
-                self.transition_adapter(torch.cat((locomotion_intent, phase), dim=-1))
+                self.transition_adapter(torch.cat(transition_parts, dim=-1))
             )
             transition_mode_mask = torch.as_tensor(
                 RESPONSE_MODE_MASK,
@@ -377,6 +426,7 @@ class FutureIntentActorCritic(ActorCritic):
         migrations = (
             ("coordination_adapter.0.weight", UPPER_INTENT_DIM),
             ("response_adapter.0.weight", RESPONSE_CONTEXT_DIM),
+            ("transition_adapter.0.weight", LOCOMOTION_INTENT_DIM),
         )
         current = nn.Module.state_dict(self)
         for name, prefix_dim in migrations:

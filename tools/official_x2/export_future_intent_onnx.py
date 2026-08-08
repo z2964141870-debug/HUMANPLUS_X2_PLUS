@@ -24,8 +24,10 @@ from cwi_x2.future_intent_actor_critic import (
     RESPONSE_CONTEXT_DIM,
     RESPONSE_MODE_MASK,
     UPPER_INTENT_DIM,
+    UPPER_ACTIVITY_DIM,
     build_coordination_basis,
     lower_response_context,
+    upper_activity_features,
 )
 
 
@@ -41,10 +43,12 @@ class FutureIntentDeployActor(nn.Module):
         *,
         response_adapter_enabled: bool = False,
         transition_adapter_enabled: bool = False,
+        transition_upper_conditioned: bool = False,
     ) -> None:
         super().__init__()
         self.response_adapter_enabled = bool(response_adapter_enabled)
         self.transition_adapter_enabled = bool(transition_adapter_enabled)
+        self.transition_upper_conditioned = bool(transition_upper_conditioned)
         self.actor = nn.Sequential(
             nn.Linear(93, 256), nn.ELU(),
             nn.Linear(256, 128), nn.ELU(),
@@ -69,7 +73,12 @@ class FutureIntentDeployActor(nn.Module):
             self.response_adapter = None
         if self.transition_adapter_enabled:
             self.transition_adapter = nn.Sequential(
-                nn.Linear(LOCOMOTION_INTENT_DIM + GAIT_PHASE_DIM, 16),
+                nn.Linear(
+                    LOCOMOTION_INTENT_DIM
+                    + GAIT_PHASE_DIM
+                    + (UPPER_ACTIVITY_DIM if self.transition_upper_conditioned else 0),
+                    16,
+                ),
                 nn.ELU(),
                 nn.Linear(16, NUM_COORDINATION_MODES),
             )
@@ -126,8 +135,12 @@ class FutureIntentDeployActor(nn.Module):
             ) * locomotion_gate
         transition_residual = torch.zeros_like(future_residual)
         if self.transition_adapter is not None:
+            transition_parts = [locomotion_intent]
+            if self.transition_upper_conditioned:
+                transition_parts.append(upper_activity_features(upper_intent))
+            transition_parts.append(phase)
             transition_coefficients = torch.tanh(
-                self.transition_adapter(torch.cat((locomotion_intent, phase), dim=-1))
+                self.transition_adapter(torch.cat(transition_parts, dim=-1))
             )
             response_mode_mask = torch.as_tensor(
                 RESPONSE_MODE_MASK,
@@ -169,9 +182,15 @@ def main() -> None:
     transition_adapter_enabled = any(
         key.startswith("transition_adapter.") for key in state
     )
+    transition_upper_conditioned = bool(
+        transition_adapter_enabled
+        and state["transition_adapter.0.weight"].shape[1]
+        == LOCOMOTION_INTENT_DIM + UPPER_ACTIVITY_DIM + GAIT_PHASE_DIM
+    )
     model = FutureIntentDeployActor(
         response_adapter_enabled=response_adapter_enabled,
         transition_adapter_enabled=transition_adapter_enabled,
+        transition_upper_conditioned=transition_upper_conditioned,
     )
     selected_prefixes = ["actor.", "coordination_adapter."]
     if response_adapter_enabled:
@@ -187,6 +206,7 @@ def main() -> None:
     for name, prefix_dim in (
         ("coordination_adapter.0.weight", UPPER_INTENT_DIM),
         ("response_adapter.0.weight", RESPONSE_CONTEXT_DIM),
+        ("transition_adapter.0.weight", LOCOMOTION_INTENT_DIM),
     ):
         if name not in selected:
             continue
@@ -266,6 +286,7 @@ def main() -> None:
         "adapter_mode": "future",
         "response_adapter_enabled": response_adapter_enabled,
         "transition_adapter_enabled": transition_adapter_enabled,
+        "transition_upper_conditioned": transition_upper_conditioned,
         "base_actor_frozen": True,
         "input": {
             "name": "obs",
@@ -285,7 +306,9 @@ def main() -> None:
             if response_adapter_enabled else None
         ),
         "transition_adapter_contract": (
-            "2-D locomotion intent plus gait phase to bounded no-yaw 8-mode residual"
+            "2-D locomotion intent plus gait phase"
+            + (" plus 2-D upper activity" if transition_upper_conditioned else "")
+            + " to bounded no-yaw 8-mode residual"
             if transition_adapter_enabled else None
         ),
         "response_mode_contract": (

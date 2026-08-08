@@ -1,0 +1,153 @@
+{
+  "stage": "stage330_zero_upper_checkpoint_screen",
+  "hypothesis": "matched zero-upper training improves stiff fixed stop stability",
+  "domain": "official_mujoco_stiff1p2",
+  "future_stop_preview_seconds": 0.5,
+  "attempt_failures": 5,
+  "checkpoints": {
+    "2654": {
+      "passes": 3,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6184408902100123,
+          "stop_tilt_max_rad": 0.2243819484291853,
+          "stop_drift_m": 0.11103742105948489
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6314765044374339,
+          "stop_tilt_max_rad": 0.2066078004875287,
+          "stop_drift_m": 0.1129316116607352
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6338158654857101,
+          "stop_tilt_max_rad": 0.22298010838762392,
+          "stop_drift_m": 0.14402180978379148
+        }
+      ]
+    },
+    "2657": {
+      "passes": 2,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6278812174547491,
+          "stop_tilt_max_rad": 0.21433770781341072,
+          "stop_drift_m": 0.11492577937450252
+        },
+        {
+          "repeat": 2,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13858875193158768,
+          "stop_tilt_max_rad": 1.5448068138661182,
+          "stop_drift_m": 0.5722486022059156
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.637588708362258,
+          "stop_tilt_max_rad": 0.22661012248452295,
+          "stop_drift_m": 0.14803243790428722
+        }
+      ]
+    },
+    "2660": {
+      "passes": 2,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.1386099765333459,
+          "stop_tilt_max_rad": 1.5459635713269138,
+          "stop_drift_m": 0.5759540162952393
+        },
+        {
+          "repeat": 2,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.6327628819623726,
+          "stop_tilt_max_rad": 0.22889471554359403,
+          "stop_drift_m": 0.13184547299931665
+        },
+        {
+          "repeat": 3,
+          "result": "pass",
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_z_min_m": 0.632328496724876,
+          "stop_tilt_max_rad": 0.2097630250753912,
+          "stop_drift_m": 0.09801175698409596
+        }
+      ]
+    },
+    "2662": {
+      "passes": 0,
+      "valid": 3,
+      "rows": [
+        {
+          "repeat": 1,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.1384417013531721,
+          "stop_tilt_max_rad": 1.5414836348645284,
+          "stop_drift_m": 0.5466713784192202
+        },
+        {
+          "repeat": 2,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13900529770193232,
+          "stop_tilt_max_rad": 1.5461757325189296,
+          "stop_drift_m": 0.5741125417534519
+        },
+        {
+          "repeat": 3,
+          "result": "fail",
+          "startup": true,
+          "move": true,
+          "stop": false,
+          "stop_z_min_m": 0.13863799278461195,
+          "stop_tilt_max_rad": 1.5423002847012053,
+          "stop_drift_m": 0.5717268911297698
+        }
+      ]
+    }
+  }
+}

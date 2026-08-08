@@ -91,6 +91,9 @@ def main() -> None:
     response_adapter_enabled = env_flag("CWI_STAGE6_RESPONSE_ADAPTER")
     locomotion_intent_only = env_flag("CWI_STAGE6_LOCOMOTION_INTENT_ONLY")
     transition_adapter_enabled = env_flag("CWI_STAGE6_TRANSITION_ADAPTER")
+    transition_upper_conditioned = env_flag(
+        "CWI_STAGE6_TRANSITION_UPPER_CONDITIONED"
+    )
     transition_curriculum_enabled = env_flag(
         "CWI_STAGE6_TRANSITION_CURRICULUM"
     )
@@ -128,6 +131,7 @@ def main() -> None:
         cfg.response_adapter_enabled = response_adapter_enabled
         cfg.locomotion_intent_only = locomotion_intent_only
         cfg.transition_adapter_enabled = transition_adapter_enabled
+        cfg.transition_upper_conditioned = transition_upper_conditioned
         return cfg
 
     def manager_env_factory(*args, **kwargs):
@@ -194,7 +198,20 @@ def main() -> None:
                     "distribution": "uniform",
                 },
             )
-        return original_manager_env(*args, **kwargs)
+        env = original_manager_env(*args, **kwargs)
+        action_term = env.action_manager._terms.get("joint_pos")
+        zero_mask = getattr(action_term, "_cwi_upper_zero_mask", None)
+        if zero_mask is not None:
+            zero_count = int(zero_mask.sum().item())
+            zero_fraction = float(
+                getattr(action_term, "_cwi_upper_zero_fraction", 0.0)
+            )
+            print(
+                "[CWI upper curriculum] "
+                f"configured_zero_fraction={zero_fraction:.3f} "
+                f"current_zero_envs={zero_count}/{env.num_envs}"
+            )
+        return env
 
     module.X2LowerVelocityFlatPPORunnerCfg = runner_cfg_factory
     module.X2LowerVelocityTeacherPhaseTemplateResponseHistoryFlatEnvCfg = (

@@ -13,6 +13,7 @@ from cwi_x2.future_intent_actor_critic import (
     FutureIntentActorCritic,
     build_coordination_basis,
     lower_response_context,
+    upper_activity_features,
 )
 
 
@@ -22,6 +23,7 @@ def _model(
     response_adapter: bool = False,
     locomotion_intent_only: bool = False,
     transition_adapter: bool = False,
+    transition_upper_conditioned: bool = False,
 ) -> FutureIntentActorCritic:
     obs = {
         "policy": torch.zeros(2, BASE_ACTOR_OBS_DIM + DYNAMIC_INTENT_DIM),
@@ -35,6 +37,7 @@ def _model(
         response_adapter_enabled=response_adapter,
         locomotion_intent_only=locomotion_intent_only,
         transition_adapter_enabled=transition_adapter,
+        transition_upper_conditioned=transition_upper_conditioned,
     )
 
 
@@ -166,6 +169,48 @@ def test_zero_initialized_adapter_is_exact_base_actor():
     torch.testing.assert_close(
         model._mean_from_actor_observation(full),
         model.actor(base),
+        rtol=0.0,
+        atol=0.0,
+    )
+
+
+def test_upper_activity_features_separate_fixed_and_moving_intent():
+    fixed = torch.zeros(2, UPPER_INTENT_DIM)
+    torch.testing.assert_close(upper_activity_features(fixed), torch.zeros(2, 2))
+    moving = fixed.clone()
+    moving[0, 3] = 0.06
+    moving[0, 14 + 5] = -0.12
+    moving[1, 0] = 1.0
+    torch.testing.assert_close(
+        upper_activity_features(moving),
+        torch.tensor([[0.5, 1.0], [1.0, 0.0]]),
+    )
+
+
+def test_upper_conditioned_transition_migrates_old_head_exactly():
+    torch.manual_seed(82)
+    old = _model("future", response_adapter=True, transition_adapter=True)
+    torch.nn.init.normal_(old.transition_adapter[0].weight, std=0.2)
+    torch.nn.init.normal_(old.transition_adapter[-1].weight, std=0.2)
+    conditioned = _model(
+        "future",
+        response_adapter=True,
+        transition_adapter=True,
+        transition_upper_conditioned=True,
+    )
+    conditioned.load_state_dict(old.state_dict(), strict=True)
+    weight = conditioned.transition_adapter[0].weight
+    torch.testing.assert_close(weight[:, :2], old.transition_adapter[0].weight[:, :2])
+    torch.testing.assert_close(weight[:, 2:4], torch.zeros_like(weight[:, 2:4]))
+    torch.testing.assert_close(weight[:, 4:], old.transition_adapter[0].weight[:, 2:])
+
+    base = torch.randn(4, BASE_ACTOR_OBS_DIM)
+    base[:, 9] = 0.3
+    intent = 0.03 * torch.randn(4, DYNAMIC_INTENT_DIM)
+    observation = torch.cat((base, intent), dim=-1)
+    torch.testing.assert_close(
+        conditioned._mean_from_actor_observation(observation),
+        old._mean_from_actor_observation(observation),
         rtol=0.0,
         atol=0.0,
     )
