@@ -41,6 +41,17 @@ from official_x2.recovery_suffix_aggregation import (
     sha256_file,
     write_suffix_sidecar,
 )
+from official_x2.stop_event_suffix_contract import (
+    build_stop_event_sidecar,
+    build_stop_event_snapshot,
+    stop_event_capture_eligible,
+    write_stop_event_sidecar,
+)
+from official_x2.stop_event_suffix_contract_v2 import (
+    build_stop_event_sidecar_v2,
+    build_stop_event_snapshot_v2,
+    write_stop_event_sidecar_v2,
+)
 from official_x2.analyze_sagittal_posture import signed_pitch_from_xyzw_rad
 from official_x2.skill_handoff_contract import (
     blend_curriculum_recovery_targets,
@@ -405,6 +416,19 @@ class Stage208OfficialAdapter(Node):
         # Default-off Phase15 evidence channel.  It never participates in
         # control and is written only to a separate hash-bound sidecar.
         self.recovery_suffix_snapshots: list[dict[str, object]] = []
+        # Default-off Phase17 evidence channel. This observes final physical
+        # targets but never participates in target generation or policy state.
+        self.stop_event_suffix_snapshots: list[dict[str, object]] = []
+        # Phase19 default-off evidence.  Each policy slot stores the exact
+        # pre-inference sources which produced its most recent actor input.
+        # This state is observational only and is never read by control.
+        self.last_actor_observation_states: dict[str, dict[str, object] | None] = {
+            "main": None,
+            "stationary": None,
+            "recovery": None,
+        }
+        self.last_actor_observation_slot: str | None = None
+        self.stop_event_suffix_snapshots_v2: list[dict[str, object]] = []
         self.finished = False
         self.timer = self.create_timer(0.02, self._control)
 
@@ -501,6 +525,169 @@ class Stage208OfficialAdapter(Node):
             controller_state=controller_state,
         )
         self.recovery_suffix_snapshots.append(snapshot)
+
+    def _maybe_record_stop_event_suffix_snapshot(
+        self,
+        *,
+        stage: str,
+        elapsed: float,
+        obs: np.ndarray | None,
+        actor_action: np.ndarray | None,
+        physical_targets: dict[str, float] | None,
+    ) -> None:
+        """Record stop-event state without changing controller semantics."""
+        if not stop_event_capture_eligible(
+            output_enabled=self.args.stop_event_snapshot_output is not None,
+            stage=stage,
+            stop_elapsed_s=elapsed,
+            horizon_s=self.args.stop_event_snapshot_horizon_seconds,
+        ):
+            return
+        if obs is None or actor_action is None or physical_targets is None:
+            raise RuntimeError("stop-event suffix row lacks obs/action/physical targets")
+        assert self.odom is not None
+        pose = self.odom.pose.pose
+        twist = self.odom.twist.twist
+        physical = physical_state_payload(
+            joint_names=ISAAC_JOINTS,
+            joint_position_rad=[self.joints[name][0] for name in ISAAC_JOINTS],
+            joint_velocity_radps=[self.joints[name][1] for name in ISAAC_JOINTS],
+            root_position_m=[pose.position.x, pose.position.y, pose.position.z],
+            root_quaternion_xyzw=[
+                pose.orientation.x, pose.orientation.y,
+                pose.orientation.z, pose.orientation.w,
+            ],
+            root_linear_velocity_world_mps=[
+                twist.linear.x, twist.linear.y, twist.linear.z,
+            ],
+            root_angular_velocity_world_radps=[
+                twist.angular.x, twist.angular.y, twist.angular.z,
+            ],
+        )
+        physical_sha = canonical_sha256(physical)
+        controller_state = self.export_controller_state(
+            physical_state_sha256=physical_sha
+        )
+        stop_slot = stop_policy_slot(self.args.recovery_model)
+        if self.stop_hold_latch_s is None:
+            authority_slot = "brake_main"
+            observation_slot = "main"
+        elif elapsed < self.stop_hold_latch_s + self.args.stop_transition_seconds - 1.0e-9:
+            authority_slot = "brake_stationary_blend"
+            observation_slot = stop_slot
+        else:
+            authority_slot = stop_slot
+            observation_slot = stop_slot
+        actual_issued = np.asarray(
+            normalized_action_from_physical_targets(
+                physical_targets, self.default, LOWER_JOINTS, LOWER_SCALE
+            ),
+            dtype=np.float32,
+        )
+        snapshot = build_stop_event_snapshot(
+            episode_id=Path(self.args.output).stem,
+            source_tick=self.sequence_step - 1,
+            stop_elapsed_s=elapsed,
+            authority_slot=authority_slot,
+            observation_policy_slot=observation_slot,
+            physical_state=physical,
+            observation=obs,
+            actor_proposal_action=actor_action,
+            actual_issued_action=actual_issued,
+            physical_lower_target_rad=[physical_targets[name] for name in LOWER_JOINTS],
+            default_lower_target_rad=[self.default[name] for name in LOWER_JOINTS],
+            lower_action_scale_rad=LOWER_SCALE,
+            command=np.asarray(obs[9:12], dtype=np.float32),
+            gait_phase=np.asarray(obs[89:93], dtype=np.float32),
+            controller_state=controller_state,
+        )
+        self.stop_event_suffix_snapshots.append(snapshot)
+
+    def _maybe_record_stop_event_suffix_snapshot_v2(
+        self,
+        *,
+        stage: str,
+        elapsed: float,
+        obs: np.ndarray | None,
+        actor_action: np.ndarray | None,
+        physical_targets: dict[str, float] | None,
+    ) -> None:
+        """Capture lossless actor-input evidence without affecting control."""
+        if not stop_event_capture_eligible(
+            output_enabled=self.args.stop_event_snapshot_v2_output is not None,
+            stage=stage,
+            stop_elapsed_s=elapsed,
+            horizon_s=self.args.stop_event_snapshot_horizon_seconds,
+        ):
+            return
+        if obs is None or actor_action is None or physical_targets is None:
+            raise RuntimeError("v2 stop-event row lacks obs/action/physical targets")
+        observation_slot = self.last_actor_observation_slot
+        actor_state = (
+            None
+            if observation_slot is None
+            else self.last_actor_observation_states[observation_slot]
+        )
+        if actor_state is None:
+            raise RuntimeError("v2 stop-event row cannot bind obs to a policy-slot source")
+        candidate = np.asarray(actor_state["actor_observation_93d"], dtype=np.float32)
+        if np.max(np.abs(candidate - np.asarray(obs, dtype=np.float32))) > 1.0e-7:
+            raise RuntimeError("v2 latest policy-slot source does not match recorded obs")
+        preferred_slot = stop_policy_slot(self.args.recovery_model)
+        assert self.odom is not None
+        pose = self.odom.pose.pose
+        twist = self.odom.twist.twist
+        physical = physical_state_payload(
+            joint_names=ISAAC_JOINTS,
+            joint_position_rad=[self.joints[name][0] for name in ISAAC_JOINTS],
+            joint_velocity_radps=[self.joints[name][1] for name in ISAAC_JOINTS],
+            root_position_m=[pose.position.x, pose.position.y, pose.position.z],
+            root_quaternion_xyzw=[
+                pose.orientation.x, pose.orientation.y,
+                pose.orientation.z, pose.orientation.w,
+            ],
+            root_linear_velocity_world_mps=[
+                twist.linear.x, twist.linear.y, twist.linear.z,
+            ],
+            root_angular_velocity_world_radps=[
+                twist.angular.x, twist.angular.y, twist.angular.z,
+            ],
+        )
+        physical_sha = canonical_sha256(physical)
+        controller_state = self.export_controller_state(
+            physical_state_sha256=physical_sha
+        )
+        if self.stop_hold_latch_s is None:
+            authority_slot = "brake_main"
+        elif elapsed < self.stop_hold_latch_s + self.args.stop_transition_seconds - 1.0e-9:
+            authority_slot = "brake_stationary_blend"
+        else:
+            authority_slot = preferred_slot
+        actual_issued = np.asarray(
+            normalized_action_from_physical_targets(
+                physical_targets, self.default, LOWER_JOINTS, LOWER_SCALE
+            ),
+            dtype=np.float32,
+        )
+        snapshot = build_stop_event_snapshot_v2(
+            actor_observation_state=actor_state,
+            episode_id=Path(self.args.output).stem,
+            source_tick=self.sequence_step - 1,
+            stop_elapsed_s=elapsed,
+            authority_slot=authority_slot,
+            observation_policy_slot=observation_slot,
+            physical_state=physical,
+            observation=obs,
+            actor_proposal_action=actor_action,
+            actual_issued_action=actual_issued,
+            physical_lower_target_rad=[physical_targets[name] for name in LOWER_JOINTS],
+            default_lower_target_rad=[self.default[name] for name in LOWER_JOINTS],
+            lower_action_scale_rad=LOWER_SCALE,
+            command=np.asarray(obs[9:12], dtype=np.float32),
+            gait_phase=np.asarray(obs[89:93], dtype=np.float32),
+            controller_state=controller_state,
+        )
+        self.stop_event_suffix_snapshots_v2.append(snapshot)
 
     def _joint_callback(self, msg: JointStateArray) -> None:
         sample_time = self._message_sample_time(msg)
@@ -839,6 +1026,7 @@ class Stage208OfficialAdapter(Node):
         policy_slot: str = "main",
     ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
         assert self.imu is not None and self.odom is not None
+        phase_elapsed_input = float(phase_elapsed)
         sessions = {
             "main": self.session,
             "stationary": self.stationary_session,
@@ -851,6 +1039,7 @@ class Stage208OfficialAdapter(Node):
         upper_elapsed = phase_elapsed
         if force_moving or abs(command_vx) > 0.1:
             phase_elapsed += self.args.phase_offset
+        actor_phase_elapsed = float(phase_elapsed)
         twist = self.odom.twist.twist
         base_lin_vel_w = np.asarray([twist.linear.x, twist.linear.y, twist.linear.z], dtype=np.float32)
         base_lin_vel = world_vector_to_body(self.odom, base_lin_vel_w)
@@ -906,9 +1095,31 @@ class Stage208OfficialAdapter(Node):
         if self.args.fixed_wz is not None and abs(command_vx) > 0.1:
             command_wz = self.args.fixed_wz
         command = np.asarray([command_vx, command_vy, command_wz], dtype=np.float32)
-        joint_pos = np.asarray([self.joints[name][0] - self.default[name] for name in ISAAC_JOINTS], dtype=np.float32)
+        joint_position_rad = np.asarray(
+            [self.joints[name][0] for name in ISAAC_JOINTS], dtype=np.float32
+        )
+        default_position_rad = np.asarray(
+            [self.default[name] for name in ISAAC_JOINTS], dtype=np.float32
+        )
+        joint_pos = joint_position_rad - default_position_rad
         joint_vel = np.asarray([self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32)
         projected_gravity = gravity_body(self.imu)
+        raw_physical_observation = np.concatenate(
+            (base_lin_vel, base_ang_vel, projected_gravity, joint_pos, joint_vel)
+        ).astype(np.float32)
+        predictor_before = {
+            "previous_physical_before": (
+                None
+                if self.previous_physical_observation is None
+                else self.previous_physical_observation.copy().tolist()
+            ),
+            "predicted_physical_before": (
+                None
+                if self.predicted_physical_observation is None
+                else self.predicted_physical_observation.copy().tolist()
+            ),
+            "predicted_step_before": int(self.predicted_physical_step),
+        }
         (
             base_lin_vel,
             base_ang_vel,
@@ -918,6 +1129,19 @@ class Stage208OfficialAdapter(Node):
         ) = self._predict_physical_observation(
             base_lin_vel, base_ang_vel, projected_gravity, joint_pos, joint_vel
         )
+        predictor_after = {
+            "previous_physical_after": (
+                None
+                if self.previous_physical_observation is None
+                else self.previous_physical_observation.copy().tolist()
+            ),
+            "predicted_physical_after": (
+                None
+                if self.predicted_physical_observation is None
+                else self.predicted_physical_observation.copy().tolist()
+            ),
+            "predicted_step_after": int(self.predicted_physical_step),
+        }
         moving = force_moving or abs(command_vx) > 0.1
         phase = self._phase_features(phase_elapsed, moving=moving)
         previous_action = self.previous_actions[policy_slot]
@@ -944,6 +1168,74 @@ class Stage208OfficialAdapter(Node):
             future_command_vx=future_command_vx,
             force_moving=force_moving,
         )
+        imu_q = self.imu.orientation
+        imu_omega = self.imu.angular_velocity
+        imu_accel = self.imu.linear_acceleration
+        odom_q = self.odom.pose.pose.orientation
+        header = getattr(self.imu, "header", None)
+        self.last_actor_observation_states[policy_slot] = {
+            "schema": "aimdk_x2_actor_observation_source_v2",
+            "policy_slot": policy_slot,
+            "sequence_step": int(self.sequence_step),
+            "torso_imu_source": {
+                "topic": "/aima/hal/imu/torso/state",
+                "frame_id": str(getattr(header, "frame_id", "")),
+                "sample_time_s": self.imu_sample_time,
+                "orientation_xyzw": [imu_q.x, imu_q.y, imu_q.z, imu_q.w],
+                "angular_velocity_radps": [imu_omega.x, imu_omega.y, imu_omega.z],
+                "linear_acceleration_mps2": [imu_accel.x, imu_accel.y, imu_accel.z],
+                "orientation_covariance": list(self.imu.orientation_covariance),
+                "angular_velocity_covariance": list(self.imu.angular_velocity_covariance),
+                "linear_acceleration_covariance": list(self.imu.linear_acceleration_covariance),
+                "filter_contract": "vendor torso IMU topic; no adapter-side filtering",
+            },
+            "odom_source": {
+                "topic": "/aima/hal/odom/state",
+                "sample_time_s": self.odom_sample_time,
+                "root_quaternion_xyzw": [odom_q.x, odom_q.y, odom_q.z, odom_q.w],
+                "root_linear_velocity_world_mps": base_lin_vel_w.tolist(),
+            },
+            "joint_source": {
+                "joint_names": list(ISAAC_JOINTS),
+                "position_rad": joint_position_rad.tolist(),
+                "velocity_radps": np.asarray(
+                    [self.joints[name][1] for name in ISAAC_JOINTS], dtype=np.float32
+                ).tolist(),
+                "default_position_rad": default_position_rad.tolist(),
+            },
+            "predictor_state": {
+                "prediction_seconds": float(self.args.state_prediction_seconds),
+                "sequence_step": int(self.sequence_step),
+                "raw_physical_observation_71d": raw_physical_observation.tolist(),
+                **predictor_before,
+                **predictor_after,
+            },
+            "gait_generator_state": {
+                "phase_elapsed_input_s": phase_elapsed_input,
+                "actor_phase_elapsed_s": actor_phase_elapsed,
+                "phase_offset_s": float(self.args.phase_offset),
+                "period_s": float(self.period),
+                "double_support_fraction": float(self.double_support_fraction),
+                "moving": bool(moving),
+                "force_moving": bool(force_moving),
+                "command_vx_before_mirror": float(command_vx),
+                "gait_output": phase.tolist(),
+                "latch_state": {
+                    "stop_hold_latch_s": self.stop_hold_latch_s,
+                    "stop_emergency_latch": bool(self.stop_emergency_latch),
+                },
+            },
+            "command_velocity_mps_radps": np.asarray(
+                [command_vx, command_vy, command_wz], dtype=np.float32
+            ).tolist(),
+            "previous_action_pre_inference": self.previous_actions[policy_slot].copy().tolist(),
+            "mirror_policy": bool(self.args.mirror_policy),
+            "actor_observation_93d": obs.tolist(),
+            "model_input": model_obs.tolist(),
+            "model_input_width": int(model_obs.size),
+            "capture_boundary": "pre_actor_inference",
+        }
+        self.last_actor_observation_slot = policy_slot
         raw_action = session.run(["actions"], {"obs": model_obs[None]})[0][0].astype(np.float32)
         if (
             moving
@@ -1375,6 +1667,20 @@ class Stage208OfficialAdapter(Node):
             elapsed=elapsed,
             obs=obs,
             action=action,
+        )
+        self._maybe_record_stop_event_suffix_snapshot(
+            stage=stage,
+            elapsed=elapsed,
+            obs=obs,
+            actor_action=action,
+            physical_targets=physical_targets,
+        )
+        self._maybe_record_stop_event_suffix_snapshot_v2(
+            stage=stage,
+            elapsed=elapsed,
+            obs=obs,
+            actor_action=action,
+            physical_targets=physical_targets,
         )
 
     def _control(self) -> None:
@@ -2149,6 +2455,26 @@ class Stage208OfficialAdapter(Node):
                     "post_handoff_snapshot_control_authority": "recovery only",
                 }
             )
+        if self.args.stop_event_snapshot_output is not None:
+            summary.update(
+                {
+                    "stop_event_snapshot_schema": "aimdk_x2_stop_event_suffix_sidecar_v1",
+                    "stop_event_snapshot_output": self.args.stop_event_snapshot_output,
+                    "stop_event_snapshot_horizon_s": self.args.stop_event_snapshot_horizon_seconds,
+                    "stop_event_snapshot_count": len(self.stop_event_suffix_snapshots),
+                    "stop_event_snapshot_anchor": "stop command start",
+                }
+            )
+        if self.args.stop_event_snapshot_v2_output is not None:
+            summary.update(
+                {
+                    "stop_event_snapshot_v2_schema": "aimdk_x2_stop_event_suffix_sidecar_v2",
+                    "stop_event_snapshot_v2_output": self.args.stop_event_snapshot_v2_output,
+                    "stop_event_snapshot_v2_horizon_s": self.args.stop_event_snapshot_horizon_seconds,
+                    "stop_event_snapshot_v2_count": len(self.stop_event_suffix_snapshots_v2),
+                    "stop_event_snapshot_v2_actor_input_truth": "pre-inference source state",
+                }
+            )
         output = Path(self.args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps({"summary": summary, "trace": self.trace}, indent=2) + "\n", encoding="utf-8")
@@ -2168,6 +2494,82 @@ class Stage208OfficialAdapter(Node):
                 horizon_s=self.args.post_handoff_snapshot_horizon_seconds,
             )
             write_suffix_sidecar(self.args.post_handoff_snapshot_output, sidecar)
+        if self.args.stop_event_snapshot_output is not None:
+            adapter_path = Path(__file__).resolve()
+            model_paths = {
+                "moving": Path(self.args.model).resolve(),
+                "stationary": Path(self.args.stationary_model).resolve(),
+            }
+            if self.args.recovery_model is not None:
+                model_paths["recovery"] = Path(self.args.recovery_model).resolve()
+            model_assets = {
+                name: {"path": str(path), "sha256": sha256_file(path)}
+                for name, path in model_paths.items()
+            }
+            stop_sidecar = build_stop_event_sidecar(
+                self.stop_event_suffix_snapshots,
+                source_trace_path=output.resolve(),
+                source_trace_sha256=sha256_file(output),
+                adapter_path=adapter_path,
+                adapter_sha256=sha256_file(adapter_path),
+                model_assets=model_assets,
+                episode_outcome=summary,
+                horizon_s=self.args.stop_event_snapshot_horizon_seconds,
+                frozen_control_contract={
+                    "clock_mode": self.args.clock_mode,
+                    "stop_controller": self.args.stop_controller,
+                    "stop_transition_seconds": self.args.stop_transition_seconds,
+                    "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
+                    "pd_profile": self.args.pd_profile,
+                    "pd_kp_multiplier": self.args.pd_kp_multiplier,
+                    "pd_kd_multiplier": self.args.pd_kd_multiplier,
+                    "command_vx_mps": self.args.vx,
+                    "action_bias_mode": self.args.action_bias_mode,
+                    "action_bias": self.args.action_bias,
+                    "ankle_roll_common_bias": self.args.ankle_roll_common_bias,
+                },
+            )
+            write_stop_event_sidecar(self.args.stop_event_snapshot_output, stop_sidecar)
+        if self.args.stop_event_snapshot_v2_output is not None:
+            adapter_path = Path(__file__).resolve()
+            model_paths = {
+                "moving": Path(self.args.model).resolve(),
+                "stationary": Path(self.args.stationary_model).resolve(),
+            }
+            if self.args.recovery_model is not None:
+                model_paths["recovery"] = Path(self.args.recovery_model).resolve()
+            model_assets = {
+                name: {"path": str(path), "sha256": sha256_file(path)}
+                for name, path in model_paths.items()
+            }
+            stop_sidecar_v2 = build_stop_event_sidecar_v2(
+                self.stop_event_suffix_snapshots_v2,
+                source_trace_path=output.resolve(),
+                source_trace_sha256=sha256_file(output),
+                adapter_path=adapter_path,
+                adapter_sha256=sha256_file(adapter_path),
+                model_assets=model_assets,
+                episode_outcome=summary,
+                horizon_s=self.args.stop_event_snapshot_horizon_seconds,
+                frozen_control_contract={
+                    "clock_mode": self.args.clock_mode,
+                    "stop_controller": self.args.stop_controller,
+                    "stop_transition_seconds": self.args.stop_transition_seconds,
+                    "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
+                    "pd_profile": self.args.pd_profile,
+                    "pd_kp_multiplier": self.args.pd_kp_multiplier,
+                    "pd_kd_multiplier": self.args.pd_kd_multiplier,
+                    "command_vx_mps": self.args.vx,
+                    "action_bias_mode": self.args.action_bias_mode,
+                    "action_bias": self.args.action_bias,
+                    "ankle_roll_common_bias": self.args.ankle_roll_common_bias,
+                    "state_prediction_seconds": self.args.state_prediction_seconds,
+                    "phase_offset_seconds": self.args.phase_offset,
+                },
+            )
+            write_stop_event_sidecar_v2(
+                self.args.stop_event_snapshot_v2_output, stop_sidecar_v2
+            )
         print(json.dumps(summary, indent=2), flush=True)
 
 
@@ -2192,6 +2594,26 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=1.5,
         help="Recovery-authority capture horizon; constrained to [0, 1.5] seconds.",
+    )
+    parser.add_argument(
+        "--stop-event-snapshot-output",
+        help=(
+            "Optional Phase17 stop-command-aligned stateful sidecar. Default off; "
+            "records evidence only and never changes control."
+        ),
+    )
+    parser.add_argument(
+        "--stop-event-snapshot-v2-output",
+        help=(
+            "Optional Phase19 lossless actor-input stop-event sidecar. Default off; "
+            "records evidence only and never changes control."
+        ),
+    )
+    parser.add_argument(
+        "--stop-event-snapshot-horizon-seconds",
+        type=float,
+        default=4.0,
+        help="Stop-event evidence horizon; constrained to [0, 4.0] seconds.",
     )
     parser.add_argument("--vx", type=float, default=0.30)
     parser.add_argument(
@@ -2520,6 +2942,27 @@ def parse_args() -> argparse.Namespace:
             parser.error("post-handoff snapshot recording requires the canonical unmirrored actor frame")
         if Path(args.post_handoff_snapshot_output).resolve() == Path(args.output).resolve():
             parser.error("post-handoff snapshot output must differ from the main trace")
+    if not 0.0 <= args.stop_event_snapshot_horizon_seconds <= 4.0:
+        parser.error("--stop-event-snapshot-horizon-seconds must be in [0, 4.0]")
+    if args.stop_event_snapshot_output is not None:
+        if args.clock_mode != "step":
+            parser.error("stop-event snapshot recording requires --clock-mode step")
+        if args.stop_controller != "brake_blend_to_policy":
+            parser.error(
+                "stop-event snapshot recording requires --stop-controller brake_blend_to_policy"
+            )
+        if args.stationary_model is None:
+            parser.error("stop-event snapshot recording requires --stationary-model")
+        if args.mirror_policy:
+            parser.error("stop-event snapshot recording requires canonical unmirrored actor frame")
+        if Path(args.stop_event_snapshot_output).resolve() == Path(args.output).resolve():
+            parser.error("stop-event snapshot output must differ from the main trace")
+        if (
+            args.post_handoff_snapshot_output is not None
+            and Path(args.stop_event_snapshot_output).resolve()
+            == Path(args.post_handoff_snapshot_output).resolve()
+        ):
+            parser.error("stop-event and post-handoff snapshot outputs must differ")
     if not 0.0 <= args.actor_symmetry_projection_alpha <= 1.0:
         parser.error("--actor-symmetry-projection-alpha must be in [0, 1]")
     if args.actor_symmetry_projection_alpha > 0.0 and args.mirror_policy:

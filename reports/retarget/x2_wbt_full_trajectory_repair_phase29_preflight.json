@@ -1,0 +1,218 @@
+{
+  "schema_version": "x2_wbt_full_trajectory_repair_phase29_preflight_v1",
+  "configuration": {
+    "motions": [
+      "AMASS-WALK-001",
+      "PHUMA-LUNGE-R-001",
+      "AMASS-KICK-L-001"
+    ],
+    "per_clip_tuning": false,
+    "optimizer": "sparse trajectory Gauss-Newton with scipy.sparse.linalg.lsqr",
+    "gn_iterations": 8,
+    "gn_step_scale": 0.65,
+    "lsqr_atol": 1e-06,
+    "lsqr_btol": 1e-06,
+    "lsqr_iteration_limit": 240,
+    "root_xy_correction_max_m": 0.2,
+    "root_z_correction_max_abs_m": 0.08,
+    "joint_correction_max_abs_rad": 0.45,
+    "weights": {
+      "keypoint": 4.0,
+      "stance_xy": 14.0,
+      "stance_z": 12.0,
+      "swing_clearance": 8.0,
+      "anchor_source": 1.5,
+      "root_correction": 0.8,
+      "joint_correction": 0.7,
+      "root_velocity": 2.0,
+      "root_acceleration": 5.0,
+      "joint_velocity": 1.2,
+      "joint_acceleration": 2.5
+    },
+    "stance_schedule": "all contiguous Phase28 source-height contact intervals, none dropped/merged",
+    "phase_anchor": "one jointly optimized XY variable per side per complete source stance phase",
+    "forbidden": [
+      "clipwise_parameter_search",
+      "fixed_root",
+      "frame_deletion",
+      "segment_deletion",
+      "forced_double_contact",
+      "physics",
+      "PPO"
+    ]
+  },
+  "dependency": {
+    "mujoco_jacBody": true,
+    "mujoco_jacGeom": true,
+    "scipy_sparse_lsqr": true
+  },
+  "motions": [
+    {
+      "id": "AMASS-WALK-001",
+      "checks": {
+        "panel_row_present": true,
+        "phase28_entry_present": true,
+        "train_split": true,
+        "source_sha_exact": true,
+        "official_joint_order_31": true,
+        "head_locked": true,
+        "lower_body_15": true,
+        "both_sides_have_stance_phase": true,
+        "single_support_semantics_present": true,
+        "swing_semantics_present_each_side": true
+      },
+      "details": {
+        "frames": 228,
+        "variables": 4132,
+        "stance_phase_count": {
+          "left": 7,
+          "right": 7
+        },
+        "stance_phase_lengths": {
+          "left": [
+            3,
+            22,
+            21,
+            20,
+            21,
+            20,
+            22
+          ],
+          "right": [
+            23,
+            22,
+            22,
+            21,
+            21,
+            21,
+            5
+          ]
+        },
+        "lower_body_joint_names": [
+          "left_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "left_knee_joint",
+          "left_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_hip_pitch_joint",
+          "right_hip_roll_joint",
+          "right_hip_yaw_joint",
+          "right_knee_joint",
+          "right_ankle_pitch_joint",
+          "right_ankle_roll_joint",
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "PHUMA-LUNGE-R-001",
+      "checks": {
+        "panel_row_present": true,
+        "phase28_entry_present": true,
+        "train_split": true,
+        "source_sha_exact": true,
+        "official_joint_order_31": true,
+        "head_locked": true,
+        "lower_body_15": true,
+        "both_sides_have_stance_phase": true,
+        "single_support_semantics_present": true,
+        "swing_semantics_present_each_side": true
+      },
+      "details": {
+        "frames": 120,
+        "variables": 2172,
+        "stance_phase_count": {
+          "left": 3,
+          "right": 3
+        },
+        "stance_phase_lengths": {
+          "left": [
+            7,
+            49,
+            48
+          ],
+          "right": [
+            18,
+            22,
+            3
+          ]
+        },
+        "lower_body_joint_names": [
+          "left_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "left_knee_joint",
+          "left_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_hip_pitch_joint",
+          "right_hip_roll_joint",
+          "right_hip_yaw_joint",
+          "right_knee_joint",
+          "right_ankle_pitch_joint",
+          "right_ankle_roll_joint",
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "AMASS-KICK-L-001",
+      "checks": {
+        "panel_row_present": true,
+        "phase28_entry_present": true,
+        "train_split": true,
+        "source_sha_exact": true,
+        "official_joint_order_31": true,
+        "head_locked": true,
+        "lower_body_15": true,
+        "both_sides_have_stance_phase": true,
+        "single_support_semantics_present": true,
+        "swing_semantics_present_each_side": true
+      },
+      "details": {
+        "frames": 136,
+        "variables": 2458,
+        "stance_phase_count": {
+          "left": 2,
+          "right": 3
+        },
+        "stance_phase_lengths": {
+          "left": [
+            67,
+            38
+          ],
+          "right": [
+            75,
+            24,
+            33
+          ]
+        },
+        "lower_body_joint_names": [
+          "left_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "left_knee_joint",
+          "left_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_hip_pitch_joint",
+          "right_hip_roll_joint",
+          "right_hip_yaw_joint",
+          "right_knee_joint",
+          "right_ankle_pitch_joint",
+          "right_ankle_roll_joint",
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ]
+      },
+      "pass": true
+    }
+  ],
+  "pass": true
+}

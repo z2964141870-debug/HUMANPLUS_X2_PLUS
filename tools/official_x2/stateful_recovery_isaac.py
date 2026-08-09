@@ -16,6 +16,7 @@ from isaaclab.envs import ManagerBasedRLEnv
 from gear_sonic.envs.x2_velocity.actions import GaitTemplateLowerBodyJointPositionAction
 
 from .recovery_reset_curriculum import finalize_stateful_recovery
+from .role_aware_recovery_curriculum import finalize_role_aware_suffix
 
 
 def _stateful_moving_mask(env, command_name: str, threshold: float = 0.1) -> torch.Tensor:
@@ -108,6 +109,7 @@ class StatefulRecoveryRLEnv(ManagerBasedRLEnv):
     def _reset_idx(self, env_ids):
         super()._reset_idx(env_ids)
         finalize_stateful_recovery(self)
+        finalize_role_aware_suffix(self)
 
 
 def configure_stateful_recovery_cfg(cfg) -> None:

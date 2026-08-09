@@ -1,0 +1,78 @@
+schema_version: x2_faithful_zero_update_phase26_v1
+immutable: true
+
+frozen_inputs:
+  phase22_readiness:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_faithful_any2any_readiness_phase22.json
+    sha256: bfcfcf6db4b42b4a3e4ef579d8c99a904a068bfb3467f062fd3170b32d6ded92
+  phase23_implementation:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/src/x2_faithful_any2any_phase23.py
+    sha256: c2ed03d876976a1a81f2ad8559a11b3c4b86fde226b8bdb77a23799553cf8c3a
+  phase23_report:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_faithful_wbt29_gold_phase23.json
+    sha256: 32e82f3747eebf1c0cd0938a65e30bccf66226f5adc34cd9b14b47075e92475d
+  phase24_config:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/configs/x2_faithful_any2any_phase24.yaml
+    sha256: bbad03474f02a83881baea7a1e0fc3bcf3146321d95a931ffd8c1ee2117e7dd6
+  phase24_report:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_faithful_any2any_phase24.json
+    sha256: c3e2e58eea9f9166feff3eb55924bab6f61db25bb8adf48dca9c02b73a032245
+  phase25_manifest:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/configs/x2_faithful_physics_phase25.yaml
+    sha256: cc02be069637a488a7330928ab8500794f7972531ea093dc2be8cd839e247dbb
+  phase25_runtime:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/configs/x2_faithful_physics_phase25_runtime.json
+    sha256: 96ab02bf2a974d1280fc37a3a8890131cbd4dc4f610197f6c5f5127cd9446c77
+  phase25_report:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_physics_provenance_phase25.json
+    sha256: 1a7c0ce96f88749efc6ff886db22989bd6ad82f4c9671cbb4f2a01566c40b02f
+  phase10_split_report:
+    path: /home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_native_gold_seed_phase10.json
+    sha256: 72b5377f02e2cee266ad5ebc8ea809d4c7b980396926b34f0d3b15436bff8f4e
+
+selected_lora_manifest: figure7_exact_s7
+
+fixed_batches:
+  history_frames: [0, 10]
+  future_frames: [10, 20]
+  train:
+    split: train
+    key: official_native_dance_train_000
+  held_out:
+    split: held_out
+    key: official_native_dance_held_out_000
+
+x2_default_joint_positions:
+  hip_pitch: -0.2480
+  knee: 0.5303
+  ankle_pitch: -0.2823
+  shoulder_pitch: 0.4
+  elbow: -1.2
+  all_other: 0.0
+
+critic_semantic_layout:
+  command_multi_future: 580
+  motion_anchor_pos_b: 3
+  motion_anchor_ori_b: 6
+  source14_body_pos_b: 42
+  source14_body_ori_b: 84
+  base_lin_vel_history: 30
+  base_ang_vel_history: 30
+  joint_pos_history: 290
+  joint_vel_history: 290
+  actions_history: 290
+
+zero_update_contract:
+  environment_instances: 0
+  physics_steps: 0
+  optimizer_instances: 0
+  optimizer_steps: 0
+  callback_instances: 0
+  fixed_forward_batches: 2
+  observation_corruption: false
+  domain_randomization: false
+  checkpoint_output_allowed: false
+  action_token_tolerance: 1.0e-6
+  head_policy_dim: 0
+  head_sim_rule: copy_explicit_nominal31
+  one_update_authorized: false

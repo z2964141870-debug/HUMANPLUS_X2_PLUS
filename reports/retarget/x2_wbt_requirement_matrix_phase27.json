@@ -1,0 +1,100 @@
+{
+  "schema_version": "x2_wbt_requirement_matrix_phase27_v1",
+  "date": "2026-08-09",
+  "mode": "read_only_evidence_audit_no_physics_no_training_no_retarget",
+  "decision": {
+    "diagnostic_panel_sources_frozen": true,
+    "diagnostic_panel_count": 24,
+    "diagnostic_panel_official_results_complete": false,
+    "panel_old_vs_official_ab_count": 3,
+    "panel_bronze_count": 2,
+    "panel_silver_count": 0,
+    "panel_gold_count": 0,
+    "native_gold_sanity_seed_clip_count": 7,
+    "phase22_b1_b5_ready": true,
+    "zero_update_passed": true,
+    "one_update_authorized": false,
+    "one_update_is_wbt_ppo": true,
+    "pipeline_sanity_label_does_not_exempt_ppo_rule": true,
+    "minimum_hard_gate_before_one_update": "complete_official_v1_old_new_and_Bronze_Silver_qualification_on_fixed_24_panel_with_nonempty_GMR_Silver_train_subset",
+    "minimum_train_data_after_panel_qualification": "at_least_one_train_candidate_GMR_Silver",
+    "minimum_for_independent_faithful_evaluation": "at_least_one_additional_disjoint_held_out_GMR_Silver_or_Gold",
+    "meaningful_cross_embodiment_ppo_blocker": "GMR_dynamic_Silver_equals_0"
+  },
+  "phase22_requirements": [
+    {"id": "B1", "requirement": "runtime WBT29 alignment", "status": "READY", "evidence": ["x2_faithful_wbt29_gold_phase23.json", "x2_faithful_zero_update_phase26.json"]},
+    {"id": "B2", "requirement": "Gold state adapter in train/eval paths", "status": "READY", "evidence": ["x2_faithful_wbt29_gold_phase23.json", "x2_faithful_zero_update_phase26.json"]},
+    {"id": "B3", "requirement": "faithful PPO reward DR config", "status": "READY", "evidence": ["x2_faithful_any2any_phase24.json", "x2_faithful_zero_update_phase26.json"]},
+    {"id": "B4", "requirement": "exact Figure7 S7 LoRA scope", "status": "READY", "evidence": ["x2_faithful_any2any_phase24.json", "x2_faithful_zero_update_phase26.json"]},
+    {"id": "B5", "requirement": "immutable declared Isaac train-domain provenance", "status": "READY_AS_DECLARED_TRAIN_DOMAIN", "evidence": ["x2_physics_provenance_phase25.json", "x2_faithful_zero_update_phase26.json"]},
+    {"id": "B6", "requirement": "zero-update initialization equivalence", "status": "PASS", "evidence": ["x2_faithful_zero_update_phase26.json"], "boundary": "zero environment instances, zero physics steps, zero optimizer steps"}
+  ],
+  "panel_coverage": {
+    "source_status": "selection_only_no_retarget_no_training",
+    "recommended_split_is_final": false,
+    "counts": {"source_frozen": 24, "old_vs_official_ab": 3, "bronze": 2, "silver": 0, "gold": 0, "unclassified_official_output": 3, "missing_official_product": 19},
+    "motions": [
+      {"id":"AMASS-STAND-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"AMASS-UPPER-001","official_product":"smoke3_output","tier":"unclassified","old_vs_official_ab":true},
+      {"id":"AMASS-WALK-001","official_product":"smoke3_output","tier":"unclassified","old_vs_official_ab":true},
+      {"id":"AMASS-TURN-L-001","official_product":"phase7_canonical","tier":"Bronze","old_vs_official_ab":false},
+      {"id":"AMASS-TURN-R-001","official_product":"phase7_canonical","tier":"Bronze","old_vs_official_ab":false},
+      {"id":"AMASS-SQUAT-001","official_product":"smoke3_output","tier":"unclassified","old_vs_official_ab":true},
+      {"id":"AMASS-KICK-L-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"AMASS-KICK-R-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"AMASS-COORD-FAST-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"AMASS-FAIL-CROUCH-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"AMASS-FAIL-CIRCLE-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"AMASS-FAIL-THROW-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-LUNGE-R-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-LUNGE-L-MIRROR-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-RAISE-L-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-RAISE-R-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-SQUAT-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-FAIL-MOVE28-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"PHUMA-COORD-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"BONES-WALK-FAIL-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"BONES-TURN-FAIL-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"BONES-STOP-FAIL-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"BONES-SIDE-FAIL-001","official_product":"missing","tier":"missing","old_vs_official_ab":false},
+      {"id":"BONES-JOG-FAIL-001","official_product":"missing","tier":"missing","old_vs_official_ab":false}
+    ]
+  },
+  "product_inventory": [
+    {"product":"smoke3 official retarget outputs","count":3,"tier":"unclassified","boundary":"old-vs-official XML A/B exact; no tier-gate qualification"},
+    {"product":"Phase7 canonical root-ground","count":5,"tier":"Bronze","boundary":"slip failed on walk_to_stand and contact agreement failed on all five; Silver=0"},
+    {"product":"Phase9 contact schedule","count":5,"tier":"rejected_derivative","boundary":"does not modify Phase7 Bronze"},
+    {"product":"Phase10 official native dance","count":7,"tier":"scoped_native_Gold_sanity_seed","boundary":"not GMR/AMASS Silver, not hardware truth, not cross-embodiment proof"},
+    {"product":"Phase12 held-out clip0 bare-PD replay","count":1,"tier":"rejected_trackability_smoke","boundary":"prescribed rejected; free not run; does not reject Any2Any"}
+  ],
+  "old_vs_official_ab": {
+    "motion_ids": ["AMASS-UPPER-001", "AMASS-WALK-001", "AMASS-SQUAT-001"],
+    "global_max_abs_difference": 0.0,
+    "conclusion": "official x2.xml substitution alone did not change retarget numerics"
+  },
+  "next_experiment": {
+    "count": 1,
+    "name": "fixed_24_panel_official_v1_old_new_Bronze_Silver_qualification",
+    "optimizer_steps": 0,
+    "training": false,
+    "contract": "use one preregistered official body_joint_root_contact contract and frozen tier thresholds for all 24; no per-clip tuning",
+    "outputs_per_motion": ["old_vs_official_difference", "Bronze_subgates", "Silver_contact_subgates", "reject_reason", "provenance", "frozen_train_or_held_identity"],
+    "minimum_gate_for_any_wbt_ppo": "complete all 24 classifications and obtain at least one train-candidate GMR Silver",
+    "minimum_gate_for_independent_faithful_evaluation": "also obtain at least one disjoint held-out GMR Silver or Gold",
+    "failure_rule": "if GMR Silver remains zero, all WBT PPO stays forbidden and native Gold sanity clips cannot bypass the gate"
+  },
+  "evidence_sha256": {
+    "x2_wbt_diagnostic_panel.json":"cbb8889b6b900f2a00b46409909449d17b24bdc6b3f79e28b91bbafb241ccf60",
+    "x2_wbt_tier_gates.json":"314edd1970083fa5549929f4c8e79e206e5ece07718955442a9d943e75d2a934",
+    "x2_official_retarget_smoke3.json":"69a98ab6eee76d8ae691afa45a09e90662fdb4c7e05df9296dd700dfbe045a06",
+    "x2_wbt_canonical_root_ground_phase7.json":"bdd703cf7c696c0146494172815e173a4a36ebf74cdad7e74791f6389f02377b",
+    "x2_wbt_contact_schedule_phase9.json":"4dbc7249a6fbee46faf10a970f4587a3ab51fdaba0c248fe2b56bfac9ee448e3",
+    "x2_native_gold_seed_phase10.json":"72b5377f02e2cee266ad5ebc8ea809d4c7b980396926b34f0d3b15436bff8f4e",
+    "x2_native_gold_trackability_phase12.json":"d06db9349e31d67a7233fe4f39eb9ebfb3d751a4e6d4ce2b39653f1e2fbd522d",
+    "x2_faithful_any2any_readiness_phase22.json":"bfcfcf6db4b42b4a3e4ef579d8c99a904a068bfb3467f062fd3170b32d6ded92",
+    "x2_faithful_wbt29_gold_phase23.json":"32e82f3747eebf1c0cd0938a65e30bccf66226f5adc34cd9b14b47075e92475d",
+    "x2_faithful_any2any_phase24.json":"c3e2e58eea9f9166feff3eb55924bab6f61db25bb8adf48dca9c02b73a032245",
+    "x2_physics_provenance_phase25.json":"1a7c0ce96f88749efc6ff886db22989bd6ad82f4c9671cbb4f2a01566c40b02f",
+    "x2_faithful_zero_update_phase26.json":"a77e3421c320b7be572a8d9e29371db68dd8683ab1e5445edf36d8ff748aaf14"
+  }
+}

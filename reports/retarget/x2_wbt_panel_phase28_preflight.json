@@ -1,0 +1,433 @@
+{
+  "schema_version": "x2_wbt_panel_phase28_preflight_v1",
+  "mode": "preflight_no_retarget_no_physics_no_training",
+  "panel_sha256": "cbb8889b6b900f2a00b46409909449d17b24bdc6b3f79e28b91bbafb241ccf60",
+  "tier_gate_sha256": "314edd1970083fa5549929f4c8e79e206e5ece07718955442a9d943e75d2a934",
+  "assets": {
+    "panel": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_diagnostic_panel.json",
+      "exists": true,
+      "sha256": "cbb8889b6b900f2a00b46409909449d17b24bdc6b3f79e28b91bbafb241ccf60"
+    },
+    "tier_gates": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_tier_gates.json",
+      "exists": true,
+      "sha256": "314edd1970083fa5549929f4c8e79e206e5ece07718955442a9d943e75d2a934"
+    },
+    "model_contract": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_joint_body_map.json",
+      "exists": true,
+      "sha256": "f8fa7fdc07b9416db429a55dd41d5ba8ddcfb2b228ad9150142afbfae2dbca62"
+    },
+    "mirror_contract": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_mirror_contract.json",
+      "exists": true,
+      "sha256": "4188854c79a0841892b1f885a576ba06408c7442833e0f2317603f7b9147d95a"
+    },
+    "legacy_mjcf": {
+      "path": "/home/humanplus/x2_teleop_final/assets/agibot_x2/x2_ultra.xml",
+      "exists": true,
+      "sha256": "8018c9a8d5729d1a6325ed55af9ecfcea2efe4e4cc6e06b9ecd882b24db60755"
+    },
+    "official_mjcf": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/x2.xml",
+      "exists": true,
+      "sha256": "3ff43f05beb57412a804ba9fe05cd9adcdfce78e9ce73a95a71ac58ad20d91a3"
+    },
+    "amass_ik": {
+      "path": "/home/humanplus/x2_teleop_final/x2_sonic/candidate_files/gmr_ik_configs/smplx_to_x2_keypoints_v4.json",
+      "exists": true,
+      "sha256": "822cbcf4909e595d3e957454e6c6a2a2bf17bd77a98c4ddd69d05b3a68f3dd44"
+    },
+    "robot_source_ik": {
+      "path": "/home/humanplus/x2_teleop_final/x2_sonic/x2_gmr_data_rebuild/candidates/g1_fk_to_x2_full_hierarchy_identity.json",
+      "exists": true,
+      "sha256": "3d98d50fc77d7ceaaa58cad5e1e6d67c2f5d236e8403519211ff82d44d157e23"
+    },
+    "smplx_models": {
+      "path": "/home/humanplus/gmr-motionlab/assets/body_models",
+      "exists": true,
+      "sha256": null
+    },
+    "g1_mjcf": {
+      "path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/asset/humanoid_model/g1/custom.xml",
+      "exists": true,
+      "sha256": "21661b9451d2946c4bfc9239e7f7f049c04175e1febfc2afb006e1cb13bcc4d4"
+    }
+  },
+  "dataset_counts": {
+    "AMASS": {
+      "ready": 12,
+      "blocked": 0
+    },
+    "PHUMA": {
+      "ready": 7,
+      "blocked": 0
+    },
+    "BONES-seed": {
+      "ready": 5,
+      "blocked": 0
+    }
+  },
+  "split_counts": {
+    "train_candidate": 14,
+    "held_out": 10
+  },
+  "motions": [
+    {
+      "id": "AMASS-STAND-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Female1General_c3d/A1_-_Stand_stageii.npz",
+      "expected_sha256": "827aa42c3c2a36bfd100c7a9353dff84cbbdc797ff1caa12ee46896572a9d6a6",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "827aa42c3c2a36bfd100c7a9353dff84cbbdc797ff1caa12ee46896572a9d6a6",
+      "adapter": "amass_smplx_v4",
+      "frames": 360,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-UPPER-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Male1General_c3d/General_A3_-_Swing_Arms_While_Stand_stageii.npz",
+      "expected_sha256": "b188760c8cf0800a3ca04a0cde51abc83bdf16b0469e02a3f4158d76411f6475",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "b188760c8cf0800a3ca04a0cde51abc83bdf16b0469e02a3f4158d76411f6475",
+      "adapter": "amass_smplx_v4",
+      "frames": 688,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-WALK-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Female1Walking_c3d/B3_-_walk1_stageii.npz",
+      "expected_sha256": "fbe0bb5edd4e72c711777c00fee107e6038830659a8097f1ca53bbe449a3eedf",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "fbe0bb5edd4e72c711777c00fee107e6038830659a8097f1ca53bbe449a3eedf",
+      "adapter": "amass_smplx_v4",
+      "frames": 915,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-TURN-L-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Female1Walking_c3d/B11_-_walk_turn_left_(135)_stageii.npz",
+      "expected_sha256": "d6c068bcbc24e1435dff7c93eb22212f3c69b816b21e1b75077332fd0cf7f692",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "d6c068bcbc24e1435dff7c93eb22212f3c69b816b21e1b75077332fd0cf7f692",
+      "adapter": "amass_smplx_v4",
+      "frames": 1123,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-TURN-R-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Female1Walking_c3d/B13_-_walk_turn_right_(45)_stageii.npz",
+      "expected_sha256": "d9a6c744d711cf4b35fed788929cdd926796f82891bf4857213132a1c3260160",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "d9a6c744d711cf4b35fed788929cdd926796f82891bf4857213132a1c3260160",
+      "adapter": "amass_smplx_v4",
+      "frames": 997,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-SQUAT-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/KIT/3/squat05_stageii.npz",
+      "expected_sha256": "3f2299248be23943a43ead4c1a45d0dcee369750edc1be91cac6ab6eef5c66bd",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "3f2299248be23943a43ead4c1a45d0dcee369750edc1be91cac6ab6eef5c66bd",
+      "adapter": "amass_smplx_v4",
+      "frames": 550,
+      "source_fps": 100.0
+    },
+    {
+      "id": "AMASS-KICK-L-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Male2MartialArtsKicks_c3d/G17-__push_kick_left_stageii.npz",
+      "expected_sha256": "1592d3160db20f3c4a9379175e9ec4792c06172fd747e7b49d00789e291916b4",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "1592d3160db20f3c4a9379175e9ec4792c06172fd747e7b49d00789e291916b4",
+      "adapter": "amass_smplx_v4",
+      "frames": 546,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-KICK-R-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/ACCAD/Male2MartialArtsKicks_c3d/G18-__push_kick_right_stageii.npz",
+      "expected_sha256": "f5e54bd29282cab2b1606d6aa813963b9f55a342998d5e660cb929f3f2400a6a",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "f5e54bd29282cab2b1606d6aa813963b9f55a342998d5e660cb929f3f2400a6a",
+      "adapter": "amass_smplx_v4",
+      "frames": 347,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-COORD-FAST-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/Transitions/mazen_c3d/dance_kick_stageii.npz",
+      "expected_sha256": "8ec6d84c30b0c004947f8a06daddfdabbd11d3b736205cee30f35487c5a3b426",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "8ec6d84c30b0c004947f8a06daddfdabbd11d3b736205cee30f35487c5a3b426",
+      "adapter": "amass_smplx_v4",
+      "frames": 1157,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-FAIL-CROUCH-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/Transitions/mazen_c3d/crouchwalk_stand2_stageii.npz",
+      "expected_sha256": "90414e391280d927ae74cc4d90087241ba44e54ab07317a6493ad961f1815190",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "90414e391280d927ae74cc4d90087241ba44e54ab07317a6493ad961f1815190",
+      "adapter": "amass_smplx_v4",
+      "frames": 1047,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-FAIL-CIRCLE-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/BMLrub/rub001/0017_circle_walk_stageii.npz",
+      "expected_sha256": "26a7580a0733a6b3de66daa14146d93f44f1f913cb678b187b6ffb098a855339",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "26a7580a0733a6b3de66daa14146d93f44f1f913cb678b187b6ffb098a855339",
+      "adapter": "amass_smplx_v4",
+      "frames": 1980,
+      "source_fps": 120.0
+    },
+    {
+      "id": "AMASS-FAIL-THROW-001",
+      "dataset": "AMASS",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/raw/BMLrub/rub001/0014_catching_and_throwing_stageii.npz",
+      "expected_sha256": "996c0f815fcda96a6afc5e27178a30e02f752c2d2ecb4da45684bf278bab5bc6",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "996c0f815fcda96a6afc5e27178a30e02f752c2d2ecb4da45684bf278bab5bc6",
+      "adapter": "amass_smplx_v4",
+      "frames": 1176,
+      "source_fps": 120.0
+    },
+    {
+      "id": "PHUMA-LUNGE-R-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/fitness/subset_0085/Side_Lunge_Runner_R_clip_6_chunk_0000.npy",
+      "expected_sha256": "56f2f04687ce548998bf16768eaf831403a22f6c0d2b8f9c9fff090821a0de92",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "56f2f04687ce548998bf16768eaf831403a22f6c0d2b8f9c9fff090821a0de92",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 120,
+      "source_fps": 30.0
+    },
+    {
+      "id": "PHUMA-LUNGE-L-MIRROR-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/fitness/subset_0085/Side_Lunge_Runner_R_clip_6_chunk_0000.npy",
+      "expected_sha256": "56f2f04687ce548998bf16768eaf831403a22f6c0d2b8f9c9fff090821a0de92",
+      "recommended_split": "train_candidate",
+      "transform": "canonical_left_right_mirror",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "56f2f04687ce548998bf16768eaf831403a22f6c0d2b8f9c9fff090821a0de92",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 120,
+      "source_fps": 30.0
+    },
+    {
+      "id": "PHUMA-RAISE-L-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/humman/Standing_the_side_leg_lifts_L_1_clip1_chunk_0000.npy",
+      "expected_sha256": "dcba76a866c12738e033d6d93d57d75cb759ca0a538ccfc8ab3ec5cc15b70f15",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "dcba76a866c12738e033d6d93d57d75cb759ca0a538ccfc8ab3ec5cc15b70f15",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 73,
+      "source_fps": 30.0
+    },
+    {
+      "id": "PHUMA-RAISE-R-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/humman/Standing_the_side_leg_lifts_R_1_clip1_chunk_0000.npy",
+      "expected_sha256": "49c07a9a56429419d9ff943b47638fb8af643dc75ad725b5ff010b34b5d43f50",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "49c07a9a56429419d9ff943b47638fb8af643dc75ad725b5ff010b34b5d43f50",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 67,
+      "source_fps": 30.0
+    },
+    {
+      "id": "PHUMA-SQUAT-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/humman/The_weight_of_Bodyweight_Squat_Squat_0_clip1_chunk_0000.npy",
+      "expected_sha256": "dec7363a537a7c24594d92ee65c21c076ade92544836b9f879c021787b37b900",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "dec7363a537a7c24594d92ee65c21c076ade92544836b9f879c021787b37b900",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 120,
+      "source_fps": 30.0
+    },
+    {
+      "id": "PHUMA-FAIL-MOVE28-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/game_motion/subset_0025/Move_Walk_clip_28_chunk_0000.npy",
+      "expected_sha256": "d519dc614ec8e4ab205ed284f126805e9b516b0d1e36fb928875dcd42e182d2c",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "d519dc614ec8e4ab205ed284f126805e9b516b0d1e36fb928875dcd42e182d2c",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 120,
+      "source_fps": 30.0
+    },
+    {
+      "id": "PHUMA-COORD-001",
+      "dataset": "PHUMA",
+      "source_path": "/home/humanplus/humanoid-GPT/A/sonic_release/PHUMA/data/g1/idea400/Calling_and_walking_at_the_same_time_1_clip1_chunk_0002.npy",
+      "expected_sha256": "d570f25a494e9d6c6168ac9354f5e796c7a5be0829808a70a21c2256815ce601",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "d570f25a494e9d6c6168ac9354f5e796c7a5be0829808a70a21c2256815ce601",
+      "adapter": "phuma_g1_fk_full_hierarchy",
+      "frames": 112,
+      "source_fps": 30.0
+    },
+    {
+      "id": "BONES-WALK-FAIL-001",
+      "dataset": "BONES-seed",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/x2_gmr_data_rebuild/extracted/bones_seed_uniform_locomotion_full_20260717_v2/soma_uniform/bvh/220713/walk_forward_loop_002__A021.bvh",
+      "expected_sha256": "af0750af3956fd6f90f86e3139be515ea82421e16b0d215ae1becf1a43d067ed",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "af0750af3956fd6f90f86e3139be515ea82421e16b0d215ae1becf1a43d067ed",
+      "adapter": "bones_soma_bvh_full_hierarchy",
+      "frames": 1434,
+      "source_fps": 120.00480019200768,
+      "parsed_joint_count": 78,
+      "parsed_channel_count": 240
+    },
+    {
+      "id": "BONES-TURN-FAIL-001",
+      "dataset": "BONES-seed",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/x2_gmr_data_rebuild/extracted/bones_seed_uniform_locomotion_full_20260717_v2/soma_uniform/bvh/220705/Turn_Start_Walk_0225_001__A018.bvh",
+      "expected_sha256": "cc30ffc0a958ec06ef451fbd816af9e28a3f236cb68bac64b89683c0dcbb19f0",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "cc30ffc0a958ec06ef451fbd816af9e28a3f236cb68bac64b89683c0dcbb19f0",
+      "adapter": "bones_soma_bvh_full_hierarchy",
+      "frames": 1167,
+      "source_fps": 120.00480019200768,
+      "parsed_joint_count": 78,
+      "parsed_channel_count": 240
+    },
+    {
+      "id": "BONES-STOP-FAIL-001",
+      "dataset": "BONES-seed",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/x2_gmr_data_rebuild/extracted/bones_seed_uniform_locomotion_full_20260717_v2/soma_uniform/bvh/230905/walk_ff_stop_360_R_slow_001__A444.bvh",
+      "expected_sha256": "de5ae744a0cc4b8e0921069ef721dbd4a366eabc6138fa7d4459318f1aecf821",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "de5ae744a0cc4b8e0921069ef721dbd4a366eabc6138fa7d4459318f1aecf821",
+      "adapter": "bones_soma_bvh_full_hierarchy",
+      "frames": 1445,
+      "source_fps": 120.00480019200768,
+      "parsed_joint_count": 78,
+      "parsed_channel_count": 240
+    },
+    {
+      "id": "BONES-SIDE-FAIL-001",
+      "dataset": "BONES-seed",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/x2_gmr_data_rebuild/extracted/bones_seed_uniform_locomotion_full_20260717_v2/soma_uniform/bvh/220728/walk_sideway_090_loop_001__A041.bvh",
+      "expected_sha256": "1657c3d849f8acbcbfa472ab7e5c04c2fb065dd658b511ccb5140da5f770a1c6",
+      "recommended_split": "train_candidate",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "1657c3d849f8acbcbfa472ab7e5c04c2fb065dd658b511ccb5140da5f770a1c6",
+      "adapter": "bones_soma_bvh_full_hierarchy",
+      "frames": 1435,
+      "source_fps": 120.00480019200768,
+      "parsed_joint_count": 78,
+      "parsed_channel_count": 240
+    },
+    {
+      "id": "BONES-JOG-FAIL-001",
+      "dataset": "BONES-seed",
+      "source_path": "/home/humanplus/x2_teleop_final/x2_sonic/x2_gmr_data_rebuild/extracted/bones_seed_uniform_locomotion_full_20260717_v2/soma_uniform/bvh/230102/jog_arc_cw_loop_003__A093.bvh",
+      "expected_sha256": "3527070981291a0d64e8d39118d484ad66211f06339da7fcc30fdee4ff493690",
+      "recommended_split": "held_out",
+      "transform": "identity",
+      "status": "ready",
+      "blocker": "",
+      "actual_sha256": "3527070981291a0d64e8d39118d484ad66211f06339da7fcc30fdee4ff493690",
+      "adapter": "bones_soma_bvh_full_hierarchy",
+      "frames": 1329,
+      "source_fps": 120.00480019200768,
+      "parsed_joint_count": 78,
+      "parsed_channel_count": 240
+    }
+  ],
+  "checks": {
+    "panel_count_24": true,
+    "panel_id_unique": true,
+    "all_assets_present": true,
+    "all_sources_ready": true,
+    "split_counts_unchanged": true,
+    "tier_gate_status_frozen": true
+  },
+  "pass": true
+}

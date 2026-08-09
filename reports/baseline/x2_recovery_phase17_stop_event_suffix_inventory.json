@@ -1,0 +1,945 @@
+{
+  "stage": "BASE Phase17 Stage326 outcome-stratified stop-event stateful suffix inventory",
+  "analysis_only_after_frozen_official_capture": true,
+  "training_executed": false,
+  "training_unlocked": false,
+  "causal_claim": false,
+  "hypothesis": "A small frozen Stage326 matched-event sample can provide complete success, critical, and height-collapse closed-loop stop suffixes with actual action history.",
+  "intervention": "At most five frozen official episodes; stopped at four immediately after obtaining two full successes and one height-collapse failure.",
+  "control": "One immutable Stage326 contract and models across episodes; only the default-off sidecar recorder was enabled. No policy, PD, blend, horizon, or seed-selection sweep.",
+  "provenance": {
+    "result_root": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807",
+    "stage335": {
+      "dataset": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage335_stage306_stiff_fixed_stop_recovery_states.npz",
+      "dataset_sha256": "4d8ce06b6e8dd9b43363dadedb781e9feb75f72ac092b475de2a1e2772545013",
+      "source_report": "reports/official_x2/stage335_stop_recovery_state_extraction.json",
+      "state_count": 90,
+      "eventual_pass": 63,
+      "eventual_fail": 27
+    },
+    "phase14_report": "reports/baseline/x2_recovery_phase14_ood.json",
+    "adapter_sha256": "61c73512981775c3f7f08fe84e8e6d58e6a76fb7d11ccfb58e4f6665a20d1077",
+    "frozen_control_contract": {
+      "action_bias": 0.6,
+      "action_bias_mode": "lateral_recovery_supervisor",
+      "ankle_roll_common_bias": 0.2,
+      "clock_mode": "step",
+      "command_vx_mps": 0.3,
+      "future_stop_preview_seconds": 0.5,
+      "pd_kd_multiplier": 1.2,
+      "pd_kp_multiplier": 1.2,
+      "pd_profile": "official_kp_ankle",
+      "stop_controller": "brake_blend_to_policy",
+      "stop_transition_seconds": 1.0
+    },
+    "classifier_bug": "Initial runner incorrectly labeled stop_gate_pass as complete success and stopped after r3. It was fail-closed corrected to full_gate_pass; r1-r3 were not rerun, and r4 alone was added."
+  },
+  "outcome_inventory": {
+    "completed_episodes": 4,
+    "counts": {
+      "success": 2,
+      "critical": 1,
+      "failure": 1
+    },
+    "target_met": true,
+    "r5_not_run_due_early_stop": true,
+    "episodes": [
+      {
+        "episode": 1,
+        "class": "failure",
+        "trace_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r1.json",
+        "trace_sha256": "b18379590b44a2a0f1d2cba1f71aa42e4763b44d6e8cb9ac9082145432ca0bfd",
+        "sidecar_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r1_sidecar.json",
+        "sidecar_file_sha256": "00a47717cc7ae5bf3bb8ca08c04809b79fdda809e557719afbf51460321da185",
+        "sidecar_content_sha256": "763aaaabb4a67ff5358caf5ed6a45d11c5df2d4afa4594556ade24ce228105ea",
+        "row_count": 201,
+        "authority_counts": {
+          "brake_main": 38,
+          "brake_stationary_blend": 50,
+          "stationary": 113
+        },
+        "observation_slot_counts": {
+          "main": 38,
+          "stationary": 163
+        },
+        "outcome": {
+          "full_gate_pass": false,
+          "move_gate_pass": true,
+          "stand_gate_pass": true,
+          "startup_gate_pass": true,
+          "stop_gate_pass": false,
+          "survived_stop_height_gate": false
+        },
+        "physical": {
+          "root_z_start_m": 0.669136573001965,
+          "root_z_end_m": 0.14515510375753535,
+          "root_z_min_m": 0.14515510375753535,
+          "root_tilt_max_rad": 1.5403624185037113,
+          "signed_root_pitch_min_rad": -1.4918639695334783,
+          "signed_root_pitch_max_rad": -0.04745310251560461,
+          "first_root_tilt_gt_0p30_s": 1.5599999999999996,
+          "first_root_z_lt_0p45_s": 2.3000000000000007
+        }
+      },
+      {
+        "episode": 2,
+        "class": "success",
+        "trace_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r2.json",
+        "trace_sha256": "ee601a2e5a59867e8674f5d6a3e5107da7243da180d9d92ef62e21073bff5333",
+        "sidecar_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r2_sidecar.json",
+        "sidecar_file_sha256": "35bb567443d98604e0fc53a218701cb725e94eecc4d9e7ebf1dfa48a8941ef3b",
+        "sidecar_content_sha256": "8611d1d5b41ed3ebc6c3eefcdd8da9fe0da5fe0b00d5a0f6de7b5ae6d3b91756",
+        "row_count": 201,
+        "authority_counts": {
+          "brake_main": 38,
+          "brake_stationary_blend": 50,
+          "stationary": 113
+        },
+        "observation_slot_counts": {
+          "main": 38,
+          "stationary": 163
+        },
+        "outcome": {
+          "full_gate_pass": true,
+          "move_gate_pass": true,
+          "stand_gate_pass": true,
+          "startup_gate_pass": true,
+          "stop_gate_pass": true,
+          "survived_stop_height_gate": true
+        },
+        "physical": {
+          "root_z_start_m": 0.6680018684831973,
+          "root_z_end_m": 0.6443817124174652,
+          "root_z_min_m": 0.627606745269496,
+          "root_tilt_max_rad": 0.22104319071047887,
+          "signed_root_pitch_min_rad": -0.2156670016178366,
+          "signed_root_pitch_max_rad": -0.04234140144073383,
+          "first_root_tilt_gt_0p30_s": null,
+          "first_root_z_lt_0p45_s": null
+        }
+      },
+      {
+        "episode": 3,
+        "class": "critical",
+        "trace_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r3.json",
+        "trace_sha256": "e50706a7884605c16cf867f44e850a6c213e8bea5d57d2825cbcb408b6310e9b",
+        "sidecar_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r3_sidecar.json",
+        "sidecar_file_sha256": "3fbee49ee75a2632ceb9971e6ed2e553d654e8f3188f1c878d48133ff986cb3b",
+        "sidecar_content_sha256": "78c7e0c512f340377dbec324a12927dd1492fddc245c90bf2ff17f40d13b62ec",
+        "row_count": 201,
+        "authority_counts": {
+          "brake_main": 38,
+          "brake_stationary_blend": 50,
+          "stationary": 113
+        },
+        "observation_slot_counts": {
+          "main": 38,
+          "stationary": 163
+        },
+        "outcome": {
+          "full_gate_pass": false,
+          "move_gate_pass": false,
+          "stand_gate_pass": true,
+          "startup_gate_pass": true,
+          "stop_gate_pass": true,
+          "survived_stop_height_gate": true
+        },
+        "physical": {
+          "root_z_start_m": 0.6662169255753645,
+          "root_z_end_m": 0.6424306197892362,
+          "root_z_min_m": 0.6248494607930912,
+          "root_tilt_max_rad": 0.17646467249808762,
+          "signed_root_pitch_min_rad": -0.17388161248929127,
+          "signed_root_pitch_max_rad": -0.03387191241002255,
+          "first_root_tilt_gt_0p30_s": null,
+          "first_root_z_lt_0p45_s": null
+        }
+      },
+      {
+        "episode": 4,
+        "class": "success",
+        "trace_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r4.json",
+        "trace_sha256": "76b9fe38c686aacd612240b38f5b0545352e23150e489744106f016ba76be59e",
+        "sidecar_path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase17_stage326_stop_event_stateful_r4_sidecar.json",
+        "sidecar_file_sha256": "9cd31367c86fe6892ff917e0497fe23d012d75f1097e24e448f34bc8f75e3861",
+        "sidecar_content_sha256": "03e9528dfd49be1ebf6d95505a7cd98adae2814629e9933c4f3556abfda42c7e",
+        "row_count": 201,
+        "authority_counts": {
+          "brake_main": 58,
+          "brake_stationary_blend": 50,
+          "stationary": 93
+        },
+        "observation_slot_counts": {
+          "main": 58,
+          "stationary": 143
+        },
+        "outcome": {
+          "full_gate_pass": true,
+          "move_gate_pass": true,
+          "stand_gate_pass": true,
+          "startup_gate_pass": true,
+          "stop_gate_pass": true,
+          "survived_stop_height_gate": true
+        },
+        "physical": {
+          "root_z_start_m": 0.6676356907957846,
+          "root_z_end_m": 0.6371491506165313,
+          "root_z_min_m": 0.623442889945465,
+          "root_tilt_max_rad": 0.22177432365460922,
+          "signed_root_pitch_min_rad": -0.1856496780620803,
+          "signed_root_pitch_max_rad": -0.0019912578618995463,
+          "first_root_tilt_gt_0p30_s": null,
+          "first_root_z_lt_0p45_s": null
+        }
+      }
+    ]
+  },
+  "schema_hash_audit": {
+    "sidecar_schema": "aimdk_x2_stop_event_suffix_sidecar_v1",
+    "row_schema": "aimdk_x2_stop_event_suffix_snapshot_v1",
+    "all_rows_validated": true,
+    "total_rows": 804,
+    "rows_per_episode": [
+      201
+    ],
+    "window_s": [
+      0.0,
+      4.0
+    ],
+    "actual_previous_action_present": true,
+    "actual_issued_action_present": true,
+    "physical_state_present": true,
+    "controller_state_and_hash_present": true
+  },
+  "dedup_inventory": {
+    "method": "fixed physical bins over 93D obs + actual issued action + root-z + event-time; authority included",
+    "raw_rows": 804,
+    "representative_rows": 804,
+    "duplicates": 0,
+    "cross_outcome_bin_collisions": 0,
+    "representative_keys_sha256": "98448d91332b864071e39ae4a6528ae00ac79cf360d3d7de99037fc15361f41b",
+    "training_fraction": null,
+    "training_unlocked": false
+  },
+  "stage335_coverage": {
+    "semantic_boundary": "Descriptive only: rows use main/stationary actor slots during Stage326 stop, while Stage335 is a recovery-reset support set sharing the 93D schema.",
+    "all": {
+      "groups": {
+        "previous_action": {
+          "reference_loo_p95_threshold": 0.6981751512966055,
+          "query_distance_median": 0.16038185587794618,
+          "query_distance_p95": 0.9114349008135544,
+          "query_distance_max": 1.626838085653424,
+          "query_ood_fraction": 0.08333333333333333,
+          "first_ood_s_by_episode": {
+            "r1:failure": 0.019999999999999574,
+            "r2:success": 0.0,
+            "r3:critical": 0.0,
+            "r4:success": 0.019999999999999574
+          },
+          "first_ood_s_median": 0.009999999999999787,
+          "robust_p01_p99_outside_feature_fraction": 0.01956882255389718,
+          "dimensions": 15,
+          "top_outside_features": [
+            {
+              "feature": "right_hip_yaw_joint:previous_action",
+              "outside_fraction": 0.08208955223880597,
+              "first_exit_s_by_episode": {
+                "r1:failure": 0.08000000000000007,
+                "r2:success": 0.0,
+                "r3:critical": 0.0,
+                "r4:success": 0.2999999999999998
+              },
+              "first_exit_s": 0.0
+            },
+            {
+              "feature": "right_hip_roll_joint:previous_action",
+              "outside_fraction": 0.05970149253731343,
+              "first_exit_s_by_episode": {
+                "r1:failure": 0.28000000000000025,
+                "r4:success": 0.28000000000000025
+              },
+              "first_exit_s": 0.28000000000000025
+            },
+            {
+              "feature": "left_hip_roll_joint:previous_action",
+              "outside_fraction": 0.05223880597014925,
+              "first_exit_s_by_episode": {
+                "r1:failure": 0.28000000000000025,
+                "r2:success": 0.0,
+                "r4:success": 0.2599999999999998
+              },
+              "first_exit_s": 0.0
+            },
+            {
+              "feature": "left_ankle_pitch_joint:previous_action",
+              "outside_fraction": 0.03233830845771144,
+              "first_exit_s_by_episode": {
+                "r2:success": 0.0,
+                "r3:critical": 0.0
+              },
+              "first_exit_s": 0.0
+            },
+            {
+              "feature": "right_ankle_roll_joint:previous_action",
+              "outside_fraction": 0.024875621890547265,
+              "first_exit_s_by_episode": {
+                "r1:failure": 2.040000000000001
+              },
+              "first_exit_s": 2.040000000000001
+            }
+          ],
+          "earliest_percentile_exit": {
+            "time_s": 0.0,
+            "features": [
+              "right_hip_yaw_joint:previous_action",
+              "left_hip_roll_joint:previous_action",
+              "left_ankle_pitch_joint:previous_action",
+              "left_ankle_roll_joint:previous_action",
+              "left_hip_pitch_joint:previous_action",
+              "waist_yaw_joint:previous_action"
+            ]
+          }
+        },
+        "projected_gravity": {
+          "reference_loo_p95_threshold": 0.8321175059785533,
+          "query_distance_median": 0.14967421582258283,
+          "query_distance_p95": 58.37038918533194,
+          "query_distance_max": 63.88583685741979,
+          "query_ood_fraction": 0.1480099502487562,
+          "first_ood_s_by_episode": {
+            "r1:failure": 1.7199999999999998,
+            "r4:success": 0.3799999999999999
+          },
+          "first_ood_s_median": 1.0499999999999998,
+          "robust_p01_p99_outside_feature_fraction": 0.1281094527363184,
+          "dimensions": 3,
+          "top_outside_features": [
+            {
+              "feature": "gravity_x",
+              "outside_fraction": 0.17786069651741293,
+              "first_exit_s_by_episode": {
+                "r1:failure": 1.7999999999999998,
+                "r4:success": 0.45999999999999996
+              },
+              "first_exit_s": 0.45999999999999996
+            },
+            {
+              "feature": "gravity_z",
+              "outside_fraction": 0.13805970149253732,
+              "first_exit_s_by_episode": {
+                "r1:failure": 1.7999999999999998
+              },
+              "first_exit_s": 1.7999999999999998
+            },
+            {
+              "feature": "gravity_y",
+              "outside_fraction": 0.06840796019900497,
+              "first_exit_s_by_episode": {
+                "r1:failure": 0.40000000000000036,
+                "r4:success": 0.2999999999999998
+              },
+              "first_exit_s": 0.2999999999999998
+            }
+          ],
+          "earliest_percentile_exit": {
+            "time_s": 0.2999999999999998,
+            "features": [
+              "gravity_y"
+            ]
+          }
+        },
+        "root_state": {
+          "reference_loo_p95_threshold": 1.0769796860744434,
+          "query_distance_median": 0.19599537073821316,
+          "query_distance_p95": 21.910157032479614,
+          "query_distance_max": 22.133094637956894,
+          "query_ood_fraction": 0.13308457711442787,
+          "first_ood_s_by_episode": {
+            "r1:failure": 0.05999999999999961,
+            "r4:success": 0.3200000000000003
+          },
+          "first_ood_s_median": 0.18999999999999995,
+          "robust_p01_p99_outside_feature_fraction": 0.1234452736318408,
+          "dimensions": 4,
+          "top_outside_features": [
+            {
+              "feature": "root_pitch",
+              "outside_fraction": 0.17786069651741293,
+              "first_exit_s_by_episode": {
+                "r1:failure": 1.7999999999999998,
+                "r4:success": 0.45999999999999996
+              },
+              "first_exit_s": 0.45999999999999996
+            },
+            {
+              "feature": "root_tilt",
+              "outside_fraction": 0.13805970149253732,
+              "first_exit_s_by_episode": {
+                "r1:failure": 1.7999999999999998
+              },
+              "first_exit_s": 1.7999999999999998
+            },
+            {
+              "feature": "root_z",
+              "outside_fraction": 0.11940298507462686,
+              "first_exit_s_by_episode": {
+                "r1:failure": 2.1000000000000014
+              },
+              "first_exit_s": 2.1000000000000014
+            },
+            {
+              "feature": "root_horizontal_speed",
+              "outside_fraction": 0.05845771144278607,
+              "first_exit_s_by_episode": {
+                "r1:failure": 1.8400000000000007,
+                "r2:success": 3.9000000000000004
+              },
+              "first_exit_s": 1.8400000000000007
+            }
+          ],
+          "earliest_percentile_exit": {
+            "time_s": 0.45999999999999996,
+            "features": [
+              "root_pitch"
+            ]
+          }
+        }
+      },
+      "equal_group_composite": {
+        "reference_loo_p95_threshold": 11.506969131335715,
+        "query_distance_median": 0.7148599672618821,
+        "query_distance_p95": 20.53048206804268,
+        "query_distance_max": 217.187837888151,
+        "query_ood_fraction": 0.12686567164179105,
+        "first_ood_s_by_episode": {
+          "r1:failure": 0.040000000000000036,
+          "r4:success": 0.019999999999999574
+        },
+        "first_ood_s_median": 0.029999999999999805
+      }
+    },
+    "by_outcome": {
+      "success": {
+        "groups": {
+          "previous_action": {
+            "reference_loo_p95_threshold": 0.6981751512966055,
+            "query_distance_median": 0.1355197723647628,
+            "query_distance_p95": 0.7700670107256088,
+            "query_distance_max": 1.626838085653424,
+            "query_ood_fraction": 0.06716417910447761,
+            "first_ood_s_by_episode": {
+              "r2:success": 0.0,
+              "r4:success": 0.019999999999999574
+            },
+            "first_ood_s_median": 0.009999999999999787,
+            "robust_p01_p99_outside_feature_fraction": 0.010613598673300166,
+            "dimensions": 15,
+            "top_outside_features": [
+              {
+                "feature": "left_ankle_pitch_joint:previous_action",
+                "outside_fraction": 0.04975124378109453,
+                "first_exit_s_by_episode": {
+                  "r2:success": 0.0
+                },
+                "first_exit_s": 0.0
+              },
+              {
+                "feature": "left_hip_roll_joint:previous_action",
+                "outside_fraction": 0.03731343283582089,
+                "first_exit_s_by_episode": {
+                  "r2:success": 0.0,
+                  "r4:success": 0.2599999999999998
+                },
+                "first_exit_s": 0.0
+              },
+              {
+                "feature": "right_hip_roll_joint:previous_action",
+                "outside_fraction": 0.02736318407960199,
+                "first_exit_s_by_episode": {
+                  "r4:success": 0.28000000000000025
+                },
+                "first_exit_s": 0.28000000000000025
+              },
+              {
+                "feature": "left_hip_pitch_joint:previous_action",
+                "outside_fraction": 0.012437810945273632,
+                "first_exit_s_by_episode": {
+                  "r2:success": 0.7999999999999998,
+                  "r4:success": 0.0
+                },
+                "first_exit_s": 0.0
+              },
+              {
+                "feature": "left_knee_joint:previous_action",
+                "outside_fraction": 0.012437810945273632,
+                "first_exit_s_by_episode": {
+                  "r2:success": 0.8200000000000003
+                },
+                "first_exit_s": 0.8200000000000003
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 0.0,
+              "features": [
+                "left_ankle_pitch_joint:previous_action",
+                "left_hip_roll_joint:previous_action",
+                "left_hip_pitch_joint:previous_action",
+                "right_hip_yaw_joint:previous_action",
+                "waist_yaw_joint:previous_action"
+              ]
+            }
+          },
+          "projected_gravity": {
+            "reference_loo_p95_threshold": 0.8321175059785533,
+            "query_distance_median": 0.11985439896650502,
+            "query_distance_p95": 0.4792506601026584,
+            "query_distance_max": 1.139701869002635,
+            "query_ood_fraction": 0.01990049751243781,
+            "first_ood_s_by_episode": {
+              "r4:success": 0.3799999999999999
+            },
+            "first_ood_s_median": 0.3799999999999999,
+            "robust_p01_p99_outside_feature_fraction": 0.03814262023217247,
+            "dimensions": 3,
+            "top_outside_features": [
+              {
+                "feature": "gravity_x",
+                "outside_fraction": 0.07960199004975124,
+                "first_exit_s_by_episode": {
+                  "r4:success": 0.45999999999999996
+                },
+                "first_exit_s": 0.45999999999999996
+              },
+              {
+                "feature": "gravity_y",
+                "outside_fraction": 0.03482587064676617,
+                "first_exit_s_by_episode": {
+                  "r4:success": 0.2999999999999998
+                },
+                "first_exit_s": 0.2999999999999998
+              },
+              {
+                "feature": "gravity_z",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 0.2999999999999998,
+              "features": [
+                "gravity_y"
+              ]
+            }
+          },
+          "root_state": {
+            "reference_loo_p95_threshold": 1.0769796860744434,
+            "query_distance_median": 0.17289273917583628,
+            "query_distance_p95": 0.731151650703689,
+            "query_distance_max": 1.1198803940500341,
+            "query_ood_fraction": 0.0024875621890547263,
+            "first_ood_s_by_episode": {
+              "r4:success": 0.3200000000000003
+            },
+            "first_ood_s_median": 0.3200000000000003,
+            "robust_p01_p99_outside_feature_fraction": 0.022388059701492536,
+            "dimensions": 4,
+            "top_outside_features": [
+              {
+                "feature": "root_pitch",
+                "outside_fraction": 0.07960199004975124,
+                "first_exit_s_by_episode": {
+                  "r4:success": 0.45999999999999996
+                },
+                "first_exit_s": 0.45999999999999996
+              },
+              {
+                "feature": "root_horizontal_speed",
+                "outside_fraction": 0.009950248756218905,
+                "first_exit_s_by_episode": {
+                  "r2:success": 3.9000000000000004
+                },
+                "first_exit_s": 3.9000000000000004
+              },
+              {
+                "feature": "root_z",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "root_tilt",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 0.45999999999999996,
+              "features": [
+                "root_pitch"
+              ]
+            }
+          }
+        },
+        "equal_group_composite": {
+          "reference_loo_p95_threshold": 11.506969131335715,
+          "query_distance_median": 0.3962818287262758,
+          "query_distance_p95": 4.237035274426285,
+          "query_distance_max": 29.085058574500177,
+          "query_ood_fraction": 0.017412935323383085,
+          "first_ood_s_by_episode": {
+            "r4:success": 0.019999999999999574
+          },
+          "first_ood_s_median": 0.019999999999999574
+        }
+      },
+      "critical": {
+        "groups": {
+          "previous_action": {
+            "reference_loo_p95_threshold": 0.6981751512966055,
+            "query_distance_median": 0.12222867000371301,
+            "query_distance_p95": 0.720065346817272,
+            "query_distance_max": 1.3533299833184234,
+            "query_ood_fraction": 0.06467661691542288,
+            "first_ood_s_by_episode": {
+              "r3:critical": 0.0
+            },
+            "first_ood_s_median": 0.0,
+            "robust_p01_p99_outside_feature_fraction": 0.0026533996683250414,
+            "dimensions": 15,
+            "top_outside_features": [
+              {
+                "feature": "left_ankle_pitch_joint:previous_action",
+                "outside_fraction": 0.029850746268656716,
+                "first_exit_s_by_episode": {
+                  "r3:critical": 0.0
+                },
+                "first_exit_s": 0.0
+              },
+              {
+                "feature": "right_hip_yaw_joint:previous_action",
+                "outside_fraction": 0.009950248756218905,
+                "first_exit_s_by_episode": {
+                  "r3:critical": 0.0
+                },
+                "first_exit_s": 0.0
+              },
+              {
+                "feature": "left_hip_pitch_joint:previous_action",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "left_hip_roll_joint:previous_action",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "left_hip_yaw_joint:previous_action",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 0.0,
+              "features": [
+                "left_ankle_pitch_joint:previous_action",
+                "right_hip_yaw_joint:previous_action"
+              ]
+            }
+          },
+          "projected_gravity": {
+            "reference_loo_p95_threshold": 0.8321175059785533,
+            "query_distance_median": 0.05592612862962459,
+            "query_distance_p95": 0.2556337379737981,
+            "query_distance_max": 0.3174252912947458,
+            "query_ood_fraction": 0.0,
+            "first_ood_s_by_episode": {},
+            "first_ood_s_median": null,
+            "robust_p01_p99_outside_feature_fraction": 0.0,
+            "dimensions": 3,
+            "top_outside_features": [
+              {
+                "feature": "gravity_x",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "gravity_y",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "gravity_z",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              }
+            ],
+            "earliest_percentile_exit": null
+          },
+          "root_state": {
+            "reference_loo_p95_threshold": 1.0769796860744434,
+            "query_distance_median": 0.16000752442628588,
+            "query_distance_p95": 0.3030393200305318,
+            "query_distance_max": 1.0554434403846842,
+            "query_ood_fraction": 0.0,
+            "first_ood_s_by_episode": {},
+            "first_ood_s_median": null,
+            "robust_p01_p99_outside_feature_fraction": 0.0,
+            "dimensions": 4,
+            "top_outside_features": [
+              {
+                "feature": "root_z",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "root_tilt",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "root_pitch",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              },
+              {
+                "feature": "root_horizontal_speed",
+                "outside_fraction": 0.0,
+                "first_exit_s_by_episode": {},
+                "first_exit_s": null
+              }
+            ],
+            "earliest_percentile_exit": null
+          }
+        },
+        "equal_group_composite": {
+          "reference_loo_p95_threshold": 11.506969131335715,
+          "query_distance_median": 0.3722650928145371,
+          "query_distance_p95": 3.141114105111559,
+          "query_distance_max": 7.8994692460875555,
+          "query_ood_fraction": 0.0,
+          "first_ood_s_by_episode": {},
+          "first_ood_s_median": null
+        }
+      },
+      "failure": {
+        "groups": {
+          "previous_action": {
+            "reference_loo_p95_threshold": 0.6981751512966055,
+            "query_distance_median": 0.22765356257795122,
+            "query_distance_p95": 1.4286933725882336,
+            "query_distance_max": 1.5835375922492556,
+            "query_ood_fraction": 0.13432835820895522,
+            "first_ood_s_by_episode": {
+              "r1:failure": 0.019999999999999574
+            },
+            "first_ood_s_median": 0.019999999999999574,
+            "robust_p01_p99_outside_feature_fraction": 0.05439469320066335,
+            "dimensions": 15,
+            "top_outside_features": [
+              {
+                "feature": "right_hip_yaw_joint:previous_action",
+                "outside_fraction": 0.29850746268656714,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 0.08000000000000007
+                },
+                "first_exit_s": 0.08000000000000007
+              },
+              {
+                "feature": "right_hip_roll_joint:previous_action",
+                "outside_fraction": 0.18407960199004975,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 0.28000000000000025
+                },
+                "first_exit_s": 0.28000000000000025
+              },
+              {
+                "feature": "left_hip_roll_joint:previous_action",
+                "outside_fraction": 0.13432835820895522,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 0.28000000000000025
+                },
+                "first_exit_s": 0.28000000000000025
+              },
+              {
+                "feature": "right_ankle_roll_joint:previous_action",
+                "outside_fraction": 0.09950248756218906,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 2.040000000000001
+                },
+                "first_exit_s": 2.040000000000001
+              },
+              {
+                "feature": "left_hip_yaw_joint:previous_action",
+                "outside_fraction": 0.07960199004975124,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 2.120000000000001
+                },
+                "first_exit_s": 2.120000000000001
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 0.0,
+              "features": [
+                "left_ankle_roll_joint:previous_action"
+              ]
+            }
+          },
+          "projected_gravity": {
+            "reference_loo_p95_threshold": 0.8321175059785533,
+            "query_distance_median": 6.160966091861076,
+            "query_distance_p95": 60.241730650102774,
+            "query_distance_max": 63.88583685741979,
+            "query_ood_fraction": 0.5522388059701493,
+            "first_ood_s_by_episode": {
+              "r1:failure": 1.7199999999999998
+            },
+            "first_ood_s_median": 1.7199999999999998,
+            "robust_p01_p99_outside_feature_fraction": 0.4361525704809287,
+            "dimensions": 3,
+            "top_outside_features": [
+              {
+                "feature": "gravity_x",
+                "outside_fraction": 0.5522388059701493,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 1.7999999999999998
+                },
+                "first_exit_s": 1.7999999999999998
+              },
+              {
+                "feature": "gravity_z",
+                "outside_fraction": 0.5522388059701493,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 1.7999999999999998
+                },
+                "first_exit_s": 1.7999999999999998
+              },
+              {
+                "feature": "gravity_y",
+                "outside_fraction": 0.20398009950248755,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 0.40000000000000036
+                },
+                "first_exit_s": 0.40000000000000036
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 0.40000000000000036,
+              "features": [
+                "gravity_y"
+              ]
+            }
+          },
+          "root_state": {
+            "reference_loo_p95_threshold": 1.0769796860744434,
+            "query_distance_median": 3.5426528415207663,
+            "query_distance_p95": 22.09856931321241,
+            "query_distance_max": 22.133094637956894,
+            "query_ood_fraction": 0.527363184079602,
+            "first_ood_s_by_episode": {
+              "r1:failure": 0.05999999999999961
+            },
+            "first_ood_s_median": 0.05999999999999961,
+            "robust_p01_p99_outside_feature_fraction": 0.4490049751243781,
+            "dimensions": 4,
+            "top_outside_features": [
+              {
+                "feature": "root_tilt",
+                "outside_fraction": 0.5522388059701493,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 1.7999999999999998
+                },
+                "first_exit_s": 1.7999999999999998
+              },
+              {
+                "feature": "root_pitch",
+                "outside_fraction": 0.5522388059701493,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 1.7999999999999998
+                },
+                "first_exit_s": 1.7999999999999998
+              },
+              {
+                "feature": "root_z",
+                "outside_fraction": 0.47761194029850745,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 2.1000000000000014
+                },
+                "first_exit_s": 2.1000000000000014
+              },
+              {
+                "feature": "root_horizontal_speed",
+                "outside_fraction": 0.21393034825870647,
+                "first_exit_s_by_episode": {
+                  "r1:failure": 1.8400000000000007
+                },
+                "first_exit_s": 1.8400000000000007
+              }
+            ],
+            "earliest_percentile_exit": {
+              "time_s": 1.7999999999999998,
+              "features": [
+                "root_tilt",
+                "root_pitch"
+              ]
+            }
+          }
+        },
+        "equal_group_composite": {
+          "reference_loo_p95_threshold": 11.506969131335715,
+          "query_distance_median": 8.94973387421201,
+          "query_distance_p95": 26.063881445266812,
+          "query_distance_max": 217.187837888151,
+          "query_ood_fraction": 0.472636815920398,
+          "first_ood_s_by_episode": {
+            "r1:failure": 0.040000000000000036
+          },
+          "first_ood_s_median": 0.040000000000000036
+        }
+      }
+    },
+    "relative_to_phase14": {
+      "previous_action": {
+        "threshold_identical": true,
+        "phase17_ood_fraction": 0.08333333333333333,
+        "phase14_ood_fraction": 0.24671052631578946,
+        "phase17_first_ood_s_median": 0.009999999999999787,
+        "phase14_first_ood_s_median": 0.2500000000000009
+      },
+      "projected_gravity": {
+        "threshold_identical": true,
+        "phase17_ood_fraction": 0.1480099502487562,
+        "phase14_ood_fraction": 0.20065789473684212,
+        "phase17_first_ood_s_median": 1.0499999999999998,
+        "phase14_first_ood_s_median": 1.2300000000000004
+      },
+      "root_state": {
+        "threshold_identical": true,
+        "phase17_ood_fraction": 0.13308457711442787,
+        "phase14_ood_fraction": 0.1118421052631579,
+        "phase17_first_ood_s_median": 0.18999999999999995,
+        "phase14_first_ood_s_median": 1.3600000000000003
+      }
+    }
+  },
+  "conclusion": "The requested outcome-stratified stateful inventory now exists and is hash/schema complete. This is a data-contract gain, not evidence that suffix training improves recovery.",
+  "next": "Keep training locked. Pre-register any fraction=0 versus one fixed small suffix fraction only after defining how success/critical/failure continuations enter the curriculum without treating failed actions as expert labels.",
+  "boundaries": [
+    "Official AimDK MuJoCo, not real X2 hardware.",
+    "No measured GRF/COP/foot wrench truth.",
+    "Post-inference/pre-physics snapshots are stateful curriculum evidence, not a proof of closed ROS mid-event restore.",
+    "OOD is descriptive correlation and not a failure-cause classifier."
+  ]
+}
