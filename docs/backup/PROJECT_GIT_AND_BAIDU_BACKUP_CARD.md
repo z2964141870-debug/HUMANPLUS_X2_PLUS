@@ -235,10 +235,10 @@ bash "$UPLOAD" \
 3. 使用 `flock` 防止多个 agent 重复上传；
 4. 上传失败有限重试，默认最多 4 次；
 5. 百度返回异常 JSON 时拒绝上传，不冒险覆盖；
-6. 上传后重试远端路径和字节数核验；
+6. 默认以 `bdpan upload` 返回成功为本次完成，不逐文件做上传后轮询；
 7. 同名同大小文件自动跳过；
 8. 同名不同大小文件拒绝覆盖；
-9. 在 Git 仓库的 `docs/backup/manifests/` 生成 JSON 清单；
+9. 在 Git 仓库的 `docs/backup/manifests/` 生成 JSON 清单，并明确标记为待每日核验；
 10. 无论成功失败都不删除本地源文件。
 
 调整尝试次数：
@@ -246,6 +246,14 @@ bash "$UPLOAD" \
 ```bash
 BDPAN_UPLOAD_ATTEMPTS=6 bash "$UPLOAD" LOCAL_FILE REMOTE_DIRECTORY
 ```
+
+只有用户明确要求当日统一检查时，才启用上传后远端字节核验：
+
+```bash
+BDPAN_VERIFY_AFTER_UPLOAD=1 bash "$UPLOAD" LOCAL_FILE REMOTE_DIRECTORY
+```
+
+若文件已经上传，同名同大小的预检会直接生成核验清单，不会重复上传。默认不做逐文件上传后核验，以减少百度接口轮询和等待时间。
 
 其他项目可以复用该脚本，但应把脚本复制进自己的 Git 仓库并将路径写入本项目主卡或 README。
 
@@ -300,9 +308,11 @@ stat -c '%s %n' /absolute/path/file
 sha256sum /absolute/path/file
 ```
 
+默认上传与验收分开执行：上传任务只要求官方 CLI 返回成功；远端检查由用户每天明确触发一次，集中完成。
+
 验收分为两级：
 
-### 一级：上传存在性验证
+### 一级：每日存在性验证（不随每次上传自动执行）
 
 - 远端路径正确；
 - 远端字节数与本地一致；
@@ -329,7 +339,7 @@ sha256sum /absolute/path/file
 3. 桌面客户端不可用时，使用 BaiduPCS-Go 兼容通道；
 4. 校验通过后才投入训练、评估或部署。
 
-不要因为远端能看到文件或字节数一致，就跳过 SHA-256 回读抽检。
+关键里程碑仍建议由用户择日执行 SHA-256 回读抽检，但不在每次上传后自动执行。
 
 ## 10. BaiduPCS-Go：回退与普通目录通道
 
@@ -413,7 +423,7 @@ Slice MD5 mismatch
 - [ ] 将安全上传脚本纳入项目 Git。
 - [ ] 生成包含 Git commit、大小、SHA-256 和远端路径的 manifest。
 - [ ] 使用官方 bdpan 上传完成态大文件。
-- [ ] 核对全部远端路径和字节数。
+- [ ] 用户要求时，每日集中核对新增远端路径和字节数。
 - [ ] 将 manifest 提交 Git，并上传一份到网盘 `manifests/`。
 - [ ] 用桌面客户端或 BaiduPCS-Go 下载一个关键文件做 SHA-256 抽检。
 - [ ] 只清理明确的临时探针；不自动删除源码、数据集或 checkpoint。

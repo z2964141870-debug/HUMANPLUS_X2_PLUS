@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ATTEMPTS="${BDPAN_UPLOAD_ATTEMPTS:-4}"
+VERIFY_AFTER_UPLOAD="${BDPAN_VERIFY_AFTER_UPLOAD:-0}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if PROJECT_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null)"; then
   :
@@ -77,6 +78,7 @@ remote_size_from_json() {
 write_manifest() {
   local status="$1"
   local verified_size="$2"
+  local verification="$3"
   local tmp_manifest="${manifest_path}.tmp"
   jq -n \
     --arg status "$status" \
@@ -84,6 +86,7 @@ write_manifest() {
     --arg remote_path "$remote_path" \
     --arg sha256 "$local_sha256" \
     --arg uploaded_at "$(date --iso-8601=seconds)" \
+    --arg verification "$verification" \
     --argjson local_size "$local_size" \
     --argjson remote_size "$verified_size" \
     '{
@@ -93,7 +96,7 @@ write_manifest() {
       local_size: $local_size,
       remote_size: $remote_size,
       local_sha256: $sha256,
-      verification: "remote path and byte size only; cryptographic readback pending",
+      verification: $verification,
       uploaded_at: $uploaded_at
     }' >"$tmp_manifest"
   mv "$tmp_manifest" "$manifest_path"
@@ -118,7 +121,8 @@ fi
 existing_size="$(printf '%s\n' "$existing_json" | remote_size_from_json)"
 if [[ -n "$existing_size" ]]; then
   if [[ "$existing_size" == "$local_size" ]]; then
-    write_manifest "already_present_same_size" "$existing_size"
+    write_manifest "already_present_same_size" "$existing_size" \
+      "pre-upload remote path and byte size matched; cryptographic readback pending"
     echo "remote artifact already exists with matching size: $remote_path"
     echo "manifest: $manifest_path"
     exit 0
@@ -132,11 +136,20 @@ delays=(2 5 15)
 for ((attempt=1; attempt<=ATTEMPTS; attempt++)); do
   echo "upload attempt $attempt/$ATTEMPTS: $local_file -> $remote_path"
   if bdpan upload "$local_file" "$remote_path"; then
+    if [[ "$VERIFY_AFTER_UPLOAD" != "1" ]]; then
+      write_manifest "upload_command_succeeded_unverified" "null" \
+        "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit"
+      echo "bdpan reported upload success; post-upload verification deferred."
+      echo "local sha256: $local_sha256"
+      echo "manifest: $manifest_path"
+      exit 0
+    fi
     for verify_attempt in 1 2 3; do
       if remote_json="$(list_remote 2>/dev/null)"; then
         verified_size="$(printf '%s\n' "$remote_json" | remote_size_from_json)"
         if [[ "$verified_size" == "$local_size" ]]; then
-          write_manifest "uploaded_size_verified" "$verified_size"
+          write_manifest "uploaded_size_verified" "$verified_size" \
+            "remote path and byte size verified; cryptographic readback pending"
           echo "verified remote byte size: $verified_size"
           echo "local sha256: $local_sha256"
           echo "manifest: $manifest_path"
