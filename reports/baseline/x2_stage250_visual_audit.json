@@ -1,0 +1,71 @@
+{
+  "stage": "x2_stage250_visual_audit",
+  "date": "2026-08-09",
+  "domain": "aimdk_x2_v1_official_mujoco",
+  "training_updates": 0,
+  "decision": "retain_as_nominal_displacement_baseline_but_reject_natural_motion_claim",
+  "old_x11_capture": {
+    "nominal_fps": 30,
+    "duration_s_approx": 21.0,
+    "unique_frames_after_mpdecimate": {
+      "straight": 33,
+      "right": 32,
+      "left": 32
+    },
+    "interpretation": "severe viewer/X11 duplicate-frame artifact; not evidence that the 50 Hz control loop ran at 1.5 fps"
+  },
+  "motion_metrics": {
+    "straight": {
+      "yaw_progress_deg": 4.097657902468059,
+      "forward_m": 1.2036644122198,
+      "pitch_mean_deg": -11.28864276962405,
+      "pitch_median_deg": -11.518666005425883,
+      "pitch_p05_deg": -13.148208802014407,
+      "pitch_p95_deg": -8.058743938625739,
+      "source_sha256": "310924d7887987c319ebb832ae08a5e47a08dfc94d069ac93c9f96d61fe30c64"
+    },
+    "right": {
+      "command_wz_radps": 0.15,
+      "yaw_progress_deg": 19.374833599884845,
+      "forward_m": 1.3006063145487359,
+      "pitch_mean_deg": -10.198116134039008,
+      "pitch_median_deg": -10.255537950717923,
+      "pitch_p05_deg": -12.248554232415046,
+      "pitch_p95_deg": -7.982543390416427,
+      "source_sha256": "9067029136ff9e919eeb3a2439df7229ce2641715c0c08c34bd3790439a58026"
+    },
+    "left": {
+      "command_wz_radps": -0.09,
+      "yaw_progress_deg": -17.848083402637872,
+      "forward_m": 1.2589962808140294,
+      "pitch_mean_deg": -10.720218921264875,
+      "pitch_median_deg": -10.936103155314427,
+      "pitch_p05_deg": -12.358373645566362,
+      "pitch_p95_deg": -7.924068157060138,
+      "source_sha256": "b631a43626da330a4958c94f87388cfddfebffdb6009f39d98beed9325dbbbf4"
+    }
+  },
+  "smooth_replay": {
+    "contract": "offline visualization of every immutable 50 Hz official trace state; no simulation and no state modification",
+    "turn_video": {
+      "path": "videos/official_x2/report/smooth_trace_replay/x2_turn_direction_official_trace_smooth.mp4",
+      "sha256": "cf454cbef7620a383e98be0e8e71d17464096f48b1860a9d5f5d6999036226e9",
+      "width": 1280,
+      "height": 720,
+      "fps": 50,
+      "frames": 200,
+      "duration_s": 4.0
+    },
+    "posture_video": {
+      "path": "videos/official_x2/report/smooth_trace_replay/x2_straight_posture_official_trace_smooth.mp4",
+      "sha256": "793ba6d5d86a0ac0d596b734599dab563e6c2b2fb0a36ae26baf61c5e833c458",
+      "width": 960,
+      "height": 720,
+      "fps": 50,
+      "frames": 200,
+      "duration_s": 4.0
+    }
+  },
+  "gate_gap": "existing tilt gate is unsigned and does not constrain natural sagittal posture",
+  "next": "report signed pitch and preregister a natural-posture threshold from an independent official/acceptable posture reference before promotion"
+}

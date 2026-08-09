@@ -10,6 +10,8 @@ PHASE_OFFSET="${PHASE_OFFSET:-0.0}"
 CONTROL_MODE="${CONTROL_MODE:-full}"
 CLOCK_MODE="${CLOCK_MODE:-step}"
 MIRROR_POLICY="${MIRROR_POLICY:-false}"
+ACTOR_SYMMETRY_PROJECTION_ALPHA="${ACTOR_SYMMETRY_PROJECTION_ALPHA:-0.0}"
+ACTOR_SYMMETRY_PROJECTION_MASK="${ACTOR_SYMMETRY_PROJECTION_MASK:-roll_yaw}"
 PD_PROFILE="${PD_PROFILE:-official_kp_ankle}"
 PD_KP_MULTIPLIER="${PD_KP_MULTIPLIER:-1.0}"
 PD_KD_MULTIPLIER="${PD_KD_MULTIPLIER:-1.0}"
@@ -140,6 +142,8 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --output "${OUTPUT_ROOT}/${CASE_NAME}.json" --vx "$COMMAND_VX" \
   --policy-vx-floor "$POLICY_VX_FLOOR" \
   --phase-offset "$PHASE_OFFSET" --clock-mode "$CLOCK_MODE" --control-mode "$CONTROL_MODE" \
+  --actor-symmetry-projection-alpha "$ACTOR_SYMMETRY_PROJECTION_ALPHA" \
+  --actor-symmetry-projection-mask "$ACTOR_SYMMETRY_PROJECTION_MASK" \
   --pd-profile "$PD_PROFILE" --pd-kp-multiplier "$PD_KP_MULTIPLIER" \
   --pd-kd-multiplier "$PD_KD_MULTIPLIER" --default-pose-profile "$DEFAULT_POSE_PROFILE" \
   --prepare-seconds "$PREPARE_SECONDS" --stand-seconds "$STAND_SECONDS" \

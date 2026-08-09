@@ -23,6 +23,15 @@ from rclpy.node import Node
 from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Imu
 
+from official_x2.actor_symmetry_contract import (
+    mirror_named_vector,
+    mirror_stage208_observation,
+    project_actor_action,
+)
+from official_x2.controller_snapshot_contract import (
+    capture_controller_state,
+    restore_controller_state,
+)
 from official_x2.skill_handoff_contract import (
     matched_event_speed,
     should_emergency_latch,
@@ -140,17 +149,7 @@ def _mirror_joint_sign(name: str) -> float:
 
 def _mirror_joint_vector(values: np.ndarray, names: tuple[str, ...]) -> np.ndarray:
     """Reflect a named joint vector across the robot sagittal plane."""
-    index = {name: i for i, name in enumerate(names)}
-    mirrored = np.empty_like(values)
-    for output_index, name in enumerate(names):
-        if name.startswith("left_"):
-            source_name = "right_" + name[len("left_") :]
-        elif name.startswith("right_"):
-            source_name = "left_" + name[len("right_") :]
-        else:
-            source_name = name
-        mirrored[output_index] = _mirror_joint_sign(name) * values[index[source_name]]
-    return mirrored
+    return mirror_named_vector(values, names)
 
 
 def _sample_upper_track(q_rad: np.ndarray, fps: float, time_s: float, *, loop: bool) -> np.ndarray:
@@ -356,6 +355,11 @@ class Stage208OfficialAdapter(Node):
             "recovery": np.zeros(15, dtype=np.float32),
         }
         self.policy_slot_inference_counts = {"main": 0, "stationary": 0, "recovery": 0}
+        self.actor_symmetry_projection_count = 0
+        self.actor_symmetry_equivariance_rmse_sum = 0.0
+        self.actor_symmetry_equivariance_abs_max = 0.0
+        self.actor_symmetry_applied_delta_rmse_sum = 0.0
+        self.actor_symmetry_applied_delta_abs_max = 0.0
         self.last_move_targets: dict[str, float] | None = None
         self.stop_hold_targets: dict[str, float] | None = None
         self.stop_hold_latch_s: float | None = None
@@ -387,6 +391,26 @@ class Stage208OfficialAdapter(Node):
         self.trace: list[dict[str, float | list[float] | str]] = []
         self.finished = False
         self.timer = self.create_timer(0.02, self._control)
+
+    def export_controller_state(self, *, physical_state_sha256: str) -> dict[str, object]:
+        """Return a lossless next-tick state tied to one physical snapshot."""
+        return capture_controller_state(
+            self,
+            physical_state_sha256=physical_state_sha256,
+        )
+
+    def restore_controller_state(
+        self,
+        state: dict[str, object],
+        *,
+        expected_physical_state_sha256: str,
+    ) -> None:
+        """Restore only after the matched physical state has been injected."""
+        restore_controller_state(
+            self,
+            state,
+            expected_physical_state_sha256=expected_physical_state_sha256,
+        )
 
     def _joint_callback(self, msg: JointStateArray) -> None:
         sample_time = self._message_sample_time(msg)
@@ -620,7 +644,10 @@ class Stage208OfficialAdapter(Node):
         locomotion_intent_vx: float | None = None,
         future_command_vx: float | None = None,
         force_moving: bool = False,
+        mirror_upper: bool | None = None,
     ) -> np.ndarray:
+        if mirror_upper is None:
+            mirror_upper = self.args.mirror_policy
         width = int(session.get_inputs()[0].shape[-1])
         if width == 93:
             return base_obs
@@ -630,14 +657,14 @@ class Stage208OfficialAdapter(Node):
                     base_obs,
                     self._upper_intent_features(
                         upper_elapsed,
-                        mirror=self.args.mirror_policy,
+                        mirror=mirror_upper,
                     ),
                 )
             ).astype(np.float32)
         if width == 123:
             upper = self._upper_intent_features(
                 upper_elapsed,
-                mirror=self.args.mirror_policy,
+                mirror=mirror_upper,
             )
             intent_vx = (
                 command_vx if locomotion_intent_vx is None else locomotion_intent_vx
@@ -828,6 +855,52 @@ class Stage208OfficialAdapter(Node):
             force_moving=force_moving,
         )
         raw_action = session.run(["actions"], {"obs": model_obs[None]})[0][0].astype(np.float32)
+        if (
+            moving
+            and policy_slot == "main"
+            and self.args.actor_symmetry_projection_alpha > 0.0
+        ):
+            mirrored_obs = mirror_stage208_observation(
+                obs,
+                isaac_joint_names=ISAAC_JOINTS,
+                action_joint_names=LOWER_JOINTS,
+            )
+            mirrored_model_obs = self._session_observation(
+                session,
+                mirrored_obs,
+                upper_elapsed=upper_elapsed,
+                phase_elapsed=phase_elapsed,
+                command_vx=command_vx,
+                locomotion_intent_vx=locomotion_intent_vx,
+                future_command_vx=future_command_vx,
+                force_moving=force_moving,
+                mirror_upper=True,
+            )
+            mirrored_prediction = session.run(
+                ["actions"], {"obs": mirrored_model_obs[None]}
+            )[0][0].astype(np.float32)
+            raw_action, symmetry_metrics = project_actor_action(
+                raw_action,
+                mirrored_prediction,
+                action_joint_names=LOWER_JOINTS,
+                alpha=self.args.actor_symmetry_projection_alpha,
+                mask_mode=self.args.actor_symmetry_projection_mask,
+            )
+            self.actor_symmetry_projection_count += 1
+            self.actor_symmetry_equivariance_rmse_sum += symmetry_metrics[
+                "equivariance_rmse"
+            ]
+            self.actor_symmetry_equivariance_abs_max = max(
+                self.actor_symmetry_equivariance_abs_max,
+                symmetry_metrics["equivariance_abs_max"],
+            )
+            self.actor_symmetry_applied_delta_rmse_sum += symmetry_metrics[
+                "applied_delta_rmse"
+            ]
+            self.actor_symmetry_applied_delta_abs_max = max(
+                self.actor_symmetry_applied_delta_abs_max,
+                symmetry_metrics["applied_delta_abs_max"],
+            )
         if (
             policy_slot in ("stationary", "recovery")
             and session is not self.session
@@ -1614,6 +1687,23 @@ class Stage208OfficialAdapter(Node):
             "control_steps": len(move),
             "clock_mode": self.args.clock_mode,
             "mirror_policy": self.args.mirror_policy,
+            "actor_symmetry_projection_alpha": self.args.actor_symmetry_projection_alpha,
+            "actor_symmetry_projection_mask": self.args.actor_symmetry_projection_mask,
+            "actor_symmetry_projection_count": self.actor_symmetry_projection_count,
+            "actor_symmetry_equivariance_rmse_mean": (
+                self.actor_symmetry_equivariance_rmse_sum
+                / self.actor_symmetry_projection_count
+                if self.actor_symmetry_projection_count
+                else 0.0
+            ),
+            "actor_symmetry_equivariance_abs_max": self.actor_symmetry_equivariance_abs_max,
+            "actor_symmetry_applied_delta_rmse_mean": (
+                self.actor_symmetry_applied_delta_rmse_sum
+                / self.actor_symmetry_projection_count
+                if self.actor_symmetry_projection_count
+                else 0.0
+            ),
+            "actor_symmetry_applied_delta_abs_max": self.actor_symmetry_applied_delta_abs_max,
             "observation_contract": "Stage208 deterministic 93D",
             "action_contract": (
                 "RSL actor clip [-1,1] -> 15D lower/waist residual + "
@@ -1897,6 +1987,21 @@ def parse_args() -> argparse.Namespace:
         help="Mirror observations, gait phase, template, and actor action across the sagittal plane.",
     )
     parser.add_argument(
+        "--actor-symmetry-projection-alpha",
+        type=float,
+        default=0.0,
+        help=(
+            "Project the moving main actor toward sagittal equivariance; "
+            "0 is a strict no-op and 1 is the group average."
+        ),
+    )
+    parser.add_argument(
+        "--actor-symmetry-projection-mask",
+        choices=("roll_yaw", "all"),
+        default="roll_yaw",
+        help="Action coordinates modified by the actor symmetry projection.",
+    )
+    parser.add_argument(
         "--control-mode",
         choices=("full", "template_only", "actor_only", "isaac_target_replay"),
         default="full",
@@ -2158,6 +2263,10 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
     if not 0.0 <= args.stationary_blend <= 1.0:
         parser.error("--stationary-blend must be in [0, 1]")
+    if not 0.0 <= args.actor_symmetry_projection_alpha <= 1.0:
+        parser.error("--actor-symmetry-projection-alpha must be in [0, 1]")
+    if args.actor_symmetry_projection_alpha > 0.0 and args.mirror_policy:
+        parser.error("actor symmetry projection is incompatible with --mirror-policy")
     if args.stationary_warmup_seconds < 0.0:
         parser.error("--stationary-warmup-seconds must be non-negative")
     if args.action_bias_ramp_seconds < 0.0:

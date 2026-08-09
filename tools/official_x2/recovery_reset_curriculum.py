@@ -440,7 +440,20 @@ def reset_from_recovery_dataset(
     joint_vel = joint_vel[:, reorder_t]
     limits = asset.data.soft_joint_pos_limits[selected]
     joint_pos = torch.clamp(joint_pos, limits[..., 0], limits[..., 1])
-    vel_limits = asset.data.soft_joint_vel_limits[selected]
+    vel_limits = asset.data.soft_joint_vel_limits[selected].clone()
+    # IsaacLab initializes soft_joint_vel_limits to zeros and fills them only
+    # in Articulation._apply_actuator_model(), which runs after the first reset
+    # events.  Clamping against that transient zero tensor silently erased all
+    # Stage335 dq on the first reset.  The PhysX/URDF hard limits are already
+    # initialized at this point and are the fail-closed fallback only for
+    # non-positive soft entries; later resets keep the actuator soft limits.
+    uninitialized_vel_limits = vel_limits <= 0.0
+    velocity_limit_fallback_count = int(uninitialized_vel_limits.sum().item())
+    if velocity_limit_fallback_count:
+        hard_vel_limits = asset.data.joint_vel_limits[selected]
+        if bool(torch.any(hard_vel_limits <= 0.0)):
+            raise RuntimeError("recovery reset encountered non-positive hard joint velocity limits")
+        vel_limits = torch.where(uninitialized_vel_limits, hard_vel_limits, vel_limits)
     joint_vel = torch.clamp(joint_vel, -vel_limits, vel_limits)
 
     roll = torch.as_tensor(arrays["root_roll_rad"][sample_cpu], device=device, dtype=state_dtype)
@@ -483,6 +496,10 @@ def reset_from_recovery_dataset(
     env._x2_recovery_reset_last = {
         "selected_env_ids": selected.clone(),
         "sample_indices": sample_ids.clone(),
+        # Scalar observability only: this distinguishes source-side clipping
+        # from an Isaac/PhysX write failure without retaining reset tensors.
+        "requested_joint_velocity_abs_max_radps": float(torch.abs(joint_vel).max().item()),
+        "velocity_limit_fallback_count": velocity_limit_fallback_count,
     }
     if stateful_source_report is not None:
         # This pending payload is intentionally finalized only after Isaac

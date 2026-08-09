@@ -3,9 +3,11 @@
 日期：2026-08-09
 状态：**逻辑快照恢复通过；source→Isaac 物理等价失败；完整事件续接受阻；训练继续锁定**
 
+> Phase6 更正（2026-08-09）：本报告中的 joint-velocity 阻塞已经定位为 IsaacLab 首轮 reset 时 `soft_joint_vel_limits` 尚为零而导致的静默清零，并已修复；修复后 reset-return `dq` 误差为 `0.0 rad/s`。当前阻塞收窄为 6/90 条 left-shoulder-roll 最大 `0.000228 rad` 的 raw-source 微越限，以及旧 trace 完全缺失 controller snapshot。以 [Phase6 报告](x2_recovery_phase6_snapshot_suffix.md) 为当前裁决，训练仍锁定。
+
 ## 一句话结论
 
-Stage335 的 90 个状态现在可以精确恢复 episode clock、raw/effective action、gait phase、当前 command、root pose/velocity。复核还发现并修正了一个独立契约错误：通用 `soft_joint_pos_limit_factor=0.9` 会把 X2 非对称 shoulder-roll 的官方零位排除在可用范围外；改为官方硬限位后，位置投影由 90/90、最大 `0.15293 rad` 降至 6/90、最大 `0.000228 rad`。但 reset 返回时关节速度仍不等于 source，因此当前只能称为“逻辑状态恢复实现可用”，不能称为官方 source snapshot 等价，也不允许开始 PPO。
+Stage335 的 90 个状态可以精确恢复 episode clock、raw/effective action、gait phase、当前 command、root pose/velocity。Phase4 当时还观察到 reset-return joint velocity 不等价；Phase6 已证明它来自首轮 soft velocity limit 初始化顺序并修复。raw source 仍有 6 条极小 position 越限，且旧 trace 不具备 suffix replay 所需的 controller state，因此依旧不允许开始 PPO。
 
 ## 假设
 

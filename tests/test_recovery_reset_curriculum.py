@@ -65,6 +65,7 @@ class _FakeAsset:
                 (-torch.full((num_envs, 31), 10.0), torch.full((num_envs, 31), 10.0)), dim=-1
             ),
             soft_joint_vel_limits=torch.full((num_envs, 31), 20.0),
+            joint_vel_limits=torch.full((num_envs, 31), 25.0),
         )
         self.root_pose = None
         self.root_velocity = None
@@ -122,6 +123,26 @@ def test_zero_fraction_is_exact_noop():
     assert env._x2_recovery_reset_last["selected_env_ids"].numel() == 0
     assert asset.root_pose is None
     assert asset.joint_pos is None
+
+
+def test_first_reset_uses_hard_velocity_limits_when_soft_limits_are_uninitialized():
+    arrays = load_recovery_dataset(DATASET, SHA256)
+    asset = _FakeAsset(arrays)
+    asset.data.soft_joint_vel_limits.zero_()
+    scene = _FakeScene(asset)
+    env = SimpleNamespace(scene=scene, device="cpu")
+    torch.manual_seed(3)
+    reset_from_recovery_dataset(
+        env,
+        torch.arange(4),
+        DATASET,
+        1.0,
+        sampling_mode="balanced",
+        expected_sha256=SHA256,
+    )
+    sample_ids = env._x2_recovery_reset_last["sample_indices"].numpy()
+    assert env._x2_recovery_reset_last["velocity_limit_fallback_count"] == 4 * 31
+    assert torch.allclose(asset.joint_vel, torch.as_tensor(arrays["joint_vel_radps"][sample_ids]))
 
 
 def test_stateful_sidecar_is_lossless_and_clock_reconstructs_phase():

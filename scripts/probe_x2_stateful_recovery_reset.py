@@ -26,6 +26,7 @@ simulation_app = launcher.app
 
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
+from isaaclab.envs import ManagerBasedRLEnv  # noqa: E402
 from isaaclab.managers import EventTermCfg  # noqa: E402
 
 from gear_sonic.envs.manager_env.robots.x2 import X2_URDF_BY_COLLISION_PROFILE  # noqa: E402
@@ -36,12 +37,77 @@ from official_x2.recovery_reset_curriculum import (  # noqa: E402
     joint_reorder_indices,
     load_recovery_dataset,
     load_stateful_recovery_sidecar,
+    finalize_stateful_recovery,
     reset_from_recovery_dataset,
 )
 from official_x2.stateful_recovery_isaac import (  # noqa: E402
     StatefulRecoveryRLEnv,
     configure_stateful_recovery_cfg,
 )
+
+
+_RESET_BOUNDARY_CAPTURE: dict[str, dict[str, torch.Tensor]] = {}
+
+
+def _capture_joint_velocity_boundary(env, label: str) -> None:
+    """Capture both Isaac's cache and the PhysX tensor at one reset boundary."""
+    debug = getattr(env, "_x2_recovery_reset_last", None)
+    if not debug or "selected_env_ids" not in debug:
+        return
+    selected = debug["selected_env_ids"]
+    if len(selected) == 0:
+        return
+    robot = env.scene["robot"]
+    _RESET_BOUNDARY_CAPTURE[label] = {
+        "selected_env_ids": selected.detach().cpu().clone(),
+        "sample_indices": debug["sample_indices"].detach().cpu().clone(),
+        "cached_joint_vel": robot.data.joint_vel[selected].detach().cpu().clone(),
+        "physx_joint_vel": robot.root_physx_view.get_dof_velocities()[selected]
+        .detach()
+        .cpu()
+        .clone(),
+        "requested_joint_velocity_abs_max_radps": torch.tensor(
+            float(debug.get("requested_joint_velocity_abs_max_radps", float("nan")))
+        ),
+    }
+
+
+def _diagnostic_reset_from_recovery_dataset(
+    env,
+    env_ids,
+    dataset_path: str,
+    recovery_fraction: float,
+    sampling_mode: str = "balanced",
+    expected_sha256: str | None = None,
+    asset_name: str = "robot",
+    stateful_source_report: str | None = None,
+    stateful_source_report_sha256: str | None = None,
+):
+    """Production reset plus a read-only capture immediately after the write."""
+    reset_from_recovery_dataset(
+        env,
+        env_ids,
+        dataset_path=dataset_path,
+        recovery_fraction=recovery_fraction,
+        sampling_mode=sampling_mode,
+        expected_sha256=expected_sha256,
+        asset_name=asset_name,
+        stateful_source_report=stateful_source_report,
+        stateful_source_report_sha256=stateful_source_report_sha256,
+    )
+    _capture_joint_velocity_boundary(env, "event_after_write")
+
+
+class _BoundaryDiagnosticStatefulRecoveryRLEnv(StatefulRecoveryRLEnv):
+    """Expose reset boundaries without changing their production ordering."""
+
+    def _reset_idx(self, env_ids):
+        # Spell out StatefulRecoveryRLEnv's two calls so the diagnostic can
+        # distinguish manager-reset effects from the later reset forward().
+        ManagerBasedRLEnv._reset_idx(self, env_ids)
+        _capture_joint_velocity_boundary(self, "after_managers_before_finalizer")
+        finalize_stateful_recovery(self)
+        _capture_joint_velocity_boundary(self, "after_finalizer_before_forward")
 
 
 def main() -> None:
@@ -92,7 +158,7 @@ def main() -> None:
     cfg.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
     cfg.commands.base_velocity.ranges.ang_vel_z = (0.0, 0.0)
     cfg.events.recovery_state_reset = EventTermCfg(
-        func=reset_from_recovery_dataset,
+        func=_diagnostic_reset_from_recovery_dataset,
         mode="reset",
         params={
             "dataset_path": str(dataset),
@@ -118,7 +184,7 @@ def main() -> None:
         "stateful_audit": stateful_audit.__dict__,
     }
     try:
-        env = StatefulRecoveryRLEnv(cfg=cfg)
+        env = _BoundaryDiagnosticStatefulRecoveryRLEnv(cfg=cfg)
         obs, _ = env.reset(seed=args.seed)
         debug = env._x2_recovery_reset_last
         if not debug.get("stateful_finalized", False):
@@ -146,6 +212,44 @@ def main() -> None:
         )[:, reorder_t]
         velocity_limits = robot.data.soft_joint_vel_limits[selected]
         expected_dq = torch.clamp(raw_expected_dq, -velocity_limits, velocity_limits)
+
+        def boundary_velocity_errors() -> dict[str, dict[str, float | bool]]:
+            result: dict[str, dict[str, float | bool]] = {}
+            for label, capture in _RESET_BOUNDARY_CAPTURE.items():
+                same_samples = bool(
+                    torch.equal(capture["sample_indices"], sample_ids.detach().cpu())
+                )
+                if not same_samples:
+                    result[label] = {"same_samples": False}
+                    continue
+                expected_cpu = expected_dq.detach().cpu()
+                result[label] = {
+                    "same_samples": True,
+                    "requested_abs_max_radps": float(
+                        capture["requested_joint_velocity_abs_max_radps"].item()
+                    ),
+                    "expected_abs_max_radps": float(torch.max(torch.abs(expected_cpu)).item()),
+                    "cached_abs_max_radps": float(
+                        torch.max(torch.abs(capture["cached_joint_vel"])).item()
+                    ),
+                    "physx_abs_max_radps": float(
+                        torch.max(torch.abs(capture["physx_joint_vel"])).item()
+                    ),
+                    "cached_vs_expected_max_radps": float(
+                        torch.max(torch.abs(capture["cached_joint_vel"] - expected_cpu)).item()
+                    ),
+                    "physx_vs_expected_max_radps": float(
+                        torch.max(torch.abs(capture["physx_joint_vel"] - expected_cpu)).item()
+                    ),
+                    "cache_vs_physx_max_radps": float(
+                        torch.max(
+                            torch.abs(
+                                capture["cached_joint_vel"] - capture["physx_joint_vel"]
+                            )
+                        ).item()
+                    ),
+                }
+            return result
         expected_root_pos = env.scene.env_origins[selected].clone()
         expected_root_pos[:, 2] += torch.as_tensor(
             arrays["root_z_m"][sample_cpu],
@@ -410,6 +514,7 @@ def main() -> None:
                     "affected_joints": joint_projection_by_name,
                     "runtime_joint_velocity_error_by_joint_radps": runtime_dq_error_by_joint,
                 },
+                "joint_velocity_reset_boundaries": boundary_velocity_errors(),
                 "finite": finite,
                 "low_command_force_moving_samples": int(
                     np.sum(

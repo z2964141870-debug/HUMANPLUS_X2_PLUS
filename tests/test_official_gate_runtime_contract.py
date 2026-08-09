@@ -22,6 +22,9 @@ def test_official_container_exposes_tools_package_to_adapter() -> None:
 
     assert 'export PYTHONPATH="/repo/tools${PYTHONPATH:+:$PYTHONPATH}"' in inner
     assert "from official_x2.skill_handoff_contract import" in adapter
+    assert "from official_x2.controller_snapshot_contract import" in adapter
+    assert "def export_controller_state(" in adapter
+    assert "def restore_controller_state(" in adapter
 
 
 def test_official_gate_uses_init_and_sufficient_timeout() -> None:
