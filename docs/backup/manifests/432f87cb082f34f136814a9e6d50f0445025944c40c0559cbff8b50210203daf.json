@@ -1,0 +1,10 @@
+{
+  "status": "uploaded_size_verified",
+  "local_path": "reports/X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE1.md",
+  "remote_path_relative_to_apps_bdpan": "x2-project-backups/2026-08-09/phase1/X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE1.md",
+  "local_size": 6470,
+  "remote_size": 6470,
+  "local_sha256": "e7ee06154b70403fb984fa7a6d0df5847b850ec8274d91f9b3943e46c55e58b7",
+  "verification": "remote path and byte size only; cryptographic readback pending",
+  "uploaded_at": "2026-08-09T11:36:40+08:00"
+}

@@ -1,0 +1,10 @@
+{
+  "status": "uploaded_size_verified",
+  "local_path": "/tmp/x2_phase1_recovery_best_20260809.tar.gz",
+  "remote_path_relative_to_apps_bdpan": "x2-project-backups/2026-08-09/phase1/x2_phase1_recovery_best_20260809.tar.gz",
+  "local_size": 1941883,
+  "remote_size": 1941883,
+  "local_sha256": "4d922e986385c29a859ee2fbb37749093325f8b58eb106a874a890549da156bf",
+  "verification": "remote path and byte size only; cryptographic readback pending",
+  "uploaded_at": "2026-08-09T11:36:46+08:00"
+}
