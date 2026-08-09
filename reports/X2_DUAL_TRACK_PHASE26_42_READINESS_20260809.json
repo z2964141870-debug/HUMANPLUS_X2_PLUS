@@ -1,0 +1,37 @@
+{
+  "date": "2026-08-09",
+  "status": "LONG_TRAINING_NOT_READY_BOTH_TEACHERS_FAILED",
+  "tasks_since_phase36_backup": 10,
+  "base": {
+    "retained_nominal_capability": true,
+    "retained_checkpoint_overwritten": false,
+    "phase26_cost_reduction_fraction": 0.338,
+    "phase26_root_safe_for_2s": true,
+    "phase26_joint_position_endpoint_distance": 1.955,
+    "phase26_previous_action_endpoint_distance": 1.05,
+    "phase26_joint_support_after_handoff": false,
+    "dynamic_bridge_pass": false,
+    "training_unlocked": false
+  },
+  "wbt": {
+    "true_train_silver": 0,
+    "heldout_silver_or_gold": 0,
+    "phase41_valid_frames": 23,
+    "phase41_jointly_feasible_frames": 0,
+    "phase42_variables": 1371,
+    "phase42_equalities": 144,
+    "phase42_inequalities": 4926,
+    "phase42_daqp_feasible": false,
+    "phase42_highs_feasible": false,
+    "contact_first_teacher_pass": false,
+    "ppo_unlocked": false
+  },
+  "long_training_unlocked": false,
+  "required_new_information": [
+    "native X2 locomotion or whole-body policy and command contract",
+    "official-model-validated dynamic teacher or contact-force data",
+    "new target-specific contact schedule and foot placement",
+    "mature full-body direct-collocation toolchain",
+    "bridge representation covering joint-position and actual action-history reachability"
+  ]
+}
