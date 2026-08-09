@@ -1,0 +1,94 @@
+{
+  "stage": "stage346_handoff_control_u1_gate",
+  "hypothesis": "Random-clock handoff curriculum control should not outperform phase-consistent complete-event training.",
+  "single_variable": "Stage306 to one matched PPO update with random episode/command phase mismatch",
+  "matched_contract": {
+    "moving_model": "stage345_handoff_control_s2653_actor.onnx",
+    "stationary_model": "stand_backend_scratch_i150_actor.onnx",
+    "recovery_model": "stand_backend_scratch_i150_actor.onnx",
+    "pd": "official_kp_ankle x1.2",
+    "upper": "fixed",
+    "command_vx_mps": 0.3
+  },
+  "historical": {
+    "source_stand_backend": "3/5",
+    "stage337_f010_u5": "4/5"
+  },
+  "current_invocation_runner_nonzero_count": 4,
+  "rows": [
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage346_handoff_control_u1_stiff1p2_fixed_r1.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.15138162686901546,
+      "stop_root_z_min_m": 0.13865310286703164,
+      "stop_tilt_max_rad": 1.5475424547838021,
+      "stop_drift_m": 0.5755567306540521,
+      "stop_tail_speed_mps": 0.00031396620217880207,
+      "stop_settle_time_s": 3.54
+    },
+    {
+      "status": "pass",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage346_handoff_control_u1_stiff1p2_fixed_r2.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.13578320863762944,
+      "stop_root_z_min_m": 0.6337628128880857,
+      "stop_tilt_max_rad": 0.22074846043157195,
+      "stop_drift_m": 0.12610925465205977,
+      "stop_tail_speed_mps": 0.005417730157464964,
+      "stop_settle_time_s": 2.7800000000000002
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage346_handoff_control_u1_stiff1p2_fixed_r3.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.3495602515519024,
+      "stop_root_z_min_m": 0.6375959525645674,
+      "stop_tilt_max_rad": 0.21564464153598836,
+      "stop_drift_m": 0.129095428921501,
+      "stop_tail_speed_mps": 0.005472593215142595,
+      "stop_settle_time_s": 2.24
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage346_handoff_control_u1_stiff1p2_fixed_r4.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.36426696128677183,
+      "stop_root_z_min_m": 0.1384943446765081,
+      "stop_tilt_max_rad": 1.54148787149981,
+      "stop_drift_m": 0.5887202040151934,
+      "stop_tail_speed_mps": 0.0003542922308769275,
+      "stop_settle_time_s": 3.66
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage346_handoff_control_u1_stiff1p2_fixed_r5.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.3304776258105023,
+      "stop_root_z_min_m": 0.13852977526255073,
+      "stop_tilt_max_rad": 1.5495277588351009,
+      "stop_drift_m": 0.6030405188154695,
+      "stop_tail_speed_mps": 0.0003947266101429826,
+      "stop_settle_time_s": 2.54
+    }
+  ],
+  "passes": 1,
+  "valid": 5,
+  "full_gate_failures": 4,
+  "promotion_gate_pass": false
+}

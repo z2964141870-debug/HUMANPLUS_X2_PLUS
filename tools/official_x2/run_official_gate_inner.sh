@@ -84,6 +84,12 @@ UPPER_LOOP="${UPPER_LOOP:-false}"
 UPPER_STOP_MODE="${UPPER_STOP_MODE:-return}"
 
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+# The adapter is launched as a file under /repo/tools/official_x2.  Python then
+# puts that leaf directory (rather than /repo/tools) on sys.path, so sibling
+# package imports such as ``official_x2.skill_handoff_contract`` fail inside
+# the otherwise healthy official container.  Make the mounted tools package
+# explicit; preserve any image-provided path for ROS/AimDK helpers.
+export PYTHONPATH="/repo/tools${PYTHONPATH:+:$PYTHONPATH}"
 export LD_LIBRARY_PATH="$ROOT/install/aimdk_msgs/lib:$SIM/bin:$SIM/lib:/opt/ros/humble/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/onnxruntime/lib"
 export SIM_ROBOT_PATH="$SIM/configuration/robot/lx2501_3_t2d5"
 export SIM_RESOURCE_MODEL_PATH="$SIM/resource/model"

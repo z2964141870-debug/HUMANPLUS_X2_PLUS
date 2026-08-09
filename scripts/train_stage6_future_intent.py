@@ -54,6 +54,13 @@ def optional_positive_int(name: str) -> int | None:
     return value
 
 
+def nonnegative_float(name: str, default: float) -> float:
+    value = float(os.environ.get(name, str(default)))
+    if value < 0.0:
+        raise ValueError(f"{name} must be non-negative")
+    return value
+
+
 ROOT = Path(__file__).resolve().parents[1]
 OLD_SCRIPT = Path(
     os.environ.get(
@@ -97,12 +104,26 @@ def main() -> None:
     transition_curriculum_enabled = env_flag(
         "CWI_STAGE6_TRANSITION_CURRICULUM"
     )
+    phase_consistent_event = env_flag("CWI_STAGE6_PHASE_CONSISTENT_EVENT")
+    terminal_contact_reward = env_flag("CWI_STAGE6_TERMINAL_CONTACT_REWARD")
+    random_episode_phase = env_flag("CWI_STAGE6_RANDOM_EPISODE_PHASE", default=True)
     steps_per_env = optional_positive_int("CWI_STAGE6_STEPS_PER_ENV")
     transition_phase_offset_max_s = float(
         os.environ.get("CWI_STAGE6_TRANSITION_PHASE_OFFSET_MAX_S", "0.0")
     )
     if transition_phase_offset_max_s < 0.0:
         raise ValueError("transition phase offset maximum must be non-negative")
+    transition_stand_s = nonnegative_float("CWI_STAGE6_TRANSITION_STAND_S", 1.0)
+    transition_accelerate_s = nonnegative_float(
+        "CWI_STAGE6_TRANSITION_ACCELERATE_S", 1.0
+    )
+    transition_cruise_s = nonnegative_float("CWI_STAGE6_TRANSITION_CRUISE_S", 4.0)
+    transition_decelerate_s = nonnegative_float(
+        "CWI_STAGE6_TRANSITION_DECELERATE_S", 2.0
+    )
+    transition_terminal_hold_s = nonnegative_float(
+        "CWI_STAGE6_TRANSITION_TERMINAL_HOLD_S", 2.0
+    )
     if not 0.0 <= velocity_min <= velocity_max:
         raise ValueError(
             "CWI Stage6 velocity range must satisfy 0 <= min <= max"
@@ -111,6 +132,22 @@ def main() -> None:
         raise ValueError("CWI Stage6 coordination blend must lie in [0, 1]")
     original_runner_cfg = module.X2LowerVelocityFlatPPORunnerCfg
     original_manager_env = module.ManagerBasedRLEnv
+    original_runner = module.OnPolicyRunner
+
+    class PhaseControlledRunner(original_runner):
+        def learn(self, num_learning_iterations, init_at_random_ep_len=True):
+            resolved_random_phase = (
+                False if phase_consistent_event else random_episode_phase
+            )
+            print(
+                "[CWI transition event] "
+                f"init_at_random_ep_len={resolved_random_phase}",
+                flush=True,
+            )
+            return super().learn(
+                num_learning_iterations=num_learning_iterations,
+                init_at_random_ep_len=resolved_random_phase,
+            )
 
     def runner_cfg_factory():
         cfg = original_runner_cfg()
@@ -145,8 +182,11 @@ def main() -> None:
         if transition_curriculum_enabled:
             from cwi_x2.transition_command import (
                 stopped_base_speed_l2,
+                terminal_double_support_penalty,
                 transition_velocity_cfg,
             )
+            from cwi_x2.transition_schedule import audit_phase_consistent_event
+            from isaaclab.managers import RewardTermCfg
 
             source_command = cfg.commands.base_velocity
             cfg.commands.base_velocity = transition_velocity_cfg(
@@ -168,9 +208,19 @@ def main() -> None:
                         source_command.heading_control_stiffness,
                     )
                 ),
+                stand_s=transition_stand_s,
+                accelerate_s=transition_accelerate_s,
+                cruise_s=transition_cruise_s,
+                decelerate_s=transition_decelerate_s,
                 maximum_phase_offset_s=transition_phase_offset_max_s,
             )
-            cfg.episode_length_s = 12.0
+            event_end_s = (
+                transition_stand_s
+                + transition_accelerate_s
+                + transition_cruise_s
+                + transition_decelerate_s
+            )
+            cfg.episode_length_s = max(12.0, event_end_s + transition_terminal_hold_s)
             cfg.rewards.stand_lin_vel_xy_l2.func = stopped_base_speed_l2
             cfg.rewards.stand_lin_vel_xy_l2.weight = -3.0
             cfg.rewards.stand_lin_vel_xy_l2.params = {
@@ -178,6 +228,36 @@ def main() -> None:
                 "command_threshold": 0.05,
                 "asset_cfg": SceneEntityCfg("robot"),
             }
+            if terminal_contact_reward:
+                cfg.rewards.transition_terminal_double_support = RewardTermCfg(
+                    func=terminal_double_support_penalty,
+                    weight=-2.0,
+                    params={
+                        "command_name": "base_velocity",
+                        "enter_force_n": 30.0,
+                        "left_sensor_name": "left_foot_ground_contact",
+                        "right_sensor_name": "right_foot_ground_contact",
+                    },
+                )
+            if phase_consistent_event:
+                if steps_per_env is None:
+                    raise ValueError(
+                        "phase-consistent event requires CWI_STAGE6_STEPS_PER_ENV"
+                    )
+                rollout_s = steps_per_env * float(cfg.sim.dt) * int(cfg.decimation)
+                audit = audit_phase_consistent_event(
+                    stand_s=transition_stand_s,
+                    accelerate_s=transition_accelerate_s,
+                    cruise_s=transition_cruise_s,
+                    decelerate_s=transition_decelerate_s,
+                    terminal_hold_s=transition_terminal_hold_s,
+                    gait_cycle_s=0.8,
+                    double_support_fraction=0.30,
+                    rollout_s=rollout_s,
+                    random_episode_phase=False,
+                    maximum_phase_offset_s=transition_phase_offset_max_s,
+                )
+                print(f"[CWI transition event] audit={audit}", flush=True)
         if gain_range is not None:
             cfg.events.randomize_actuator_gains = EventTermCfg(
                 func=mdp.randomize_actuator_gains,
@@ -220,6 +300,7 @@ def main() -> None:
     module.X2ResponseHistoryActorCriticCfg = policy_cfg_factory
     module.ResponseHistoryActorCritic = FutureIntentActorCritic
     module.ManagerBasedRLEnv = manager_env_factory
+    module.OnPolicyRunner = PhaseControlledRunner
     # Keep all generated logs/checkpoints inside this new project.
     module.__file__ = str(Path(__file__).resolve())
     try:

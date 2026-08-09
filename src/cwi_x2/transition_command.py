@@ -74,6 +74,16 @@ class TransitionVelocityCommand(GainScheduledUniformVelocityCommand):
         scale = 0.5
         return torch.stack((current / scale, (future - current) / scale), dim=-1)
 
+    def terminal_stop_mask(self) -> torch.Tensor:
+        """Return environments that completed deceleration into final hold."""
+        terminal_start = (
+            self.cfg.stand_s
+            + self.cfg.accelerate_s
+            + self.cfg.cruise_s
+            + self.cfg.decelerate_s
+        )
+        return self._elapsed_s() >= terminal_start
+
 
 @configclass
 class TransitionVelocityCommandCfg(GainScheduledUniformVelocityCommandCfg):
@@ -136,9 +146,46 @@ def stopped_base_speed_l2(
     return speed_l2 * stopped.to(speed_l2.dtype)
 
 
+def terminal_double_support_penalty(
+    env,
+    command_name: str,
+    enter_force_n: float,
+    left_sensor_name: str,
+    right_sensor_name: str,
+) -> torch.Tensor:
+    """Penalize missing bilateral ground contact in the terminal hold only.
+
+    This uses simulator ground-filtered forces as a training-only objective;
+    it does not append force or contact truth to the deployable actor input.
+    """
+    if enter_force_n <= 0.0:
+        raise ValueError("terminal contact force threshold must be positive")
+    command = env.command_manager.get_term(command_name)
+    terminal_method = getattr(command, "terminal_stop_mask", None)
+    if terminal_method is None:
+        raise RuntimeError("terminal contact reward requires TransitionVelocityCommand")
+
+    def vertical_force(sensor_name: str) -> torch.Tensor:
+        matrix = env.scene[sensor_name].data.force_matrix_w
+        if matrix is None:
+            raise RuntimeError(f"ground-filtered sensor {sensor_name!r} has no force matrix")
+        return matrix[..., 2].abs().reshape(matrix.shape[0], -1).amax(dim=-1)
+
+    contact = torch.stack(
+        (
+            vertical_force(left_sensor_name) > enter_force_n,
+            vertical_force(right_sensor_name) > enter_force_n,
+        ),
+        dim=-1,
+    )
+    missing_fraction = 1.0 - contact.to(dtype=torch.float32).mean(dim=-1)
+    return missing_fraction * terminal_method().to(dtype=missing_fraction.dtype)
+
+
 __all__ = [
     "TransitionVelocityCommand",
     "TransitionVelocityCommandCfg",
     "stopped_base_speed_l2",
+    "terminal_double_support_penalty",
     "transition_velocity_cfg",
 ]

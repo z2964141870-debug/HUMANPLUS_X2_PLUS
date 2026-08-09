@@ -1,0 +1,29 @@
+{
+  "stage": "X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE3",
+  "date": "2026-08-09",
+  "base": {
+    "status": "POSITIVE_SIGNAL_STRICT_GATE_LOCKED",
+    "random_clock_u1_full_gate": "1/5",
+    "phase_aligned_u1_full_gate": "4/5",
+    "phase_aligned_u5_full_gate": "2/5",
+    "unlock_25_updates": false,
+    "unlock_long_training": false,
+    "report": "reports/baseline/x2_transition_event_phase3.md"
+  },
+  "wbt": {
+    "status": "PANEL_DYNAMIC_TEACHER_NOT_SUPPORTED",
+    "panel_pass": "1/5",
+    "walk_baseline_survival_s": 1.557,
+    "walk_teacher_survival_s": 2.456,
+    "walk_survival_gain_s": 0.899,
+    "dynamic_silver_count": 0,
+    "dynamic_gold_count": 0,
+    "unlock_any2any_ppo": false,
+    "report": "reports/retarget/x2_contact_constrained_dynamic_teacher_phase3.md"
+  },
+  "next": {
+    "base": "stateful stop-boundary RSI with synchronized event clock, gait phase, and last action",
+    "wbt": "repair initial qvel, contact-event, root-yaw, foot-orientation contracts before rerunning the fixed panel"
+  },
+  "real_robot_commands_sent": false
+}

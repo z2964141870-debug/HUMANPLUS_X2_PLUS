@@ -1,0 +1,62 @@
+{
+  "stage": "x2_transition_event_phase3",
+  "date": "2026-08-09",
+  "status": "POSITIVE_SIGNAL_STRICT_GATE_LOCKED",
+  "frozen_source": {
+    "checkpoint": "logs/rsl_rl/x2_lower_velocity_flat/2026-08-08_11-18-41_stage306_s2642_transition_head_h1p0_long15_lr1e4_v1/model_2652.pt"
+  },
+  "event_contract": {
+    "stand_s": 0.0,
+    "accelerate_s": 1.0,
+    "cruise_s": 4.2,
+    "decelerate_s": 2.0,
+    "event_end_s": 7.2,
+    "terminal_hold_s": 2.0,
+    "rollout_s": 10.24,
+    "terminal_gait_phase": 0.0,
+    "terminal_in_double_support": true
+  },
+  "official_gate": {
+    "domain": "AimDK v1.0 X2 MuJoCo stiff-fixed",
+    "repeats": 5,
+    "control_u1": {
+      "report": "reports/official_x2/stage346_handoff_control_u1_gate.json",
+      "full": 1,
+      "start": 5,
+      "move": 2,
+      "stop": 2
+    },
+    "aligned_u1": {
+      "report": "reports/official_x2/stage347_handoff_aligned_u1_gate.json",
+      "full": 4,
+      "start": 5,
+      "move": 5,
+      "stop": 4,
+      "checkpoint_sha256": "4446ae8f1a0428843ca955a0869d12a9122c739c5c866c4634eddc64ba5ac8e4",
+      "onnx_sha256": "957ce4e532cf1352795e7aa89ac0bc466fe5792bb1c98fe53d0cf9d367c37f2"
+    },
+    "aligned_u5": {
+      "report": "reports/official_x2/stage348_handoff_aligned_u5_gate.json",
+      "full": 2,
+      "start": 5,
+      "move": 5,
+      "stop": 2,
+      "checkpoint_sha256": "3d097dcabd346354e75503a88d982081c46c2b3114aba3d3f04da7f8b926cb92",
+      "onnx_sha256": "e0d5fd6e5fa74f4ba7fc4539e9d958d8700a19c31e931d27aed34e90c5973ed2"
+    }
+  },
+  "training_curve_u5": {
+    "mean_episode_length_steps": [134.767441, 283.282349, 399.98999, 401.929993, 442.579987],
+    "mean_reward": [-0.131953, 8.823427, 15.054165, 15.054691, 17.552599],
+    "bad_orientation": [0.69928, 0.629578, 0.557983, 0.618103, 0.470459],
+    "terminal_double_support_reward": [-0.005296, -0.060789, -0.053026, -0.076995, -0.084587],
+    "contact_phase_reward": [-0.070501, -0.094644, -0.087418, -0.104577, -0.110625]
+  },
+  "decision": {
+    "promote_aligned_u1": false,
+    "promote_aligned_u5": false,
+    "unlock_25_updates": false,
+    "unlock_long_training": false,
+    "next": "stateful stop-boundary RSI restoring physical state, event clock, gait phase, and last-action history for isolated stand/recovery training"
+  }
+}
