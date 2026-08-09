@@ -1,0 +1,254 @@
+{
+  "schema_version": "x2_half_upper_closed_phase53_v1",
+  "scope": "one half-amplitude/half-slew upper closed diagnostic; no retry/training/gain or amplitude sweep/hardware/Git/cloud",
+  "execution": {
+    "new_physics_episodes": 1,
+    "retries": 0,
+    "A_reused": true,
+    "B1_reused": true
+  },
+  "provenance": {
+    "prereg_sha256": "619a6e5896b06c0459e7b1cc29a6431c9ed6193fe8f0d2b4d454ce58b7465f3f",
+    "A_sha256": "c380b920096751f666d3592d7d6ec6f568d4d0d8e2c01445fc3d354a664fc376",
+    "B1_sha256": "706feadfe568d158796d5b70753e15238be10901873cfd04590749bb96a7507a",
+    "Bhalf_sha256": "23f9eada3a731764544b08a21a3e62d4899cf7525ee17d7f0f07d5e84f473490",
+    "Bhalf_audit_sha256": "28899ad87015d01115fab8a233e28fdadd847c620fc4f959a46df1f843dba239"
+  },
+  "static": {
+    "frozen_contract_exact_except_preregistered_half_scale_excursion_slew": true,
+    "frozen_fields": {
+      "model": {
+        "A": "/models/stage219_s2600_actor.onnx",
+        "B1": "/models/stage219_s2600_actor.onnx",
+        "Bhalf": "/models/stage219_s2600_actor.onnx"
+      },
+      "stationary_model": {
+        "A": "/models/stand_backend_scratch_i150_actor.onnx",
+        "B1": "/models/stand_backend_scratch_i150_actor.onnx",
+        "Bhalf": "/models/stand_backend_scratch_i150_actor.onnx"
+      },
+      "recovery_model": {
+        "A": "/models/stand_backend_scratch_i150_actor.onnx",
+        "B1": "/models/stand_backend_scratch_i150_actor.onnx",
+        "Bhalf": "/models/stand_backend_scratch_i150_actor.onnx"
+      },
+      "template": {
+        "A": "/template.npz",
+        "B1": "/template.npz",
+        "Bhalf": "/template.npz"
+      },
+      "pd_profile": {
+        "A": "official_kp_ankle",
+        "B1": "official_kp_ankle",
+        "Bhalf": "official_kp_ankle"
+      },
+      "pd_kp_multiplier": {
+        "A": 1.0,
+        "B1": 1.0,
+        "Bhalf": 1.0
+      },
+      "pd_kd_multiplier": {
+        "A": 1.0,
+        "B1": 1.0,
+        "Bhalf": 1.0
+      },
+      "default_pose_profile": {
+        "A": "stage208",
+        "B1": "stage208",
+        "Bhalf": "stage208"
+      },
+      "command_vx_mps": {
+        "A": 0.3,
+        "B1": 0.3,
+        "Bhalf": 0.3
+      },
+      "state_prediction_seconds": {
+        "A": 0.0,
+        "B1": 0.0,
+        "Bhalf": 0.0
+      },
+      "state_qos_depth": {
+        "A": 1,
+        "B1": 1,
+        "Bhalf": 1
+      },
+      "prepare_seconds": {
+        "A": 0.2,
+        "B1": 0.2,
+        "Bhalf": 0.2
+      },
+      "stand_seconds": {
+        "A": 2.0,
+        "B1": 2.0,
+        "Bhalf": 2.0
+      },
+      "move_seconds": {
+        "A": 4.0,
+        "B1": 4.0,
+        "Bhalf": 4.0
+      },
+      "stop_seconds": {
+        "A": 8.0,
+        "B1": 8.0,
+        "Bhalf": 8.0
+      },
+      "stop_controller": {
+        "A": "policy",
+        "B1": "policy",
+        "Bhalf": "policy"
+      },
+      "heading_gain": {
+        "A": 0.5,
+        "B1": 0.5,
+        "Bhalf": 0.5
+      },
+      "heading_rate_limit_radps": {
+        "A": 0.1,
+        "B1": 0.1,
+        "Bhalf": 0.1
+      },
+      "action_bias_mode": {
+        "A": "lateral_recovery_supervisor",
+        "B1": "lateral_recovery_supervisor",
+        "Bhalf": "lateral_recovery_supervisor"
+      },
+      "action_bias": {
+        "A": 0.5,
+        "B1": 0.5,
+        "Bhalf": 0.5
+      },
+      "ankle_roll_common_bias": {
+        "A": 0.2,
+        "B1": 0.2,
+        "Bhalf": 0.2
+      },
+      "recovery_enter_m": {
+        "A": 0.12,
+        "B1": 0.12,
+        "Bhalf": 0.12
+      },
+      "recovery_exit_m": {
+        "A": 0.04,
+        "B1": 0.04,
+        "Bhalf": 0.04
+      },
+      "recovery_slew_rate_per_s": {
+        "A": 1.0,
+        "B1": 1.0,
+        "Bhalf": 1.0
+      },
+      "upper_time_scale": {
+        "A": 0.5,
+        "B1": 1.0,
+        "Bhalf": 1.0
+      },
+      "upper_motion_source": {
+        "A": null,
+        "B1": "Phase43 AMASS-UPPER-001 first4s real-time 30to50",
+        "Bhalf": "Phase43 AMASS-UPPER-001 first4s real-time 30to50"
+      },
+      "upper_stop_mode": {
+        "A": "return",
+        "B1": "return",
+        "Bhalf": "return"
+      }
+    },
+    "only_changed": {
+      "upper_scale": [
+        0.25,
+        0.125
+      ],
+      "upper_max_excursion_rad": [
+        0.12,
+        0.06
+      ],
+      "upper_max_velocity_radps": [
+        0.2,
+        0.1
+      ]
+    }
+  },
+  "comparison": {
+    "B1_full_gate": true,
+    "Bhalf_full_gate": true,
+    "Bhalf_target_excursion_rad": 0.04981651306152346,
+    "Bhalf_target_speed_radps": 0.10000020265579224,
+    "A_counterfactual_half_upper_rmse_rad": 0.041659900276733754,
+    "Bhalf_upper_rmse_rad": 0.03766992007019007,
+    "A_counterfactual_half_upper_p95_rad": 0.0995544915366036,
+    "Bhalf_upper_p95_rad": 0.09047306824053747,
+    "upper_rmse_improvement_fraction": 0.09577507819364628,
+    "upper_p95_improvement_fraction": 0.09122062858135471,
+    "A_lateral_m": -0.08361293772059422,
+    "B1_lateral_m": -0.15062434285964246,
+    "Bhalf_lateral_m": -0.13628414494691046,
+    "lateral_recovery_fraction": 0.21399637692981044,
+    "A_yaw_rad": 0.07574500992774719,
+    "B1_yaw_rad": -0.19428089851262859,
+    "Bhalf_yaw_rad": -0.14785618056459995,
+    "yaw_recovery_fraction": 0.17192690218568285,
+    "A_stop_drift_m": 0.06726295614150112,
+    "B1_stop_drift_m": 0.09070552445579845,
+    "Bhalf_stop_drift_m": 0.07619449878244121,
+    "contact": {
+      "A": {
+        "left": {
+          "agreement": 0.645,
+          "slip_p95_mps": 0.42529161073415966,
+          "clearance_p95_m": 0.007663035759817259
+        },
+        "right": {
+          "agreement": 0.57,
+          "slip_p95_mps": 0.39228029705398537,
+          "clearance_p95_m": 0.009466274050773538
+        }
+      },
+      "B1": {
+        "left": {
+          "agreement": 0.655,
+          "slip_p95_mps": 0.6138807961989263,
+          "clearance_p95_m": 0.009292351166695387
+        },
+        "right": {
+          "agreement": 0.495,
+          "slip_p95_mps": 0.5923890292406528,
+          "clearance_p95_m": 0.012430017772539322
+        }
+      },
+      "Bhalf": {
+        "left": {
+          "agreement": 0.65,
+          "slip_p95_mps": 0.3564620362765449,
+          "clearance_p95_m": 0.009252544938964812
+        },
+        "right": {
+          "agreement": 0.54,
+          "slip_p95_mps": 0.6167577187644884,
+          "clearance_p95_m": 0.009414331164538334
+        }
+      }
+    }
+  },
+  "gates": {
+    "functional": true,
+    "nonzero_bounded_target": true,
+    "upper_rmse_improvement": false,
+    "upper_p95_improvement": false,
+    "lateral_recovery": false,
+    "yaw_recovery": false,
+    "stop_drift": true,
+    "contact_agreement": true,
+    "stance_slip": true,
+    "frozen_contract": true
+  },
+  "evidence_boundary": {
+    "Bhalf_alignment_pass_1e8": false,
+    "contact_is_model_truth_not_hardware": true
+  },
+  "decision": {
+    "status": "STOP_UPPER_AMPLITUDE_ROUTE",
+    "conclusion": "half幅值保持全功能门并改善部分contact/slip，但upper RMSE/p95只改善9.58%/9.12%，横漂/yaw只回收21.40%/17.19%，均未达到预注册10%/25%门；幅值路线停止，不扫0.25/0.75。",
+    "next_step": "停止upper幅值扫描；后续若继续WBT，应转向具有独立重复基线的闭环扰动建模或允许下层受限协调，而不是继续缩放上肢。"
+  },
+  "truth_boundary": "official MuJoCo collision/contact-force model truth, not hardware GRF/COP"
+}

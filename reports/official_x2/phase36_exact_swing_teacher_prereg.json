@@ -1,0 +1,54 @@
+{
+  "stage": "BASE Phase36",
+  "status": "PREREGISTERED_AFTER_EXACT_FORK_BEFORE_CEM",
+  "scope": "one exact-state direct-official-MJCF CEM window; no training/WBT/hardware/Git/cloud",
+  "runner_sha256": "674b81d01c8c713406a4543be57fd2ee8e5a159c5f5fa43a65151a95be0500ec",
+  "assets": {
+    "mmap": {"path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/phase34_full_stage250_trace/phase34_stage250_closed_full_once_d230.mmap", "sha256": "8bb90c96a17308ce6f3e5be1f19f72a3e3998800f29d6f020692eac318de24ef"},
+    "rollout": {"path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/phase34_full_stage250_trace/phase34_stage250_closed_full_once_d230.json", "sha256": "c380b920096751f666d3592d7d6ec6f568d4d0d8e2c01445fc3d354a664fc376"},
+    "scene": {"path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml", "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"}
+  },
+  "selection": {
+    "rule": "first move telemetry row where generator intends swing but realized closed collision remains contact, scanning left then right, with enough suffix",
+    "telemetry_index": 114,
+    "move_elapsed_s": 0.08000000000000007,
+    "swing_side": "right",
+    "stance_side": "left",
+    "aligned_physics_index": 2310,
+    "anchor_physics_index": 2309,
+    "anchor_time_s": 2.3099999999998566
+  },
+  "snapshot_sha256": "226108c44273b6e0bbcade34be814edc17572466bdaa1f7014a4dd581ce52f96",
+  "contract": {
+    "control_ticks": 12,
+    "control_dt_s": 0.02,
+    "followup_ticks": 4,
+    "knots": 3,
+    "mode_names": ["swing_hip_pitch", "swing_knee", "swing_ankle_pitch", "stance_hip_roll", "waist_roll"],
+    "mode_bounds_rad": [0.08, 0.12, 0.06, 0.05, 0.04],
+    "seed_population_iterations_elites": [3601, 24, 5, 6],
+    "hard_gates": {
+      "minimum_swing_off_ms": 100,
+      "minimum_clearance_m": 0.012,
+      "maximum_stance_core_slip_p95_mps": 0.1,
+      "minimum_root_z_m": 0.55,
+      "maximum_root_tilt_rad": 0.3,
+      "terminal_recontact_ms": 40,
+      "followup": "last 80ms root/tilt safe and at least one foot in realized contact each tick; normal support exchange is allowed"
+    },
+    "future_input": "recorded closed Phase34 ctrl at each exact 1ms step plus bounded position-equivalent residual"
+  },
+  "preflight": {"exact_recorded_ctrl_prefix": {"ticks": 10, "qpos_absmax": 0.0, "qvel_absmax": 0.0, "exact_le_1e12": true}},
+  "baseline": {
+    "hard_gates": {"swing_off_ge_100ms": false, "clearance_ge_12mm": false, "stance_core_slip_p95_le_0p10": true, "root_tilt_safe": true, "terminal_recontact_40ms": true, "followup_short_window_safe": true},
+    "strict_success": false,
+    "cost": 13.0,
+    "longest_swing_off_ticks": 0,
+    "max_swing_clearance_m": 0.0,
+    "stance_core_slip_p95_mps": 0.032572358410027535,
+    "root_z_min_m": 0.6633156226185823,
+    "root_tilt_max_rad": 0.15202442882814513
+  },
+  "cem_executed": false,
+  "decision": "PREFLIGHT_PASS_CEM_NOT_RUN"
+}

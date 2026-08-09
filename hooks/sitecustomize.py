@@ -65,6 +65,9 @@ def _patch_actions_module(module) -> None:
             os.environ.get("CWI_UPPER_STOP_WITH_COMMAND", "0") == "1"
         )
         zero_fraction = float(os.environ.get("CWI_UPPER_ZERO_FRACTION", "0"))
+        deterministic_split = (
+            os.environ.get("CWI_UPPER_DETERMINISTIC_SPLIT", "0") == "1"
+        )
         if scale < 0.0:
             raise ValueError("CWI_UPPER_SCALE must be non-negative")
         if not 0.0 <= zero_fraction <= 1.0:
@@ -109,6 +112,7 @@ def _patch_actions_module(module) -> None:
         self._cwi_upper_loop = loop
         self._cwi_upper_stop_with_command = stop_with_command
         self._cwi_upper_zero_fraction = zero_fraction
+        self._cwi_upper_deterministic_split = deterministic_split
         # Keep the default contract bit-exact: with the opt-in fraction left
         # at zero no environment is masked.  A deterministic initial split
         # also guarantees that a short curriculum batch contains both fixed
@@ -286,7 +290,11 @@ def _patch_actions_module(module) -> None:
                 (env_index.numel(),),
                 device=self.device,
             )
-        if env_index.numel() and self._cwi_upper_zero_fraction > 0.0:
+        if (
+            env_index.numel()
+            and self._cwi_upper_zero_fraction > 0.0
+            and not self._cwi_upper_deterministic_split
+        ):
             self._cwi_upper_zero_mask[env_index] = (
                 torch.rand(env_index.numel(), device=self.device)
                 < self._cwi_upper_zero_fraction

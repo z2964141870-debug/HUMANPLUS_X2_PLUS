@@ -1,0 +1,90 @@
+{
+  "stage": "BASE Phase37",
+  "decision": {
+    "strict_teacher_found": false,
+    "teacher_route_supported": false,
+    "training_unlocked": false,
+    "result": "THREE_EVENT_TEACHER_ROUTE_STOPPED"
+  },
+  "scope": "one valid three-event exact-state CEM result after one authorized runtime-only retry; no training/WBT/hardware/Git/cloud",
+  "runtime_provenance": {
+    "first_invocation": "PRE_RESULT_RUNTIME_INVALID: no result artifact, no evaluable output, no conclusion",
+    "authorized_retry": "same runner/hash/seed/120 evaluations/window/thresholds; only conda --no-capture-output and explicit result observability",
+    "valid_runner_sha256": "9a7a6f0706a57361e1e32221ad7d01687a6ced6617bdb434a549abe80ae52ea7",
+    "valid_raw_result_sha256_before_compaction": "960aa1c8b0c149cabc0edd91eb924c9e3e371d4e662b8ca92766680bbe89a041",
+    "vendor_mujoco_version": "3.3.7",
+    "exact_vendor_library_preloaded": true
+  },
+  "assets": {
+    "mmap_sha256": "8bb90c96a17308ce6f3e5be1f19f72a3e3998800f29d6f020692eac318de24ef",
+    "rollout_sha256": "c380b920096751f666d3592d7d6ec6f568d4d0d8e2c01445fc3d354a664fc376",
+    "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+  },
+  "selection": {
+    "telemetry_index": 114,
+    "move_elapsed_s": 0.08000000000000007,
+    "swing_side": "right",
+    "stance_side": "left",
+    "aligned_physics_index": 2310,
+    "anchor_physics_index": 2309,
+    "anchor_time_s": 2.3099999999998566,
+    "snapshot_sha256": "226108c44273b6e0bbcade34be814edc17572466bdaa1f7014a4dd581ce52f96"
+  },
+  "preflight": {
+    "exact_recorded_ctrl_prefix_10ms": {"qpos_absmax": 0.0, "qvel_absmax": 0.0, "pass_1e12": true},
+    "zero_candidate_full_440ms_exact": {"qpos_absmax": 8.03523914072457e-15, "qvel_absmax": 2.036149027162537e-13, "pass_1e12": true}
+  },
+  "search": {
+    "seed": 3601,
+    "population": 24,
+    "iterations": 5,
+    "elites": 6,
+    "evaluation_count": 120,
+    "iteration_best_cost": [12.66695009987741, 12.66695009987741, 8.302846831381057, 8.302846831381057, 8.302846831381057],
+    "iteration_strict_success": [false, false, false, false, false]
+  },
+  "baseline": {
+    "cost": 16.0,
+    "longest_swing_off_s": 0.0,
+    "max_swing_clearance_m": 0.0,
+    "stance_core_slip_p95_mps": 0.04064627992383632,
+    "root_z_min_m": 0.6633156226185823,
+    "root_tilt_max_rad": 0.19711865462862474,
+    "terminal_recontact_40ms": false,
+    "followup_short_window_safe": true
+  },
+  "best": {
+    "parameters": {
+      "prep_stance_hip_roll": 0.045462024579976376,
+      "prep_waist_roll": 0.02495915944334417,
+      "swing_hip_pitch": 0.03786314741768433,
+      "swing_knee": -0.12,
+      "swing_ankle_pitch": 0.04582932040754491,
+      "touchdown_knee": 0.0255089343284524,
+      "touchdown_ankle_pitch": -0.015231076165289877,
+      "liftoff_shift_s": -0.015030349805789005,
+      "touchdown_shift_s": 0.0017580448553923978
+    },
+    "cost": 8.302846831381057,
+    "longest_swing_off_ticks": 26,
+    "longest_swing_off_s": 0.026,
+    "swing_off_interval_ticks": [158, 184],
+    "max_swing_clearance_m": 0.000632611552541522,
+    "stance_core_slip_p95_mps": 0.028149163134548117,
+    "root_z_min_m": 0.6309722621966907,
+    "root_tilt_max_rad": 0.26240345705154877,
+    "terminal_swing_contact_fraction_40ms": 1.0,
+    "desired_swing_region_contact_fraction": 0.7062146892655368,
+    "position_residual_ctrl_absmax": 35.998627629260106,
+    "hard_gates": {
+      "swing_off_ge_100ms": false,
+      "clearance_ge_12mm": false,
+      "stance_core_slip_p95_le_0p10": true,
+      "root_tilt_safe": true,
+      "terminal_recontact_40ms": true,
+      "followup_short_window_safe": true
+    }
+  },
+  "conclusion": "the valid matched-control three-event representation did not create a usable swing event; stop this teacher route without more budget, windows, or threshold changes",
+  "truth_boundary": "single exact-state direct vendor-MJCF oracle; not closed ROS replay and not hardware contact/GRF/COP truth"
+}

@@ -1,0 +1,65 @@
+{
+  "stage": "WBT Phase50",
+  "status": "PREREGISTERED_BEFORE_PHYSICS",
+  "scope": "reuse immutable BASE Phase34 A evidence and run exactly one new closed AimDK B episode; no retry, training, policy change, lower-body compensation, hardware, Git, or cloud",
+  "hypothesis": "A bounded AMASS-UPPER-001 upper14 target can improve counterfactual upper tracking while preserving the frozen Stage219/Stage250 lower-waist-root closed-loop envelope.",
+  "control": {
+    "A": "BASE Phase34 exact closed Stage250 straight episode, reused without rerun",
+    "B": "same Stage219 actor, stationary actor, Stage250 adapter/config/template/PD/commands/stand-move-stop schedule; only move-window upper14 target is enabled",
+    "only_new_physics_episodes": 1,
+    "retries": 0,
+    "upper_contract": {
+      "source": "Phase44 AMASS-UPPER-001 first 4.0 s, real-time 30 to 50 Hz",
+      "target": "official default + clip(0.25 * (q - q0), +/-0.12 rad), slew <=0.20 rad/s",
+      "start_s": 0.0,
+      "time_scale": 1.0,
+      "loop": false,
+      "stop_mode": "return",
+      "head": "nominal locked"
+    }
+  },
+  "static_gates_before_physics": {
+    "phase34_adapter_sha_exact": "91a67ab6c583d48bbf09fea1d02de33f0b77961a404d8e67b7fab7764662d733",
+    "stage219_actor_sha_exact": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+    "stationary_actor_sha_exact": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565",
+    "scene_sha_exact": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+    "template_sha_exact": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+    "observer_sha_exact": "ec4fe929a1ab1d01f71c1a7a939b512274f832dc15fad4ead725e396c9cfacd3",
+    "upper_artifact_sha_exact": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
+    "lower_waist_root_direct_write_delta": 0.0,
+    "upper_target_excursion_max_rad": 0.12,
+    "upper_target_speed_max_radps": 0.20
+  },
+  "physical_gates": {
+    "required_absolute": [
+      "startup_gate_pass",
+      "move_gate_pass",
+      "stop_gate_pass",
+      "full_gate_pass"
+    ],
+    "upper": {
+      "counterfactual_rmse_B_lt_A": true,
+      "counterfactual_abs_p95_B_lt_A": true,
+      "target_excursion_min_rad": 0.01,
+      "target_excursion_max_rad": 0.1200001,
+      "target_speed_max_radps": 0.200001
+    },
+    "relative_to_A": {
+      "root_z_min_drop_max_m": 0.02,
+      "root_tilt_max_increase_rad": 0.035,
+      "move_forward_drop_max_m": 0.15,
+      "move_abs_lateral_increase_max_m": 0.05,
+      "move_heading_max_increase_rad": 0.035,
+      "stop_xy_drift_increase_max_m": 0.05,
+      "stop_settle_time_increase_max_s": 0.50,
+      "move_signed_pitch_abs_increase_max_rad": 0.035,
+      "realized_contact_agreement_drop_max_each": 0.05,
+      "realized_stance_slip_p95_increase_max_mps_each": 0.05
+    }
+  },
+  "truth_boundary": {
+    "contact": "closed official MuJoCo collision/contact-force model truth, not hardware GRF/COP",
+    "A_reuse": "A is immutable historical evidence, so stochastic episode-to-episode variation is not estimated",
+    "claim": "one-episode hybrid composition existence test only; not robust WBT promotion"
+  }
+}

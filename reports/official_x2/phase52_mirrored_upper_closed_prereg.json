@@ -1,0 +1,72 @@
+{
+  "stage": "WBT Phase52",
+  "status": "PREREGISTERED_BEFORE_PHYSICS",
+  "scope": "one mirrored-upper closed causal diagnostic; no retry/training/compensation/gain tuning/hardware/Git/cloud",
+  "A": "immutable BASE Phase34 closed Stage250",
+  "B1": "immutable Phase50 original AMASS-UPPER-001",
+  "Bmirror": "Phase50 B1 exact contract with only frozen upper14 sagittal reflection",
+  "only_new_physics_episodes": 1,
+  "retries": 0,
+  "unchanged": [
+    "Stage219 actor",
+    "stationary actor",
+    "scene",
+    "template",
+    "adapter",
+    "PD",
+    "command",
+    "stand/move/stop",
+    "upper scale",
+    "upper rate",
+    "upper timing",
+    "lower/waist/root/head direct path"
+  ],
+  "mirror_contract": {
+    "permutation": "left<->right same joint",
+    "sign": "roll/yaw negate; pitch unchanged",
+    "absolute_joint_values": true
+  },
+  "static_checks": {
+    "mirror_twice_max_abs_rad": 0.0,
+    "mirror_twice_exact": true,
+    "bounded_joint_limit_overshoot_max_rad": 0.0,
+    "bounded_joint_limits": true,
+    "bounded_qstep_max_rad": 0.0040000000000000036,
+    "bounded_qstep": true,
+    "bounded_excursion_max_rad": 0.09963302873075008,
+    "bounded_excursion": true,
+    "adapter_phase34_hash_exact": true,
+    "direct_write_mask": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint"
+    ],
+    "lower_waist_root_head_direct_path_unchanged": true
+  },
+  "artifacts": {
+    "source": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz",
+    "source_sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
+    "mirrored": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase52_upper_mirrored.npz",
+    "mirrored_sha256": "f16701299e010054e96d7456daaa18c02d6908e9fe35c9517a78e876b28322bb"
+  },
+  "diagnostic_rules": {
+    "functional": "Bmirror startup/move/stop/full gates must be reported",
+    "upper": "Bmirror tracking is scored against its own mirrored target; compare B1 without changing thresholds",
+    "causal_lateral": "compare signed (B1-A) and (Bmirror-A) lateral displacement; sign-flip with each magnitude>=0.02m is mirror-responsive",
+    "causal_heading": "compare signed yaw progress deltas; sign-flip with each magnitude>=0.03rad is mirror-responsive",
+    "contact_slip": "report same Phase34 1kHz official collision agreement/slip metrics for all arms",
+    "claim": "causal diagnostic only; no promotion or compensation tuning from this episode"
+  },
+  "truth_boundary": "official MuJoCo collision/contact-force model truth, not hardware GRF/COP"
+}

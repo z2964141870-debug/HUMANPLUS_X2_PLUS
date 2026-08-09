@@ -1,0 +1,51 @@
+{
+  "stage": "BASE Phase37",
+  "status": "PREREGISTERED_AFTER_ZERO_NOOP_EXACT_BEFORE_CEM",
+  "scope": "one new three-event exact-state teacher hypothesis; no Phase36 budget extension/training/WBT/hardware/Git/cloud",
+  "runner_sha256": "9a7a6f0706a57361e1e32221ad7d01687a6ced6617bdb434a549abe80ae52ea7",
+  "assets": {
+    "mmap_sha256": "8bb90c96a17308ce6f3e5be1f19f72a3e3998800f29d6f020692eac318de24ef",
+    "rollout_sha256": "c380b920096751f666d3592d7d6ec6f568d4d0d8e2c01445fc3d354a664fc376",
+    "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+  },
+  "selection": {
+    "telemetry_index": 114,
+    "move_elapsed_s": 0.08000000000000007,
+    "swing_side": "right",
+    "stance_side": "left",
+    "aligned_physics_index": 2310,
+    "anchor_physics_index": 2309,
+    "anchor_time_s": 2.3099999999998566,
+    "snapshot_sha256": "226108c44273b6e0bbcade34be814edc17572466bdaa1f7014a4dd581ce52f96"
+  },
+  "contract": {
+    "teacher_seconds": 0.36,
+    "followup_seconds": 0.08,
+    "events": {
+      "anticipatory_load_shift_nominal_s": [0.0, 0.10],
+      "independent_swing_nominal_s": [0.10, 0.26],
+      "touchdown_blend_nominal_s": [0.26, 0.36]
+    },
+    "parameter_names": ["prep_stance_hip_roll", "prep_waist_roll", "swing_hip_pitch", "swing_knee", "swing_ankle_pitch", "touchdown_knee", "touchdown_ankle_pitch", "liftoff_shift_s", "touchdown_shift_s"],
+    "bounds": [0.05, 0.04, 0.08, 0.12, 0.06, 0.06, 0.04, 0.02, 0.02],
+    "seed_population_iterations_elites": [3601, 24, 5, 6],
+    "hard_gates": {"swing_off_ms": 100, "clearance_m": 0.012, "stance_core_slip_p95_mps": 0.10, "root_z_m": 0.55, "root_tilt_rad": 0.30, "terminal_recontact_ms": 40, "followup_safety_ms": 80},
+    "zero_semantics": "recorded ctrl is never re-clipped; zero residual must preserve the full suffix"
+  },
+  "preflight": {
+    "exact_recorded_ctrl_prefix_10ms": {"qpos_absmax": 0.0, "qvel_absmax": 0.0, "pass_1e12": true},
+    "zero_candidate_full_440ms_exact": {"qpos_absmax": 8.03523914072457e-15, "qvel_absmax": 2.036149027162537e-13, "pass_1e12": true}
+  },
+  "baseline": {
+    "strict_success": false,
+    "longest_swing_off_s": 0.0,
+    "max_swing_clearance_m": 0.0,
+    "stance_core_slip_p95_mps": 0.04064627992383632,
+    "root_z_min_m": 0.6633156226185823,
+    "root_tilt_max_rad": 0.19711865462862474,
+    "terminal_recontact_40ms": false,
+    "followup_short_window_safe": true
+  },
+  "cem_executed": false,
+  "decision": "PREFLIGHT_PASS_CEM_NOT_RUN"
+}

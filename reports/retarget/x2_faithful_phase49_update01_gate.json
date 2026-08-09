@@ -1,0 +1,103 @@
+{
+  "schema_version": "x2_faithful_phase49_update_gate_v1",
+  "segment": 1,
+  "decision": "PASS_ALLOW_NEXT_SEGMENT",
+  "numerical_checks": {
+    "runtime_pass": true,
+    "segment_exact": true,
+    "finite_kl": true,
+    "kl_below_0p02": true,
+    "optimizer_steps_20": true,
+    "frozen_hash_unchanged": true,
+    "held_optimizer_samples_zero": true
+  },
+  "lunge": {
+    "baseline": {
+      "episodes": 4,
+      "survival_s_mean": 0.22,
+      "termination_rate": 1.0,
+      "tracking": {
+        "error_anchor_pos": 0.06503275409340858,
+        "error_anchor_rot": 0.15770374611020088,
+        "error_body_pos": 0.06011776439845562,
+        "error_body_rot": 0.23978223651647568,
+        "error_joint_pos": 0.14745164290070534,
+        "error_joint_vel": 1.6999147236347198
+      }
+    },
+    "current": {
+      "episodes": 4,
+      "survival_s_mean": 0.22,
+      "termination_rate": 1.0,
+      "tracking": {
+        "error_anchor_pos": 0.06504291854798794,
+        "error_anchor_rot": 0.15819226577877998,
+        "error_body_pos": 0.060007115826010704,
+        "error_body_rot": 0.24122918024659157,
+        "error_joint_pos": 0.14832593500614166,
+        "error_joint_vel": 1.7115460336208344
+      }
+    },
+    "tracking_relative_change": {
+      "error_anchor_pos": 0.0001562974645783477,
+      "error_anchor_rot": 0.0030977049095444187,
+      "error_body_pos": -0.0018405303915086657,
+      "error_body_rot": 0.006034407515489448,
+      "error_joint_pos": 0.005929348010215607,
+      "error_joint_vel": 0.006842290277505603
+    },
+    "checks": {
+      "finite": true,
+      "survival_drop_le_0p1s": true,
+      "termination_increase_le_0p05": true,
+      "at_least_one_tracking_error_decreases": true,
+      "no_tracking_error_increases_over_10pct": true
+    }
+  },
+  "native_gold": {
+    "official_native_dance_held_out_000": {
+      "survival_drop_fraction": 0.0,
+      "termination_rate_increase": 0.0,
+      "tracking_relative_change": {
+        "error_anchor_pos": 0.0021870405402093507,
+        "error_anchor_rot": -0.0021876612226521264,
+        "error_body_pos": -0.0010966561452093737,
+        "error_body_rot": -0.0003421772948831725,
+        "error_joint_pos": -0.001967249304216656,
+        "error_joint_vel": -0.001929995516123162
+      },
+      "pass": true
+    },
+    "official_native_dance_held_out_001": {
+      "survival_drop_fraction": 0.025641025641025664,
+      "termination_rate_increase": 0.0,
+      "tracking_relative_change": {
+        "error_anchor_pos": -0.03806806002899421,
+        "error_anchor_rot": -0.018908346767617767,
+        "error_body_pos": -0.024919330919316085,
+        "error_body_rot": -0.014765169120855681,
+        "error_joint_pos": -0.015144042491262888,
+        "error_joint_vel": 0.006747977457283172
+      },
+      "pass": true
+    },
+    "official_native_dance_held_out_002": {
+      "survival_drop_fraction": 0.0,
+      "termination_rate_increase": 0.0,
+      "tracking_relative_change": {
+        "error_anchor_pos": 0.011871817936974116,
+        "error_anchor_rot": -0.0009953656072050343,
+        "error_body_pos": 0.0002478533939846983,
+        "error_body_rot": 0.0007538785804386272,
+        "error_joint_pos": -0.0009521092758330019,
+        "error_joint_vel": 0.001019490605548512
+      },
+      "pass": true
+    }
+  },
+  "truth_boundary": {
+    "comparison_baseline": "fresh original SONIC source deterministic regression",
+    "next_segment_authorized": true,
+    "long_training_authorized": false
+  }
+}

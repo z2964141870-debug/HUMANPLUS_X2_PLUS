@@ -108,6 +108,40 @@ def wrapped_angle_delta_rad(angle_rad: np.ndarray, reference_rad: np.ndarray) ->
 def load_upper_motion(path: str | Path) -> UpperMotionClip:
     """Load one trusted SONIC motion-cache file and retain the 14 arm joints."""
     resolved = Path(path).expanduser().resolve()
+    if resolved.suffix == ".npz":
+        with np.load(resolved, allow_pickle=False) as archive:
+            required = {"joint_names", "q_rad", "fps"}
+            missing_fields = sorted(required - set(archive.files))
+            if missing_fields:
+                raise ValueError(
+                    f"upper artifact is missing fields {missing_fields}: {resolved}"
+                )
+            names = tuple(str(name) for name in archive["joint_names"].tolist())
+            dof = np.asarray(archive["q_rad"], dtype=np.float32)
+            fps = float(np.asarray(archive["fps"]).item())
+            source = (
+                str(np.asarray(archive["source"]).item())
+                if "source" in archive.files
+                else resolved.stem
+            )
+        if names != UPPER_JOINT_NAMES:
+            raise ValueError(
+                "portable upper artifact joint order differs from the frozen ARM14 "
+                f"contract: {names}"
+            )
+        if dof.ndim != 2 or dof.shape[1] != len(UPPER_JOINT_NAMES):
+            raise ValueError(f"invalid portable upper q contract: {dof.shape}")
+        if fps <= 0.0 or len(dof) < 2 or not np.isfinite(dof).all():
+            raise ValueError(
+                f"invalid portable upper timing/values: fps={fps}, frames={len(dof)}"
+            )
+        return UpperMotionClip(
+            path=resolved,
+            key=source,
+            fps=fps,
+            joint_names=UPPER_JOINT_NAMES,
+            q_rad=np.ascontiguousarray(dof),
+        )
     loaded = joblib.load(resolved)
     if not isinstance(loaded, dict) or len(loaded) != 1:
         raise ValueError(f"expected one motion in {resolved}, got {type(loaded)!r}")

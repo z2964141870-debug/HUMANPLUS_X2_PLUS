@@ -1,0 +1,103 @@
+{
+  "schema_version": "x2_faithful_phase49_update_gate_v1",
+  "segment": 4,
+  "decision": "HARD_STOP_REJECT",
+  "numerical_checks": {
+    "runtime_pass": true,
+    "segment_exact": true,
+    "finite_kl": true,
+    "kl_below_0p02": true,
+    "optimizer_steps_20": true,
+    "frozen_hash_unchanged": true,
+    "held_optimizer_samples_zero": true
+  },
+  "lunge": {
+    "baseline": {
+      "episodes": 4,
+      "survival_s_mean": 0.22,
+      "termination_rate": 1.0,
+      "tracking": {
+        "error_anchor_pos": 0.06503275409340858,
+        "error_anchor_rot": 0.15770374611020088,
+        "error_body_pos": 0.06011776439845562,
+        "error_body_rot": 0.23978223651647568,
+        "error_joint_pos": 0.14745164290070534,
+        "error_joint_vel": 1.6999147236347198
+      }
+    },
+    "current": {
+      "episodes": 4,
+      "survival_s_mean": 0.22,
+      "termination_rate": 1.0,
+      "tracking": {
+        "error_anchor_pos": 0.0656749289482832,
+        "error_anchor_rot": 0.1606762818992138,
+        "error_body_pos": 0.060187638737261295,
+        "error_body_rot": 0.24357463791966438,
+        "error_joint_pos": 0.150588259100914,
+        "error_joint_vel": 1.7201746702194214
+      }
+    },
+    "tracking_relative_change": {
+      "error_anchor_pos": 0.009874637232066608,
+      "error_anchor_rot": 0.018848859728010092,
+      "error_body_pos": 0.0011622910383453089,
+      "error_body_rot": 0.015816023147853686,
+      "error_joint_pos": 0.021272168546273118,
+      "error_joint_vel": 0.011918213486251883
+    },
+    "checks": {
+      "finite": true,
+      "survival_drop_le_0p1s": true,
+      "termination_increase_le_0p05": true,
+      "at_least_one_tracking_error_decreases": false,
+      "no_tracking_error_increases_over_10pct": true
+    }
+  },
+  "native_gold": {
+    "official_native_dance_held_out_000": {
+      "survival_drop_fraction": 0.0,
+      "termination_rate_increase": 0.0,
+      "tracking_relative_change": {
+        "error_anchor_pos": 0.0021837513426026245,
+        "error_anchor_rot": 0.007934225294384367,
+        "error_body_pos": -0.0021327393440566667,
+        "error_body_rot": -0.0005292911801592082,
+        "error_joint_pos": -0.004996745480229325,
+        "error_joint_vel": -0.005742985973179127
+      },
+      "pass": true
+    },
+    "official_native_dance_held_out_001": {
+      "survival_drop_fraction": 0.025641025641025664,
+      "termination_rate_increase": 0.0,
+      "tracking_relative_change": {
+        "error_anchor_pos": -0.040315322876340876,
+        "error_anchor_rot": -0.02919215611508763,
+        "error_body_pos": -0.026917931752844515,
+        "error_body_rot": -0.015234712482705692,
+        "error_joint_pos": -0.017055141224328274,
+        "error_joint_vel": 0.005214476986876049
+      },
+      "pass": true
+    },
+    "official_native_dance_held_out_002": {
+      "survival_drop_fraction": 0.0,
+      "termination_rate_increase": 0.0,
+      "tracking_relative_change": {
+        "error_anchor_pos": 0.055551435515911685,
+        "error_anchor_rot": 0.014109412101212193,
+        "error_body_pos": 0.006703702577966375,
+        "error_body_rot": 0.0003931758230222293,
+        "error_joint_pos": -0.0006927514938560586,
+        "error_joint_vel": 0.007822998724366093
+      },
+      "pass": true
+    }
+  },
+  "truth_boundary": {
+    "comparison_baseline": "fresh original SONIC source deterministic regression",
+    "next_segment_authorized": false,
+    "long_training_authorized": false
+  }
+}

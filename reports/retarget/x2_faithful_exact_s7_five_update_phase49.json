@@ -1,0 +1,105 @@
+{
+  "schema_version": "x2_faithful_exact_s7_five_update_phase49_v1",
+  "decision": "HARD_STOP_AT_UPDATE4_UPDATE5_NOT_RUN",
+  "authorized_max_updates": 5,
+  "executed_updates": 4,
+  "optimizer_steps_per_update": 20,
+  "executed_optimizer_steps": 80,
+  "transitions_per_update": 1536,
+  "executed_transitions": 6144,
+  "held_optimizer_samples": 0,
+  "updates": [
+    {
+      "update": 1,
+      "gate": "PASS_ALLOW_NEXT_SEGMENT",
+      "checkpoint_sha256": "f3a83f06b5bc91b4d89fc3b38bf208913c0aab47a8d404080d7fe10a963631b1",
+      "kl": 0.01669509895145893,
+      "training_reward": 0.23441739696444888,
+      "training_episode_length": 11.727272727272727,
+      "lunge_survival_s": 0.22,
+      "best_lunge_tracking_relative_change": -0.0018405303915086657,
+      "gold_worst_tracking_relative_increase": 0.011871817936974116,
+      "gold_worst_survival_drop_fraction": 0.025641025641025664
+    },
+    {
+      "update": 2,
+      "gate": "PASS_ALLOW_NEXT_SEGMENT",
+      "checkpoint_sha256": "68444223dd09b1da2cc781fb9e9e50b71a72e91db580fd66c66316b57c5c9798",
+      "kl": 0.01588383875787258,
+      "training_reward": 0.2826587407034822,
+      "training_episode_length": 15.328125,
+      "lunge_survival_s": 0.22,
+      "best_lunge_tracking_relative_change": -0.0025920296953609867,
+      "gold_worst_tracking_relative_increase": 0.023588396849339555,
+      "gold_worst_survival_drop_fraction": 0.025641025641025664
+    },
+    {
+      "update": 3,
+      "gate": "PASS_ALLOW_NEXT_SEGMENT",
+      "checkpoint_sha256": "e17b5ddf807c685b4960d42f50c13a9cba8da0ad2b5823db9f2eecd58a4e0641",
+      "kl": 0.017080971971154213,
+      "training_reward": 0.30735404260064425,
+      "training_episode_length": 16.389473684210525,
+      "lunge_survival_s": 0.22,
+      "best_lunge_tracking_relative_change": -0.0009065705887741915,
+      "gold_worst_tracking_relative_increase": 0.04268162698839606,
+      "gold_worst_survival_drop_fraction": 0.025641025641025664
+    },
+    {
+      "update": 4,
+      "gate": "HARD_STOP_REJECT",
+      "checkpoint_sha256": "1d7ba7f0fc8aa8d996821ad58df4df565077559cd68362b5e676a17e20d9311d",
+      "kl": 0.015750331804156303,
+      "training_reward": 0.27627746663056313,
+      "training_episode_length": 19.15,
+      "lunge_survival_s": 0.22,
+      "best_lunge_tracking_relative_change": 0.0011622910383453089,
+      "all_lunge_tracking_errors_worsened": true,
+      "gold_worst_tracking_relative_increase": 0.055551435515911685,
+      "gold_worst_survival_drop_fraction": 0.025641025641025664
+    }
+  ],
+  "hard_stop": {
+    "update": 4,
+    "trigger": "dynamic lunge tracking direction rule",
+    "rule": "at least one preregistered tracking error must decrease and none may increase over 10%",
+    "observed": "all six lunge tracking errors increased; smallest increase was 0.116%",
+    "other_gates_at_stop": {
+      "finite_loss_grad": true,
+      "kl_below_0p02": true,
+      "frozen_hash_unchanged": true,
+      "lunge_survival_non_degraded": true,
+      "lunge_termination_non_degraded": true,
+      "gold_survival_gate": true,
+      "gold_tracking_gate": true
+    },
+    "update5_executed": false
+  },
+  "best_checkpoint": {
+    "update": 2,
+    "path": "logs/x2_faithful_exact_s7_phase49_update02/last.pt",
+    "sha256": "68444223dd09b1da2cc781fb9e9e50b71a72e91db580fd66c66316b57c5c9798",
+    "selection_rule": "among passing checkpoints, largest dynamic-lunge tracking improvement; Gold remained within every hard gate",
+    "claim_boundary": "best passing optimizer-sanity checkpoint, not useful locomotion or deployment checkpoint"
+  },
+  "last_rejected_checkpoint": {
+    "update": 4,
+    "path": "logs/x2_faithful_exact_s7_phase49_update04/last.pt",
+    "sha256": "1d7ba7f0fc8aa8d996821ad58df4df565077559cd68362b5e676a17e20d9311d",
+    "purpose": "hard-stop evidence only; must not be continued"
+  },
+  "source_checkpoint": {
+    "path": "logs/x2_faithful_exact_s7_phase49_update01/source_B0.pt",
+    "sha256": "6ec4fd3763f1a48c8b4b890037e9c5482c9bb0192f886be09e093848a4fa128d"
+  },
+  "truth_boundary": {
+    "train_reference_tier": "kinematic_bronze",
+    "dynamic_lunge_survival_improved": false,
+    "dynamic_lunge_survival_s_all_updates": 0.22,
+    "training_reward_and_mean_length_improved_before_stop": true,
+    "training_metrics_do_not_override_fixed_physical_gate": true,
+    "long_training_authorized": false
+  },
+  "conclusion": "The faithful exact-S7 path can accumulate three gated updates without numerical failure, but update 4 crossed the preregistered dynamic-lunge direction gate even though aggregate training length rose. This is direct evidence that aggregate PPO improvement can diverge from the target dynamic motion; the run correctly stopped before update 5.",
+  "next_step": "Do not continue this checkpoint chain. Retain update2 only as the best passing optimizer-sanity artifact and use the failure to redesign data/diagnostics before any longer training."
+}

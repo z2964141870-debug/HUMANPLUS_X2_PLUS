@@ -1,0 +1,346 @@
+{
+  "phase": 54,
+  "hypothesis": "Allowing only the native lower12+waist actor to adapt under bounded physical upper14 targets may recover heading/lateral stability without adding an upper-conditioned action residual.",
+  "artifact_checks": {
+    "/home/humanplus/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt": {
+      "expected_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+      "actual_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+      "pass": true
+    },
+    "/home/humanplus/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/env.yaml": {
+      "expected_sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+      "actual_sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+      "pass": true
+    },
+    "/home/humanplus/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/agent.yaml": {
+      "expected_sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+      "actual_sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+      "pass": true
+    },
+    "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx": {
+      "expected_sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+      "actual_sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+      "pass": true
+    },
+    "/home/humanplus/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz": {
+      "expected_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+      "actual_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+      "pass": true
+    },
+    "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/hooks/sitecustomize.py": {
+      "expected_sha256": "e4e320e52633f86e9edca1a8d0134742a750e66d951ea02604b2c18fb5bf5f4f",
+      "actual_sha256": "e4e320e52633f86e9edca1a8d0134742a750e66d951ea02604b2c18fb5bf5f4f",
+      "pass": true
+    },
+    "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/stage208_official_mujoco_adapter.py": {
+      "expected_sha256": "91a67ab6c583d48bbf09fea1d02de33f0b77961a404d8e67b7fab7764662d733",
+      "actual_sha256": "91a67ab6c583d48bbf09fea1d02de33f0b77961a404d8e67b7fab7764662d733",
+      "pass": true
+    },
+    "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz": {
+      "expected_sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
+      "actual_sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
+      "pass": true
+    }
+  },
+  "checkpoint_contract": {
+    "iteration": 2600,
+    "actor_shapes": {
+      "actor.0.weight": [
+        256,
+        93
+      ],
+      "actor.0.bias": [
+        256
+      ],
+      "actor.2.weight": [
+        128,
+        256
+      ],
+      "actor.2.bias": [
+        128
+      ],
+      "actor.4.weight": [
+        128,
+        128
+      ],
+      "actor.4.bias": [
+        128
+      ],
+      "actor.6.weight": [
+        15,
+        128
+      ],
+      "actor.6.bias": [
+        15
+      ]
+    },
+    "critic_shapes": {
+      "critic.0.weight": [
+        256,
+        93
+      ],
+      "critic.0.bias": [
+        256
+      ],
+      "critic.2.weight": [
+        128,
+        256
+      ],
+      "critic.2.bias": [
+        128
+      ],
+      "critic.4.weight": [
+        128,
+        128
+      ],
+      "critic.4.bias": [
+        128
+      ],
+      "critic.6.weight": [
+        1,
+        128
+      ],
+      "critic.6.bias": [
+        1
+      ]
+    },
+    "std_shape": [
+      15
+    ],
+    "actor_93_to_15": true,
+    "critic_93_to_1": true,
+    "export_manifest_checkpoint_exact": true,
+    "export_manifest_onnx_exact": true,
+    "export_numeric_error": 2.384185791015625e-07
+  },
+  "recorded_training_config": {
+    "recorded_env_is_source_of_truth": true,
+    "env_sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+    "agent_sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+    "physics_dt_s": 0.005,
+    "decimation": 4,
+    "control_dt_s": 0.02,
+    "recorded_num_envs": 256,
+    "sole12_asset": "/home/humanplus/x2_teleop_final/assets/agibot_x2/x2_ultra_sonic_sole12.urdf",
+    "self_collisions": false,
+    "action_class": "gear_sonic.envs.x2_velocity.actions:GaitTemplateLowerBodyJointPositionAction",
+    "action_joint_order": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint"
+    ],
+    "template_path": "/home/humanplus/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+    "template_scale": 0.15,
+    "policy_observation_terms": [
+      "base_lin_vel",
+      "base_ang_vel",
+      "projected_gravity",
+      "velocity_commands",
+      "joint_pos",
+      "joint_vel",
+      "actions",
+      "gait_phase"
+    ],
+    "actor_observation_dim": 93,
+    "ppo_epochs": 5,
+    "ppo_minibatches": 4,
+    "desired_kl": 0.01,
+    "recorded_horizon": 24
+  },
+  "mapping_contract": {
+    "official_31": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_pitch_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_roll_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "head_yaw_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "head_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint"
+    ],
+    "policy_action_15": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint"
+    ],
+    "external_upper_14": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint"
+    ],
+    "locked_head_2": [
+      "head_yaw_joint",
+      "head_pitch_joint"
+    ],
+    "partition_exact": true,
+    "env_action_is_lower15": true,
+    "adapter_lower_is_lower15": true,
+    "adapter_arm_is_upper14": true,
+    "adapter_head_is_head2": true,
+    "wbt29_boundary": "not used by BASE_LOCOMOTION; WBT29=31 minus head2 is a separate whole-body policy contract.  This backend is 15D lower+waist -> 31D simulator, with upper14 injected physically and head2 nominal.",
+    "observation_feedback_boundary": "upper target/future intent is not appended to the policy input or action. Realized arm q/dq remains in the pre-existing full-31 proprioceptive 93D observation, so the lower actor can react causally to physical disturbance."
+  },
+  "upper_hook_contract": {
+    "calls_original_lower_action_first": true,
+    "sets_separate_joint_position_target": true,
+    "target_joint_ids_are_upper_only_attribute": true,
+    "does_not_reference_lower_or_waist_group_constants": true
+  },
+  "fresh_reexport_probe": {
+    "executed_in_phase54": true,
+    "command_environment": "x2-sonic-isaaclab",
+    "reexport_sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+    "frozen_onnx_sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+    "byte_identical": true,
+    "64x93_random_batch_max_abs": 0.0
+  },
+  "static_contract_ready": true,
+  "training_contract": {
+    "status": "PRE_REGISTERED_NOT_AUTHORIZED",
+    "single_intervention": "physical bounded upper14 position-target disturbances; no external wrench, no future-intent suffix and no upper residual in the actor action",
+    "arms": {
+      "A_source_control": "same Stage219 source/config/seed with all upper targets fixed",
+      "B_upper_robust": "same Stage219 source/config/seed; 50% envs fixed and 50% envs replay the frozen AMASS-UPPER-001 contract at scale=0.25, excursion<=0.12rad, slew<=0.20rad/s, real-time"
+    },
+    "trainable": [
+      "actor.0/2/4/6 weight+bias (93D -> lower12+waist3 only)",
+      "critic.0/2/4/6 weight+bias"
+    ],
+    "frozen": [
+      "std",
+      "upper motion generator and upper14 PD path",
+      "head2 nominal target",
+      "gait template",
+      "observation/action order",
+      "Isaac asset/PD/DR/rewards",
+      "official closed adapter/scene/PD/supervisor/stand backend"
+    ],
+    "source_retention": {
+      "same_in_A_and_B": true,
+      "fixed_upper_fraction_in_B": 0.5,
+      "fixed_actor_parameter_anchor_coeff": 1.0,
+      "no_coefficient_scan": true,
+      "reason": "protect ordinary straight/turn/stop while allowing causal reaction through realized arm q/dq"
+    },
+    "optimizer_initialization": "weights-only resume from Stage219; reset optimizer identically in A and B",
+    "seed": 42,
+    "envs": 64,
+    "steps_per_env": 24,
+    "transitions_per_update": 1536,
+    "ppo_epochs": 5,
+    "minibatches_per_epoch": 4,
+    "optimizer_steps_per_update": 20,
+    "schedule": [
+      "live zero-update",
+      "one update",
+      "at most five cumulative updates"
+    ]
+  },
+  "preregistered_gates": {
+    "zero_update": [
+      "recorded env/agent/source/template hashes exact before live env creation",
+      "standard ActorCritic runtime is 93D->15D; no FutureIntentActorCritic or 123D suffix",
+      "A and B with upper scale=0 produce bit-exact observations/actions/rewards/dones under paired seed",
+      "upper hook changes only ARM14 target; lower15/waist/head direct targets are unchanged",
+      "zero optimizer.step calls; source actor/critic/std hashes unchanged",
+      "fresh PT export is byte-identical to frozen Stage250 ONNX and deterministic outputs max-abs=0"
+    ],
+    "one_update_hard_stop": [
+      "all rollout/loss/gradient values finite",
+      "approx KL < 0.01",
+      "no-upper nominal straight/right/left/stop survival or termination regression",
+      "frozen std and all immutable contract hashes unchanged",
+      "B upper-disturbance heading and lateral errors move in the improving direction"
+    ],
+    "five_update_unlock": "only after update1 passes every hard stop; evaluate after every update and stop on first failure",
+    "closed_export_gate": {
+      "export": "same standard PT->ONNX writer; exact 93D input and 15D output",
+      "nominal_source_A": "straight + right turn + left turn + stop must all retain current Stage250 full gates",
+      "phase50_style_B": [
+        "one exact AMASS-UPPER-001 closed episode, no retry",
+        "full/start/move/stop pass",
+        "upper counterfactual RMSE and p95 remain better than frozen-upper A",
+        "lateral increase over immutable A <=0.05m",
+        "heading increase over immutable A <=0.035rad",
+        "forward drop <=0.15m; stop drift increase <=0.05m; settle increase <=0.50s",
+        "contact agreement and stance-slip relative gates pass"
+      ]
+    }
+  },
+  "blockers": [
+    {
+      "id": "LIVE_ZERO_ENTRYPOINT_NOT_YET_FROZEN",
+      "detail": "The current Stage265 launcher instantiates a frozen-base FutureIntentActorCritic with a 123D suffix.  Phase54 requires a dedicated standard 93D ActorCritic launcher that rehydrates and hash-checks the archived Stage219 env/agent contract."
+    },
+    {
+      "id": "PHASE50_TRAINING_SOURCE_ADAPTER_PENDING",
+      "detail": "The Isaac hook consumes a one-motion MotionLib pkl, while the immutable Phase50 artifact is NPZ and its source entry lives in a 24-motion cache.  A minimal immutable one-entry adapter/extractor must be hash-guarded before the live zero gate."
+    },
+    {
+      "id": "STD_FREEZE_AND_PAIRED_A_B_GUARD_PENDING",
+      "detail": "The legacy trainer optimizes std by default and has no paired A/B zero-equivalence guard."
+    }
+  ],
+  "decision": "READY_FOR_DEDICATED_LIVE_ZERO_UPDATE_ONLY",
+  "optimizer_authorized": false,
+  "claim_boundary": "This is a training-readiness audit for a velocity lower backend, not WBT29/Any2Any, not a robustness result, and not real-robot evidence."
+}

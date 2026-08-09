@@ -1,15 +1,22 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 
 from cwi_x2.upper_motion_contract import (
+    UPPER_JOINT_NAMES,
     UpperMotionClip,
     UpperSafetyLimits,
     bounded_upper_target_step,
+    load_upper_motion,
     relative_upper_target,
     sample_linear,
     wrapped_angle_delta_rad,
 )
+
+
+REPO = Path(__file__).resolve().parents[1]
 
 
 def test_sample_linear_clamps_and_interpolates(tmp_path):
@@ -146,3 +153,13 @@ def test_wrapped_angle_delta_uses_shortest_arc():
         np.array([np.pi - 0.1, -np.pi + 0.1]),
     )
     np.testing.assert_allclose(delta, [0.2, -0.2], atol=1.0e-6)
+
+
+def test_load_phase50_portable_npz_uses_exact_arm14_contract():
+    clip = load_upper_motion(
+        REPO / "artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz"
+    )
+    assert clip.joint_names == UPPER_JOINT_NAMES
+    assert clip.q_rad.shape == (200, 14)
+    assert clip.fps == 50.0
+    assert "AMASS-UPPER-001" in clip.key
