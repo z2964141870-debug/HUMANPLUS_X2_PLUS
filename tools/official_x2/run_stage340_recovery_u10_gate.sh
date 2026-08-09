@@ -4,12 +4,21 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 RESULT_ROOT="${RESULT_ROOT:-/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807}"
-SUMMARY_PATH="${SUMMARY_PATH:-$REPO_ROOT/reports/official_x2/stage340_recovery_u10_gate.json}"
+STAGE_LABEL="${STAGE_LABEL:-stage340_recovery_f010_u10}"
+STATIONARY_MODEL="${STATIONARY_MODEL:-stage339_recovery_f010_u10_actor.onnx}"
+RECOVERY_MODEL="${RECOVERY_MODEL:-}"
+HYPOTHESIS="${HYPOTHESIS:-Five additional matched PPO updates turn the 4/5 Stage337 f010 signal into a strict 5/5 official stiff-fixed gate.}"
+SINGLE_VARIABLE="${SINGLE_VARIABLE:-stand/recovery checkpoint Stage337 model_155 -> Stage339 model_160}"
+SUMMARY_PATH="${SUMMARY_PATH:-$REPO_ROOT/reports/official_x2/${STAGE_LABEL}_gate.json}"
 REPEATS="${REPEATS:-5}"
+recovery_env=()
+if [[ -n "$RECOVERY_MODEL" ]]; then
+  recovery_env+=(RECOVERY_MODEL_PATH="/models/$RECOVERY_MODEL")
+fi
 
 attempt_failures=0
 for repeat in $(seq 1 "$REPEATS"); do
-  case_name="stage340_recovery_f010_u10_stiff1p2_fixed_r${repeat}"
+  case_name="${STAGE_LABEL}_stiff1p2_fixed_r${repeat}"
   result="$RESULT_ROOT/${case_name}.json"
   if [[ -f "$result" ]]; then
     echo "resume: keeping $result"
@@ -19,7 +28,8 @@ for repeat in $(seq 1 "$REPEATS"); do
     CASE_NAME="$case_name" ROS_DOMAIN_ID="$((190 + repeat))" \
     RESULT_ROOT="$RESULT_ROOT" \
     MODEL_PATH=/models/stage306_s2652_transition_head_actor.onnx \
-    STATIONARY_MODEL_PATH=/models/stage339_recovery_f010_u10_actor.onnx \
+    STATIONARY_MODEL_PATH="/models/$STATIONARY_MODEL" \
+    "${recovery_env[@]}" \
     COMMAND_VX=0.30 MOVE_SECONDS=4.0 STOP_SECONDS=8.0 \
     ACTION_BIAS_MODE=lateral_recovery_supervisor ACTION_BIAS=0.60 \
     ANKLE_ROLL_COMMON_BIAS=0.20 \
@@ -36,7 +46,8 @@ for repeat in $(seq 1 "$REPEATS"); do
   fi
 done
 
-python3 - "$RESULT_ROOT" "$REPEATS" "$attempt_failures" "$SUMMARY_PATH" <<'PY'
+python3 - "$RESULT_ROOT" "$REPEATS" "$attempt_failures" "$SUMMARY_PATH" \
+  "$STAGE_LABEL" "$STATIONARY_MODEL" "$RECOVERY_MODEL" "$HYPOTHESIS" "$SINGLE_VARIABLE" <<'PY'
 import json
 import pathlib
 import sys
@@ -45,10 +56,15 @@ root = pathlib.Path(sys.argv[1])
 repeats = int(sys.argv[2])
 attempt_failures = int(sys.argv[3])
 output = pathlib.Path(sys.argv[4])
+stage_label = sys.argv[5]
+stationary_model = sys.argv[6]
+recovery_model = sys.argv[7]
+hypothesis = sys.argv[8]
+single_variable = sys.argv[9]
 
 rows = []
 for repeat in range(1, repeats + 1):
-    path = root / f"stage340_recovery_f010_u10_stiff1p2_fixed_r{repeat}.json"
+    path = root / f"{stage_label}_stiff1p2_fixed_r{repeat}.json"
     if not path.exists():
         rows.append({"status": "missing", "path": str(path)})
         continue
@@ -69,12 +85,13 @@ for repeat in range(1, repeats + 1):
     })
 
 result = {
-    "stage": "stage340_recovery_f010_u10_gate",
-    "hypothesis": "Five additional matched PPO updates turn the 4/5 Stage337 f010 signal into a strict 5/5 official stiff-fixed gate.",
-    "single_variable": "stand/recovery checkpoint Stage337 model_155 -> Stage339 model_160",
+    "stage": f"{stage_label}_gate",
+    "hypothesis": hypothesis,
+    "single_variable": single_variable,
     "matched_contract": {
         "moving_model": "stage306_s2652_transition_head_actor.onnx",
-        "stationary_model": "stage339_recovery_f010_u10_actor.onnx",
+        "stationary_model": stationary_model,
+        "recovery_model": recovery_model or stationary_model,
         "pd": "official_kp_ankle x1.2",
         "upper": "fixed",
         "command_vx_mps": 0.30,

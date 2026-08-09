@@ -60,9 +60,13 @@ STOP_BRAKE_TEMPLATE_FLOOR="${STOP_BRAKE_TEMPLATE_FLOOR:-0.25}"
 EVENT_HOLD_MIN_SECONDS="${EVENT_HOLD_MIN_SECONDS:-0.5}"
 EVENT_HOLD_SPEED="${EVENT_HOLD_SPEED:-0.05}"
 EVENT_HOLD_TILT="${EVENT_HOLD_TILT:-0.10}"
+STOP_EMERGENCY_TILT_RAD="${STOP_EMERGENCY_TILT_RAD:-}"
+STOP_EMERGENCY_SPEED_MAX="${STOP_EMERGENCY_SPEED_MAX:-0.10}"
+STOP_EMERGENCY_MIN_SECONDS="${STOP_EMERGENCY_MIN_SECONDS:-0.80}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-/results}"
 MODEL_PATH="${MODEL_PATH:-/models/stage219_s2600_actor.onnx}"
 STATIONARY_MODEL_PATH="${STATIONARY_MODEL_PATH:-/models/stand_backend_scratch_i150_actor.onnx}"
+RECOVERY_MODEL_PATH="${RECOVERY_MODEL_PATH:-}"
 STATIONARY_WARMUP_SECONDS="${STATIONARY_WARMUP_SECONDS:-0.0}"
 STATIONARY_BLEND="${STATIONARY_BLEND:-0.50}"
 UPPER_MOTION="${UPPER_MOTION:-}"
@@ -115,9 +119,11 @@ EXTRA_ARGS=()
 [[ -n "$HEADING_RECOVERY_ENTER_RAD" ]] && EXTRA_ARGS+=(--heading-recovery-enter-rad "$HEADING_RECOVERY_ENTER_RAD")
 [[ -n "$HEADING_ACTION_RECOVERY_ENTER_RAD" ]] && EXTRA_ARGS+=(--heading-action-recovery-enter-rad "$HEADING_ACTION_RECOVERY_ENTER_RAD")
 [[ -n "$STATIONARY_MODEL_PATH" ]] && EXTRA_ARGS+=(--stationary-model "$STATIONARY_MODEL_PATH")
+[[ -n "$RECOVERY_MODEL_PATH" ]] && EXTRA_ARGS+=(--recovery-model "$RECOVERY_MODEL_PATH")
 [[ "$MIRROR_POLICY" == "true" ]] && EXTRA_ARGS+=(--mirror-policy)
 [[ -n "$UPPER_MOTION" ]] && EXTRA_ARGS+=(--upper-motion "$UPPER_MOTION")
 [[ -n "$UPPER_INTENT_SCALE" ]] && EXTRA_ARGS+=(--upper-intent-scale "$UPPER_INTENT_SCALE")
+[[ -n "$STOP_EMERGENCY_TILT_RAD" ]] && EXTRA_ARGS+=(--stop-emergency-tilt-rad "$STOP_EMERGENCY_TILT_RAD")
 [[ "$UPPER_LOOP" == "true" ]] && EXTRA_ARGS+=(--upper-loop)
 [[ "$UPPER_FALLBACK_LATCH" == "true" ]] && EXTRA_ARGS+=(--upper-fallback-latch)
 
@@ -167,7 +173,9 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --stop-brake-template-speed "$STOP_BRAKE_TEMPLATE_SPEED" \
   --stop-brake-template-floor "$STOP_BRAKE_TEMPLATE_FLOOR" \
   --event-hold-min-seconds "$EVENT_HOLD_MIN_SECONDS" --event-hold-speed "$EVENT_HOLD_SPEED" \
-  --event-hold-tilt "$EVENT_HOLD_TILT" "${EXTRA_ARGS[@]}" \
+  --event-hold-tilt "$EVENT_HOLD_TILT" \
+  --stop-emergency-speed-max "$STOP_EMERGENCY_SPEED_MAX" \
+  --stop-emergency-min-seconds "$STOP_EMERGENCY_MIN_SECONDS" "${EXTRA_ARGS[@]}" \
   >"$LOG_ROOT/adapter.log" 2>&1 &
 ADAPTER_PID=$!
 sleep 1

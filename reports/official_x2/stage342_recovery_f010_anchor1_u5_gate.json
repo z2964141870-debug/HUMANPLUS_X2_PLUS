@@ -1,0 +1,93 @@
+{
+  "stage": "stage342_recovery_f010_anchor1_u5_gate",
+  "hypothesis": "A fixed actor anchor preserves the Stage337 recovery gain while removing movement-heading regression.",
+  "single_variable": "actor_anchor_coeff 0.0 -> 1.0 from the same model_150 source, seed 47 and five updates",
+  "matched_contract": {
+    "moving_model": "stage306_s2652_transition_head_actor.onnx",
+    "stationary_model": "stage341_recovery_f010_anchor1_u5_actor.onnx",
+    "pd": "official_kp_ankle x1.2",
+    "upper": "fixed",
+    "command_vx_mps": 0.3
+  },
+  "historical": {
+    "source_stand_backend": "3/5",
+    "stage337_f010_u5": "4/5"
+  },
+  "current_invocation_runner_nonzero_count": 5,
+  "rows": [
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage342_recovery_f010_anchor1_u5_stiff1p2_fixed_r1.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.3308803216915618,
+      "stop_root_z_min_m": 0.6353224345451005,
+      "stop_tilt_max_rad": 0.23724909251389523,
+      "stop_drift_m": 0.10850215610156107,
+      "stop_tail_speed_mps": 0.004955609848780254,
+      "stop_settle_time_s": 2.88
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage342_recovery_f010_anchor1_u5_stiff1p2_fixed_r2.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.32711878567335273,
+      "stop_root_z_min_m": 0.13583490633097983,
+      "stop_tilt_max_rad": 1.5521491267250438,
+      "stop_drift_m": 0.5641735973908817,
+      "stop_tail_speed_mps": 0.00026090911510743566,
+      "stop_settle_time_s": 3.62
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage342_recovery_f010_anchor1_u5_stiff1p2_fixed_r3.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.26084933231959917,
+      "stop_root_z_min_m": 0.13583366055338894,
+      "stop_tilt_max_rad": 1.5474480164316355,
+      "stop_drift_m": 0.5668898356629151,
+      "stop_tail_speed_mps": 0.0002657988556003558,
+      "stop_settle_time_s": 3.62
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage342_recovery_f010_anchor1_u5_stiff1p2_fixed_r4.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.3207518292646169,
+      "stop_root_z_min_m": 0.13598116900747415,
+      "stop_tilt_max_rad": 1.5463266672455842,
+      "stop_drift_m": 0.5835599037445918,
+      "stop_tail_speed_mps": 0.00023951582164024723,
+      "stop_settle_time_s": 4.04
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage342_recovery_f010_anchor1_u5_stiff1p2_fixed_r5.json",
+      "stand": true,
+      "startup": true,
+      "move": false,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.3689745613704167,
+      "stop_root_z_min_m": 0.13638079500477765,
+      "stop_tilt_max_rad": 1.5484926402818178,
+      "stop_drift_m": 0.58701710816519,
+      "stop_tail_speed_mps": 0.0008034681435543324,
+      "stop_settle_time_s": 4.5200000000000005
+    }
+  ],
+  "passes": 0,
+  "valid": 5,
+  "full_gate_failures": 5,
+  "promotion_gate_pass": false
+}

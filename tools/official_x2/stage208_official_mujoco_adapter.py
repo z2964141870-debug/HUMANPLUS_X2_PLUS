@@ -23,6 +23,8 @@ from rclpy.node import Node
 from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Imu
 
+from official_x2.skill_handoff_contract import should_emergency_latch, stop_policy_slot
+
 
 ISAAC_JOINTS = (
     "left_hip_pitch_joint", "right_hip_pitch_joint", "waist_yaw_joint",
@@ -213,11 +215,18 @@ class Stage208OfficialAdapter(Node):
             if args.stationary_model
             else self.session
         )
+        self.recovery_session = (
+            ort.InferenceSession(args.recovery_model, providers=["CPUExecutionProvider"])
+            if args.recovery_model
+            else self.stationary_session
+        )
         self.model_input_dim = int(self.session.get_inputs()[0].shape[-1])
         self.stationary_input_dim = int(self.stationary_session.get_inputs()[0].shape[-1])
+        self.recovery_input_dim = int(self.recovery_session.get_inputs()[0].shape[-1])
         for label, width in (
             ("main", self.model_input_dim),
             ("stationary", self.stationary_input_dim),
+            ("recovery", self.recovery_input_dim),
         ):
             if width not in (93, 121, 123):
                 raise RuntimeError(f"unsupported {label} actor input width: {width}")
@@ -335,14 +344,18 @@ class Stage208OfficialAdapter(Node):
         self.previous_actions = {
             "main": np.zeros(15, dtype=np.float32),
             "stationary": np.zeros(15, dtype=np.float32),
+            "recovery": np.zeros(15, dtype=np.float32),
         }
         self.issued_actions = {
             "main": np.zeros(15, dtype=np.float32),
             "stationary": np.zeros(15, dtype=np.float32),
+            "recovery": np.zeros(15, dtype=np.float32),
         }
+        self.policy_slot_inference_counts = {"main": 0, "stationary": 0, "recovery": 0}
         self.last_move_targets: dict[str, float] | None = None
         self.stop_hold_targets: dict[str, float] | None = None
         self.stop_hold_latch_s: float | None = None
+        self.stop_emergency_latch = False
         self.heading_target_rad: float | None = None
         self.heading_origin_xy: tuple[float, float] | None = None
         self.move_heading_initialized = False
@@ -705,6 +718,15 @@ class Stage208OfficialAdapter(Node):
         policy_slot: str = "main",
     ) -> tuple[dict[str, float], np.ndarray, np.ndarray]:
         assert self.imu is not None and self.odom is not None
+        sessions = {
+            "main": self.session,
+            "stationary": self.stationary_session,
+            "recovery": self.recovery_session,
+        }
+        if policy_slot not in sessions:
+            raise ValueError(f"unknown policy slot: {policy_slot}")
+        session = sessions[policy_slot]
+        self.policy_slot_inference_counts[policy_slot] += 1
         upper_elapsed = phase_elapsed
         if force_moving or abs(command_vx) > 0.1:
             phase_elapsed += self.args.phase_offset
@@ -791,7 +813,6 @@ class Stage208OfficialAdapter(Node):
         ).astype(np.float32)
         if obs.shape != (93,):
             raise RuntimeError(f"invalid Stage208 observation shape {obs.shape}")
-        session = self.stationary_session if policy_slot == "stationary" else self.session
         model_obs = self._session_observation(
             session,
             obs,
@@ -804,8 +825,8 @@ class Stage208OfficialAdapter(Node):
         )
         raw_action = session.run(["actions"], {"obs": model_obs[None]})[0][0].astype(np.float32)
         if (
-            policy_slot == "stationary"
-            and self.stationary_session is not self.session
+            policy_slot in ("stationary", "recovery")
+            and session is not self.session
             and self.args.stationary_blend < 1.0
         ):
             main_obs = obs.copy()
@@ -1214,8 +1235,9 @@ class Stage208OfficialAdapter(Node):
                 # The stationary actor observes previous_action.  Carry the
                 # actual last moving action across the controller handoff;
                 # otherwise it receives the stale action from the stand phase.
-                self.previous_actions["stationary"] = self.previous_actions["main"].copy()
-                self.issued_actions["stationary"] = self.issued_actions["main"].copy()
+                stop_slot = stop_policy_slot(self.args.recovery_model)
+                self.previous_actions[stop_slot] = self.previous_actions["main"].copy()
+                self.issued_actions[stop_slot] = self.issued_actions["main"].copy()
                 self.stop_policy_initialized = True
             if self.args.stop_controller == "event_hold":
                 if self.stop_hold_targets is None:
@@ -1243,6 +1265,14 @@ class Stage208OfficialAdapter(Node):
                 phase_elapsed = self.args.move_seconds + stop_elapsed
                 phase = self._phase_features(phase_elapsed, moving=True)
                 double_support = bool(phase[2] > 0.5 and phase[3] > 0.5)
+                emergency_latch = should_emergency_latch(
+                    stop_elapsed_s=stop_elapsed,
+                    speed_mps=measured_speed,
+                    tilt_rad=tilt_from_quaternion(self.odom),
+                    tilt_threshold_rad=self.args.stop_emergency_tilt_rad,
+                    speed_max_mps=self.args.stop_emergency_speed_max,
+                    min_elapsed_s=self.args.stop_emergency_min_seconds,
+                )
                 if (
                     self.args.stop_controller in (
                         "brake_then_policy",
@@ -1251,9 +1281,10 @@ class Stage208OfficialAdapter(Node):
                     and self.stop_hold_latch_s is None
                     and stop_elapsed >= self.args.event_hold_min_seconds
                     and measured_speed <= self.args.event_hold_speed
-                    and double_support
+                    and (double_support or emergency_latch)
                 ):
                     self.stop_hold_latch_s = stop_elapsed
+                    self.stop_emergency_latch = bool(emergency_latch and not double_support)
                 if (
                     self.stop_hold_latch_s is not None
                     and self.args.stop_controller == "brake_then_policy"
@@ -1293,7 +1324,7 @@ class Stage208OfficialAdapter(Node):
                         stationary_targets, obs, action = self._policy_targets(
                             0.0,
                             0.0,
-                            policy_slot="stationary",
+                            policy_slot=stop_policy_slot(self.args.recovery_model),
                         )
                         targets = {
                             name: brake_weight * brake_targets[name]
@@ -1455,6 +1486,11 @@ class Stage208OfficialAdapter(Node):
             "domain": "aimdk_x2_v1_official_mujoco",
             "model": self.args.model,
             "stationary_model": self.args.stationary_model or self.args.model,
+            "recovery_model": (
+                self.args.recovery_model
+                or self.args.stationary_model
+                or self.args.model
+            ),
             "stationary_warmup_seconds": self.args.stationary_warmup_seconds,
             "stationary_blend": self.args.stationary_blend,
             "state_prediction_seconds": self.args.state_prediction_seconds,
@@ -1466,6 +1502,8 @@ class Stage208OfficialAdapter(Node):
             "control_mode": self.args.control_mode,
             "model_input_dim": self.model_input_dim,
             "stationary_model_input_dim": self.stationary_input_dim,
+            "recovery_model_input_dim": self.recovery_input_dim,
+            "policy_slot_inference_counts": dict(self.policy_slot_inference_counts),
             "replay_loop": self.args.replay_loop,
             "pd_profile": self.args.pd_profile,
             "pd_kp_multiplier": self.args.pd_kp_multiplier,
@@ -1519,6 +1557,10 @@ class Stage208OfficialAdapter(Node):
             "stop_intent_decelerate_seconds": self.args.stop_intent_decelerate_seconds,
             "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
             "stop_hold_latch_s": self.stop_hold_latch_s,
+            "stop_emergency_latch": self.stop_emergency_latch,
+            "stop_emergency_tilt_rad": self.args.stop_emergency_tilt_rad,
+            "stop_emergency_speed_max_mps": self.args.stop_emergency_speed_max,
+            "stop_emergency_min_seconds": self.args.stop_emergency_min_seconds,
             "stop_brake_gain": self.args.stop_brake_gain,
             "stop_brake_limit_mps": self.args.stop_brake_limit,
             "stop_brake_template_speed_mps": self.args.stop_brake_template_speed,
@@ -1976,6 +2018,13 @@ def parse_args() -> argparse.Namespace:
         help="Scale only waist pitch/roll normalized targets after clipping; waist yaw and legs are unchanged.",
     )
     parser.add_argument(
+        "--recovery-model",
+        help=(
+            "Optional stop/recovery actor. Initial stand remains owned by --stationary-model; "
+            "the recovery actor is used only after the brake-to-policy handoff."
+        ),
+    )
+    parser.add_argument(
         "--stationary-controller",
         choices=("policy", "default_pose"),
         default="policy",
@@ -2023,6 +2072,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--event-hold-min-seconds", type=float, default=0.5)
     parser.add_argument("--event-hold-speed", type=float, default=0.05)
     parser.add_argument("--event-hold-tilt", type=float, default=0.10)
+    parser.add_argument(
+        "--stop-emergency-tilt-rad",
+        type=float,
+        help=(
+            "Optional one-way emergency brake-to-recovery latch. After the minimum "
+            "time and below the speed cap, this tilt threshold may bypass the planned "
+            "double-support wait; the latch never switches back."
+        ),
+    )
+    parser.add_argument("--stop-emergency-speed-max", type=float, default=0.10)
+    parser.add_argument("--stop-emergency-min-seconds", type=float, default=0.80)
     parser.add_argument("--stop-brake-gain", type=float, default=0.8)
     parser.add_argument("--stop-brake-limit", type=float, default=0.30)
     parser.add_argument("--stop-brake-template-speed", type=float, default=0.30)
@@ -2084,6 +2144,13 @@ def parse_args() -> argparse.Namespace:
             parser.error("--heading-action-recovery-limit must be in (0, 0.5]")
     if not 0.0 <= args.recovery_exit_m < args.recovery_enter_m:
         parser.error("recovery thresholds require 0 <= exit < enter")
+    if args.stop_emergency_tilt_rad is not None:
+        if not 0.0 < args.stop_emergency_tilt_rad <= 0.5:
+            parser.error("--stop-emergency-tilt-rad must be in (0, 0.5]")
+        if args.stop_emergency_speed_max <= 0.0:
+            parser.error("--stop-emergency-speed-max must be positive")
+        if args.stop_emergency_min_seconds < 0.0:
+            parser.error("--stop-emergency-min-seconds must be non-negative")
     if args.recovery_slew_rate_per_s <= 0.0:
         parser.error("--recovery-slew-rate-per-s must be positive")
     if not 0.0 < args.action_ema_alpha <= 1.0:

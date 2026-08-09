@@ -1,0 +1,94 @@
+{
+  "stage": "stage344_dual_recovery_emergency_latch_gate",
+  "hypothesis": "A one-way tilt-aware emergency latch rescues the rare pre-double-support stop divergence without changing normal dual-skill rollouts.",
+  "single_variable": "planned double-support latch -> planned latch plus preregistered emergency tilt=0.15rad speed<=0.10mps after0.80s",
+  "matched_contract": {
+    "moving_model": "stage306_s2652_transition_head_actor.onnx",
+    "stationary_model": "stand_backend_scratch_i150_actor.onnx",
+    "recovery_model": "stage337_recovery_f010_u5_actor.onnx",
+    "pd": "official_kp_ankle x1.2",
+    "upper": "fixed",
+    "command_vx_mps": 0.3
+  },
+  "historical": {
+    "source_stand_backend": "3/5",
+    "stage337_f010_u5": "4/5"
+  },
+  "current_invocation_runner_nonzero_count": 4,
+  "rows": [
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage344_dual_recovery_emergency_latch_stiff1p2_fixed_r1.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.15449716332665445,
+      "stop_root_z_min_m": 0.6404242165146516,
+      "stop_tilt_max_rad": 0.22978946355551566,
+      "stop_drift_m": 0.15201018241219028,
+      "stop_tail_speed_mps": 0.007741072899553634,
+      "stop_settle_time_s": 2.32
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage344_dual_recovery_emergency_latch_stiff1p2_fixed_r2.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.13327756115247927,
+      "stop_root_z_min_m": 0.1397672055831131,
+      "stop_tilt_max_rad": 1.549415404603343,
+      "stop_drift_m": 0.5814209838706467,
+      "stop_tail_speed_mps": 0.0011041936869880776,
+      "stop_settle_time_s": 3.1
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage344_dual_recovery_emergency_latch_stiff1p2_fixed_r3.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.16064489728806372,
+      "stop_root_z_min_m": 0.14346761632873517,
+      "stop_tilt_max_rad": 1.5489656334492863,
+      "stop_drift_m": 0.5579447342510717,
+      "stop_tail_speed_mps": 0.00046513537064640336,
+      "stop_settle_time_s": 3.2600000000000002
+    },
+    {
+      "status": "pass",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage344_dual_recovery_emergency_latch_stiff1p2_fixed_r4.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.21946773646278336,
+      "stop_root_z_min_m": 0.6266539693082686,
+      "stop_tilt_max_rad": 0.21667543579771706,
+      "stop_drift_m": 0.09156892327012622,
+      "stop_tail_speed_mps": 0.007883212404831835,
+      "stop_settle_time_s": 2.46
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage344_dual_recovery_emergency_latch_stiff1p2_fixed_r5.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.10669577988254489,
+      "stop_root_z_min_m": 0.13833320473297867,
+      "stop_tilt_max_rad": 1.5393013811412548,
+      "stop_drift_m": 0.5718035113919996,
+      "stop_tail_speed_mps": 0.0014938682951959892,
+      "stop_settle_time_s": 3.1
+    }
+  ],
+  "passes": 1,
+  "valid": 5,
+  "full_gate_failures": 4,
+  "promotion_gate_pass": false
+}

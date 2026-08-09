@@ -1,0 +1,94 @@
+{
+  "stage": "stage343_dual_stand_recovery_f010_u5_gate",
+  "hypothesis": "Separating nominal stand and learned recovery ownership preserves the source startup basin while retaining Stage337 stop recovery.",
+  "single_variable": "single stationary actor -> source stand for initial stand plus Stage337-f010 for post-brake recovery",
+  "matched_contract": {
+    "moving_model": "stage306_s2652_transition_head_actor.onnx",
+    "stationary_model": "stand_backend_scratch_i150_actor.onnx",
+    "recovery_model": "stage337_recovery_f010_u5_actor.onnx",
+    "pd": "official_kp_ankle x1.2",
+    "upper": "fixed",
+    "command_vx_mps": 0.3
+  },
+  "historical": {
+    "source_stand_backend": "3/5",
+    "stage337_f010_u5": "4/5"
+  },
+  "current_invocation_runner_nonzero_count": 1,
+  "rows": [
+    {
+      "status": "pass",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage343_dual_stand_recovery_f010_u5_stiff1p2_fixed_r1.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.21849016797542464,
+      "stop_root_z_min_m": 0.6274901036372259,
+      "stop_tilt_max_rad": 0.2173359608565306,
+      "stop_drift_m": 0.09721546583381542,
+      "stop_tail_speed_mps": 0.00785669340633953,
+      "stop_settle_time_s": 2.48
+    },
+    {
+      "status": "pass",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage343_dual_stand_recovery_f010_u5_stiff1p2_fixed_r2.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.12675669402641845,
+      "stop_root_z_min_m": 0.6188505857028632,
+      "stop_tilt_max_rad": 0.18336029699708212,
+      "stop_drift_m": 0.09960261455855841,
+      "stop_tail_speed_mps": 0.007837704468385812,
+      "stop_settle_time_s": 2.2800000000000002
+    },
+    {
+      "status": "pass",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage343_dual_stand_recovery_f010_u5_stiff1p2_fixed_r3.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.2692404695237972,
+      "stop_root_z_min_m": 0.6315695632928536,
+      "stop_tilt_max_rad": 0.2227461653974124,
+      "stop_drift_m": 0.12084057453202658,
+      "stop_tail_speed_mps": 0.007777451281447904,
+      "stop_settle_time_s": 3.7
+    },
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage343_dual_stand_recovery_f010_u5_stiff1p2_fixed_r4.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.10680347222120246,
+      "stop_root_z_min_m": 0.1439904069227395,
+      "stop_tilt_max_rad": 1.5473431149408383,
+      "stop_drift_m": 0.5729544218508806,
+      "stop_tail_speed_mps": 0.0009320714810198469,
+      "stop_settle_time_s": 3.58
+    },
+    {
+      "status": "pass",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage343_dual_stand_recovery_f010_u5_stiff1p2_fixed_r5.json",
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "move_heading_max_deviation_rad": 0.2527803510725136,
+      "stop_root_z_min_m": 0.631014272810634,
+      "stop_tilt_max_rad": 0.2274225379370606,
+      "stop_drift_m": 0.12923296783828728,
+      "stop_tail_speed_mps": 0.00788442112465716,
+      "stop_settle_time_s": 2.86
+    }
+  ],
+  "passes": 4,
+  "valid": 5,
+  "full_gate_failures": 1,
+  "promotion_gate_pass": false
+}
