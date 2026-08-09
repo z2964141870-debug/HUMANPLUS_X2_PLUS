@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "reports/X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE2.json",
+  "remote_path_relative_to_apps_bdpan": "x2-project-backups/2026-08-09/phase2/X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE2.json",
+  "local_size": 1854,
+  "remote_size": null,
+  "local_sha256": "c5b296d3214bf18a84c3b553395bf960d13235c477c0551db1207556f2c29833",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-09T12:00:19+08:00"
+}
