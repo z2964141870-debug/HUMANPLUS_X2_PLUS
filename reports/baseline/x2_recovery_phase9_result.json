@@ -1,0 +1,42 @@
+{
+  "stage": "base_phase9_stateful_recovery_paired_u5",
+  "status": "failed_to_promote_stop_at_5_updates",
+  "training_updates_per_branch": 5,
+  "updates25_unlocked": false,
+  "all_episodes_valid": true,
+  "groups": {
+    "source": {
+      "full_gate": "0/5",
+      "subgates": {"stand": "5/5", "startup": "5/5", "move": "0/5", "stop": "0/5"},
+      "heading_max_mean_rad": 0.6276247524075055,
+      "lateral_displacement_mean_m": 0.5508683510165135,
+      "stop_drift_mean_m": 0.422678238194983,
+      "stop_settle_mean_s": 3.748,
+      "move_signed_pitch_mean_deg": -8.176613862601359
+    },
+    "f000": {
+      "full_gate": "0/5",
+      "subgates": {"stand": "5/5", "startup": "0/5", "move": "0/5", "stop": "0/5"},
+      "heading_max_mean_rad": 0.4737532286896785,
+      "lateral_displacement_mean_m": 0.4127316704357691,
+      "stop_drift_mean_m": 0.4409850756241756,
+      "stop_settle_mean_s": 3.352,
+      "move_signed_pitch_mean_deg": -7.315230109270519,
+      "checkpoint_sha256": "885b22227bf0550636ea5125a8f6139cbfb01b45de25739b49fcf1fa2de50085",
+      "onnx_sha256": "20e1859a36760bf32f0c29c94c491c7ac6fab86f8fddd3b6fbe769ba3e636449"
+    },
+    "f005": {
+      "full_gate": "0/5",
+      "subgates": {"stand": "5/5", "startup": "5/5", "move": "0/5", "stop": "0/5"},
+      "heading_max_mean_rad": 0.42778637563772987,
+      "lateral_displacement_mean_m": 0.4102751762702746,
+      "stop_drift_mean_m": 0.4515192706805159,
+      "stop_settle_mean_s": 3.336,
+      "move_signed_pitch_mean_deg": -9.559235907986064,
+      "checkpoint_sha256": "c2d7b87bb66443dfd2a90affe2bb4a384862388dc064c2adf6a5e75b428df144",
+      "onnx_sha256": "9bc672fc3c535dbe6cd2709cdec4531eb9b61990457172e9c813a8ac713fc0ca"
+    }
+  },
+  "conclusion": "Stateful 5% recovery RSI restores startup and improves continuous heading relative to the 0% training control, but does not pass move/stop/full gates and worsens stop drift and backward pitch.",
+  "next": "Keep 25-update locked; route move drift to actor-equivariance work and require explicit stop-anchor plus policy anchor before any future recovery PPO."
+}

@@ -201,6 +201,21 @@ parser.add_argument(
     default=None,
     help="Optional immutable dataset hash; mismatch aborts before environment creation.",
 )
+parser.add_argument(
+    "--recovery_reset_stateful_source_report",
+    type=Path,
+    default=None,
+    help=(
+        "Stage335 extraction report used to rejoin immutable official trace state "
+        "(clock, command and issued action). Required for positive recovery fraction."
+    ),
+)
+parser.add_argument(
+    "--recovery_reset_stateful_source_report_sha256",
+    type=str,
+    default=None,
+    help="Expected SHA-256 of the stateful Stage335 source report.",
+)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 
@@ -245,7 +260,12 @@ from gear_sonic.envs.manager_env.robots.x2 import (  # noqa: E402
 )
 from official_x2.recovery_reset_curriculum import (  # noqa: E402
     audit_recovery_dataset,
+    audit_stateful_recovery_sidecar,
     reset_from_recovery_dataset,
+)
+from official_x2.stateful_recovery_isaac import (  # noqa: E402
+    StatefulRecoveryRLEnv,
+    configure_stateful_recovery_cfg,
 )
 
 
@@ -254,6 +274,18 @@ def main() -> None:
         raise ValueError("--recovery_reset_fraction must be in [0, 1]")
     if args.recovery_reset_fraction > 0.0 and args.recovery_reset_dataset is None:
         raise ValueError("a positive recovery reset fraction requires --recovery_reset_dataset")
+    if (
+        args.recovery_reset_fraction > 0.0
+        and args.recovery_reset_stateful_source_report is None
+    ):
+        raise ValueError(
+            "a positive recovery reset fraction requires the Phase4/6 stateful source report"
+        )
+    if (
+        args.recovery_reset_stateful_source_report is not None
+        and args.recovery_reset_dataset is None
+    ):
+        raise ValueError("stateful source report requires --recovery_reset_dataset")
     if args.recovery_reset_dataset is not None and args.profile != "stand_backend":
         raise ValueError("recovery reset curriculum is isolated to --profile stand_backend")
     response_history_profile = args.profile == "privileged_teacher_phase_template_response_history"
@@ -547,12 +579,37 @@ def main() -> None:
         env_cfg.scene.robot.actuators["feet"].damping = 20.0
 
     recovery_reset_audit = None
+    recovery_stateful_audit = None
+    env_class = ManagerBasedRLEnv
     if args.recovery_reset_dataset is not None:
         recovery_path = args.recovery_reset_dataset.expanduser().resolve()
         recovery_reset_audit = audit_recovery_dataset(
             recovery_path,
             args.recovery_reset_expected_sha256,
         )
+        stateful_source_report = None
+        if args.recovery_reset_stateful_source_report is not None:
+            stateful_source_report = (
+                args.recovery_reset_stateful_source_report.expanduser().resolve()
+            )
+            recovery_stateful_audit = audit_stateful_recovery_sidecar(
+                recovery_path,
+                stateful_source_report,
+                args.recovery_reset_expected_sha256,
+                args.recovery_reset_stateful_source_report_sha256,
+            )
+            # The Phase4/6 contract restores gait clock, command, previous raw
+            # and issued actions only after standard managers have reset.  A
+            # plain ManagerBasedRLEnv silently drops those logical states.
+            configure_stateful_recovery_cfg(env_cfg)
+            env_class = StatefulRecoveryRLEnv
+            # Match the official hard-range projection used by the zero-update
+            # proof.  X2's asymmetric shoulder-roll range makes the generic
+            # 0.9 contraction exclude the official zero/default pose.
+            env_cfg.scene.robot.soft_joint_pos_limit_factor = 1.0
+            env_cfg.observations.policy.enable_corruption = False
+            env_cfg.events.base_external_force_torque = None
+            env_cfg.events.push_robot = None
         # Append a final reset term rather than replacing inherited reset_base
         # or reset_robot_joints. Non-selected envs therefore retain the exact
         # baseline behavior, and selected envs are overwritten atomically.
@@ -565,6 +622,12 @@ def main() -> None:
                 "sampling_mode": args.recovery_reset_sampling,
                 "expected_sha256": args.recovery_reset_expected_sha256,
                 "asset_name": "robot",
+                "stateful_source_report": (
+                    None if stateful_source_report is None else str(stateful_source_report)
+                ),
+                "stateful_source_report_sha256": (
+                    args.recovery_reset_stateful_source_report_sha256
+                ),
             },
         )
         event_names = list(env_cfg.events.__dict__)
@@ -669,6 +732,8 @@ def main() -> None:
     )
     if recovery_reset_audit is not None:
         print(f"[Stage172] recovery_reset_audit={recovery_reset_audit}", flush=True)
+    if recovery_stateful_audit is not None:
+        print(f"[Stage172] recovery_stateful_audit={recovery_stateful_audit}", flush=True)
     if args.profile in {
         "privileged_teacher_phase_template_residual",
         "privileged_teacher_phase_template_heading_hold",
@@ -685,8 +750,8 @@ def main() -> None:
     wrapped = None
     actor_anchor = None
     try:
-        print("[Stage172] creating ManagerBasedRLEnv", flush=True)
-        env = ManagerBasedRLEnv(cfg=env_cfg)
+        print(f"[Stage172] creating {env_class.__name__}", flush=True)
+        env = env_class(cfg=env_cfg)
         print("[Stage172] environment ready", flush=True)
         wrapped = RslRlVecEnvWrapper(env, clip_actions=agent_cfg.clip_actions)
         print("[Stage172] RSL wrapper ready", flush=True)

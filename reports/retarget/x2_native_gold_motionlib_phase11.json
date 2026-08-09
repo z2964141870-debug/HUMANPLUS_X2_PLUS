@@ -1,0 +1,220 @@
+{
+  "schema_version": "x2_native_gold_motionlib_phase11_v1",
+  "provenance": {
+    "held_out_gold": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/held_out/official_native_dance_held_out.pkl",
+      "sha256": "45ffda2f8ddc64cbeb4ccc714d37a0c98ca328e8e6473edb12670dcdfd19a3dc"
+    },
+    "model_contract": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_joint_body_map.json",
+      "sha256": "f8fa7fdc07b9416db429a55dd41d5ba8ddcfb2b228ad9150142afbfae2dbca62"
+    },
+    "official_x2_xml": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/x2.xml",
+      "sha256": "3ff43f05beb57412a804ba9fe05cd9adcdfce78e9ce73a95a71ac58ad20d91a3"
+    },
+    "sonic_motionlib": "/home/humanplus/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/utils/motion_lib/motion_lib_base.py"
+  },
+  "truth_boundary": {
+    "phase10_source_is_official_simulation_not_hardware": true,
+    "contact_is_model_geometry_not_hardware_grf_cop_wrench": true,
+    "source_trace_stability_is_not_replay_stability": true,
+    "official_physics_replay_executed": false,
+    "ppo_lora_training_checkpoint_base_git_baidu_real_robot": false
+  },
+  "hypothesis": "Phase10 native actual pose/root is natively MotionLib-compatible; a minimal in-memory adapter is sufficient only for auxiliary actual velocity/contact fields.",
+  "intervention": "Native loader first; then restore dq/root velocities/model contact in memory without altering q/root/FK/fps/clips.",
+  "control": "Unmodified held-out Gold through MotionLibRobot with no_fix and all training augmentations disabled.",
+  "native_loader": {
+    "keys_exact": true,
+    "clip_frame_counts": [
+      400,
+      400,
+      400
+    ],
+    "clip_fps": [
+      50.0,
+      50.0,
+      50.0
+    ],
+    "length_starts": [
+      0,
+      400,
+      800
+    ],
+    "q_error_abs_p95_max_rad": [
+      5.960464477539063e-08,
+      2.384185791015625e-07
+    ],
+    "native_recomputed_dq_error_abs_p95_max_radps": [
+      0.9319350719451889,
+      8.292333602905273
+    ],
+    "root_pos_error_abs_max_m": 0.0,
+    "root_quat_geodesic_p95_max_rad": [
+      1.6858739404357617e-07,
+      4.298152059869762e-07
+    ],
+    "native_recomputed_root_lin_error_abs_p95_max_mps": [
+      0.1847348280251026,
+      0.7744894027709961
+    ],
+    "native_recomputed_root_ang_error_abs_p95_max_radps": [
+      0.5320239812135696,
+      2.487555980682373
+    ],
+    "native_inferred_contact_agreement": {
+      "left": 0.7908333333333334,
+      "right": 0.7791666666666667
+    }
+  },
+  "state_adapter": {
+    "required_because": "native MotionLib recomputes dq/root velocity/contact and ignores Phase10 recorded auxiliary fields",
+    "metadata": {
+      "source_pkl": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/held_out/official_native_dance_held_out.pkl",
+      "frames": 1200,
+      "restored_fields": [
+        "dof_vel",
+        "root_lin_vel_w_mps",
+        "root_ang_vel",
+        "model_contact"
+      ],
+      "unchanged_fields": {
+        "dof_pos_exact": true,
+        "body_pos_exact": true,
+        "body_quat_exact": true
+      }
+    },
+    "pose_fk_unchanged": {
+      "q": true,
+      "root": true,
+      "quat": true
+    },
+    "roundtrip": {
+      "dof_vel_error_abs_max_radps": 0.0,
+      "root_lin_vel_error_abs_max_mps": 0.0,
+      "root_ang_vel_error_abs_max_radps": 0.0,
+      "contact_exact": {
+        "left": true,
+        "right": true
+      }
+    }
+  },
+  "official_fk_roundtrip": {
+    "frames": 400,
+    "body_count": 32,
+    "loader_body_order": [
+      "pelvis",
+      "left_hip_pitch_link",
+      "left_hip_roll_link",
+      "left_hip_yaw_link",
+      "left_knee_link",
+      "left_ankle_pitch_link",
+      "left_ankle_roll_link",
+      "right_hip_pitch_link",
+      "right_hip_roll_link",
+      "right_hip_yaw_link",
+      "right_knee_link",
+      "right_ankle_pitch_link",
+      "right_ankle_roll_link",
+      "waist_yaw_link",
+      "waist_pitch_link",
+      "torso_link",
+      "left_shoulder_pitch_link",
+      "left_shoulder_roll_link",
+      "left_shoulder_yaw_link",
+      "left_elbow_link",
+      "left_wrist_yaw_link",
+      "left_wrist_pitch_link",
+      "left_wrist_roll_link",
+      "right_shoulder_pitch_link",
+      "right_shoulder_roll_link",
+      "right_shoulder_yaw_link",
+      "right_elbow_link",
+      "right_wrist_yaw_link",
+      "right_wrist_pitch_link",
+      "right_wrist_roll_link",
+      "head_yaw_link",
+      "head_pitch_link"
+    ],
+    "position_error_abs_p95_max_m": [
+      7.63701525019477e-08,
+      3.108831401199552e-07
+    ],
+    "orientation_geodesic_p95_max_rad": [
+      2.1900144899933154e-07,
+      4.5783196376971154e-07
+    ]
+  },
+  "wbt29_contract": {
+    "indices_official31": [
+      0,
+      6,
+      12,
+      1,
+      7,
+      13,
+      2,
+      8,
+      14,
+      3,
+      9,
+      15,
+      22,
+      4,
+      10,
+      16,
+      23,
+      5,
+      11,
+      17,
+      24,
+      18,
+      25,
+      19,
+      26,
+      20,
+      27,
+      21,
+      28
+    ],
+    "q_error_abs_max_rad": 2.384185791015625e-07,
+    "dq_error_abs_max_radps": 0.0,
+    "head_q_abs_max_rad": 0.0,
+    "head_dq_abs_max_radps": 0.0
+  },
+  "zero_update_gate": {
+    "scope": "official_native_dance_held_out_000",
+    "thresholds": {
+      "q_max_error_rad": 5e-06,
+      "root_pos_max_error_m": 1e-07,
+      "root_quat_max_error_rad": 0.002,
+      "fk_pos_max_error_m": 2e-05,
+      "fk_orientation_max_error_rad": 0.0002,
+      "adapted_state_max_error": 1e-07
+    },
+    "checks": {
+      "native_keys_exact": true,
+      "clip_boundaries_exact_3x400": true,
+      "fps_exact_50": true,
+      "native_q_roundtrip": true,
+      "native_root_position_roundtrip": true,
+      "native_root_orientation_roundtrip": true,
+      "adapter_does_not_change_pose_fk": true,
+      "adapter_restores_actual_state": true,
+      "adapter_restores_model_contact": true,
+      "official_fk_position_roundtrip": true,
+      "official_fk_orientation_roundtrip": true,
+      "wbt29_exact": true,
+      "head_lock_exact": true
+    },
+    "pass": true
+  },
+  "decision": {
+    "status": "PHASE11_MOTIONLIB_INGESTION_PASSED",
+    "failed_checks": [],
+    "result": "Phase10 held-out Gold已通过SONIC MotionLib原生pose/root/FK与最小state adapter round-trip；未发现clip、fps、WBT29或head-lock静默改写。",
+    "conclusion": "Gold可作为SONIC/X2 pipeline ingestion sanity set；actual velocity/contact必须通过独立adapter显式恢复，不能假设原生loader会保留。",
+    "next_step": "若继续，只允许在held-out clip0做一次冻结prescribed/free reference-trackability smoke；仍不得训练。"
+  }
+}

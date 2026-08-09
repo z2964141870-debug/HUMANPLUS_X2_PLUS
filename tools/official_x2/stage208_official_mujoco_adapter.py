@@ -32,6 +32,7 @@ from official_x2.controller_snapshot_contract import (
     capture_controller_state,
     restore_controller_state,
 )
+from official_x2.analyze_sagittal_posture import signed_pitch_from_xyzw_rad
 from official_x2.skill_handoff_contract import (
     matched_event_speed,
     should_emergency_latch,
@@ -1243,6 +1244,9 @@ class Stage208OfficialAdapter(Node):
                 "root_y_m": float(pose.position.y),
                 "root_z_m": float(pose.position.z),
                 "root_tilt_rad": tilt_from_quaternion(self.odom),
+                "root_pitch_rad": signed_pitch_from_xyzw_rad(
+                    (pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w)
+                ),
                 "root_yaw_rad": yaw_from_quaternion(self.odom),
                 "root_vx_w_mps": float(twist.linear.x),
                 "root_vy_w_mps": float(twist.linear.y),
@@ -1742,6 +1746,23 @@ class Stage208OfficialAdapter(Node):
                 "stop_tail_speed_max_mps": 0.03,
             },
         }
+
+        def append_pitch_summary(prefix: str, rows: list[dict[str, object]]) -> None:
+            """Report signed posture without changing the legacy safety gate."""
+            values = np.asarray(
+                [float(row["root_pitch_rad"]) for row in rows], dtype=np.float64
+            )
+            if not values.size:
+                return
+            summary.update(
+                {
+                    f"{prefix}_root_pitch_mean_rad": float(values.mean()),
+                    f"{prefix}_root_pitch_median_rad": float(np.median(values)),
+                    f"{prefix}_root_pitch_p05_rad": float(np.quantile(values, 0.05)),
+                    f"{prefix}_root_pitch_p95_rad": float(np.quantile(values, 0.95)),
+                }
+            )
+
         timing_fields = (
             "control_wall_dt_s",
             "source_meas_skew_s",
@@ -1757,6 +1778,7 @@ class Stage208OfficialAdapter(Node):
                 summary[f"{field}_p95"] = float(np.quantile(values, 0.95))
                 summary[f"{field}_max"] = float(values.max())
         if stand:
+            append_pitch_summary("stand", stand)
             stand_z = np.asarray([row["root_z_m"] for row in stand], dtype=np.float64)
             stand_tilt = np.asarray([row["root_tilt_rad"] for row in stand], dtype=np.float64)
             stand_x = np.asarray([row["root_x_m"] for row in stand], dtype=np.float64)
@@ -1815,6 +1837,8 @@ class Stage208OfficialAdapter(Node):
             forward = math.cos(start_yaw) * dx + math.sin(start_yaw) * dy
             lateral = -math.sin(start_yaw) * dx + math.cos(start_yaw) * dy
             startup = [row for row in move if float(row["elapsed_s"]) <= 1.0001]
+            append_pitch_summary("startup", startup)
+            append_pitch_summary("move", move)
             startup_forward = np.asarray(
                 [
                     math.cos(start_yaw) * (float(row["root_x_m"]) - float(x[0]))
@@ -1904,6 +1928,7 @@ class Stage208OfficialAdapter(Node):
                 }
             )
         if stop:
+            append_pitch_summary("stop", stop)
             stop_z = np.asarray([row["root_z_m"] for row in stop], dtype=np.float64)
             stop_tilt = np.asarray([row["root_tilt_rad"] for row in stop], dtype=np.float64)
             stop_x = np.asarray([row["root_x_m"] for row in stop], dtype=np.float64)

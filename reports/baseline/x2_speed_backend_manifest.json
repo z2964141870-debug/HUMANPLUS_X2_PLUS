@@ -97,7 +97,10 @@
     },
     "adapter": {
       "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/stage208_official_mujoco_adapter.py",
-      "sha256": "72ff517b9105846570bab89858d8613e571890240840a7a2be9543c5214a14e1"
+      "evaluated_phase0_sha256": "72ff517b9105846570bab89858d8613e571890240840a7a2be9543c5214a14e1",
+      "current_phase9_sha256": "d80900b2e7e1fac98aa586dc44c9dfb3d8561592e93167d931b8177afed7e8f9",
+      "current_commit": "6337791 plus Phase7-9 worktree",
+      "compatibility": "Current additions are default-off actor symmetry diagnostics, controller snapshot export/restore, and reporting-only signed pitch. Phase9 used this hash for 15 matched-event runs; frozen Stage250 capability remains tied to its evaluated hash."
     },
     "gate_thresholds": {
       "startup_root_z_min_m": 0.6,
@@ -224,8 +227,24 @@
         "no slow-upper panel",
         "no non-nominal turn panel",
         "Stage329 and Stage332/333 did not produce an upgraded checkpoint",
-        "trace summary labels observation contract as 93D even for 123D actor; export manifest is authoritative"
-      ]
+        "trace summary labels observation contract as 93D even for 123D actor; export manifest is authoritative",
+        "Phase9 5-update stateful RSI was not promoted: source/f000/f005 strict full gate all 0/5; f005 restored startup and improved heading/lateral drift but move/stop stayed 0/5, stop drift and backward pitch worsened"
+      ],
+      "phase9_recovery_smoke": {
+        "source_subgates": "stand 5/5, startup 5/5, move 0/5, stop 0/5",
+        "f000_subgates": "stand 5/5, startup 0/5, move 0/5, stop 0/5",
+        "f005_subgates": "stand 5/5, startup 5/5, move 0/5, stop 0/5",
+        "f005_heading_mean_rad": 0.428,
+        "source_heading_mean_rad": 0.628,
+        "f005_lateral_drift_mean_m": 0.41,
+        "source_lateral_drift_mean_m": 0.551,
+        "f005_stop_drift_mean_m": 0.452,
+        "source_stop_drift_mean_m": 0.423,
+        "f005_move_pitch_deg": -9.56,
+        "source_move_pitch_deg": -8.18,
+        "decision": "do_not_promote_25_update_locked",
+        "evidence": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/baseline/x2_recovery_phase9_result.json"
+      }
     }
   },
   "unresolved_items": [

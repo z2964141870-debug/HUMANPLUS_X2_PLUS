@@ -1,0 +1,97 @@
+{
+  "date": "2026-08-09",
+  "evidence_cutoff_commit": "6337791_plus_phase7_to_phase10_worktree",
+  "domain": "aimdk_x2_v1_official_mujoco",
+  "decision": "LONG_TRAIN_LOCKED_BOTH_TRACKS",
+  "base": {
+    "asset_manifest": "pass",
+    "historical_nominal_basic_24_of_24": true,
+    "current_natural_motion_gate": "incomplete",
+    "projected_physical_snapshot_exact": true,
+    "raw_source_limit_valid_rows": 84,
+    "raw_source_rows": 90,
+    "legacy_controller_snapshot_rows": 0,
+    "legacy_trace_rows": 3550,
+    "deterministic_suffix_direct_official_mjcf": "exact_10_25_50_ticks",
+    "deterministic_suffix_closed_aimdk_ros": "not_proven_no_public_state_injection",
+    "stiff_fixed_source_passes": 3,
+    "stiff_fixed_runs": 5,
+    "complete_matrix": false,
+    "signed_pitch_metric": "pass",
+    "signed_pitch_quality_gate": false,
+    "sagittal_root_cause": "full_lower_body_targets_times_PD_default_controller_equilibrium",
+    "frozen_actor_roll_yaw_projection": "rejected_after_fall",
+    "phase9_stateful_recovery": {
+      "source_full_passes": 0,
+      "f000_full_passes": 0,
+      "f005_full_passes": 0,
+      "runs_per_group": 5,
+      "source_startup_passes": 5,
+      "f000_startup_passes": 0,
+      "f005_startup_passes": 5,
+      "f005_heading_mean_rad": 0.428,
+      "source_heading_mean_rad": 0.628,
+      "f005_lateral_drift_mean_m": 0.41,
+      "source_lateral_drift_mean_m": 0.551,
+      "f005_stop_drift_mean_m": 0.452,
+      "source_stop_drift_mean_m": 0.423,
+      "decision": "local_signal_not_promoted_25_update_locked"
+    }
+  },
+  "wbt": {
+    "canonical_joint_body_mirror_contract": "pass",
+    "diagnostic_panel_count": 24,
+    "official_model_only_ab": "exactly_equal_to_old_robot_mjcf",
+    "tier_gate_tools": "pass",
+    "canonical_reset_contract": "not_cross_motion",
+    "canonical_root_ground_bronze_contract": true,
+    "canonical_contact_realization_contract": false,
+    "fragmented_stance_xy_lock": "rejected_offline_all_five_slip_worse",
+    "contact_agreement_range": [0.362, 0.633],
+    "walk_to_stand_canonical_slip_mps": 0.1602822752364327,
+    "walk_to_stand_slip_limit_mps": 0.08708758799255187,
+    "dynamic_teacher_panel_passes": 1,
+    "dynamic_teacher_panel_total": 5,
+    "dynamic_silver_count": 0,
+    "gmr_dynamic_gold_count": 0,
+    "native_gold_sanity_seed_count": 1,
+    "native_gold_duration_s": 59.98076125600164,
+    "native_gold_train_s": 32.0,
+    "native_gold_embargo_s": 4.0,
+    "native_gold_held_out_s": 24.0,
+    "native_gold_qualification_gates_passed": 29,
+    "native_gold_ds_ss_ds_cycles": 44,
+    "native_gold_truth_boundary": "official_simulation_truth_not_real_hardware_and_not_gmr",
+    "native_gold_motionlib_ingestion": {
+      "status": "pass",
+      "held_out_clips": 3,
+      "frames_per_clip": 400,
+      "fps": 50.0,
+      "q_abs_max_rad": 2.38e-07,
+      "root_pos_abs_max_m": 0.0,
+      "root_quat_geodesic_max_rad": 4.3e-07,
+      "official_fk_pos_max_m": 3.11e-07,
+      "official_fk_orientation_max_rad": 4.58e-07,
+      "actual_state_adapter_required_for": [
+        "dof_velocity",
+        "root_linear_velocity",
+        "root_angular_velocity",
+        "model_contact"
+      ]
+    },
+    "faithful_any2any_smoke": "ppo_locked_phase12_frozen_reference_trackability_only"
+  },
+  "next": {
+    "base": [
+      "signed pitch relative quality gate for future candidates",
+      "separate recovery learning from stand/start preservation; do not sweep RSI fraction",
+      "closed ROS suffix only after full-state injection exists"
+    ],
+    "wbt": [
+      "freeze robot-level scene-derived Bronze ground contract",
+      "do not continue fixed hysteresis/min-dwell or fragmented stance-foot IK",
+      "held-out clip0 frozen prescribed/free reference-trackability smoke",
+      "GMR Silver/Gold train and held-out split before faithful Any2Any PPO"
+    ]
+  }
+}

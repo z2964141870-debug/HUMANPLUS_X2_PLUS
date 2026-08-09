@@ -60,3 +60,28 @@ def test_matched_event_preserves_episode_heading_across_stand_to_move() -> None:
     ).read_text(encoding="utf-8")
 
     assert "if self.args.move_accelerate_seconds <= 0.0 or self.heading_target_rad is None:" in adapter
+
+
+def test_runtime_reports_signed_pitch_without_changing_full_gate() -> None:
+    adapter = (
+        REPO_ROOT / "tools/official_x2/stage208_official_mujoco_adapter.py"
+    ).read_text(encoding="utf-8")
+
+    assert '"root_pitch_rad"' in adapter
+    for phase in ("stand", "startup", "move", "stop"):
+        assert f'append_pitch_summary("{phase}"' in adapter
+    assert "signed_pitch_from_xyzw_rad" in adapter
+    assert "pitch_gate_pass" not in adapter
+
+
+def test_recovery_training_requires_phase46_stateful_contract() -> None:
+    trainer = (
+        REPO_ROOT / "scripts/train_x2_stage221_official_ankle_match.py"
+    ).read_text(encoding="utf-8")
+
+    assert "a positive recovery reset fraction requires the Phase4/6 stateful source report" in trainer
+    assert "audit_stateful_recovery_sidecar" in trainer
+    assert "configure_stateful_recovery_cfg(env_cfg)" in trainer
+    assert "env_class = StatefulRecoveryRLEnv" in trainer
+    assert "stateful_source_report_sha256" in trainer
+    assert "env_cfg.scene.robot.soft_joint_pos_limit_factor = 1.0" in trainer

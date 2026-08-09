@@ -50,7 +50,7 @@ ONNX actor mean
 → position PD target
 ```
 
-部署适配器：`tools/official_x2/stage208_official_mujoco_adapter.py`，当前文件 SHA-256 `72ff517b9105846570bab89858d8613e571890240840a7a2be9543c5214a14e1`。Stage250 证实旧部署把未裁剪 ONNX mean（最大 `6.26`）回灌到 last-action 会造成闭环自激；该旧语义不得再使用。证据：`reports/official_x2/stage250_rsl_action_contract_fix_20260808.{md,json}`。
+部署适配器：`tools/official_x2/stage208_official_mujoco_adapter.py`。Stage250 实际评估版本 SHA-256 为 `72ff517b9105846570bab89858d8613e571890240840a7a2be9543c5214a14e1`；Phase9 当前版本 SHA-256 为 `d80900b2e7e1fac98aa586dc44c9dfb3d8561592e93167d931b8177afed7e8f9`。新增部分是默认关闭的 actor symmetry 诊断、controller snapshot export/restore 和只报告不入门的 signed-pitch 分阶段统计。Phase9 已用当前 hash 完成 15 条 matched-event 评估，但 Stage250 历史能力仍绑定当时评估 hash，不得静默改记。Stage250 证实旧部署把未裁剪 ONNX mean（最大 `6.26`）回灌到 last-action 会造成闭环自激；该旧语义不得再使用。证据：`reports/official_x2/stage250_rsl_action_contract_fix_20260808.{md,json}`。
 
 ### 实际门禁 PD（必须按代码而不是简称理解）
 
@@ -135,6 +135,7 @@ transition head 实际读取 2D locomotion intent + 4D gait phase；response bra
 - 无 soft 0.9×结果；无 slow-upper结果；无 soft/stiff turn 结果；没有完整 81-run 原子矩阵。
 - Stage329 zero-upper 课程独立复验 fixed=`3/5`、fast=`4/5`；Stage332/333 upper-activity 条件化最高仅 `2/3`，均未晋级。证据：`reports/official_x2/OFFICIAL_X2_STAGE329_333_ZERO_UPPER_AUDIT_20260808.md`。
 - Stage306 不能覆盖 BASE_LOCOMOTION：其名义转向只有 `7/8`，且其 stiff 能力不稳定。
+- Phase9 独立 stand/recovery 后端的 5-update stateful RSI 对照中，source/f000/f005 strict full 均为 `0/5`。f005 将 startup 由 f000 `0/5` 恢复到 `5/5`，并将平均 heading `0.628→0.428 rad`、横漂 `0.551→0.410 m`；但 move/stop 仍 `0/5`，stop drift `0.423→0.452 m`，move pitch 由 `-8.18°` 退化到 `-9.56°`。该 checkpoint 不晋级，25-update 未解锁。证据：`reports/baseline/x2_recovery_phase9_result.{md,json}`。
 
 ## 统一门禁定义
 

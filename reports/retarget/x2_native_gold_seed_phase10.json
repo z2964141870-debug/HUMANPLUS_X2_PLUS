@@ -1,0 +1,547 @@
+{
+  "schema_version": "x2_native_gold_seed_phase10_v1",
+  "provenance": {
+    "source_npz": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/official_native_dance_teacher_50hz_60s.npz",
+      "sha256": "72a495c62b448e322281785738454e4dd6636de568b11ca3d023477c33b063d5"
+    },
+    "source_manifest": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/official_native_dance_teacher_50hz_60s.manifest.json",
+      "sha256": "b7af1c8f4ea67815d7d1c6b46424660502161f05074c47f3841fef7b6a1cf010"
+    },
+    "model_contract": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_joint_body_map.json",
+      "sha256": "f8fa7fdc07b9416db429a55dd41d5ba8ddcfb2b228ad9150142afbfae2dbca62"
+    },
+    "official_scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "official_control": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+      "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+    },
+    "exported_assets": {
+      "train": {
+        "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/train/official_native_dance_train.pkl",
+        "sha256": "644dc7534b63a7831bfe4156941b01508003f2834d2ccdac7b227369bad8ef8b",
+        "clips": 4
+      },
+      "held_out": {
+        "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/held_out/official_native_dance_held_out.pkl",
+        "sha256": "45ffda2f8ddc64cbeb4ccc714d37a0c98ca328e8e6473edb12670dcdfd19a3dc",
+        "clips": 3
+      },
+      "manifest": {
+        "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/manifest.json",
+        "sha256": "ce5389e76a4bf324aaf6d6e4d59ab807dc26b045e34df045a34528d2d19878eb"
+      }
+    }
+  },
+  "truth_boundary": {
+    "source": "AimDK X2 v1.0 official MuJoCo + shipped kuailechongbai.onnx",
+    "source_truth_label": "official_simulation_truth_not_real_hardware_truth",
+    "official_simulation_not_real_hardware": true,
+    "contact_is_model_geometry_not_grf_cop_wrench": true,
+    "not_gmr_amass_silver_or_gmr_replacement": true,
+    "cannot_prove_any2any_or_cross_embodiment": true,
+    "command_is_response_evidence_not_reference": true,
+    "training_replay_teacher_checkpoint_base_git_baidu_real_robot": false
+  },
+  "audit": {
+    "source_integrity": {
+      "samples": 3000,
+      "duration_s": 59.98076125600164,
+      "sample_rate_nominal_hz": 50,
+      "source_joint_order": [
+        "left_hip_pitch_joint",
+        "right_hip_pitch_joint",
+        "waist_yaw_joint",
+        "left_hip_roll_joint",
+        "right_hip_roll_joint",
+        "waist_pitch_joint",
+        "left_hip_yaw_joint",
+        "right_hip_yaw_joint",
+        "waist_roll_joint",
+        "left_knee_joint",
+        "right_knee_joint",
+        "head_yaw_joint",
+        "left_shoulder_pitch_joint",
+        "right_shoulder_pitch_joint",
+        "left_ankle_pitch_joint",
+        "right_ankle_pitch_joint",
+        "head_pitch_joint",
+        "left_shoulder_roll_joint",
+        "right_shoulder_roll_joint",
+        "left_ankle_roll_joint",
+        "right_ankle_roll_joint",
+        "left_shoulder_yaw_joint",
+        "right_shoulder_yaw_joint",
+        "left_elbow_joint",
+        "right_elbow_joint",
+        "left_wrist_yaw_joint",
+        "right_wrist_yaw_joint",
+        "left_wrist_pitch_joint",
+        "right_wrist_pitch_joint",
+        "left_wrist_roll_joint",
+        "right_wrist_roll_joint"
+      ],
+      "official_mujoco_order": [
+        "left_hip_pitch_joint",
+        "left_hip_roll_joint",
+        "left_hip_yaw_joint",
+        "left_knee_joint",
+        "left_ankle_pitch_joint",
+        "left_ankle_roll_joint",
+        "right_hip_pitch_joint",
+        "right_hip_roll_joint",
+        "right_hip_yaw_joint",
+        "right_knee_joint",
+        "right_ankle_pitch_joint",
+        "right_ankle_roll_joint",
+        "waist_yaw_joint",
+        "waist_pitch_joint",
+        "waist_roll_joint",
+        "left_shoulder_pitch_joint",
+        "left_shoulder_roll_joint",
+        "left_shoulder_yaw_joint",
+        "left_elbow_joint",
+        "left_wrist_yaw_joint",
+        "left_wrist_pitch_joint",
+        "left_wrist_roll_joint",
+        "right_shoulder_pitch_joint",
+        "right_shoulder_roll_joint",
+        "right_shoulder_yaw_joint",
+        "right_elbow_joint",
+        "right_wrist_yaw_joint",
+        "right_wrist_pitch_joint",
+        "right_wrist_roll_joint",
+        "head_yaw_joint",
+        "head_pitch_joint"
+      ],
+      "source_manifest_matches_npz": true
+    },
+    "contract_checks": {
+      "all_required_arrays_finite": true,
+      "source_manifest_hash_and_samples_match": true,
+      "timestamps_strictly_increasing": true,
+      "source_joint_name_set_exact_official31": true,
+      "wbt29_and_head2_partition_official31": true,
+      "wbt29_actual_q_preserved_by_name": true,
+      "head_locked_exact_nominal": true
+    },
+    "head_lock": {
+      "head_yaw_joint": {
+        "actual_q_min_max_rad": [
+          -0.005918618757277727,
+          0.0002728318504523486
+        ],
+        "actual_dq_abs_max_radps": 0.056773316115140915,
+        "locked_value_rad": 0.0
+      },
+      "head_pitch_joint": {
+        "actual_q_min_max_rad": [
+          -0.00010821040632436052,
+          0.07026934623718262
+        ],
+        "actual_dq_abs_max_radps": 0.09066348522901535,
+        "locked_value_rad": 0.0
+      }
+    },
+    "temporal": {
+      "dt_min_median_max_s": [
+        0.015696471000410384,
+        0.0199991699992097,
+        0.023903868999695987
+      ],
+      "dt_error_abs_p99_s": 0.0029926259004059833,
+      "joint_step_p95_max_rad": [
+        0.09584057331085202,
+        0.4089532494544983
+      ],
+      "joint_step_physics_bound_violation_fraction": 3.2268820789725605e-05,
+      "dq_consistency_error_abs_p50_p95_max_radps": [
+        0.041451785486922965,
+        0.5503009094450635,
+        9.649062229405024
+      ],
+      "root_linear_consistency_error_norm_p50_p95_max_mps": [
+        0.08209913343412177,
+        0.2457084154104353,
+        0.8004055475853705
+      ],
+      "root_angular_consistency_error_norm_p50_p95_max_radps": [
+        0.3656024931994243,
+        1.3818198972160014,
+        4.629665755431341
+      ],
+      "quaternion_norm_max_error": 3.838859585769683e-08
+    },
+    "joint_limits": {
+      "max_overshoot_rad": 0.035900949859619224,
+      "violation_sample_fraction": 0.0011935483870967741,
+      "violation_frame_fraction": 0.036,
+      "per_joint_nonzero": {
+        "right_ankle_roll_joint": {
+          "max_overshoot_rad": 0.018056589365005482,
+          "violation_frame_fraction": 0.001
+        },
+        "waist_pitch_joint": {
+          "max_overshoot_rad": 0.007613669395446776,
+          "violation_frame_fraction": 0.0006666666666666666
+        },
+        "left_elbow_joint": {
+          "max_overshoot_rad": 0.02618038597106942,
+          "violation_frame_fraction": 0.011
+        },
+        "left_wrist_roll_joint": {
+          "max_overshoot_rad": 0.02956453657150271,
+          "violation_frame_fraction": 0.016
+        },
+        "right_elbow_joint": {
+          "max_overshoot_rad": 0.035900949859619224,
+          "violation_frame_fraction": 0.007333333333333333
+        },
+        "right_wrist_roll_joint": {
+          "max_overshoot_rad": 0.012939489841461205,
+          "violation_frame_fraction": 0.001
+        }
+      }
+    },
+    "root_survival": {
+      "semantics": "recorded official-simulator state; no replay in Phase10",
+      "complete_trace_available": true,
+      "root_z_min_p05_p50_m": [
+        0.5108608603477478,
+        0.6001370787620545,
+        0.6465687155723572
+      ],
+      "root_z_min_m": 0.5108608603477478,
+      "root_tilt_p95_max_rad": [
+        0.42979579107754334,
+        0.5954561242401855
+      ],
+      "root_tilt_max_rad": 0.5954561242401855
+    },
+    "active_sole_geometry": {
+      "semantics": "minimum signed floor distance over 12 active official sole spheres per foot",
+      "contact_threshold_m": 0.010050000000000003,
+      "reset_clearance_m": 0.005050000000000003,
+      "sphere_radius_m": 0.005,
+      "per_side_distance_p00_p05_p50_p95_m": {
+        "left": [
+          -0.0072801367048981975,
+          -0.002377462988018153,
+          -0.0003251075932200363,
+          0.03196407481665387
+        ],
+        "right": [
+          -0.0070667528872256314,
+          -0.00244940971373368,
+          -0.00039274313382943026,
+          0.029072513737448517
+        ]
+      },
+      "minimum_signed_distance_m": -0.0072801367048981975,
+      "full_trace_phase": {
+        "frames": 3000,
+        "contact_window_count": {
+          "left": 24,
+          "right": 24
+        },
+        "double_support_ratio": 0.807,
+        "single_support_ratio": 0.192,
+        "left_single_support_ratio": 0.09466666666666666,
+        "right_single_support_ratio": 0.09733333333333333,
+        "flight_ratio": 0.001,
+        "ds_ss_ds_cycle_count": 44
+      }
+    },
+    "command_response_evidence": {
+      "semantics": "command is response evidence only and is not exported as reference",
+      "command_valid_fraction": 1.0,
+      "positive_kp_fraction": 1.0,
+      "actual_minus_command_abs_p50_p95_max_rad": [
+        0.10736698657274246,
+        0.4618286907672883,
+        1.3211905807256699
+      ],
+      "command_delta_abs_p50_p95_p99_max_rad": [
+        0.023873120546340942,
+        0.12666171789169312,
+        0.20504806935787248,
+        0.6124831438064575
+      ]
+    }
+  },
+  "split": {
+    "policy": {
+      "clip_frames": 400,
+      "clip_duration_s": 8.0,
+      "train_frame_block": [
+        0,
+        1600
+      ],
+      "embargo_frame_block": [
+        1600,
+        1800
+      ],
+      "held_out_frame_block": [
+        1800,
+        3000
+      ],
+      "random_adjacent_frame_split": false,
+      "overlap": false
+    },
+    "ranges": {
+      "train": [
+        [
+          0,
+          400
+        ],
+        [
+          400,
+          800
+        ],
+        [
+          800,
+          1200
+        ],
+        [
+          1200,
+          1600
+        ]
+      ],
+      "held_out": [
+        [
+          1800,
+          2200
+        ],
+        [
+          2200,
+          2600
+        ],
+        [
+          2600,
+          3000
+        ]
+      ]
+    },
+    "per_clip_phase": {
+      "train": [
+        {
+          "index": 0,
+          "start_frame": 0,
+          "end_frame_exclusive": 400,
+          "start_time_s": 0.0,
+          "end_time_s": 8.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 1,
+              "right": 1
+            },
+            "double_support_ratio": 0.9975,
+            "single_support_ratio": 0.0,
+            "left_single_support_ratio": 0.0,
+            "right_single_support_ratio": 0.0,
+            "flight_ratio": 0.0025,
+            "ds_ss_ds_cycle_count": 0
+          }
+        },
+        {
+          "index": 1,
+          "start_frame": 400,
+          "end_frame_exclusive": 800,
+          "start_time_s": 8.0,
+          "end_time_s": 16.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 2,
+              "right": 3
+            },
+            "double_support_ratio": 0.9075,
+            "single_support_ratio": 0.0925,
+            "left_single_support_ratio": 0.0575,
+            "right_single_support_ratio": 0.035,
+            "flight_ratio": 0.0,
+            "ds_ss_ds_cycle_count": 3
+          }
+        },
+        {
+          "index": 2,
+          "start_frame": 800,
+          "end_frame_exclusive": 1200,
+          "start_time_s": 16.0,
+          "end_time_s": 24.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 3,
+              "right": 3
+            },
+            "double_support_ratio": 0.76,
+            "single_support_ratio": 0.24,
+            "left_single_support_ratio": 0.115,
+            "right_single_support_ratio": 0.125,
+            "flight_ratio": 0.0,
+            "ds_ss_ds_cycle_count": 4
+          }
+        },
+        {
+          "index": 3,
+          "start_frame": 1200,
+          "end_frame_exclusive": 1600,
+          "start_time_s": 24.0,
+          "end_time_s": 32.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 7,
+              "right": 8
+            },
+            "double_support_ratio": 0.6725,
+            "single_support_ratio": 0.3275,
+            "left_single_support_ratio": 0.12,
+            "right_single_support_ratio": 0.2075,
+            "flight_ratio": 0.0,
+            "ds_ss_ds_cycle_count": 13
+          }
+        }
+      ],
+      "held_out": [
+        {
+          "index": 0,
+          "start_frame": 1800,
+          "end_frame_exclusive": 2200,
+          "start_time_s": 36.0,
+          "end_time_s": 44.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 5,
+              "right": 5
+            },
+            "double_support_ratio": 0.88,
+            "single_support_ratio": 0.12,
+            "left_single_support_ratio": 0.0825,
+            "right_single_support_ratio": 0.0375,
+            "flight_ratio": 0.0,
+            "ds_ss_ds_cycle_count": 8
+          }
+        },
+        {
+          "index": 1,
+          "start_frame": 2200,
+          "end_frame_exclusive": 2600,
+          "start_time_s": 44.0,
+          "end_time_s": 52.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 3,
+              "right": 4
+            },
+            "double_support_ratio": 0.8475,
+            "single_support_ratio": 0.1525,
+            "left_single_support_ratio": 0.08,
+            "right_single_support_ratio": 0.0725,
+            "flight_ratio": 0.0,
+            "ds_ss_ds_cycle_count": 5
+          }
+        },
+        {
+          "index": 2,
+          "start_frame": 2600,
+          "end_frame_exclusive": 3000,
+          "start_time_s": 52.0,
+          "end_time_s": 60.0,
+          "phase": {
+            "frames": 400,
+            "contact_window_count": {
+              "left": 7,
+              "right": 3
+            },
+            "double_support_ratio": 0.6725,
+            "single_support_ratio": 0.3225,
+            "left_single_support_ratio": 0.135,
+            "right_single_support_ratio": 0.1875,
+            "flight_ratio": 0.005,
+            "ds_ss_ds_cycle_count": 6
+          }
+        }
+      ]
+    },
+    "aggregate_phase": {
+      "train": {
+        "frames": 1600,
+        "contact_window_count": {
+          "left": 11,
+          "right": 12
+        },
+        "double_support_ratio": 0.834375,
+        "single_support_ratio": 0.165,
+        "left_single_support_ratio": 0.073125,
+        "right_single_support_ratio": 0.091875,
+        "flight_ratio": 0.000625,
+        "ds_ss_ds_cycle_count": 21
+      },
+      "held_out": {
+        "frames": 1200,
+        "contact_window_count": {
+          "left": 13,
+          "right": 10
+        },
+        "double_support_ratio": 0.8,
+        "single_support_ratio": 0.19833333333333333,
+        "left_single_support_ratio": 0.09916666666666667,
+        "right_single_support_ratio": 0.09916666666666667,
+        "flight_ratio": 0.0016666666666666668,
+        "ds_ss_ds_cycle_count": 19
+      }
+    }
+  },
+  "gate": {
+    "checks": {
+      "all_required_arrays_finite": true,
+      "source_manifest_hash_and_samples_match": true,
+      "timestamps_strictly_increasing": true,
+      "source_joint_name_set_exact_official31": true,
+      "wbt29_and_head2_partition_official31": true,
+      "wbt29_actual_q_preserved_by_name": true,
+      "head_locked_exact_nominal": true,
+      "timestamp_jitter_bounded": true,
+      "joint_step_consistent_with_logged_dq": true,
+      "joint_dq_consistency": true,
+      "root_linear_velocity_consistency": true,
+      "root_angular_velocity_consistency": true,
+      "quaternion_normalized": true,
+      "joint_limit_overshoot_bounded": true,
+      "joint_limit_violation_sparse": true,
+      "recorded_root_survives": true,
+      "active_sole_no_deep_penetration": true,
+      "full_trace_has_dynamic_single_support": true,
+      "full_trace_has_double_support": true,
+      "full_trace_flight_sparse": true,
+      "full_trace_has_contact_cycles": true,
+      "train_split_dynamic": true,
+      "held_out_split_dynamic": true,
+      "both_splits_have_double_support": true,
+      "both_splits_have_sparse_flight": true,
+      "command_valid_for_all_wbt29": true,
+      "command_kp_positive_for_all_wbt29": true,
+      "command_response_error_bounded": true,
+      "command_delta_bounded": true
+    },
+    "pass": true
+  },
+  "decision": {
+    "status": "PHASE10_NATIVE_DYNAMIC_GOLD_SEED_EXPORTED",
+    "exported": true,
+    "failed_checks": [],
+    "result": "official native actual-state trace通过完整性、动力学记录一致性、active-sole接触周期和时间块泄漏门，已导出独立Gold sanity seed。",
+    "conclusion": "该资产可用于隔离X2原生可执行reference的训练/评估pipeline sanity；它不增加GMR Silver数量，也不证明跨本体迁移。",
+    "next_step": "下一阶段只做pipeline tracking sanity对照，并严格保持held-out时间块；不得将train/held-out合并或随机切帧。"
+  }
+}

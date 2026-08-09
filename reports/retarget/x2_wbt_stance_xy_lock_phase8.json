@@ -1,0 +1,508 @@
+{
+  "schema_version": "x2_wbt_stance_xy_lock_phase8_v1",
+  "provenance": {
+    "raw_source": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase1_forefoot_smoothing_ab/current_v4_exact30/x2_current_v4_exact30.pkl",
+      "sha256": "3e4618f7b46313b8bb8a91217dff984b799f09c160d5221ca5a557786547b7a1"
+    },
+    "phase7_bronze": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase7_canonical_root_ground/x2_phase7_root_ground.pkl",
+      "sha256": "27dd0c1766181e7610a5e38274a35f0cac1fa158937b75014d40f03c814e59a6"
+    },
+    "official_scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "output_rejected_diagnostic": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/diagnostics/phase8_stance_xy_lock_rejected/x2_phase8_stance_xy_lock.pkl",
+      "sha256": "d9edb3503bb1abb29af6cd665c7c708436cac6cfe7ce7dc582d997fe06d7c7eb"
+    }
+  },
+  "truth_boundary": {
+    "contact_and_slip_are_official_model_estimates": true,
+    "not_hardware_grf_cop_or_foot_force": true,
+    "prescribed_free_replay_executed": false,
+    "training_teacher_checkpoint_base_git_baidu_real_robot": false
+  },
+  "frozen_contract": {
+    "phase7_root_ground_formula": "z'=z+MA9(c_reset-min_24_active_sole_distance)",
+    "clearance_m": 0.005050000000000003,
+    "sole_sphere_radius_m": 0.005,
+    "source_timing_root_xy_orientation_foot_semantics": "unchanged"
+  },
+  "single_structural_intervention": {
+    "name": "per-contiguous-stance-window foot XY lock",
+    "root_xy_or_orientation_changed": false,
+    "swing_locked": false,
+    "free_survival_used_for_parameter_selection": false,
+    "constants": {
+      "blend_frames": 4,
+      "ik_iterations": 5,
+      "ik_gain": 0.55,
+      "ik_damping": 0.0075,
+      "ik_delta_limit_rad": 0.04
+    }
+  },
+  "per_role": {
+    "walk_straight": {
+      "motion_key": "KIT__424__walking_slow02_stageii",
+      "diagnostics": {
+        "stance_windows": {
+          "left": 5,
+          "right": 7
+        },
+        "stance_frames": {
+          "left": 131,
+          "right": 176
+        },
+        "ik_residual_p95_m": 0.0022587447553895816,
+        "joint_delta_abs_max_rad": 0.09422694979517517,
+        "boundary_joint_delta_abs_max_rad": 0.0,
+        "swing_joint_delta_abs_max_rad": 0.0,
+        "weight_nonzero_frames": {
+          "left": 121,
+          "right": 163
+        }
+      },
+      "metrics": {
+        "joint_step_max_rad": {
+          "baseline": 0.0893467366695404,
+          "candidate": 0.09283396787941456
+        },
+        "stance_slip_p95_mps_model_estimate": {
+          "baseline": 0.35484435967602257,
+          "candidate": 0.5149625974916221
+        },
+        "contact_intent_agreement": {
+          "per_side": {
+            "left": 0.9291666666666667,
+            "right": 0.9833333333333333
+          },
+          "macro": 0.95625
+        },
+        "ground": {
+          "raw_lowest_signed_distance_p05_p50_p95_m": [
+            0.004616531535708025,
+            0.014153963194113734,
+            0.020561959585524706
+          ],
+          "canonical_lowest_signed_distance_p05_p50_p95_m": [
+            0.0033269369456155337,
+            0.004981598894874842,
+            0.008391284561739563
+          ],
+          "canonical_lowest_clearance_error_abs_p95_m": 0.005351187002459553,
+          "canonical_deep_penetration_fraction": 0.0,
+          "correction_min_max_m": [
+            -0.015464077358392605,
+            0.00425853960046566
+          ],
+          "correction_step_p95_max_m": [
+            0.0020452670977316434,
+            0.00298161451605238
+          ],
+          "geometry_contact_threshold_m": 0.010050000000000003,
+          "geometry_contact_fraction": {
+            "left": 0.5416666666666666,
+            "right": 0.75
+          },
+          "checks": {
+            "lowest_clearance_error_p95_le_4r": true,
+            "deep_penetration_fraction_le_1pct": true,
+            "correction_step_le_sphere_diameter": true
+          },
+          "pass": true
+        },
+        "root_xy_exact": true,
+        "root_orientation_exact": true,
+        "fps_exact": true
+      },
+      "gate": {
+        "joint_step_limit_rad": 0.15,
+        "stance_slip_limit_mps": 0.3903287956436249,
+        "checks": {
+          "joint_step_within_tier_or_110pct_baseline": true,
+          "phase7_ground_contract_preserved": true,
+          "window_boundaries_exact": true,
+          "swing_joint_path_exact": true,
+          "root_xy_orientation_timing_exact": true,
+          "contact_intent_agreement_ge_0p90": true,
+          "model_stance_slip_not_worse": false
+        },
+        "pass": false
+      }
+    },
+    "turn_left": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B11_-_walk_turn_left_(135)_stageii",
+      "diagnostics": {
+        "stance_windows": {
+          "left": 8,
+          "right": 9
+        },
+        "stance_frames": {
+          "left": 95,
+          "right": 102
+        },
+        "ik_residual_p95_m": 0.030767418096304587,
+        "joint_delta_abs_max_rad": 0.2,
+        "boundary_joint_delta_abs_max_rad": 0.0,
+        "swing_joint_delta_abs_max_rad": 0.0,
+        "weight_nonzero_frames": {
+          "left": 79,
+          "right": 84
+        }
+      },
+      "metrics": {
+        "joint_step_max_rad": {
+          "baseline": 0.15309232473373413,
+          "candidate": 0.23141101747751236
+        },
+        "stance_slip_p95_mps_model_estimate": {
+          "baseline": 1.749703758016701,
+          "candidate": 2.8898818558996706
+        },
+        "contact_intent_agreement": {
+          "per_side": {
+            "left": 0.9083333333333333,
+            "right": 0.9041666666666667
+          },
+          "macro": 0.90625
+        },
+        "ground": {
+          "raw_lowest_signed_distance_p05_p50_p95_m": [
+            -0.044183461319832404,
+            -0.026328312970568625,
+            -0.011312734129659519
+          ],
+          "canonical_lowest_signed_distance_p05_p50_p95_m": [
+            -0.010371643919504715,
+            0.005906823129423947,
+            0.01759376303711577
+          ],
+          "canonical_lowest_clearance_error_abs_p95_m": 0.01684501921732438,
+          "canonical_deep_penetration_fraction": 0.0,
+          "correction_min_max_m": [
+            0.020926040890984415,
+            0.04547502182966686
+          ],
+          "correction_step_p95_max_m": [
+            0.002957592473872338,
+            0.003680696625071131
+          ],
+          "geometry_contact_threshold_m": 0.010050000000000003,
+          "geometry_contact_fraction": {
+            "left": 0.3458333333333333,
+            "right": 0.4041666666666667
+          },
+          "checks": {
+            "lowest_clearance_error_p95_le_4r": true,
+            "deep_penetration_fraction_le_1pct": true,
+            "correction_step_le_sphere_diameter": true
+          },
+          "pass": true
+        },
+        "root_xy_exact": true,
+        "root_orientation_exact": true,
+        "fps_exact": true
+      },
+      "gate": {
+        "joint_step_limit_rad": 0.16840155720710756,
+        "stance_slip_limit_mps": 1.9246741338183713,
+        "checks": {
+          "joint_step_within_tier_or_110pct_baseline": false,
+          "phase7_ground_contract_preserved": true,
+          "window_boundaries_exact": true,
+          "swing_joint_path_exact": true,
+          "root_xy_orientation_timing_exact": true,
+          "contact_intent_agreement_ge_0p90": true,
+          "model_stance_slip_not_worse": false
+        },
+        "pass": false
+      }
+    },
+    "turn_right": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B13_-_walk_turn_right_(45)_stageii",
+      "diagnostics": {
+        "stance_windows": {
+          "left": 9,
+          "right": 10
+        },
+        "stance_frames": {
+          "left": 107,
+          "right": 95
+        },
+        "ik_residual_p95_m": 0.044336480310221776,
+        "joint_delta_abs_max_rad": 0.20000000000000004,
+        "boundary_joint_delta_abs_max_rad": 0.0,
+        "swing_joint_delta_abs_max_rad": 0.0,
+        "weight_nonzero_frames": {
+          "left": 89,
+          "right": 75
+        }
+      },
+      "metrics": {
+        "joint_step_max_rad": {
+          "baseline": 0.14716655015945435,
+          "candidate": 0.24334331089630723
+        },
+        "stance_slip_p95_mps_model_estimate": {
+          "baseline": 1.9553275294653234,
+          "candidate": 3.6503522151482266
+        },
+        "contact_intent_agreement": {
+          "per_side": {
+            "left": 0.7833333333333333,
+            "right": 0.8375
+          },
+          "macro": 0.8104166666666667
+        },
+        "ground": {
+          "raw_lowest_signed_distance_p05_p50_p95_m": [
+            -0.039842875937293944,
+            -0.023565554460121135,
+            -0.010514810410343727
+          ],
+          "canonical_lowest_signed_distance_p05_p50_p95_m": [
+            -0.008054301559276732,
+            0.006327800088031185,
+            0.01480587849412598
+          ],
+          "canonical_lowest_clearance_error_abs_p95_m": 0.014965331320691992,
+          "canonical_deep_penetration_fraction": 0.0,
+          "correction_min_max_m": [
+            0.018645825344238094,
+            0.041149509973935426
+          ],
+          "correction_step_p95_max_m": [
+            0.0026806354548047392,
+            0.003787384301768948
+          ],
+          "geometry_contact_threshold_m": 0.010050000000000003,
+          "geometry_contact_fraction": {
+            "left": 0.4708333333333333,
+            "right": 0.4
+          },
+          "checks": {
+            "lowest_clearance_error_p95_le_4r": true,
+            "deep_penetration_fraction_le_1pct": true,
+            "correction_step_le_sphere_diameter": true
+          },
+          "pass": true
+        },
+        "root_xy_exact": true,
+        "root_orientation_exact": true,
+        "fps_exact": true
+      },
+      "gate": {
+        "joint_step_limit_rad": 0.16188320517539978,
+        "stance_slip_limit_mps": 2.150860282411856,
+        "checks": {
+          "joint_step_within_tier_or_110pct_baseline": false,
+          "phase7_ground_contract_preserved": true,
+          "window_boundaries_exact": true,
+          "swing_joint_path_exact": true,
+          "root_xy_orientation_timing_exact": true,
+          "contact_intent_agreement_ge_0p90": false,
+          "model_stance_slip_not_worse": false
+        },
+        "pass": false
+      }
+    },
+    "stand_to_walk": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B1_-_stand_to_walk_stageii",
+      "diagnostics": {
+        "stance_windows": {
+          "left": 3,
+          "right": 5
+        },
+        "stance_frames": {
+          "left": 56,
+          "right": 114
+        },
+        "ik_residual_p95_m": 0.010074359287095831,
+        "joint_delta_abs_max_rad": 0.2,
+        "boundary_joint_delta_abs_max_rad": 0.0,
+        "swing_joint_delta_abs_max_rad": 0.0,
+        "weight_nonzero_frames": {
+          "left": 50,
+          "right": 104
+        }
+      },
+      "metrics": {
+        "joint_step_max_rad": {
+          "baseline": 0.14028120040893555,
+          "candidate": 0.19812741270288825
+        },
+        "stance_slip_p95_mps_model_estimate": {
+          "baseline": 1.2338972979416527,
+          "candidate": 1.901273838808089
+        },
+        "contact_intent_agreement": {
+          "per_side": {
+            "left": 0.9139784946236559,
+            "right": 0.9139784946236559
+          },
+          "macro": 0.9139784946236559
+        },
+        "ground": {
+          "raw_lowest_signed_distance_p05_p50_p95_m": [
+            -0.04904482617438424,
+            -0.026328708763951214,
+            -0.016160631588456608
+          ],
+          "canonical_lowest_signed_distance_p05_p50_p95_m": [
+            -0.0047722650559552235,
+            0.005124789734336635,
+            0.013261932831191873
+          ],
+          "canonical_lowest_clearance_error_abs_p95_m": 0.011620681114572859,
+          "canonical_deep_penetration_fraction": 0.0,
+          "correction_min_max_m": [
+            0.02218399124649542,
+            0.05718749687563129
+          ],
+          "correction_step_p95_max_m": [
+            0.0027914981691182453,
+            0.0038817616843630706
+          ],
+          "geometry_contact_threshold_m": 0.010050000000000003,
+          "geometry_contact_fraction": {
+            "left": 0.3010752688172043,
+            "right": 0.6236559139784946
+          },
+          "checks": {
+            "lowest_clearance_error_p95_le_4r": true,
+            "deep_penetration_fraction_le_1pct": true,
+            "correction_step_le_sphere_diameter": true
+          },
+          "pass": true
+        },
+        "root_xy_exact": true,
+        "root_orientation_exact": true,
+        "fps_exact": true
+      },
+      "gate": {
+        "joint_step_limit_rad": 0.15430932044982912,
+        "stance_slip_limit_mps": 1.357287027735818,
+        "checks": {
+          "joint_step_within_tier_or_110pct_baseline": false,
+          "phase7_ground_contract_preserved": true,
+          "window_boundaries_exact": true,
+          "swing_joint_path_exact": true,
+          "root_xy_orientation_timing_exact": true,
+          "contact_intent_agreement_ge_0p90": true,
+          "model_stance_slip_not_worse": false
+        },
+        "pass": false
+      }
+    },
+    "walk_to_stand": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B2_-_walk_to_stand_stageii",
+      "diagnostics": {
+        "stance_windows": {
+          "left": 4,
+          "right": 5
+        },
+        "stance_frames": {
+          "left": 88,
+          "right": 98
+        },
+        "ik_residual_p95_m": 0.013020669317470302,
+        "joint_delta_abs_max_rad": 0.2,
+        "boundary_joint_delta_abs_max_rad": 3.648957966177116e-18,
+        "swing_joint_delta_abs_max_rad": 0.0,
+        "weight_nonzero_frames": {
+          "left": 80,
+          "right": 88
+        }
+      },
+      "metrics": {
+        "joint_step_max_rad": {
+          "baseline": 0.13990512490272522,
+          "candidate": 0.21465576440095901
+        },
+        "stance_slip_p95_mps_model_estimate": {
+          "baseline": 1.4184876524439236,
+          "candidate": 2.301728206620827
+        },
+        "contact_intent_agreement": {
+          "per_side": {
+            "left": 0.9,
+            "right": 0.8705882352941177
+          },
+          "macro": 0.8852941176470588
+        },
+        "ground": {
+          "raw_lowest_signed_distance_p05_p50_p95_m": [
+            -0.04614313070324925,
+            -0.022071302424246503,
+            -0.01186109221947893
+          ],
+          "canonical_lowest_signed_distance_p05_p50_p95_m": [
+            -0.006197915428517766,
+            0.005153079661972382,
+            0.0155527468016552
+          ],
+          "canonical_lowest_clearance_error_abs_p95_m": 0.013891056308454136,
+          "canonical_deep_penetration_fraction": 0.0,
+          "correction_min_max_m": [
+            0.018570210630542837,
+            0.05270116215107228
+          ],
+          "correction_step_p95_max_m": [
+            0.002519148579053597,
+            0.003449240915013342
+          ],
+          "geometry_contact_threshold_m": 0.010050000000000003,
+          "geometry_contact_fraction": {
+            "left": 0.5,
+            "right": 0.5411764705882353
+          },
+          "checks": {
+            "lowest_clearance_error_p95_le_4r": true,
+            "deep_penetration_fraction_le_1pct": true,
+            "correction_step_le_sphere_diameter": true
+          },
+          "pass": true
+        },
+        "root_xy_exact": true,
+        "root_orientation_exact": true,
+        "fps_exact": true
+      },
+      "gate": {
+        "joint_step_limit_rad": 0.15389563739299775,
+        "stance_slip_limit_mps": 1.560336417688316,
+        "checks": {
+          "joint_step_within_tier_or_110pct_baseline": false,
+          "phase7_ground_contract_preserved": true,
+          "window_boundaries_exact": true,
+          "swing_joint_path_exact": true,
+          "root_xy_orientation_timing_exact": true,
+          "contact_intent_agreement_ge_0p90": false,
+          "model_stance_slip_not_worse": false
+        },
+        "pass": false
+      }
+    }
+  },
+  "decision": {
+    "offline_all_five": false,
+    "failed_roles": [
+      "walk_straight",
+      "turn_left",
+      "turn_right",
+      "stand_to_walk",
+      "walk_to_stand"
+    ],
+    "failed_checks": [
+      "contact_intent_agreement_ge_0p90",
+      "joint_step_within_tier_or_110pct_baseline",
+      "model_stance_slip_not_worse"
+    ],
+    "official_physics_ab_executed": false,
+    "status": "PHASE8_STANCE_XY_LOCK_OFFLINE_REJECTED",
+    "result": "离线门在 ['walk_straight', 'turn_left', 'turn_right', 'stand_to_walk', 'walk_to_stand'] 失败；失败项为 ['contact_intent_agreement_ge_0p90', 'joint_step_within_tier_or_110pct_baseline', 'model_stance_slip_not_worse']，未进入 prescribed/free。",
+    "conclusion": "碎片 stance-window 的 clipwise 常量XY anchor在C2进出边界制造更高足速和关节跳变；当前IK reference生成器表示不足。",
+    "next_step": "冻结反例，不扩 anchor/blend/SE2/IK 参数；若继续应转为连续接触相位/全轨迹优化或闭环controller，而非逐窗IK。"
+  }
+}
