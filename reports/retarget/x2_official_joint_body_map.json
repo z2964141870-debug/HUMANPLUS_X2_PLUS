@@ -1,0 +1,1558 @@
+{
+  "contract_version": "x2_official_v1_phase0_20260809",
+  "provenance": {
+    "scene_xml": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "x2_xml": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/x2.xml",
+      "sha256": "3ff43f05beb57412a804ba9fe05cd9adcdfce78e9ce73a95a71ac58ad20d91a3"
+    },
+    "model_yaml": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/default.yaml",
+      "sha256": "3d10d8147d9f4ac155070441ea7f6b47d6af3238d0b37c3a81a5eeb41b27ad23"
+    },
+    "control_yaml": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+      "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+    }
+  },
+  "model_counts": {
+    "nq": 38,
+    "nv": 37,
+    "actuators": 31,
+    "bodies_excluding_world": 32,
+    "hinge_joints": 31
+  },
+  "control_boundaries": {
+    "official_mjcf_actuated_31": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint",
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint",
+      "head_yaw_joint",
+      "head_pitch_joint"
+    ],
+    "official_rl_sample_29": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_pitch_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_roll_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint"
+    ],
+    "head_locked_2": [
+      "head_yaw_joint",
+      "head_pitch_joint"
+    ],
+    "speed_backend_lower_15": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint"
+    ],
+    "wbt_target_29": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_pitch_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_roll_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint"
+    ]
+  },
+  "coordinate_system": {
+    "world": "right-handed, +Z up",
+    "root_body": "pelvis",
+    "root_joint": "floating_base_joint",
+    "tracking_frames": {
+      "pelvis": "pelvis",
+      "torso": "torso_link",
+      "left_foot": "left_ankle_roll_link",
+      "right_foot": "right_ankle_roll_link",
+      "left_hand": "left_wrist_roll_link",
+      "right_hand": "right_wrist_roll_link"
+    },
+    "warning": "official MJCF defines no dedicated palm/sole tracking site; these links are explicit proxies"
+  },
+  "control": {
+    "frequency_hz": 50.0,
+    "dt_s": 0.02,
+    "official_rl_action_scale": 0.25,
+    "official_rl_obs_dim": 151,
+    "official_rl_frame_stack": 5,
+    "official_rl_num_actions": 29,
+    "note": "WBT/Any2Any action scale must be pre-registered separately; do not inherit 0.25 silently"
+  },
+  "joints": [
+    {
+      "name": "left_hip_pitch_joint",
+      "mjcf_index_31": 0,
+      "official_rl_index_29": 0,
+      "speed_backend_index_15": 0,
+      "body": "left_hip_pitch_link",
+      "parent_body": "pelvis",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -2.704,
+        2.556
+      ],
+      "model_nominal_rad": -0.248,
+      "official_rl_default_rad": -0.312,
+      "official_rl_kp": 120.0,
+      "official_rl_kd": 5.0
+    },
+    {
+      "name": "left_hip_roll_joint",
+      "mjcf_index_31": 1,
+      "official_rl_index_29": 3,
+      "speed_backend_index_15": 1,
+      "body": "left_hip_roll_link",
+      "parent_body": "left_hip_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.235,
+        2.906
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 100.0,
+      "official_rl_kd": 4.0
+    },
+    {
+      "name": "left_hip_yaw_joint",
+      "mjcf_index_31": 2,
+      "official_rl_index_29": 6,
+      "speed_backend_index_15": 2,
+      "body": "left_hip_yaw_link",
+      "parent_body": "left_hip_roll_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -1.684,
+        3.43
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 100.0,
+      "official_rl_kd": 4.0
+    },
+    {
+      "name": "left_knee_joint",
+      "mjcf_index_31": 3,
+      "official_rl_index_29": 9,
+      "speed_backend_index_15": 3,
+      "body": "left_knee_link",
+      "parent_body": "left_hip_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        0.0,
+        2.4073
+      ],
+      "model_nominal_rad": 0.5303,
+      "official_rl_default_rad": 0.669,
+      "official_rl_kp": 150.0,
+      "official_rl_kd": 5.0
+    },
+    {
+      "name": "left_ankle_pitch_joint",
+      "mjcf_index_31": 4,
+      "official_rl_index_29": 13,
+      "speed_backend_index_15": 4,
+      "body": "left_ankle_pitch_link",
+      "parent_body": "left_knee_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.803,
+        0.453
+      ],
+      "model_nominal_rad": -0.2823,
+      "official_rl_default_rad": -0.363,
+      "official_rl_kp": 40.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "left_ankle_roll_joint",
+      "mjcf_index_31": 5,
+      "official_rl_index_29": 17,
+      "speed_backend_index_15": 5,
+      "body": "left_ankle_roll_link",
+      "parent_body": "left_ankle_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.262,
+        0.262
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 40.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "right_hip_pitch_joint",
+      "mjcf_index_31": 6,
+      "official_rl_index_29": 1,
+      "speed_backend_index_15": 6,
+      "body": "right_hip_pitch_link",
+      "parent_body": "pelvis",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -2.704,
+        2.556
+      ],
+      "model_nominal_rad": -0.248,
+      "official_rl_default_rad": -0.312,
+      "official_rl_kp": 120.0,
+      "official_rl_kd": 5.0
+    },
+    {
+      "name": "right_hip_roll_joint",
+      "mjcf_index_31": 7,
+      "official_rl_index_29": 4,
+      "speed_backend_index_15": 7,
+      "body": "right_hip_roll_link",
+      "parent_body": "right_hip_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -2.906,
+        0.235
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 100.0,
+      "official_rl_kd": 4.0
+    },
+    {
+      "name": "right_hip_yaw_joint",
+      "mjcf_index_31": 8,
+      "official_rl_index_29": 7,
+      "speed_backend_index_15": 8,
+      "body": "right_hip_yaw_link",
+      "parent_body": "right_hip_roll_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -3.43,
+        1.684
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 100.0,
+      "official_rl_kd": 4.0
+    },
+    {
+      "name": "right_knee_joint",
+      "mjcf_index_31": 9,
+      "official_rl_index_29": 10,
+      "speed_backend_index_15": 9,
+      "body": "right_knee_link",
+      "parent_body": "right_hip_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        0.0,
+        2.4073
+      ],
+      "model_nominal_rad": 0.5303,
+      "official_rl_default_rad": 0.669,
+      "official_rl_kp": 150.0,
+      "official_rl_kd": 5.0
+    },
+    {
+      "name": "right_ankle_pitch_joint",
+      "mjcf_index_31": 10,
+      "official_rl_index_29": 14,
+      "speed_backend_index_15": 10,
+      "body": "right_ankle_pitch_link",
+      "parent_body": "right_knee_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.803,
+        0.453
+      ],
+      "model_nominal_rad": -0.2823,
+      "official_rl_default_rad": -0.363,
+      "official_rl_kp": 40.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "right_ankle_roll_joint",
+      "mjcf_index_31": 11,
+      "official_rl_index_29": 18,
+      "speed_backend_index_15": 11,
+      "body": "right_ankle_roll_link",
+      "parent_body": "right_ankle_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.2625,
+        0.2625
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 40.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "waist_yaw_joint",
+      "mjcf_index_31": 12,
+      "official_rl_index_29": 2,
+      "speed_backend_index_15": 12,
+      "body": "waist_yaw_link",
+      "parent_body": "pelvis",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -3.43,
+        2.382
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 40.1792,
+      "official_rl_kd": 2.5579
+    },
+    {
+      "name": "waist_pitch_joint",
+      "mjcf_index_31": 13,
+      "official_rl_index_29": 5,
+      "speed_backend_index_15": 13,
+      "body": "waist_pitch_link",
+      "parent_body": "waist_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.314,
+        0.314
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 200.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "waist_roll_joint",
+      "mjcf_index_31": 14,
+      "official_rl_index_29": 8,
+      "speed_backend_index_15": 14,
+      "body": "torso_link",
+      "parent_body": "waist_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.488,
+        0.488
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 200.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "left_shoulder_pitch_joint",
+      "mjcf_index_31": 15,
+      "official_rl_index_29": 11,
+      "speed_backend_index_15": null,
+      "body": "left_shoulder_pitch_link",
+      "parent_body": "torso_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -3.08,
+        2.04
+      ],
+      "model_nominal_rad": 0.4,
+      "official_rl_default_rad": 0.2,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "left_shoulder_roll_joint",
+      "mjcf_index_31": 16,
+      "official_rl_index_29": 15,
+      "speed_backend_index_15": null,
+      "body": "left_shoulder_roll_link",
+      "parent_body": "left_shoulder_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.061,
+        2.993
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.2,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "left_shoulder_yaw_joint",
+      "mjcf_index_31": 17,
+      "official_rl_index_29": 19,
+      "speed_backend_index_15": null,
+      "body": "left_shoulder_yaw_link",
+      "parent_body": "left_shoulder_roll_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -2.556,
+        2.556
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "left_elbow_joint",
+      "mjcf_index_31": 18,
+      "official_rl_index_29": 21,
+      "speed_backend_index_15": null,
+      "body": "left_elbow_link",
+      "parent_body": "left_shoulder_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -2.3556,
+        0.0
+      ],
+      "model_nominal_rad": -1.2,
+      "official_rl_default_rad": -0.3,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "left_wrist_yaw_joint",
+      "mjcf_index_31": 19,
+      "official_rl_index_29": 23,
+      "speed_backend_index_15": null,
+      "body": "left_wrist_yaw_link",
+      "parent_body": "left_elbow_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -2.556,
+        2.556
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 20.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "left_wrist_pitch_joint",
+      "mjcf_index_31": 20,
+      "official_rl_index_29": 25,
+      "speed_backend_index_15": null,
+      "body": "left_wrist_pitch_link",
+      "parent_body": "left_wrist_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.558,
+        0.558
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 20.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "left_wrist_roll_joint",
+      "mjcf_index_31": 21,
+      "official_rl_index_29": 27,
+      "speed_backend_index_15": null,
+      "body": "left_wrist_roll_link",
+      "parent_body": "left_wrist_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -1.571,
+        0.724
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 20.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "right_shoulder_pitch_joint",
+      "mjcf_index_31": 22,
+      "official_rl_index_29": 12,
+      "speed_backend_index_15": null,
+      "body": "right_shoulder_pitch_link",
+      "parent_body": "torso_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -3.08,
+        2.04
+      ],
+      "model_nominal_rad": 0.4,
+      "official_rl_default_rad": 0.2,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "right_shoulder_roll_joint",
+      "mjcf_index_31": 23,
+      "official_rl_index_29": 16,
+      "speed_backend_index_15": null,
+      "body": "right_shoulder_roll_link",
+      "parent_body": "right_shoulder_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -2.993,
+        0.061
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": -0.2,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "right_shoulder_yaw_joint",
+      "mjcf_index_31": 24,
+      "official_rl_index_29": 20,
+      "speed_backend_index_15": null,
+      "body": "right_shoulder_yaw_link",
+      "parent_body": "right_shoulder_roll_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -2.556,
+        2.556
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "right_elbow_joint",
+      "mjcf_index_31": 25,
+      "official_rl_index_29": 22,
+      "speed_backend_index_15": null,
+      "body": "right_elbow_link",
+      "parent_body": "right_shoulder_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -2.3556,
+        0.0
+      ],
+      "model_nominal_rad": -1.2,
+      "official_rl_default_rad": -0.3,
+      "official_rl_kp": 50.0,
+      "official_rl_kd": 3.0
+    },
+    {
+      "name": "right_wrist_yaw_joint",
+      "mjcf_index_31": 26,
+      "official_rl_index_29": 24,
+      "speed_backend_index_15": null,
+      "body": "right_wrist_yaw_link",
+      "parent_body": "right_elbow_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -2.556,
+        2.556
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 20.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "right_wrist_pitch_joint",
+      "mjcf_index_31": 27,
+      "official_rl_index_29": 26,
+      "speed_backend_index_15": null,
+      "body": "right_wrist_pitch_link",
+      "parent_body": "right_wrist_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.558,
+        0.558
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 20.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "right_wrist_roll_joint",
+      "mjcf_index_31": 28,
+      "official_rl_index_29": 28,
+      "speed_backend_index_15": null,
+      "body": "right_wrist_roll_link",
+      "parent_body": "right_wrist_pitch_link",
+      "axis_xyz": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.724,
+        1.571
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": 0.0,
+      "official_rl_kp": 20.0,
+      "official_rl_kd": 2.0
+    },
+    {
+      "name": "head_yaw_joint",
+      "mjcf_index_31": 29,
+      "official_rl_index_29": null,
+      "speed_backend_index_15": null,
+      "body": "head_yaw_link",
+      "parent_body": "torso_link",
+      "axis_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range_rad": [
+        -0.366,
+        0.366
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": null,
+      "official_rl_kp": null,
+      "official_rl_kd": null
+    },
+    {
+      "name": "head_pitch_joint",
+      "mjcf_index_31": 30,
+      "official_rl_index_29": null,
+      "speed_backend_index_15": null,
+      "body": "head_pitch_link",
+      "parent_body": "head_yaw_link",
+      "axis_xyz": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range_rad": [
+        -0.3838,
+        0.3838
+      ],
+      "model_nominal_rad": 0.0,
+      "official_rl_default_rad": null,
+      "official_rl_kp": null,
+      "official_rl_kd": null
+    }
+  ],
+  "bodies": [
+    {
+      "name": "pelvis",
+      "parent": "world",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.68
+      ],
+      "mirror_body": "pelvis"
+    },
+    {
+      "name": "left_hip_pitch_link",
+      "parent": "pelvis",
+      "local_position_m": [
+        0.0,
+        0.07135,
+        0.0
+      ],
+      "mirror_body": "right_hip_pitch_link"
+    },
+    {
+      "name": "left_hip_roll_link",
+      "parent": "left_hip_pitch_link",
+      "local_position_m": [
+        -0.000575,
+        0.0657,
+        0.0
+      ],
+      "mirror_body": "right_hip_roll_link"
+    },
+    {
+      "name": "left_hip_yaw_link",
+      "parent": "left_hip_roll_link",
+      "local_position_m": [
+        0.000575,
+        0.0,
+        -0.13685
+      ],
+      "mirror_body": "right_hip_yaw_link"
+    },
+    {
+      "name": "left_knee_link",
+      "parent": "left_hip_yaw_link",
+      "local_position_m": [
+        -0.00766,
+        0.000225,
+        -0.1831
+      ],
+      "mirror_body": "right_knee_link"
+    },
+    {
+      "name": "left_ankle_pitch_link",
+      "parent": "left_knee_link",
+      "local_position_m": [
+        -0.01,
+        -0.000124911,
+        -0.282
+      ],
+      "mirror_body": "right_ankle_pitch_link"
+    },
+    {
+      "name": "left_ankle_roll_link",
+      "parent": "left_ankle_pitch_link",
+      "local_position_m": [
+        -0.00175,
+        0.0,
+        0.0
+      ],
+      "mirror_body": "right_ankle_roll_link"
+    },
+    {
+      "name": "right_hip_pitch_link",
+      "parent": "pelvis",
+      "local_position_m": [
+        0.0,
+        -0.07135,
+        0.0
+      ],
+      "mirror_body": "left_hip_pitch_link"
+    },
+    {
+      "name": "right_hip_roll_link",
+      "parent": "right_hip_pitch_link",
+      "local_position_m": [
+        0.0,
+        -0.0657,
+        0.0
+      ],
+      "mirror_body": "left_hip_roll_link"
+    },
+    {
+      "name": "right_hip_yaw_link",
+      "parent": "right_hip_roll_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        -0.13685
+      ],
+      "mirror_body": "left_hip_yaw_link"
+    },
+    {
+      "name": "right_knee_link",
+      "parent": "right_hip_yaw_link",
+      "local_position_m": [
+        -0.00766,
+        -0.000225,
+        -0.1831
+      ],
+      "mirror_body": "left_knee_link"
+    },
+    {
+      "name": "right_ankle_pitch_link",
+      "parent": "right_knee_link",
+      "local_position_m": [
+        -0.01,
+        0.000124911,
+        -0.282
+      ],
+      "mirror_body": "left_ankle_pitch_link"
+    },
+    {
+      "name": "right_ankle_roll_link",
+      "parent": "right_ankle_pitch_link",
+      "local_position_m": [
+        -0.00175,
+        0.0,
+        0.0
+      ],
+      "mirror_body": "left_ankle_roll_link"
+    },
+    {
+      "name": "waist_yaw_link",
+      "parent": "pelvis",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.06706
+      ],
+      "mirror_body": "waist_yaw_link"
+    },
+    {
+      "name": "waist_pitch_link",
+      "parent": "waist_yaw_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.0880106
+      ],
+      "mirror_body": "waist_pitch_link"
+    },
+    {
+      "name": "torso_link",
+      "parent": "waist_pitch_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror_body": "torso_link"
+    },
+    {
+      "name": "left_shoulder_pitch_link",
+      "parent": "torso_link",
+      "local_position_m": [
+        0.00329907,
+        0.143032,
+        0.241648
+      ],
+      "mirror_body": "right_shoulder_pitch_link"
+    },
+    {
+      "name": "left_shoulder_roll_link",
+      "parent": "left_shoulder_pitch_link",
+      "local_position_m": [
+        -0.000499991,
+        0.0495,
+        0.0
+      ],
+      "mirror_body": "right_shoulder_roll_link"
+    },
+    {
+      "name": "left_shoulder_yaw_link",
+      "parent": "left_shoulder_roll_link",
+      "local_position_m": [
+        0.00122424,
+        0.0,
+        -0.121195
+      ],
+      "mirror_body": "right_shoulder_yaw_link"
+    },
+    {
+      "name": "left_elbow_link",
+      "parent": "left_shoulder_yaw_link",
+      "local_position_m": [
+        0.014,
+        0.000199986,
+        -0.08295
+      ],
+      "mirror_body": "right_elbow_link"
+    },
+    {
+      "name": "left_wrist_yaw_link",
+      "parent": "left_elbow_link",
+      "local_position_m": [
+        -0.0132797,
+        -9.75488e-05,
+        -0.120576
+      ],
+      "mirror_body": "right_wrist_yaw_link"
+    },
+    {
+      "name": "left_wrist_pitch_link",
+      "parent": "left_wrist_yaw_link",
+      "local_position_m": [
+        0.000490001,
+        0.0,
+        -0.0819985
+      ],
+      "mirror_body": "right_wrist_pitch_link"
+    },
+    {
+      "name": "left_wrist_roll_link",
+      "parent": "left_wrist_pitch_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror_body": "right_wrist_roll_link"
+    },
+    {
+      "name": "right_shoulder_pitch_link",
+      "parent": "torso_link",
+      "local_position_m": [
+        0.00330094,
+        -0.143031,
+        0.241648
+      ],
+      "mirror_body": "left_shoulder_pitch_link"
+    },
+    {
+      "name": "right_shoulder_roll_link",
+      "parent": "right_shoulder_pitch_link",
+      "local_position_m": [
+        -0.0005,
+        -0.0495,
+        0.0
+      ],
+      "mirror_body": "left_shoulder_roll_link"
+    },
+    {
+      "name": "right_shoulder_yaw_link",
+      "parent": "right_shoulder_roll_link",
+      "local_position_m": [
+        0.0005,
+        0.0,
+        -0.1212
+      ],
+      "mirror_body": "left_shoulder_yaw_link"
+    },
+    {
+      "name": "right_elbow_link",
+      "parent": "right_shoulder_yaw_link",
+      "local_position_m": [
+        0.014,
+        -0.0002,
+        -0.08295
+      ],
+      "mirror_body": "left_elbow_link"
+    },
+    {
+      "name": "right_wrist_yaw_link",
+      "parent": "right_elbow_link",
+      "local_position_m": [
+        -0.014,
+        9.75261e-05,
+        -0.120694
+      ],
+      "mirror_body": "left_wrist_yaw_link"
+    },
+    {
+      "name": "right_wrist_pitch_link",
+      "parent": "right_wrist_yaw_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        -0.0818
+      ],
+      "mirror_body": "left_wrist_pitch_link"
+    },
+    {
+      "name": "right_wrist_roll_link",
+      "parent": "right_wrist_pitch_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mirror_body": "left_wrist_roll_link"
+    },
+    {
+      "name": "head_yaw_link",
+      "parent": "torso_link",
+      "local_position_m": [
+        0.00834773,
+        0.0,
+        0.309397
+      ],
+      "mirror_body": "head_yaw_link"
+    },
+    {
+      "name": "head_pitch_link",
+      "parent": "head_yaw_link",
+      "local_position_m": [
+        0.0,
+        0.0,
+        0.0889
+      ],
+      "mirror_body": "head_pitch_link"
+    }
+  ],
+  "foot_contact_geometry": {
+    "left": [
+      {
+        "local_index": 0,
+        "mjcf_geom_id": 15,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.05,
+          0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 1,
+        "mjcf_geom_id": 16,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.065,
+          0.025,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 2,
+        "mjcf_geom_id": 17,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.05,
+          -0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 3,
+        "mjcf_geom_id": 18,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.065,
+          -0.025,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 4,
+        "mjcf_geom_id": 19,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.11,
+          0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 5,
+        "mjcf_geom_id": 20,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.11,
+          -0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 6,
+        "mjcf_geom_id": 21,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.02,
+          -0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 7,
+        "mjcf_geom_id": 22,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.02,
+          0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 8,
+        "mjcf_geom_id": 23,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.07,
+          -0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 9,
+        "mjcf_geom_id": 24,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.07,
+          0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 10,
+        "mjcf_geom_id": 25,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.139,
+          0.0,
+          -0.066
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 11,
+        "mjcf_geom_id": 26,
+        "body": "left_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.128,
+          0.0,
+          -0.02
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      }
+    ],
+    "right": [
+      {
+        "local_index": 0,
+        "mjcf_geom_id": 38,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.05,
+          0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 1,
+        "mjcf_geom_id": 39,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.065,
+          0.025,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 2,
+        "mjcf_geom_id": 40,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.05,
+          -0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 3,
+        "mjcf_geom_id": 41,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.065,
+          -0.025,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 4,
+        "mjcf_geom_id": 42,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.11,
+          0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 5,
+        "mjcf_geom_id": 43,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.11,
+          -0.05,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 6,
+        "mjcf_geom_id": 44,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.02,
+          -0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 7,
+        "mjcf_geom_id": 45,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          -0.02,
+          0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 8,
+        "mjcf_geom_id": 46,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.07,
+          -0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 9,
+        "mjcf_geom_id": 47,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.07,
+          0.06,
+          -0.068
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 10,
+        "mjcf_geom_id": 48,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.139,
+          0.0,
+          -0.066
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      },
+      {
+        "local_index": 11,
+        "mjcf_geom_id": 49,
+        "body": "right_ankle_roll_link",
+        "type": "sphere",
+        "local_position_m": [
+          0.128,
+          0.0,
+          -0.02
+        ],
+        "radius_m": 0.005,
+        "friction": [
+          1.0,
+          0.005,
+          0.0001
+        ]
+      }
+    ]
+  }
+}

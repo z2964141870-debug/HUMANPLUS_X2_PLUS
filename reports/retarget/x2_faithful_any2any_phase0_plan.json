@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "status": "phase0_plan_locked_no_training_started",
+  "date": "2026-08-09",
+  "paper": {
+    "path": "/home/humanplus/humanoid-GPT/A/sonic_release/any2any.pdf",
+    "sha256": "912e7425a37e8e2436870dc6b1c7f3c515500597534f38356e8c7494e64a4ec8",
+    "claimed_sonic_scope": "LoRA in actor dynamics decoder and critic; FSQ and other pretrained components frozen",
+    "generic_s7_scope": "actor backbone + actor proprioception input + actor output + critic backbone; ablated on Oli-WBT to Luna, not Sonic",
+    "reported_full_budget": "8000 iterations; 4 A100 about 90 GPU-hours for Sonic-to-Oli real-world example"
+  },
+  "source": {
+    "checkpoint": "/home/humanplus/humanoid-GPT/A/sonic_release/last.pt",
+    "checkpoint_sha256": "e6bdab3f64a39336b3d41877d4f497d05f58af275f288ec0e6746c283ded8909",
+    "config": "/home/humanplus/humanoid-GPT/A/sonic_release/config.yaml",
+    "config_sha256": "f08187795fa16a839a28bc1c18e0555d38d9420e03733744341cdcb56ab629c7",
+    "body_dof": 29
+  },
+  "alignment": {
+    "target_body_dof": 29,
+    "head_dof_locked": ["head_yaw_joint", "head_pitch_joint"],
+    "contract": "x2_official_joint_body_map.json",
+    "requirements": ["observation semantic alignment", "reference body alignment", "action alignment", "exact clipping and previous-action semantics", "target PD declaration"]
+  },
+  "primary_faithful_scope": {
+    "train": ["all Linear projections in SONIC g1 dynamics decoder via LoRA", "all Linear projections in critic via LoRA"],
+    "freeze": ["robot motion/reference encoder", "SMPL/reference encoder", "FSQ bottleneck", "kinematic decoder", "all source dense weights", "action standard deviation"],
+    "forbidden_in_primary": ["contact preview adapter", "response-aware adapter", "custom root/foot rewards", "CEM teacher", "multi-critic/CWI", "recovery switching"]
+  },
+  "s7_incremental_ablation": {
+    "enabled_only_after_primary_baseline": true,
+    "variants": ["primary Sonic scope", "primary + explicit proprioception projection LoRA", "primary + explicit output boundary LoRA"],
+    "reason": "Figure 7 S7 is evidence from Oli-WBT to Luna and must not be silently substituted for the paper's Sonic-specific scope"
+  },
+  "source_training_contract": {
+    "num_envs": 4096,
+    "control_hz": 50,
+    "sim_dt_s": 0.005,
+    "decimation": 4,
+    "rollout_steps": 24,
+    "ppo_epochs": 5,
+    "mini_batches": 4,
+    "clip": 0.2,
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "actor_lr": 0.00002,
+    "critic_lr": 0.001,
+    "desired_kl": 0.01,
+    "max_grad_norm": 0.1
+  },
+  "data": {
+    "train": "only train_candidate motions that pass Silver or Gold, later expanded with an independently versioned official-X2 AMASS/PHUMA/BONES corpus",
+    "held_out_panel_count": 10,
+    "held_out_rule": "never used for optimizer updates, threshold selection, early stopping or checkpoint selection",
+    "paper_comparable_optional": "OMOMO/LAFAN official-X2 retarget if raw assets and licenses are later available",
+    "sentinels": "legacy official B/D clips remain regression pressure tests, not the sole adaptation corpus"
+  },
+  "compute_ladder": [
+    {"stage": "zero_update", "iterations": 0, "gate": "exact initialization/replay and frozen/trainable tensor audit"},
+    {"stage": "smoke", "iterations": 5, "gate": "finite rollout/loss/gradient; every intended LoRA group receives gradient"},
+    {"stage": "trend", "iterations": 25, "gate": "cross-motion improvement on training diagnostics without held-out regression or semantic failure"},
+    {"stage": "pilot", "iterations": 200, "gate": "at least two action classes improve on official physics gates across 3 seeds"},
+    {"stage": "medium", "iterations": 1000, "gate": "trend remains upward/plateaus safely; frozen source abilities retained"},
+    {"stage": "paper_scale", "iterations": 8000, "gate": "only on high-compute platform after all earlier gates; checkpoint selected by held-out physical panel, not reward peak"}
+  ],
+  "controls": ["frozen source + alignment", "aligned full fine-tuning", "faithful Any2Any LoRA", "X2 from scratch or existing target specialist", "BASE_LOCOMOTION on supported locomotion only"],
+  "report_required": ["exact named trainable modules", "trainable/frozen parameters and ratio", "GPU-hours", "wall-clock", "data hours and motion count", "per-class physical gates", "held-out metrics", "failure event and body region"]
+}

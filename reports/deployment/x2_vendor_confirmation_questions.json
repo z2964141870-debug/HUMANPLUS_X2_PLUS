@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "questions_only_no_robot_command_no_sdk_upgrade",
+  "date": "2026-08-09",
+  "known_public_facts": [
+    "AimDK v1.0 contains an X2 MuJoCo simulator and an ONNX deployment example",
+    "the bundled example is documented as simulation-validated and requires parameter adaptation for real hardware",
+    "the public material does not prove simultaneous native motion-control ownership of lower/waist and external HAL ownership of upper joints",
+    "previous v0.8.2 observations found GetAllJointState usable while several joint state topics and odometry topic returned empty payloads",
+    "no verified public real foot-wrench, COP, COM or centroidal-momentum interface is currently available to this project"
+  ],
+  "vendor_questions": [
+    {"priority":"P0","topic":"joint_group_ownership","question":"In X2 v1.0 developer/RL_DEFAULT mode, can native MC keep exclusive control of legs and waist while an external process controls only arms (and optionally head)? If yes, provide the supported joint-group ownership API and arbitration rules.","decision_unblocked":"deployment route A native lower + upper overlay versus route B project-owned full-body publisher"},
+    {"priority":"P0","topic":"command_priority_and_watchdog","question":"When MC, HAL joint command, RL_DEFAULT and remote-controller commands coexist, what is the exact priority, timeout/watchdog behavior and safe fallback state?","decision_unblocked":"safe handoff and recovery state machine"},
+    {"priority":"P0","topic":"hardware_compatibility","question":"Which X2 controller/firmware versions are compatible with AimDK/SDK v1.0, and is upgrading from the current v0.8.2 stack reversible and supported on this exact 31DoF T2.5 machine?","decision_unblocked":"whether a later supervised SDK upgrade is valid"},
+    {"priority":"P0","topic":"full_body_command_contract","question":"For real X2 RL deployment, confirm the authoritative 31-joint order, units, command type, Kp/Kd ownership, valid rate and command limits.","decision_unblocked":"official-sim to real command equivalence"},
+    {"priority":"P1","topic":"state_contract","question":"What is the supported real-time source for q/dq/effort, base orientation/angular velocity and base linear velocity in v1.0? Are per-group state topics expected to contain joints, or must applications use GetAllJointState?","decision_unblocked":"deployable actor observation schema"},
+    {"priority":"P1","topic":"time_sync","question":"Are command and state timestamps hardware-synchronized, what clock domain is used, and what end-to-end latency/jitter is guaranteed or measurable?","decision_unblocked":"last-action/history and delay compensation"},
+    {"priority":"P1","topic":"native_locomotion_interface","question":"Does X2 v1.0 provide a supported native locomotion or whole-body controller accepting vx/vy/wz plus upper-body targets? If so, provide command space, supported modes and whether waist belongs to locomotion or upper-body ownership.","decision_unblocked":"whether BASE_LOCOMOTION should be replaced or retained"},
+    {"priority":"P1","topic":"contact_and_force","question":"Are left/right foot contact, estimated normal force, six-axis wrench or COP available on this hardware? Specify topic/service, units, update rate and whether values are measured or model-estimated.","decision_unblocked":"real contact gate and recovery detection"},
+    {"priority":"P1","topic":"safety_transition","question":"What is the vendor-supported sequence for entering/exiting RL_DEFAULT, zero torque, damping, stand and emergency stop, and which transitions may be commanded while the robot is loaded?","decision_unblocked":"truthful deployment and emergency procedure"},
+    {"priority":"P2","topic":"tracking_frames","question":"Are there authoritative palm/wrist and sole/contact tracking frames beyond wrist-roll and ankle-roll links, including calibrated transforms?","decision_unblocked":"future WBT end-effector refinement"},
+    {"priority":"P2","topic":"official_policy_artifact","question":"What exact robot/configuration and observation/action schema does the bundled ONNX target, and is a compatible X2 T2.5 checkpoint available for validation only?","decision_unblocked":"official simulator sanity baseline"}
+  ],
+  "user_confirmation_before_future_robot_work": [
+    "explicit permission for any real robot command",
+    "physical spotter and clear area",
+    "working emergency stop and tether/gantry decision",
+    "exact robot firmware/SDK version recorded",
+    "chosen control-ownership route approved"
+  ]
+}
