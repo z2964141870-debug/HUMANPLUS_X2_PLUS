@@ -1,0 +1,3130 @@
+{
+  "schema_version": "x2_wbt_rootxy_sequential_qp_phase40_v1",
+  "truth_boundary": {
+    "local_25_frame_certificate_only": true,
+    "phase39_A_rerun": false,
+    "mujoco_integration_steps": 0,
+    "policy_optimizer_ppo_training": false,
+    "held_out_read": false,
+    "configuration_count_B": 1,
+    "aborted_invocation_before_result": "first invocation stopped after QP1 because metric adapter requested absent Phase28 foot_xy export; no report/result produced and no parameter changed"
+  },
+  "pre_registration": {
+    "single_structural_variable": "per-frame root XY correction",
+    "root_xy_relative_source_max_m": 0.2,
+    "root_horizontal_acceleration_max_mps2": 4.0,
+    "hard_norm_implementation": "32-direction inscribed polygon; scale=cos(pi/32)",
+    "solver": "daqp",
+    "outer_iterations_max": 20,
+    "trust_region_root_xyz_m": 0.005,
+    "trust_region_joint_rad": 0.05,
+    "window_frames": [
+      0,
+      25
+    ],
+    "frozen": [
+      "root orientation",
+      "upper/head",
+      "source timing",
+      "contact intent",
+      "Phase39 active-sphere rule",
+      "all Phase39 gates"
+    ],
+    "parameter_scan": false
+  },
+  "provenance": {
+    "phase39_A_sha256": "c4a237bb58f704cb894bb7450fd0b54dc4d291d49ee86182a11df45c78486c0f",
+    "phase30_cache_sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea",
+    "phase37_warmstart_sha256": "68133d7ec19d8e715996b1fe80727a70329cc7693faadb5e49adc231f4ae2161",
+    "official_scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+  },
+  "iterations": [
+    {
+      "outer_iteration": 1,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14040467862867315,
+        "exact_gate_violations": {
+          "stance_distance": 0.00014561339221786295,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14040467862867315,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 3.375077994860476e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0006061345771073036,
+          0.000645613392217863
+        ],
+        "minimum_all_sphere_distance_m": 3.5762536893012634e-06,
+        "stance_speed_max_mps": 0.24040467862867315,
+        "stance_excursion_max_m": 0.01912348045817093,
+        "qstep_max_rad": 0.05715888018918429,
+        "root_xy_correction_max_m": 0.005197290800698109,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.816012170911219,
+          4.000000000000034
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0022042803283081006,
+        0.0049999999999999906,
+        0.008742451576886561
+      ],
+      "joint_correction_max_abs_rad": 0.031038356482455565
+    },
+    {
+      "outer_iteration": 2,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        1,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.15344294350544804,
+        "exact_gate_violations": {
+          "stance_distance": 7.034515386017881e-05,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.15344294350544804,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 1.2434497875801753e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005095281800877956,
+          0.0005703451538601788
+        ],
+        "minimum_all_sphere_distance_m": 2.831027777656925e-09,
+        "stance_speed_max_mps": 0.25344294350544805,
+        "stance_excursion_max_m": 0.02297260659994116,
+        "qstep_max_rad": 0.057164122152408056,
+        "root_xy_correction_max_m": 0.004765893842321455,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9000520302652086,
+          4.000000000000012
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0023801124622957327,
+        0.00443042278708915,
+        0.01106795565775443
+      ],
+      "joint_correction_max_abs_rad": 0.026313718070761234
+    },
+    {
+      "outer_iteration": 3,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.10037664881625502,
+        "exact_gate_violations": {
+          "stance_distance": 0.00015502357298389146,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.10037664881625502,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005110707117134671,
+          0.0006550235729838915
+        ],
+        "minimum_all_sphere_distance_m": 1.5082411881917057e-11,
+        "stance_speed_max_mps": 0.20037664881625503,
+        "stance_excursion_max_m": 0.018924553863592444,
+        "qstep_max_rad": 0.057163872322112924,
+        "root_xy_correction_max_m": 0.005858849636460918,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9993925599575584,
+          3.9999999999999942
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0026037562617616363,
+        0.005755132400805006,
+        0.009797924729969305
+      ],
+      "joint_correction_max_abs_rad": 0.032970453967034546
+    },
+    {
+      "outer_iteration": 4,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.15614510305242077,
+        "exact_gate_violations": {
+          "stance_distance": 0.0002449440221756658,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.15614510305242077,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005138741068405223,
+          0.0007449440221756658
+        ],
+        "minimum_all_sphere_distance_m": 5.2805416289603e-13,
+        "stance_speed_max_mps": 0.2561451030524208,
+        "stance_excursion_max_m": 0.019324979399403072,
+        "qstep_max_rad": 0.05716404238034635,
+        "root_xy_correction_max_m": 0.00526897535703714,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.896560974164978,
+          3.9999999999999774
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0016017488715944486,
+        0.005019611724567007,
+        0.009866685626987289
+      ],
+      "joint_correction_max_abs_rad": 0.0280910789098928
+    },
+    {
+      "outer_iteration": 5,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.12601225827889168,
+        "exact_gate_violations": {
+          "stance_distance": 0.00028167704742110755,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.12601225827889168,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 1.9539925233402755e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005148513405036194,
+          0.0007816770474211076
+        ],
+        "minimum_all_sphere_distance_m": 3.813381901918156e-13,
+        "stance_speed_max_mps": 0.22601225827889168,
+        "stance_excursion_max_m": 0.019491400103573066,
+        "qstep_max_rad": 0.05716391934317871,
+        "root_xy_correction_max_m": 0.004457463531475334,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9954829297571886,
+          4.0000000000000195
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0023539743078343773,
+        0.0043746800978050155,
+        0.00970102245885387
+      ],
+      "joint_correction_max_abs_rad": 0.033370867454114356
+    },
+    {
+      "outer_iteration": 6,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.1510141903270952,
+        "exact_gate_violations": {
+          "stance_distance": 0.00033042986091854276,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.1510141903270952,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 9.769962616701378e-15
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005147705759833603,
+          0.0008304298609185428
+        ],
+        "minimum_all_sphere_distance_m": 4.555149660245839e-13,
+        "stance_speed_max_mps": 0.2510141903270952,
+        "stance_excursion_max_m": 0.017471195920125113,
+        "qstep_max_rad": 0.05716415149415205,
+        "root_xy_correction_max_m": 0.005820067754774548,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.988558168212817,
+          4.00000000000001
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0016436045038548056,
+        0.005655400362827594,
+        0.010066234972898979
+      ],
+      "joint_correction_max_abs_rad": 0.0305702173574642
+    },
+    {
+      "outer_iteration": 7,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.1361817219877409,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003415918274245664,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.1361817219877409,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 5.329070518200751e-15
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005144682630508089,
+          0.0008415918274245664
+        ],
+        "minimum_all_sphere_distance_m": 5.544358375186853e-13,
+        "stance_speed_max_mps": 0.2361817219877409,
+        "stance_excursion_max_m": 0.02009996187064651,
+        "qstep_max_rad": 0.057163855216414074,
+        "root_xy_correction_max_m": 0.003810524775600412,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9943590220256695,
+          4.000000000000005
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0021482859694946063,
+        0.0037046874839102273,
+        0.009703964275323508
+      ],
+      "joint_correction_max_abs_rad": 0.03407612851132905
+    },
+    {
+      "outer_iteration": 8,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.15386920259185385,
+        "exact_gate_violations": {
+          "stance_distance": 0.00034893194369859304,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.15386920259185385,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005145731389426618,
+          0.000848931943698593
+        ],
+        "minimum_all_sphere_distance_m": 5.969573793618288e-13,
+        "stance_speed_max_mps": 0.25386920259185386,
+        "stance_excursion_max_m": 0.01805365376766449,
+        "qstep_max_rad": 0.05716416701680893,
+        "root_xy_correction_max_m": 0.005904216991838682,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.988835461027732,
+          3.9999999999999907
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.002034416632624289,
+        0.005833677269304627,
+        0.010020098915694477
+      ],
+      "joint_correction_max_abs_rad": 0.03159821226835039
+    },
+    {
+      "outer_iteration": 9,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.13752312740076855,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003318692692541778,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.13752312740076855,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 1.3322676295501878e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005130912039804774,
+          0.0008318692692541778
+        ],
+        "minimum_all_sphere_distance_m": 5.964716567885553e-13,
+        "stance_speed_max_mps": 0.23752312740076856,
+        "stance_excursion_max_m": 0.020565597124121145,
+        "qstep_max_rad": 0.057163787770038145,
+        "root_xy_correction_max_m": 0.003656532305966001,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9800367997530652,
+          4.000000000000013
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0021489474029934065,
+        0.003563293210106524,
+        0.009680478275252275
+      ],
+      "joint_correction_max_abs_rad": 0.033377913850996324
+    },
+    {
+      "outer_iteration": 10,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14530093427997282,
+        "exact_gate_violations": {
+          "stance_distance": 0.00033372672036251693,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14530093427997282,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 7.993605777301127e-15
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005132173085533003,
+          0.0008337267203625169
+        ],
+        "minimum_all_sphere_distance_m": 6.897720242204919e-13,
+        "stance_speed_max_mps": 0.24530093427997282,
+        "stance_excursion_max_m": 0.017330835484524982,
+        "qstep_max_rad": 0.05716422870976837,
+        "root_xy_correction_max_m": 0.0063230648990772395,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9873249681431417,
+          4.000000000000008
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0020236160876861277,
+        0.006312766547512574,
+        0.010054861472841316
+      ],
+      "joint_correction_max_abs_rad": 0.032699835459745676
+    },
+    {
+      "outer_iteration": 11,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.13998734707745478,
+        "exact_gate_violations": {
+          "stance_distance": 0.00032855339438177733,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.13998734707745478,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005128724850379457,
+          0.0008285533943817773
+        ],
+        "minimum_all_sphere_distance_m": 6.881760786225932e-13,
+        "stance_speed_max_mps": 0.23998734707745478,
+        "stance_excursion_max_m": 0.020550206517642916,
+        "qstep_max_rad": 0.05716376277308911,
+        "root_xy_correction_max_m": 0.003527203852903458,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9735465883778627,
+          3.9999999999999982
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0020947971198483927,
+        0.003441222508452737,
+        0.00970565435292129
+      ],
+      "joint_correction_max_abs_rad": 0.03341480082069775
+    },
+    {
+      "outer_iteration": 12,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14525307946934712,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003310962268949411,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14525307946934712,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005129238298582162,
+          0.0008310962268949411
+        ],
+        "minimum_all_sphere_distance_m": 7.471983101692281e-13,
+        "stance_speed_max_mps": 0.24525307946934713,
+        "stance_excursion_max_m": 0.017117884248999064,
+        "qstep_max_rad": 0.057164258659894836,
+        "root_xy_correction_max_m": 0.0065649040830429994,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.986927535560029,
+          3.9999999999999893
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0021062586761645416,
+        0.00655322850918541,
+        0.010054515529461993
+      ],
+      "joint_correction_max_abs_rad": 0.03335535901598023
+    },
+    {
+      "outer_iteration": 13,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14125347705377472,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003260372424126515,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14125347705377472,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005126218006756599,
+          0.0008260372424126515
+        ],
+        "minimum_all_sphere_distance_m": 7.497795787014816e-13,
+        "stance_speed_max_mps": 0.24125347705377473,
+        "stance_excursion_max_m": 0.02054071205767909,
+        "qstep_max_rad": 0.05716374603232589,
+        "root_xy_correction_max_m": 0.003495363645470083,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9685473453394344,
+          3.9958041564483064
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.002048072406003635,
+        0.003422304388788541,
+        0.009718985449055091
+      ],
+      "joint_correction_max_abs_rad": 0.03334735350675905
+    },
+    {
+      "outer_iteration": 14,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14541943389963788,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003353935538842382,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14541943389963788,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005133939775817673,
+          0.0008353935538842382
+        ],
+        "minimum_all_sphere_distance_m": 1.0203964409538635e-12,
+        "stance_speed_max_mps": 0.24541943389963788,
+        "stance_excursion_max_m": 0.016916212244899375,
+        "qstep_max_rad": 0.05716428908080977,
+        "root_xy_correction_max_m": 0.006505806248281494,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9924167910344646,
+          3.9999999999999716
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.002106152074392396,
+        0.006498150153094424,
+        0.010061698265448017
+      ],
+      "joint_correction_max_abs_rad": 0.03442298001687157
+    },
+    {
+      "outer_iteration": 15,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14238852859478718,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003299628289946169,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14238852859478718,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005131013411716903,
+          0.0008299628289946169
+        ],
+        "minimum_all_sphere_distance_m": 1.0532174091193447e-12,
+        "stance_speed_max_mps": 0.24238852859478718,
+        "stance_excursion_max_m": 0.02050805522571834,
+        "qstep_max_rad": 0.057163733289384275,
+        "root_xy_correction_max_m": 0.0034697979794642217,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9575279823679983,
+          3.9968648411441654
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.001973784028507232,
+        0.0034093935413990334,
+        0.009733800763361144
+      ],
+      "joint_correction_max_abs_rad": 0.03338261073171005
+    },
+    {
+      "outer_iteration": 16,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.1483729390048796,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003417953544677852,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.1483729390048796,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 1.1546319456101628e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005138876316586454,
+          0.0008417953544677852
+        ],
+        "minimum_all_sphere_distance_m": 1.4688987873268111e-12,
+        "stance_speed_max_mps": 0.2483729390048796,
+        "stance_excursion_max_m": 0.016717320068355242,
+        "qstep_max_rad": 0.05716432113732858,
+        "root_xy_correction_max_m": 0.0064417289429436015,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.998131074023497,
+          4.0000000000000115
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.00212763023725052,
+        0.006436160226695171,
+        0.010069850186105888
+      ],
+      "joint_correction_max_abs_rad": 0.035718325694484465
+    },
+    {
+      "outer_iteration": 17,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.1437751165612006,
+        "exact_gate_violations": {
+          "stance_distance": 0.00033623760049718765,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.1437751165612006,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005135069061167399,
+          0.0008362376004971877
+        ],
+        "minimum_all_sphere_distance_m": 1.5055361471394413e-12,
+        "stance_speed_max_mps": 0.2437751165612006,
+        "stance_excursion_max_m": 0.020489580930229227,
+        "qstep_max_rad": 0.05716371962763705,
+        "root_xy_correction_max_m": 0.003433590395527275,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9458110169383374,
+          4.0
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.001900535311072086,
+        0.003386233480261281,
+        0.009745140357560064
+      ],
+      "joint_correction_max_abs_rad": 0.03339712433177606
+    },
+    {
+      "outer_iteration": 18,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.14997549439858654,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003481756438439474,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.14997549439858654,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 2.1316282072803006e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.000514287415992531,
+          0.0008481756438439474
+        ],
+        "minimum_all_sphere_distance_m": 2.0850170548425417e-12,
+        "stance_speed_max_mps": 0.24997549439858655,
+        "stance_excursion_max_m": 0.01658400066949036,
+        "qstep_max_rad": 0.057164357073937064,
+        "root_xy_correction_max_m": 0.006370180523556831,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9996905013714272,
+          4.000000000000021
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.002130639464831623,
+        0.006365385762723924,
+        0.010087320036793064
+      ],
+      "joint_correction_max_abs_rad": 0.03713685138196687
+    },
+    {
+      "outer_iteration": 19,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.1457619868408397,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003429929371583976,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.1457619868408397,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 0.0
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005138818727076682,
+          0.0008429929371583976
+        ],
+        "minimum_all_sphere_distance_m": 2.1065970148836932e-12,
+        "stance_speed_max_mps": 0.24576198684083972,
+        "stance_excursion_max_m": 0.020443357473841364,
+        "qstep_max_rad": 0.05716370742327019,
+        "root_xy_correction_max_m": 0.0033827619148789445,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.9380134420589794,
+          3.9999999999999942
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0018319815827682992,
+        0.0033423456442636373,
+        0.009760204703045188
+      ],
+      "joint_correction_max_abs_rad": 0.03347159929896216
+    },
+    {
+      "outer_iteration": 20,
+      "linear_constraint_counts": {
+        "sphere_nonpenetration": 480,
+        "stance_active_band": 80,
+        "swing_clearance": 120,
+        "stance_speed": 37,
+        "stance_excursion": 37,
+        "qstep": 750,
+        "root_xy_polygon": 800,
+        "root_horizontal_acceleration_polygon": 768
+      },
+      "active_sphere_indices_lr": [
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "active_switch_count_lr": [
+        0,
+        0
+      ],
+      "exact_metrics": {
+        "max_exact_gate_violation": 0.15133813146885797,
+        "exact_gate_violations": {
+          "stance_distance": 0.0003507965539345007,
+          "nonpenetration": 0.0,
+          "stance_speed": 0.15133813146885797,
+          "stance_excursion": 0.0,
+          "qstep": 0.0,
+          "root_xy": 0.0,
+          "root_horizontal_acceleration": 3.907985046680551e-14
+        },
+        "stance_abs_distance_p95_max_m": [
+          0.0005144736068536613,
+          0.0008507965539345007
+        ],
+        "minimum_all_sphere_distance_m": 2.671311956359279e-12,
+        "stance_speed_max_mps": 0.251338131468858,
+        "stance_excursion_max_m": 0.016513892257669163,
+        "qstep_max_rad": 0.057164387150138246,
+        "root_xy_correction_max_m": 0.006323839219909845,
+        "root_horizontal_acceleration_p95_max_mps2": [
+          3.999073616172005,
+          4.000000000000039
+        ],
+        "feasible": false
+      },
+      "root_xyz_correction_max_abs_m": [
+        0.0021461553430222203,
+        0.006319062962985797,
+        0.010093029249094929
+      ],
+      "joint_correction_max_abs_rad": 0.03831330451998671
+    }
+  ],
+  "summary": {
+    "qp_solved_iterations": 20,
+    "qp_failure": null,
+    "active_switches_lr": [
+      1,
+      0
+    ]
+  },
+  "final_metrics": {
+    "max_exact_gate_violation": 0.15133813146885797,
+    "exact_gate_violations": {
+      "stance_distance": 0.0003507965539345007,
+      "nonpenetration": 0.0,
+      "stance_speed": 0.15133813146885797,
+      "stance_excursion": 0.0,
+      "qstep": 0.0,
+      "root_xy": 0.0,
+      "root_horizontal_acceleration": 3.907985046680551e-14
+    },
+    "stance_abs_distance_p95_max_m": [
+      0.0005144736068536613,
+      0.0008507965539345007
+    ],
+    "minimum_all_sphere_distance_m": 2.671311956359279e-12,
+    "stance_speed_max_mps": 0.251338131468858,
+    "stance_excursion_max_m": 0.016513892257669163,
+    "qstep_max_rad": 0.057164387150138246,
+    "root_xy_correction_max_m": 0.006323839219909845,
+    "root_horizontal_acceleration_p95_max_mps2": [
+      3.999073616172005,
+      4.000000000000039
+    ],
+    "feasible": false
+  },
+  "ab_result": {
+    "A_fixed_root_xy_phase39": {
+      "source": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_sequential_qp_certificate_phase39.json",
+      "source_sha256": "c4a237bb58f704cb894bb7450fd0b54dc4d291d49ee86182a11df45c78486c0f",
+      "rerun": false,
+      "feasible": false,
+      "stance_speed_max_mps": 0.3089702845069219,
+      "stance_distance_max_m": 0.0010351528592163805
+    },
+    "B_free_root_xy_phase40": {
+      "feasible": false,
+      "stance_speed_max_mps": 0.251338131468858,
+      "stance_distance_max_m": 0.0008507965539345007,
+      "root_xy_correction_max_m": 0.006323839219909845,
+      "root_horizontal_acceleration_p95_max_mps2": [
+        3.999073616172005,
+        4.000000000000039
+      ]
+    }
+  },
+  "artifact": {
+    "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_wbt_phase40_rootxy_qp_window.npz",
+    "sha256": "254d788a020190d983a0d109377a6a23a9fbf47e13c07672fbda4a6c59c5aa17"
+  },
+  "decision": {
+    "status": "PHASE40_ROOT_XY_LOCAL_CERTIFICATE_FAILED",
+    "local_window_feasible": false,
+    "fixed_root_xy_supported_as_major_local_blocker": false,
+    "full_trajectory_true_silver": false,
+    "physics_proposal_allowed": false,
+    "conclusion": "只释放root XY仍未取得同一25帧局部硬门证书；fixed-rootXY不是单独足以解释Phase39失败的主因。这是否定当前生成器/solver结构，不是X2不可能。",
+    "next_step": "按预注册门停止；不缩放rootXY、不调trust/门、不扩完整轨迹或physics。"
+  }
+}

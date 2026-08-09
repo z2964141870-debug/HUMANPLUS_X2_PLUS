@@ -1,0 +1,76 @@
+{
+  "schema_version": "x2_wbt_official_contact_repair_phase37_preflight_v1",
+  "configuration": {
+    "motion_id": "PHUMA-LUNGE-R-001",
+    "input": "frozen Phase30 1.46x PHUMA-LUNGE-R Bronze after Phase36 correction",
+    "iterations": 12,
+    "step_scale": 0.65,
+    "lsqr": {
+      "atol": 1e-07,
+      "btol": 1e-07,
+      "iter_limit": 320
+    },
+    "variables": [
+      "root_z",
+      "waist_and_lower_body_15DoF_continuous_trajectory"
+    ],
+    "frozen": [
+      "root_xy",
+      "root_orientation",
+      "upper_body",
+      "head",
+      "fps_30",
+      "frames_175",
+      "time_dilation_1.46",
+      "source_contact_intent",
+      "motion_semantics"
+    ],
+    "stance_foot_orientation_variable": false,
+    "root_z_correction_max_abs_m": 0.08,
+    "joint_correction_max_abs_rad": 0.45,
+    "official_contact_equation": "minimum signed surface distance across official 12 active sole spheres per foot == 0 m during source-intended stance",
+    "all_frame_nonpenetration": "signed distance >= -1e-05 m",
+    "equality_acceptance": "stance abs signed distance p95/max <= 0.0005 m",
+    "weights": {
+      "stance_contact_equality": 160.0,
+      "nonpenetration_hinge": 220.0,
+      "swing_clearance_hinge": 100.0,
+      "keypoint_preservation": 4.0,
+      "root_z_correction": 1.5,
+      "joint_correction": 1.0,
+      "correction_velocity": 10.0,
+      "correction_acceleration": 18.0
+    },
+    "per_clip_or_result_tuning": false
+  },
+  "provenance": {
+    "phase30_cache": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/silver_contact/phase30_time_dilation/x2_phase30_time_dilation_1p46.pkl",
+      "sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+    },
+    "phase36_report": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_tier_provenance_correction_phase36.json",
+      "sha256": "e1f1c7290fc24e0470a6e8c7c399539d3a91ae385acc20ced4df16dd582c65b1"
+    },
+    "tier_gates": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_tier_gates.json",
+      "sha256": "314edd1970083fa5549929f4c8e79e206e5ece07718955442a9d943e75d2a934"
+    },
+    "official_scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    }
+  },
+  "checks": {
+    "phase36_corrected_bronze": true,
+    "exact_motion_and_split": true,
+    "phase30_time_1p46_frozen": true,
+    "frames_fps_frozen": true,
+    "lower_body_15": true,
+    "both_intent_feet_have_phases": true,
+    "official_contact_threshold_zero": true,
+    "no_bronze_contact_tolerance": true,
+    "no_held_out_or_parameter_scan": true
+  },
+  "pass": true
+}

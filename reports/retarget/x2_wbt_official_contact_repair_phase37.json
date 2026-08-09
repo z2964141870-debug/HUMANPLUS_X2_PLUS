@@ -1,0 +1,939 @@
+{
+  "schema_version": "x2_wbt_official_contact_repair_phase37_v1",
+  "mode": "offline_sparse_full_trajectory_solve_static_FK_no_physics_no_policy_optimizer",
+  "truth_boundary": {
+    "mujoco_integration_steps": 0,
+    "policy_optimizer_ppo_training": false,
+    "offline_lsqr_iterations": 12,
+    "real_robot_base_git_baidu": false,
+    "contact_is_official_model_collision_not_hardware_grf_cop_wrench": true,
+    "no_bronze_tolerance_as_contact": true
+  },
+  "preflight": {
+    "schema_version": "x2_wbt_official_contact_repair_phase37_preflight_v1",
+    "configuration": {
+      "motion_id": "PHUMA-LUNGE-R-001",
+      "input": "frozen Phase30 1.46x PHUMA-LUNGE-R Bronze after Phase36 correction",
+      "iterations": 12,
+      "step_scale": 0.65,
+      "lsqr": {
+        "atol": 1e-07,
+        "btol": 1e-07,
+        "iter_limit": 320
+      },
+      "variables": [
+        "root_z",
+        "waist_and_lower_body_15DoF_continuous_trajectory"
+      ],
+      "frozen": [
+        "root_xy",
+        "root_orientation",
+        "upper_body",
+        "head",
+        "fps_30",
+        "frames_175",
+        "time_dilation_1.46",
+        "source_contact_intent",
+        "motion_semantics"
+      ],
+      "stance_foot_orientation_variable": false,
+      "root_z_correction_max_abs_m": 0.08,
+      "joint_correction_max_abs_rad": 0.45,
+      "official_contact_equation": "minimum signed surface distance across official 12 active sole spheres per foot == 0 m during source-intended stance",
+      "all_frame_nonpenetration": "signed distance >= -1e-05 m",
+      "equality_acceptance": "stance abs signed distance p95/max <= 0.0005 m",
+      "weights": {
+        "stance_contact_equality": 160.0,
+        "nonpenetration_hinge": 220.0,
+        "swing_clearance_hinge": 100.0,
+        "keypoint_preservation": 4.0,
+        "root_z_correction": 1.5,
+        "joint_correction": 1.0,
+        "correction_velocity": 10.0,
+        "correction_acceleration": 18.0
+      },
+      "per_clip_or_result_tuning": false
+    },
+    "provenance": {
+      "phase30_cache": {
+        "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/silver_contact/phase30_time_dilation/x2_phase30_time_dilation_1p46.pkl",
+        "sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+      },
+      "phase36_report": {
+        "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_tier_provenance_correction_phase36.json",
+        "sha256": "e1f1c7290fc24e0470a6e8c7c399539d3a91ae385acc20ced4df16dd582c65b1"
+      },
+      "tier_gates": {
+        "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_tier_gates.json",
+        "sha256": "314edd1970083fa5549929f4c8e79e206e5ece07718955442a9d943e75d2a934"
+      },
+      "official_scene": {
+        "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+        "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+      }
+    },
+    "checks": {
+      "phase36_corrected_bronze": true,
+      "exact_motion_and_split": true,
+      "phase30_time_1p46_frozen": true,
+      "frames_fps_frozen": true,
+      "lower_body_15": true,
+      "both_intent_feet_have_phases": true,
+      "official_contact_threshold_zero": true,
+      "no_bronze_contact_tolerance": true,
+      "no_held_out_or_parameter_scan": true
+    },
+    "pass": true
+  },
+  "before": {
+    "tier": "Bronze",
+    "silver_checks": {
+      "bronze_prerequisite": true,
+      "dynamic_not_static_exception": true,
+      "complete_cycle": false,
+      "intended_feet_exist": true,
+      "transitions_each_intended": false,
+      "stance_speed_each": false,
+      "stance_excursion_each": false,
+      "clearance_p50_each_intended": false,
+      "clearance_p95_each_intended": true,
+      "timing_each_intended": false,
+      "intent_official_consistent_under_existing_event_gates": false,
+      "official_collision_matches_signed_distance": true,
+      "flight": false,
+      "root_acceleration": true
+    },
+    "silver_metrics": {
+      "complete_ds_ss_ds_cycles": 0,
+      "source_intended_feet": [
+        "left",
+        "right"
+      ],
+      "target_contact_transitions": {
+        "left": 5,
+        "right": 0
+      },
+      "stance_speed_p95_mps": {
+        "left": 0.02847766575444904,
+        "right": null
+      },
+      "stance_excursion_max_m": {
+        "left": 0.0009846537506987617,
+        "right": null
+      },
+      "swing_clearance_m": {
+        "left": {
+          "p50": 0.0013828614990330085,
+          "p95": 0.027680232290140393
+        },
+        "right": {
+          "p50": 0.1315709746358122,
+          "p95": 0.32823728004437036
+        }
+      },
+      "contact_timing_error_p95_s": {
+        "left": 2.0683333333333334,
+        "right": null
+      },
+      "unintended_flight_fraction": 0.9657142857142857,
+      "root_horizontal_acceleration_p95_mps2": 2.4361290212482882,
+      "source_intent_contact_ratio": {
+        "left": 0.8685714285714285,
+        "right": 0.3485714285714286
+      },
+      "official_geometry_contact_ratio": {
+        "left": 0.03428571428571429,
+        "right": 0.0
+      },
+      "intent_official_frame_agreement": {
+        "left": 0.1657142857142857,
+        "right": 0.6514285714285715
+      },
+      "legacy_bronze_tolerance_contact_ratio_not_silver": {
+        "left": 0.8285714285714286,
+        "right": 0.26857142857142857
+      },
+      "official_signed_distance_threshold_m": 0.0,
+      "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+      "collision_signed_distance_exact": true,
+      "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force",
+      "source_contact_override_provenance": "nearest normalized-phase resample of frozen Phase29 Bronze/Silver evaluation labels; not re-inferred from repaired geometry and not real GRF/COP/force"
+    }
+  },
+  "after": {
+    "tier": "Bronze",
+    "silver_checks": {
+      "bronze_prerequisite": true,
+      "dynamic_not_static_exception": true,
+      "complete_cycle": true,
+      "intended_feet_exist": true,
+      "transitions_each_intended": true,
+      "stance_speed_each": false,
+      "stance_excursion_each": true,
+      "clearance_p50_each_intended": false,
+      "clearance_p95_each_intended": true,
+      "timing_each_intended": true,
+      "intent_official_consistent_under_existing_event_gates": true,
+      "official_collision_matches_signed_distance": true,
+      "flight": false,
+      "root_acceleration": true
+    },
+    "silver_metrics": {
+      "complete_ds_ss_ds_cycles": 1,
+      "source_intended_feet": [
+        "left",
+        "right"
+      ],
+      "target_contact_transitions": {
+        "left": 43,
+        "right": 20
+      },
+      "stance_speed_p95_mps": {
+        "left": 0.2677402823727318,
+        "right": 0.20143812670096622
+      },
+      "stance_excursion_max_m": {
+        "left": 0.013945542330833522,
+        "right": 0.013574290206408466
+      },
+      "swing_clearance_m": {
+        "left": {
+          "p50": -0.005024666751796331,
+          "p95": 0.03214005692883258
+        },
+        "right": {
+          "p50": 0.1544103358096018,
+          "p95": 0.3327322130534868
+        }
+      },
+      "contact_timing_error_p95_s": {
+        "left": 0.03333333333333333,
+        "right": 0.03333333333333333
+      },
+      "unintended_flight_fraction": 0.6514285714285715,
+      "root_horizontal_acceleration_p95_mps2": 2.4361290212482882,
+      "source_intent_contact_ratio": {
+        "left": 0.8685714285714285,
+        "right": 0.3485714285714286
+      },
+      "official_geometry_contact_ratio": {
+        "left": 0.26285714285714284,
+        "right": 0.09714285714285714
+      },
+      "intent_official_frame_agreement": {
+        "left": 0.3942857142857143,
+        "right": 0.7485714285714286
+      },
+      "legacy_bronze_tolerance_contact_ratio_not_silver": {
+        "left": 0.8685714285714285,
+        "right": 0.3485714285714286
+      },
+      "official_signed_distance_threshold_m": 0.0,
+      "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+      "collision_signed_distance_exact": true,
+      "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force",
+      "source_contact_override_provenance": "nearest normalized-phase resample of frozen Phase29 Bronze/Silver evaluation labels; not re-inferred from repaired geometry and not real GRF/COP/force"
+    }
+  },
+  "solver": {
+    "iterations": [
+      {
+        "iteration": 1,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 6,
+          "swing_hinge_frames": 0,
+          "rows": 11721,
+          "columns": 2800,
+          "nnz": 28088
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          1.9078534220028465
+        ],
+        "step_l2": 0.3617069533123539,
+        "root_z_correction_max_abs_m": 0.010772477644084092,
+        "joint_correction_max_abs_rad": 0.03877099952223906,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.004841927464090632,
+            0.012234300540551957
+          ],
+          "minimum_signed_distance_m": -0.000639702105529767,
+          "penetrating_fraction_below_minus_tolerance": 0.02,
+          "official_contact_ratio": {
+            "left": 0.04,
+            "right": 0.0
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11173732699535321
+      },
+      {
+        "iteration": 2,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 7,
+          "swing_hinge_frames": 137,
+          "rows": 11859,
+          "columns": 2800,
+          "nnz": 29065
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.8914236647060023
+        ],
+        "step_l2": 0.2512810697366305,
+        "root_z_correction_max_abs_m": 0.015365038327330289,
+        "joint_correction_max_abs_rad": 0.04240591510089536,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0023913403998159707,
+            0.007444643707216457
+          ],
+          "minimum_signed_distance_m": -0.002849373445779661,
+          "penetrating_fraction_below_minus_tolerance": 0.04,
+          "official_contact_ratio": {
+            "left": 0.05714285714285714,
+            "right": 0.022857142857142857
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11367823999898974
+      },
+      {
+        "iteration": 3,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 14,
+          "swing_hinge_frames": 137,
+          "rows": 11866,
+          "columns": 2800,
+          "nnz": 29117
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.7976622943658596
+        ],
+        "step_l2": 0.35474704202234764,
+        "root_z_correction_max_abs_m": 0.01829375435169082,
+        "joint_correction_max_abs_rad": 0.07976364438812499,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0024068115449915064,
+            0.008600564810299482
+          ],
+          "minimum_signed_distance_m": -0.008600564810299482,
+          "penetrating_fraction_below_minus_tolerance": 0.05714285714285714,
+          "official_contact_ratio": {
+            "left": 0.07428571428571429,
+            "right": 0.04
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11186680099490331
+      },
+      {
+        "iteration": 4,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 20,
+          "swing_hinge_frames": 137,
+          "rows": 11872,
+          "columns": 2800,
+          "nnz": 29161
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.933479385409008
+        ],
+        "step_l2": 0.2541926258599344,
+        "root_z_correction_max_abs_m": 0.020246515498061356,
+        "joint_correction_max_abs_rad": 0.07573488556167714,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0021697583703429537,
+            0.005234436375735678
+          ],
+          "minimum_signed_distance_m": -0.0038848025163059864,
+          "penetrating_fraction_below_minus_tolerance": 0.09428571428571429,
+          "official_contact_ratio": {
+            "left": 0.14857142857142858,
+            "right": 0.06285714285714286
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11583226999937324
+      },
+      {
+        "iteration": 5,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 37,
+          "swing_hinge_frames": 130,
+          "rows": 11882,
+          "columns": 2800,
+          "nnz": 29217
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.936179434141514
+        ],
+        "step_l2": 0.21078746281002955,
+        "root_z_correction_max_abs_m": 0.02051728184372246,
+        "joint_correction_max_abs_rad": 0.08748962360865858,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0021158901678888604,
+            0.0050525202505492155
+          ],
+          "minimum_signed_distance_m": -0.0033485584901389682,
+          "penetrating_fraction_below_minus_tolerance": 0.12,
+          "official_contact_ratio": {
+            "left": 0.21714285714285714,
+            "right": 0.09714285714285714
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11321147000126075
+      },
+      {
+        "iteration": 6,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 55,
+          "swing_hinge_frames": 103,
+          "rows": 11873,
+          "columns": 2800,
+          "nnz": 29161
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.9428625203769836
+        ],
+        "step_l2": 0.19331847912833025,
+        "root_z_correction_max_abs_m": 0.021391386479200587,
+        "joint_correction_max_abs_rad": 0.08480864258673705,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0019839398295769606,
+            0.004915464818022926
+          ],
+          "minimum_signed_distance_m": -0.002408522952335161,
+          "penetrating_fraction_below_minus_tolerance": 0.14285714285714285,
+          "official_contact_ratio": {
+            "left": 0.26285714285714284,
+            "right": 0.13142857142857142
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11426089300221065
+      },
+      {
+        "iteration": 7,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 69,
+          "swing_hinge_frames": 66,
+          "rows": 11850,
+          "columns": 2800,
+          "nnz": 28996
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.9186203461430336
+        ],
+        "step_l2": 0.18898071067752573,
+        "root_z_correction_max_abs_m": 0.021208647514104183,
+        "joint_correction_max_abs_rad": 0.08857514565672989,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.001955273313618072,
+            0.004915265704136061
+          ],
+          "minimum_signed_distance_m": -0.0033374805309452317,
+          "penetrating_fraction_below_minus_tolerance": 0.12,
+          "official_contact_ratio": {
+            "left": 0.29714285714285715,
+            "right": 0.1657142857142857
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11730199299927335
+      },
+      {
+        "iteration": 8,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 81,
+          "swing_hinge_frames": 50,
+          "rows": 11846,
+          "columns": 2800,
+          "nnz": 28957
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.923430597490949
+        ],
+        "step_l2": 0.19130451185129246,
+        "root_z_correction_max_abs_m": 0.021902599012952505,
+        "joint_correction_max_abs_rad": 0.08573874421289052,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0019429425637094767,
+            0.0048426171996051775
+          ],
+          "minimum_signed_distance_m": -0.0024150470414351323,
+          "penetrating_fraction_below_minus_tolerance": 0.10285714285714286,
+          "official_contact_ratio": {
+            "left": 0.2742857142857143,
+            "right": 0.13714285714285715
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11564595600066241
+      },
+      {
+        "iteration": 9,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 72,
+          "swing_hinge_frames": 38,
+          "rows": 11825,
+          "columns": 2800,
+          "nnz": 28822
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.9096197496214105
+        ],
+        "step_l2": 0.18859483691523513,
+        "root_z_correction_max_abs_m": 0.021545962948074877,
+        "joint_correction_max_abs_rad": 0.08906168632407521,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0019330664043847841,
+            0.0048836809365423355
+          ],
+          "minimum_signed_distance_m": -0.003335690705695972,
+          "penetrating_fraction_below_minus_tolerance": 0.09714285714285714,
+          "official_contact_ratio": {
+            "left": 0.2857142857142857,
+            "right": 0.11428571428571428
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11617685399687616
+      },
+      {
+        "iteration": 10,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 70,
+          "swing_hinge_frames": 34,
+          "rows": 11819,
+          "columns": 2800,
+          "nnz": 28782
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.9089988850798743
+        ],
+        "step_l2": 0.21144296387763742,
+        "root_z_correction_max_abs_m": 0.022057602475229112,
+        "joint_correction_max_abs_rad": 0.08634916240517115,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0019453766040036622,
+            0.0048283066085907005
+          ],
+          "minimum_signed_distance_m": -0.0024039149015099666,
+          "penetrating_fraction_below_minus_tolerance": 0.09142857142857143,
+          "official_contact_ratio": {
+            "left": 0.24,
+            "right": 0.12
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11531601199385477
+      },
+      {
+        "iteration": 11,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 63,
+          "swing_hinge_frames": 31,
+          "rows": 11809,
+          "columns": 2800,
+          "nnz": 28717
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.909241492803159
+        ],
+        "step_l2": 0.1958876500555643,
+        "root_z_correction_max_abs_m": 0.021518661218080326,
+        "joint_correction_max_abs_rad": 0.08940967084505089,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.00195725800697288,
+            0.004876698686166002
+          ],
+          "minimum_signed_distance_m": -0.0033310593448628396,
+          "penetrating_fraction_below_minus_tolerance": 0.1,
+          "official_contact_ratio": {
+            "left": 0.2742857142857143,
+            "right": 0.10857142857142857
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11505389500234742
+      },
+      {
+        "iteration": 12,
+        "objective": {
+          "stance_frames": 213,
+          "penetration_frames": 67,
+          "swing_hinge_frames": 32,
+          "rows": 11814,
+          "columns": 2800,
+          "nnz": 28741
+        },
+        "lsqr_istop_iterations_residual": [
+          7,
+          320,
+          3.920314837219025
+        ],
+        "step_l2": 0.18974488667563824,
+        "root_z_correction_max_abs_m": 0.022253477999454006,
+        "joint_correction_max_abs_rad": 0.08643177828249259,
+        "constraints": {
+          "stance_abs_signed_distance_p95_max_m": [
+            0.0019413135011553224,
+            0.004822629975323099
+          ],
+          "minimum_signed_distance_m": -0.00241841263747158,
+          "penetrating_fraction_below_minus_tolerance": 0.09714285714285714,
+          "official_contact_ratio": {
+            "left": 0.26285714285714284,
+            "right": 0.09714285714285714
+          },
+          "collision_signed_distance_exact": true
+        },
+        "elapsed_s": 0.11217805799969938
+      }
+    ],
+    "wall_time_s": 1.403845248001744,
+    "final_constraints": {
+      "stance_abs_signed_distance_p95_max_m": [
+        0.0019413135011553224,
+        0.004822629975323099
+      ],
+      "minimum_signed_distance_m": -0.00241841263747158,
+      "penetrating_fraction_below_minus_tolerance": 0.09714285714285714,
+      "official_contact_ratio": {
+        "left": 0.26285714285714284,
+        "right": 0.09714285714285714
+      },
+      "collision_signed_distance_exact": true
+    }
+  },
+  "candidate_contract": {
+    "configuration": {
+      "motion_id": "PHUMA-LUNGE-R-001",
+      "input": "frozen Phase30 1.46x PHUMA-LUNGE-R Bronze after Phase36 correction",
+      "iterations": 12,
+      "step_scale": 0.65,
+      "lsqr": {
+        "atol": 1e-07,
+        "btol": 1e-07,
+        "iter_limit": 320
+      },
+      "variables": [
+        "root_z",
+        "waist_and_lower_body_15DoF_continuous_trajectory"
+      ],
+      "frozen": [
+        "root_xy",
+        "root_orientation",
+        "upper_body",
+        "head",
+        "fps_30",
+        "frames_175",
+        "time_dilation_1.46",
+        "source_contact_intent",
+        "motion_semantics"
+      ],
+      "stance_foot_orientation_variable": false,
+      "root_z_correction_max_abs_m": 0.08,
+      "joint_correction_max_abs_rad": 0.45,
+      "official_contact_equation": "minimum signed surface distance across official 12 active sole spheres per foot == 0 m during source-intended stance",
+      "all_frame_nonpenetration": "signed distance >= -1e-05 m",
+      "equality_acceptance": "stance abs signed distance p95/max <= 0.0005 m",
+      "weights": {
+        "stance_contact_equality": 160.0,
+        "nonpenetration_hinge": 220.0,
+        "swing_clearance_hinge": 100.0,
+        "keypoint_preservation": 4.0,
+        "root_z_correction": 1.5,
+        "joint_correction": 1.0,
+        "correction_velocity": 10.0,
+        "correction_acceleration": 18.0
+      },
+      "per_clip_or_result_tuning": false
+    },
+    "source_intent_phases": {
+      "left": [
+        [
+          0,
+          10
+        ],
+        [
+          20,
+          92
+        ],
+        [
+          105,
+          175
+        ]
+      ],
+      "right": [
+        [
+          0,
+          25
+        ],
+        [
+          83,
+          115
+        ],
+        [
+          171,
+          175
+        ]
+      ]
+    },
+    "lower_body_joint_names": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint"
+    ],
+    "root_z_correction_m": [
+      -0.004310055170208216,
+      -0.0040947203524410725,
+      -0.0041617644019424915,
+      -0.004480873234570026,
+      -0.004591148812323809,
+      -0.0047379969619214535,
+      -0.0048743425868451595,
+      -0.004763557109981775,
+      -0.005016671027988195,
+      -0.006307642441242933,
+      -0.004330949857831001,
+      -0.004630830138921738,
+      -0.003986231051385403,
+      -0.0034658184740692377,
+      -0.003326807636767626,
+      -0.0034635968040674925,
+      -0.00385672552511096,
+      -0.004475636873394251,
+      -0.005534253548830748,
+      -0.006436498370021582,
+      -0.010729593224823475,
+      -0.009089164435863495,
+      -0.009121792390942574,
+      -0.010084503330290318,
+      -0.011828665621578693,
+      -0.003443356603384018,
+      -0.0047232662327587605,
+      -0.004952111281454563,
+      -0.00436262134462595,
+      -0.003510038135573268,
+      -0.0031691226176917553,
+      -0.003430355805903673,
+      -0.004233821295201778,
+      -0.004205833654850721,
+      -0.0035263593308627605,
+      -0.0031414011027663946,
+      -0.0027137212455272675,
+      -0.002681698417291045,
+      -0.002957230433821678,
+      -0.003326446982100606,
+      -0.0037831522058695555,
+      -0.004105216823518276,
+      -0.0035141112748533487,
+      -0.003013965906575322,
+      -0.0027466663159430027,
+      -0.003077548462897539,
+      -0.0035500237718224525,
+      -0.0040543340146541595,
+      -0.0044519174844026566,
+      -0.004647414665669203,
+      -0.004735270049422979,
+      -0.004641716368496418,
+      -0.004438656382262707,
+      -0.004266837146133184,
+      -0.0041227685287594795,
+      -0.004023106303066015,
+      -0.00394830759614706,
+      -0.003897704416885972,
+      -0.003828601213172078,
+      -0.003744411515071988,
+      -0.0036396400537341833,
+      -0.003498905338346958,
+      -0.003321888390928507,
+      -0.003097575856372714,
+      -0.002768475329503417,
+      -0.0023685109335929155,
+      -0.0019522698130458593,
+      -0.0016040203627198935,
+      -0.0017034925986081362,
+      -0.0020948131568729877,
+      -0.002626109169796109,
+      -0.0023552696220576763,
+      -0.0018874286906793714,
+      -0.0014034283813089132,
+      -0.0009792281780391932,
+      -0.0008477739756926894,
+      -0.0005155642284080386,
+      -0.0001514433533884585,
+      -0.00018287845887243748,
+      -0.0008424435509368777,
+      -0.002678446238860488,
+      -0.005841757636517286,
+      -0.009748104028403759,
+      -0.02157461643218994,
+      -0.014923018403351307,
+      -0.010141611099243164,
+      -0.00836579967290163,
+      -0.007196770515292883,
+      -0.0065461997874081135,
+      -0.005573105067014694,
+      -0.00546141155064106,
+      -0.006615711376070976,
+      -0.00465001305565238,
+      -0.005019411910325289,
+      -0.004454168491065502,
+      -0.0037953692954033613,
+      -0.0033101211301982403,
+      -0.0029781663324683905,
+      -0.002760557224974036,
+      -0.002672238741070032,
+      -0.002671650843694806,
+      -0.0027963730972260237,
+      -0.0030573089607059956,
+      -0.0032239260617643595,
+      -0.002427265979349613,
+      -0.003943946212530136,
+      -0.0026273378171026707,
+      -0.0025615014601498842,
+      -0.0030627616215497255,
+      -0.003804383333772421,
+      -0.004815586842596531,
+      -0.006310457829385996,
+      -0.008491204120218754,
+      -0.012558178044855595,
+      -0.016508927568793297,
+      -0.004938280209898949,
+      -0.0023621106520295143,
+      0.0007300999714061618,
+      0.002719421172514558,
+      0.0033887282479554415,
+      0.0032972567714750767,
+      0.003024074714630842,
+      0.0024650327395647764,
+      0.001661880174651742,
+      0.0007929955027066171,
+      0.00018352315237279981,
+      -9.71280169324018e-05,
+      0.00026852902374230325,
+      0.0004548111173789948,
+      0.0006804109434597194,
+      0.0005886153085157275,
+      0.00010490987915545702,
+      -0.0004532450984697789,
+      -0.0010158306686207652,
+      -0.0014146887697279453,
+      -0.0017110590124502778,
+      -0.001913296990096569,
+      -0.001929560792632401,
+      -0.0018949987133964896,
+      -0.0018114150734618306,
+      -0.0016328379279002547,
+      -0.001444067689590156,
+      -0.0012421985156834126,
+      -0.0010600623209029436,
+      -0.0009379476541653275,
+      -0.0008610700606368482,
+      -0.0008495914516970515,
+      -0.0008473243215121329,
+      -0.0008440121891908348,
+      -0.0008132352377288043,
+      -0.0006478033610619605,
+      -0.00045052950736135244,
+      -0.00021538708824664354,
+      -0.00013279102859087288,
+      0.0003360929258633405,
+      0.0009605372324585915,
+      0.0015340885147452354,
+      0.001735669793561101,
+      0.0015460230642929673,
+      0.0011069118045270443,
+      0.0006849547498859465,
+      0.0003962388727813959,
+      0.0009450938086956739,
+      0.0016616451321169734,
+      0.00224281195551157,
+      0.0025491006672382355,
+      0.0023322973866015673,
+      0.001235875766724348,
+      -0.00133440550416708,
+      -0.004990984220057726,
+      -0.008994060568511486,
+      -0.022253477945923805,
+      -0.01598169095814228,
+      -0.00915826577693224,
+      -0.005397376604378223
+    ],
+    "root_z_correction_max_abs_m": 0.022253477999454006,
+    "joint_correction_max_abs_rad": 0.08643177828249259,
+    "root_xy_unchanged_exact": true,
+    "equality_pass": false,
+    "nonpenetration_pass": false,
+    "phase36_auditor_tier": "Bronze"
+  },
+  "candidate_cache": {
+    "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase37_official_contact_repair/x2_phase37_official_contact_repair.pkl",
+    "sha256": "68133d7ec19d8e715996b1fe80727a70329cc7693faadb5e49adc231f4ae2161"
+  },
+  "decision": {
+    "status": "PHASE37_OFFICIAL_COLLISION_SILVER_NOT_FOUND",
+    "true_official_collision_silver": false,
+    "equality_pass": false,
+    "nonpenetration_pass": false,
+    "conclusion": "固定表示/配置未得到真正Silver；失败门=['stance_speed_each', 'clearance_p50_each_intended', 'flight']，equality=False，nonpenetration=False。这否定本生成器，不否定X2或Any2Any。",
+    "next_step": "按门停止；不扫权重、不改root-z阈值、不跑physics/PPO。"
+  }
+}

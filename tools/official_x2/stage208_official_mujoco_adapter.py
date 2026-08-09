@@ -62,6 +62,10 @@ from official_x2.skill_handoff_contract import (
     stop_policy_slot,
 )
 from official_x2.handoff_support_gate import handoff_gate_decision, load_contract as load_handoff_gate_contract
+from official_x2.physical_handoff_support_gate import (
+    load_contract as load_physical_handoff_gate_contract,
+    physical_gate_decision,
+)
 
 
 ISAAC_JOINTS = (
@@ -394,6 +398,14 @@ class Stage208OfficialAdapter(Node):
             else load_handoff_gate_contract(
                 args.curriculum_recovery_handoff_gate_contract,
                 args.curriculum_recovery_handoff_gate_contract_sha256,
+            )
+        )
+        self.curriculum_handoff_physical_gate_contract = (
+            None
+            if args.curriculum_recovery_physical_gate_contract is None
+            else load_physical_handoff_gate_contract(
+                args.curriculum_recovery_physical_gate_contract,
+                args.curriculum_recovery_physical_gate_contract_sha256,
             )
         )
         self.curriculum_handoff_gate_last: dict[str, object] | None = None
@@ -1948,6 +1960,22 @@ class Stage208OfficialAdapter(Node):
                             gate_phase,
                             self.curriculum_handoff_gate_contract,
                         )
+                        if self.curriculum_handoff_physical_gate_contract is not None:
+                            omega = self.imu.angular_velocity
+                            base_ang_vel = np.asarray(
+                                [omega.x, omega.y, omega.z], dtype=np.float32
+                            )
+                            projected_gravity = gravity_body(self.imu)
+                            physical_gate = physical_gate_decision(
+                                base_ang_vel,
+                                projected_gravity,
+                                self.curriculum_handoff_physical_gate_contract,
+                            )
+                            gate["physical_observation"] = physical_gate
+                            gate["allow_handoff"] = bool(
+                                gate["allow_handoff"]
+                                and physical_gate["allow_handoff"]
+                            )
                         gate["stop_elapsed_s"] = float(stop_elapsed)
                         gate["wait_s"] = float(self.curriculum_handoff_gate_wait_ticks * 0.02)
                         self.curriculum_handoff_gate_last = gate
@@ -2212,6 +2240,15 @@ class Stage208OfficialAdapter(Node):
                 and self.stop_hold_latch_s is None
             ),
             "curriculum_recovery_handoff_gate_last": self.curriculum_handoff_gate_last,
+            "curriculum_recovery_physical_gate_enabled": (
+                self.curriculum_handoff_physical_gate_contract is not None
+            ),
+            "curriculum_recovery_physical_gate_contract": (
+                self.args.curriculum_recovery_physical_gate_contract
+            ),
+            "curriculum_recovery_physical_gate_contract_sha256": (
+                self.args.curriculum_recovery_physical_gate_contract_sha256
+            ),
             "stop_transition_seconds": self.args.stop_transition_seconds,
             "stop_intent_decelerate_seconds": self.args.stop_intent_decelerate_seconds,
             "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
@@ -2950,6 +2987,17 @@ def parse_args() -> argparse.Namespace:
         help="Required frozen file SHA256 when the Phase23 gate is enabled.",
     )
     parser.add_argument(
+        "--curriculum-recovery-physical-gate-contract",
+        help=(
+            "Default-off Phase24 projected-gravity/base-angular-velocity support gate; "
+            "it can only strengthen the Phase23 handoff gate."
+        ),
+    )
+    parser.add_argument(
+        "--curriculum-recovery-physical-gate-contract-sha256",
+        help="Required frozen file SHA256 when the Phase24 physical gate is enabled.",
+    )
+    parser.add_argument(
         "--stop-intent-decelerate-seconds",
         type=float,
         default=2.0,
@@ -3024,6 +3072,17 @@ def parse_args() -> argparse.Namespace:
             parser.error("handoff gate requires --clock-mode step")
     elif args.curriculum_recovery_handoff_gate_contract_sha256 is not None:
         parser.error("handoff gate --sha256 requires a contract path")
+    if args.curriculum_recovery_physical_gate_contract is not None:
+        if args.curriculum_recovery_physical_gate_contract_sha256 is None:
+            parser.error("physical handoff gate requires its frozen --sha256")
+        if args.curriculum_recovery_handoff_gate_contract is None:
+            parser.error("physical handoff gate can only strengthen the Phase23 handoff gate")
+        if args.state_prediction_seconds != 0.0:
+            parser.error("physical handoff gate requires --state-prediction-seconds 0")
+        if args.mirror_policy:
+            parser.error("physical handoff gate requires the canonical unmirrored actor frame")
+    elif args.curriculum_recovery_physical_gate_contract_sha256 is not None:
+        parser.error("physical handoff gate --sha256 requires a contract path")
     if not 0.0 <= args.post_handoff_snapshot_horizon_seconds <= 1.5:
         parser.error("--post-handoff-snapshot-horizon-seconds must be in [0, 1.5]")
     if args.post_handoff_snapshot_output is not None:

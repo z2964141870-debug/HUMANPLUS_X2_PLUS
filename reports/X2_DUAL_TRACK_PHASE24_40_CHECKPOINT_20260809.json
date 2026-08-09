@@ -1,0 +1,35 @@
+{
+  "date": "2026-08-09",
+  "status": "SWEET_POINT_REACHED_BOTH_TRAINING_PATHS_LOCKED",
+  "base": {
+    "phase24_valid": 5,
+    "phase24_handoff": 5,
+    "phase24_stop_pass": 0,
+    "phase24_full_pass": 0,
+    "phase24_median_wait_s": 1.24,
+    "phase24_median_handoff_to_collapse_s": 2.28,
+    "phase25_joint_position_ood_at_handoff": "5/5",
+    "phase25_root_stable_ood_delay_s": 0.02,
+    "phase25_actual_issued_action_stable_ood_within_1s": false,
+    "training_unlocked": false
+  },
+  "wbt": {
+    "true_train_silver": 0,
+    "heldout_silver_or_gold": 0,
+    "phase37_contact_left": 0.263,
+    "phase37_contact_right": 0.097,
+    "phase37_flight": 0.6514,
+    "phase38_feasible_certificate": false,
+    "phase39_feasible_certificate": false,
+    "phase40_feasible_certificate": false,
+    "phase40_stance_distance_max_mm": 0.851,
+    "phase40_stance_speed_mps": 0.251,
+    "ppo_unlocked": false
+  },
+  "next": {
+    "wbt": "contact-force and centroidal-dynamics constrained trajectory teacher",
+    "base": "official-physics brake-to-recovery dynamic bridge teacher"
+  },
+  "last_backup_git": "42adf8f",
+  "backup_due": false
+}
