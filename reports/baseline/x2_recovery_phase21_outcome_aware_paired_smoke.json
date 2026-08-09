@@ -1,0 +1,269 @@
+{
+  "stage": "BASE Phase21 outcome-aware state-role paired 5-update smoke",
+  "status": "NOT_PROMOTED_25_UPDATES_LOCKED",
+  "hypothesis": "A 5% balanced success-safe/critical-from-failure reset curriculum improves recovery without degrading the source or same-seed fraction-0 control.",
+  "intervention": "same source, seed47, 64 env, 5 updates and optimizer/reward/obs/action/PD contract; only reset fraction 0.00 vs 0.05",
+  "frozen_inputs": {
+    "source_checkpoint": {
+      "path": "/home/humanplus/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-08-08_01-17-25_stage_stand_backend_scratch_resume100_to300_v1/model_150.pt",
+      "sha256": "4da931cf8ab1f094056a9d3bd024ef555b2c94944f09fe38924d7fde10a52251"
+    },
+    "manifest": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/manifests/x2_phase19_outcome_aware_state_role.json",
+      "sha256": "16b8ee0539e917a9346ee5ea39ced408e871cabb5dbae19d2a8c91e2b8c485ea"
+    },
+    "official_gate": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/official_x2/phase21_outcome_aware_paired_gate.json",
+      "sha256": "8d5ea3c76cc7eaec4d93913bc9bd8b44c2e7a2024167c0c50ad3c29eed2e2a73"
+    }
+  },
+  "training_diagnostics_not_promotion_evidence": {
+    "f000": {
+      "checkpoint": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/logs/rsl_rl/x2_lower_velocity_flat/2026-08-09_18-48-34_phase21_outcome_aware_f000_u5_seed47_v1/model_155.pt",
+      "checkpoint_sha256": "885b22227bf0550636ea5125a8f6139cbfb01b45de25739b49fcf1fa2de50085",
+      "transitions": 7680,
+      "reward": [
+        {
+          "iteration": 151,
+          "value": -6.175899505615234
+        },
+        {
+          "iteration": 152,
+          "value": -6.0363264083862305
+        },
+        {
+          "iteration": 153,
+          "value": -5.762791633605957
+        },
+        {
+          "iteration": 154,
+          "value": -5.29095983505249
+        },
+        {
+          "iteration": 155,
+          "value": -4.9484477043151855
+        }
+      ],
+      "episode_length": [
+        {
+          "iteration": 151,
+          "value": 11.199999809265137
+        },
+        {
+          "iteration": 152,
+          "value": 16.66666603088379
+        },
+        {
+          "iteration": 153,
+          "value": 30.163265228271484
+        },
+        {
+          "iteration": 154,
+          "value": 44.01515197753906
+        },
+        {
+          "iteration": 155,
+          "value": 53.8271598815918
+        }
+      ],
+      "surrogate_loss": [
+        {
+          "iteration": 151,
+          "value": 0.5551082491874695
+        },
+        {
+          "iteration": 152,
+          "value": -0.009191752411425114
+        },
+        {
+          "iteration": 153,
+          "value": -0.0075346678495407104
+        },
+        {
+          "iteration": 154,
+          "value": -0.01037574652582407
+        },
+        {
+          "iteration": 155,
+          "value": -0.008035024628043175
+        }
+      ],
+      "ppo_minibatch_kl_logged": false,
+      "policy_drift_diagnostic": {
+        "definition": "post-hoc diagonal-Gaussian KL(source||final) on all eligible Phase20 93D rows; not PPO minibatch KL",
+        "support_rows": 432,
+        "kl_mean": 2.267838716506958,
+        "kl_p95": 3.9426281452178955,
+        "kl_max": 4.552800178527832,
+        "actor_mean_delta_rmse": 0.08811617642641068,
+        "actor_mean_delta_abs_max": 0.31140458583831787,
+        "std_abs_max_delta": 0.0046425387263298035
+      }
+    },
+    "f005": {
+      "checkpoint": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/logs/rsl_rl/x2_lower_velocity_flat/2026-08-09_18-49-03_phase21_outcome_aware_f005_u5_seed47_v1/model_155.pt",
+      "checkpoint_sha256": "a5df324a12b4b3d842e50f00789ef86fbd0edeb11dec3d435400d16aa09d3c6c",
+      "transitions": 7680,
+      "reward": [
+        {
+          "iteration": 151,
+          "value": -6.9593186378479
+        },
+        {
+          "iteration": 152,
+          "value": -6.589814186096191
+        },
+        {
+          "iteration": 153,
+          "value": -6.149881362915039
+        },
+        {
+          "iteration": 154,
+          "value": -5.958832263946533
+        },
+        {
+          "iteration": 155,
+          "value": -5.516940593719482
+        }
+      ],
+      "episode_length": [
+        {
+          "iteration": 151,
+          "value": 9.666666984558105
+        },
+        {
+          "iteration": 152,
+          "value": 17.65625
+        },
+        {
+          "iteration": 153,
+          "value": 31.882352828979492
+        },
+        {
+          "iteration": 154,
+          "value": 37.305084228515625
+        },
+        {
+          "iteration": 155,
+          "value": 54.57316970825195
+        }
+      ],
+      "surrogate_loss": [
+        {
+          "iteration": 151,
+          "value": 0.2507091462612152
+        },
+        {
+          "iteration": 152,
+          "value": -0.02024877443909645
+        },
+        {
+          "iteration": 153,
+          "value": -0.010576827451586723
+        },
+        {
+          "iteration": 154,
+          "value": -0.015864310786128044
+        },
+        {
+          "iteration": 155,
+          "value": -0.01751427911221981
+        }
+      ],
+      "ppo_minibatch_kl_logged": false,
+      "policy_drift_diagnostic": {
+        "definition": "post-hoc diagonal-Gaussian KL(source||final) on all eligible Phase20 93D rows; not PPO minibatch KL",
+        "support_rows": 432,
+        "kl_mean": 3.518463134765625,
+        "kl_p95": 9.263686180114746,
+        "kl_max": 19.780941009521484,
+        "actor_mean_delta_rmse": 0.08963283896446228,
+        "actor_mean_delta_abs_max": 0.6504712104797363,
+        "std_abs_max_delta": 0.004026591777801514
+      }
+    }
+  },
+  "official_gate": {
+    "all_15_valid": true,
+    "all_policy_slots_exact": true,
+    "subgates": {
+      "source": {
+        "stand": 5,
+        "startup": 5,
+        "move": 0,
+        "stop": 0,
+        "full": 0
+      },
+      "f000": {
+        "stand": 5,
+        "startup": 5,
+        "move": 0,
+        "stop": 0,
+        "full": 0
+      },
+      "f005": {
+        "stand": 5,
+        "startup": 5,
+        "move": 0,
+        "stop": 0,
+        "full": 0
+      }
+    },
+    "continuous_metrics": {
+      "heading_max_rad": {
+        "lower_is_better": true,
+        "means": {
+          "source": 0.5301612052143533,
+          "f000": 0.6010905251116142,
+          "f005": 0.6189480578205595
+        },
+        "candidate_no_greater_than_both_controls": false,
+        "descriptive_only_no_preregistered_tolerance": true
+      },
+      "lateral_displacement_m": {
+        "lower_is_better": true,
+        "means": {
+          "source": 0.48220254162196774,
+          "f000": 0.5653547468164989,
+          "f005": 0.5508581411801995
+        },
+        "candidate_no_greater_than_both_controls": false,
+        "descriptive_only_no_preregistered_tolerance": true
+      },
+      "stop_drift_m": {
+        "lower_is_better": true,
+        "means": {
+          "source": 0.3273035671000595,
+          "f000": 0.34723617779535887,
+          "f005": 0.2916073688021441
+        },
+        "candidate_no_greater_than_both_controls": true,
+        "descriptive_only_no_preregistered_tolerance": true
+      },
+      "stop_settle_time_s": {
+        "lower_is_better": true,
+        "means": {
+          "source": 4.404000000000001,
+          "f000": 4.656000000000001,
+          "f005": 4.26
+        },
+        "candidate_no_greater_than_both_controls": true,
+        "descriptive_only_no_preregistered_tolerance": true
+      }
+    },
+    "signed_pitch_reporting_only": true
+  },
+  "decision": {
+    "candidate_discrete_subgates_not_worse": true,
+    "candidate_improves_stop_or_full_count": false,
+    "candidate_continuous_means_no_worse_than_both_controls": false,
+    "phase21_promoted": false,
+    "updates25_unlocked": false,
+    "reason": "candidate remained move/stop/full 0/5 and its heading/lateral means were worse than source; mixed stop-drift/settle improvements do not establish a recovery success"
+  },
+  "boundaries": [
+    "PPO minibatch KL was not emitted to TensorBoard; support-set policy KL is explicitly post-hoc diagnostic only.",
+    "Official MuJoCo/AimDK simulation is not a real-robot or hardware foot-force result.",
+    "No fraction, seed, update, reward, PD, or handoff sweep was run."
+  ]
+}

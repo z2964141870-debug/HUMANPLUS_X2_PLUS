@@ -172,8 +172,10 @@ def audit_with_frozen_contact(
     """Reuse Phase28 gates but replace re-inferred contact with frozen Phase29 labels."""
     audit = phase28.audit_tier(row, entry, model, reset, gates, mirror)
     kin = phase28.target_kinematics(entry, model)
-    threshold = float(reset["reset_clearance_m"] + reset["sole_sphere_radius_m"])
-    target_contact = {side: np.asarray(kin["sole_distance"][side]) <= threshold for side in phase29.SIDES}
+    target_contact = {
+        side: np.asarray(kin["official_collision_contact"][side], dtype=bool)
+        for side in phase29.SIDES
+    }
     fps = float(entry["fps"])
     intended = [side for side in phase29.SIDES if len(phase28.transitions(source_contact[side])) >= 2]
     metrics = audit["silver"]["metrics"]
@@ -186,8 +188,24 @@ def audit_with_frozen_contact(
         "nearest normalized-phase resample of frozen Phase29 Bronze/Silver evaluation labels; "
         "not re-inferred from repaired geometry and not real GRF/COP/force"
     )
+    metrics["source_intent_contact_ratio"] = {
+        side: float(np.mean(source_contact[side])) for side in phase29.SIDES
+    }
+    metrics["official_geometry_contact_ratio"] = {
+        side: float(np.mean(target_contact[side])) for side in phase29.SIDES
+    }
+    metrics["intent_official_frame_agreement"] = {
+        side: float(np.mean(source_contact[side] == target_contact[side])) for side in phase29.SIDES
+    }
+    metrics["official_signed_distance_threshold_m"] = 0.0
+    metrics["collision_signed_distance_exact"] = bool(kin["collision_signed_distance_exact"])
     s = gates["silver_contact"]["metrics"]
     is_static_exception = row["category"] in ("standing", "upper_only")
+    event_consistent = bool(intended) and all(
+        metrics["target_contact_transitions"][side] >= s["contact_transitions_per_intended_foot"]["min"]
+        and metrics["contact_timing_error_p95_s"][side] <= s["contact_timing_error_s"]["max"]
+        for side in intended
+    )
     checks = {
         "bronze_prerequisite": audit["bronze"]["pass"],
         "dynamic_not_static_exception": not is_static_exception,
@@ -199,6 +217,8 @@ def audit_with_frozen_contact(
         "clearance_p50_each_intended": bool(intended) and all(metrics["swing_clearance_m"][side]["p50"] >= s["swing_clearance_p50_m_each_intended_foot"]["min"] for side in intended),
         "clearance_p95_each_intended": bool(intended) and all(metrics["swing_clearance_m"][side]["p95"] >= s["swing_clearance_p95_m_each_intended_foot"]["min"] for side in intended),
         "timing_each_intended": bool(intended) and all(metrics["contact_timing_error_p95_s"][side] <= s["contact_timing_error_s"]["max"] for side in intended),
+        "intent_official_consistent_under_existing_event_gates": event_consistent,
+        "official_collision_matches_signed_distance": bool(kin["collision_signed_distance_exact"]),
         "flight": metrics["unintended_flight_fraction"] <= s["unintended_flight_fraction"]["max"],
         "root_acceleration": metrics["root_horizontal_acceleration_p95_mps2"] <= s["root_horizontal_acceleration_p95_mps2"]["max"],
     }

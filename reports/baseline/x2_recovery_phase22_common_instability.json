@@ -1,0 +1,2573 @@
+{
+  "stage": "BASE Phase22 common-instability attribution",
+  "analysis_only": true,
+  "causal_claim": false,
+  "trace_count": 15,
+  "references": {
+    "recorder_v2": {
+      "manifest": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/manifests/x2_phase19_outcome_aware_state_role.json",
+      "manifest_sha256": "16b8ee0539e917a9346ee5ea39ced408e871cabb5dbae19d2a8c91e2b8c485ea",
+      "rows": 432,
+      "actor_input": "recorder-v2 exact observation_93d consumed by actor",
+      "contact_boundary": "gait_phase/contact generator state, not physical foot force or hardware contact"
+    },
+    "stage335": {
+      "dataset": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage335_stage306_stiff_fixed_stop_recovery_states.npz",
+      "dataset_sha256": "4d8ce06b6e8dd9b43363dadedb781e9feb75f72ac092b475de2a1e2772545013",
+      "source_report": "reports/official_x2/stage335_stop_recovery_state_extraction.json",
+      "state_count": 90,
+      "eventual_pass": 63,
+      "eventual_fail": 27
+    }
+  },
+  "threshold_contract": {
+    "root_and_world": "existing official gates only: z 0.45m, tilt/heading/lateral 0.30",
+    "actor_groups": "reference LOO nearest-neighbor p95, robust median/IQR scaling, same as Phase14",
+    "joint_fields": "recorder-v2 reference p01-p99, same descriptive coverage convention as Phase14",
+    "step": "first post-handoff one-tick L2 exceeding same-episode pre-handoff 1s maximum; no tuned multiplier"
+  },
+  "groups": {
+    "source": {
+      "episodes": 5,
+      "event_times_after_handoff_s": {
+        "action_step_above_pre_handoff_max": {
+          "count": 2,
+          "median": 2.1900000000000004,
+          "population_variance": 9.999999999999574e-05,
+          "min": 2.1800000000000006,
+          "max": 2.2
+        },
+        "heading_official_threshold": {
+          "count": 5,
+          "median": -4.56,
+          "population_variance": 0.900544,
+          "min": -4.68,
+          "max": -2.26
+        },
+        "lateral_official_threshold": {
+          "count": 5,
+          "median": -3.2,
+          "population_variance": 0.5483839999999998,
+          "min": -3.6399999999999997,
+          "max": -1.58
+        },
+        "pd_tracking_error_above_pre_handoff_max": {
+          "count": 2,
+          "median": 1.080000000000001,
+          "population_variance": 0.00039999999999998294,
+          "min": 1.0600000000000014,
+          "max": 1.1000000000000005
+        },
+        "root_tilt_gt_0p30": {
+          "count": 5,
+          "median": 1.46,
+          "population_variance": 0.008160000000000008,
+          "min": 1.2800000000000002,
+          "max": 1.4800000000000013
+        },
+        "root_z_lt_0p45": {
+          "count": 5,
+          "median": 2.0600000000000014,
+          "population_variance": 0.009760000000000095,
+          "min": 1.8400000000000007,
+          "max": 2.0600000000000014
+        },
+        "target_step_above_pre_handoff_max": {
+          "count": 2,
+          "median": 2.1900000000000004,
+          "population_variance": 9.999999999999574e-05,
+          "min": 2.1800000000000006,
+          "max": 2.2
+        },
+        "v2_base_angular_velocity_imu_ood": {
+          "count": 5,
+          "median": 1.5000000000000009,
+          "population_variance": 0.009183999999999939,
+          "min": 1.3000000000000016,
+          "max": 1.5200000000000005
+        },
+        "v2_current_action_ood": {
+          "count": 5,
+          "median": 1.9000000000000012,
+          "population_variance": 0.008576000000000047,
+          "min": 1.7000000000000002,
+          "max": 1.9200000000000008
+        },
+        "v2_previous_action_ood": {
+          "count": 5,
+          "median": 8.881784197001252e-16,
+          "population_variance": 0.0061440000000000106,
+          "min": 8.881784197001252e-16,
+          "max": 0.16000000000000103
+        },
+        "v2_projected_gravity_imu_ood": {
+          "count": 5,
+          "median": 8.881784197001252e-16,
+          "population_variance": 0.0,
+          "min": 8.881784197001252e-16,
+          "max": 8.881784197001252e-16
+        }
+      },
+      "first_three_sequences": [
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_projected_gravity_imu_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_projected_gravity_imu_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ]
+      ],
+      "support_phase_at_tilt": [
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support"
+      ],
+      "v2_joint_group_p01_p99_first_exit_s": {
+        "q": {
+          "left_leg": {
+            "count": 5,
+            "median": 0.3200000000000012,
+            "population_variance": 0.048960000000000045,
+            "min": 8.881784197001252e-16,
+            "max": 0.5000000000000009
+          },
+          "right_leg": {
+            "count": 5,
+            "median": 1.2600000000000007,
+            "population_variance": 0.3976959999999999,
+            "min": 8.881784197001252e-16,
+            "max": 1.3200000000000012
+          },
+          "waist": {
+            "count": 0,
+            "median": null,
+            "population_variance": null,
+            "min": null,
+            "max": null
+          },
+          "upper_head": {
+            "count": 5,
+            "median": 0.22000000000000153,
+            "population_variance": 0.013984000000000017,
+            "min": 8.881784197001252e-16,
+            "max": 0.2600000000000007
+          }
+        },
+        "dq": {
+          "left_leg": {
+            "count": 5,
+            "median": 1.7200000000000015,
+            "population_variance": 0.33817600000000025,
+            "min": 0.5200000000000005,
+            "max": 1.740000000000001
+          },
+          "right_leg": {
+            "count": 5,
+            "median": 0.40000000000000124,
+            "population_variance": 0.4581760000000001,
+            "min": 0.3000000000000016,
+            "max": 1.740000000000001
+          },
+          "waist": {
+            "count": 5,
+            "median": 0.34000000000000075,
+            "population_variance": 9.599999999999591e-05,
+            "min": 0.3200000000000012,
+            "max": 0.34000000000000075
+          },
+          "upper_head": {
+            "count": 5,
+            "median": 2.0200000000000005,
+            "population_variance": 0.010623999999999904,
+            "min": 1.8000000000000016,
+            "max": 2.0200000000000005
+          }
+        }
+      },
+      "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+        "left_leg": {
+          "count": 5,
+          "median": 0.22322210484909036,
+          "population_variance": 0.0020632593981745567,
+          "min": 0.14208035648364029,
+          "max": 0.2431658022868863
+        },
+        "right_leg": {
+          "count": 5,
+          "median": 0.29834612235868524,
+          "population_variance": 0.0008573815927477938,
+          "min": 0.23180979888742415,
+          "max": 0.3124030539367577
+        },
+        "waist": {
+          "count": 5,
+          "median": 0.06530698213847994,
+          "population_variance": 4.94718219497144e-05,
+          "min": 0.05458180252281263,
+          "max": 0.07567254183981613
+        }
+      }
+    },
+    "f000": {
+      "episodes": 5,
+      "event_times_after_handoff_s": {
+        "action_step_above_pre_handoff_max": {
+          "count": 3,
+          "median": 2.2600000000000007,
+          "population_variance": 0.00168888888888888,
+          "min": 2.2200000000000015,
+          "max": 2.320000000000001
+        },
+        "heading_official_threshold": {
+          "count": 5,
+          "median": -4.7,
+          "population_variance": 0.5290240000000002,
+          "min": -4.9799999999999995,
+          "max": -3.0199999999999996
+        },
+        "lateral_official_threshold": {
+          "count": 5,
+          "median": -3.66,
+          "population_variance": 0.16160000000000024,
+          "min": -3.7,
+          "max": -2.7399999999999993
+        },
+        "pd_tracking_error_above_pre_handoff_max": {
+          "count": 3,
+          "median": 1.2600000000000007,
+          "population_variance": 0.013066666666666773,
+          "min": 1.12,
+          "max": 1.4000000000000012
+        },
+        "root_tilt_gt_0p30": {
+          "count": 5,
+          "median": 1.4800000000000013,
+          "population_variance": 0.014719999999999997,
+          "min": 1.2800000000000002,
+          "max": 1.6000000000000005
+        },
+        "root_z_lt_0p45": {
+          "count": 5,
+          "median": 2.1000000000000005,
+          "population_variance": 0.015103999999999992,
+          "min": 1.88,
+          "max": 2.2
+        },
+        "target_step_above_pre_handoff_max": {
+          "count": 3,
+          "median": 2.2600000000000007,
+          "population_variance": 0.00168888888888888,
+          "min": 2.2200000000000015,
+          "max": 2.320000000000001
+        },
+        "v2_base_angular_velocity_imu_ood": {
+          "count": 5,
+          "median": 1.54,
+          "population_variance": 0.016064000000000023,
+          "min": 1.3200000000000012,
+          "max": 1.660000000000001
+        },
+        "v2_current_action_ood": {
+          "count": 5,
+          "median": 2.0200000000000005,
+          "population_variance": 0.014175999999999895,
+          "min": 1.8000000000000016,
+          "max": 2.12
+        },
+        "v2_previous_action_ood": {
+          "count": 5,
+          "median": 0.16000000000000103,
+          "population_variance": 0.006719999999999998,
+          "min": 8.881784197001252e-16,
+          "max": 0.1800000000000006
+        },
+        "v2_projected_gravity_imu_ood": {
+          "count": 5,
+          "median": 8.881784197001252e-16,
+          "population_variance": 0.0,
+          "min": 8.881784197001252e-16,
+          "max": 8.881784197001252e-16
+        }
+      },
+      "first_three_sequences": [
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_projected_gravity_imu_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_projected_gravity_imu_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_projected_gravity_imu_ood"
+        ]
+      ],
+      "support_phase_at_tilt": [
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support"
+      ],
+      "v2_joint_group_p01_p99_first_exit_s": {
+        "q": {
+          "left_leg": {
+            "count": 5,
+            "median": 0.34000000000000075,
+            "population_variance": 0.03382399999999996,
+            "min": 8.881784197001252e-16,
+            "max": 0.40000000000000124
+          },
+          "right_leg": {
+            "count": 5,
+            "median": 1.5600000000000014,
+            "population_variance": 0.599616,
+            "min": 8.881784197001252e-16,
+            "max": 1.62
+          },
+          "waist": {
+            "count": 2,
+            "median": 0.020000000000000462,
+            "population_variance": 0.00039999999999998294,
+            "min": 8.881784197001252e-16,
+            "max": 0.040000000000000036
+          },
+          "upper_head": {
+            "count": 5,
+            "median": 8.881784197001252e-16,
+            "population_variance": 0.013824000000000024,
+            "min": 8.881784197001252e-16,
+            "max": 0.2400000000000011
+          }
+        },
+        "dq": {
+          "left_leg": {
+            "count": 5,
+            "median": 1.8000000000000016,
+            "population_variance": 0.01897600000000014,
+            "min": 1.54,
+            "max": 1.9000000000000012
+          },
+          "right_leg": {
+            "count": 5,
+            "median": 0.3000000000000016,
+            "population_variance": 0.0040959999999999365,
+            "min": 0.3000000000000016,
+            "max": 0.4400000000000004
+          },
+          "waist": {
+            "count": 5,
+            "median": 0.3200000000000012,
+            "population_variance": 9.599999999999591e-05,
+            "min": 0.3200000000000012,
+            "max": 0.34000000000000075
+          },
+          "upper_head": {
+            "count": 5,
+            "median": 2.04,
+            "population_variance": 0.017056000000000005,
+            "min": 1.8200000000000012,
+            "max": 2.160000000000001
+          }
+        }
+      },
+      "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+        "left_leg": {
+          "count": 5,
+          "median": 0.2794223699827802,
+          "population_variance": 0.0030393542307614453,
+          "min": 0.15405293503858147,
+          "max": 0.29213270017645565
+        },
+        "right_leg": {
+          "count": 5,
+          "median": 0.2768632323455375,
+          "population_variance": 0.002434665439160213,
+          "min": 0.21425885451703058,
+          "max": 0.3390492081093268
+        },
+        "waist": {
+          "count": 5,
+          "median": 0.07577774781600392,
+          "population_variance": 0.00015105818545032212,
+          "min": 0.04995464292129093,
+          "max": 0.0814964771270752
+        }
+      }
+    },
+    "f005": {
+      "episodes": 5,
+      "event_times_after_handoff_s": {
+        "action_step_above_pre_handoff_max": {
+          "count": 1,
+          "median": 2.1000000000000005,
+          "population_variance": 0.0,
+          "min": 2.1000000000000005,
+          "max": 2.1000000000000005
+        },
+        "heading_official_threshold": {
+          "count": 5,
+          "median": -4.4799999999999995,
+          "population_variance": 0.08336000000000007,
+          "min": -4.68,
+          "max": -3.8599999999999994
+        },
+        "lateral_official_threshold": {
+          "count": 5,
+          "median": -3.2799999999999994,
+          "population_variance": 0.04681600000000003,
+          "min": -3.5199999999999996,
+          "max": -2.8599999999999994
+        },
+        "pd_tracking_error_above_pre_handoff_max": {
+          "count": 1,
+          "median": 1.0000000000000009,
+          "population_variance": 0.0,
+          "min": 1.0000000000000009,
+          "max": 1.0000000000000009
+        },
+        "root_tilt_gt_0p30": {
+          "count": 5,
+          "median": 1.2200000000000015,
+          "population_variance": 0.005599999999999946,
+          "min": 1.160000000000001,
+          "max": 1.38
+        },
+        "root_z_lt_0p45": {
+          "count": 5,
+          "median": 1.8000000000000016,
+          "population_variance": 0.007936000000000002,
+          "min": 1.7200000000000015,
+          "max": 1.9800000000000013
+        },
+        "target_step_above_pre_handoff_max": {
+          "count": 1,
+          "median": 2.1000000000000005,
+          "population_variance": 0.0,
+          "min": 2.1000000000000005,
+          "max": 2.1000000000000005
+        },
+        "v2_base_angular_velocity_imu_ood": {
+          "count": 5,
+          "median": 1.2800000000000002,
+          "population_variance": 0.0048959999999999785,
+          "min": 1.2200000000000015,
+          "max": 1.4200000000000008
+        },
+        "v2_current_action_ood": {
+          "count": 5,
+          "median": 1.660000000000001,
+          "population_variance": 0.005664000000000017,
+          "min": 1.6000000000000005,
+          "max": 1.8200000000000012
+        },
+        "v2_previous_action_ood": {
+          "count": 5,
+          "median": 8.881784197001252e-16,
+          "population_variance": 0.004096000000000008,
+          "min": 8.881784197001252e-16,
+          "max": 0.16000000000000103
+        },
+        "v2_projected_gravity_imu_ood": {
+          "count": 5,
+          "median": 8.881784197001252e-16,
+          "population_variance": 0.0,
+          "min": 8.881784197001252e-16,
+          "max": 8.881784197001252e-16
+        }
+      },
+      "first_three_sequences": [
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_projected_gravity_imu_ood"
+        ],
+        [
+          "heading_official_threshold",
+          "lateral_official_threshold",
+          "v2_previous_action_ood"
+        ]
+      ],
+      "support_phase_at_tilt": [
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support",
+        "generator_double_support"
+      ],
+      "v2_joint_group_p01_p99_first_exit_s": {
+        "q": {
+          "left_leg": {
+            "count": 5,
+            "median": 8.881784197001252e-16,
+            "population_variance": 0.010815999999999982,
+            "min": 8.881784197001252e-16,
+            "max": 0.2600000000000007
+          },
+          "right_leg": {
+            "count": 5,
+            "median": 8.881784197001252e-16,
+            "population_variance": 0.31360000000000016,
+            "min": 8.881784197001252e-16,
+            "max": 1.4000000000000012
+          },
+          "waist": {
+            "count": 0,
+            "median": null,
+            "population_variance": null,
+            "min": null,
+            "max": null
+          },
+          "upper_head": {
+            "count": 5,
+            "median": 0.2400000000000011,
+            "population_variance": 0.009664000000000006,
+            "min": 8.881784197001252e-16,
+            "max": 0.2600000000000007
+          }
+        },
+        "dq": {
+          "left_leg": {
+            "count": 5,
+            "median": 0.4800000000000013,
+            "population_variance": 0.2172160000000002,
+            "min": 0.45999999999999996,
+            "max": 1.6400000000000015
+          },
+          "right_leg": {
+            "count": 5,
+            "median": 0.40000000000000124,
+            "population_variance": 0.0020159999999999766,
+            "min": 0.3000000000000016,
+            "max": 0.4200000000000008
+          },
+          "waist": {
+            "count": 5,
+            "median": 0.34000000000000075,
+            "population_variance": 6.399999999999727e-05,
+            "min": 0.3200000000000012,
+            "max": 0.34000000000000075
+          },
+          "upper_head": {
+            "count": 5,
+            "median": 1.740000000000001,
+            "population_variance": 0.007936000000000002,
+            "min": 1.660000000000001,
+            "max": 1.9200000000000008
+          }
+        }
+      },
+      "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+        "left_leg": {
+          "count": 5,
+          "median": 0.21956407391148633,
+          "population_variance": 0.0023933085153234348,
+          "min": 0.15976859029187043,
+          "max": 0.28263902456878726
+        },
+        "right_leg": {
+          "count": 5,
+          "median": 0.3095158150541327,
+          "population_variance": 0.0008018467037505144,
+          "min": 0.25636506530766634,
+          "max": 0.3346882560054482
+        },
+        "waist": {
+          "count": 5,
+          "median": 0.07935998422771554,
+          "population_variance": 0.000238323164370911,
+          "min": 0.07108856748532782,
+          "max": 0.11098861063684172
+        }
+      }
+    }
+  },
+  "episodes": [
+    {
+      "label": "source",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r1.json",
+      "sha256": "692a4e0a972f935f4b0dcde4b0a035723ddc9cfb9ae5bb1775b5a0cb32402a57",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6195898425495014,
+        "root_tilt_rad": 0.08348507380750951,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.6656069267511575,
+        "action_post_peak_l2": 1.1579726652394189,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.4806997645298498,
+        "target_post_peak_l2_rad": 0.33800050331013565,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.676811100972399,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.2361609189479869,
+          "right_leg": 0.23180979888742415,
+          "waist": 0.06882279956031538
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.3000000000000016,
+        "root_z_lt_0p45": 1.88,
+        "heading_gt_0p30_from_move_start": -4.56,
+        "lateral_gt_0p30_from_move_start": -3.3599999999999994
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.14000000000000146,
+        "base_angular_velocity": 1.3400000000000007,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.740000000000001,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.740000000000001,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.5200000000000005,
+        "base_angular_velocity": 1.5600000000000014,
+        "projected_gravity": 1.160000000000001,
+        "command": null,
+        "joint_position": 1.8400000000000007,
+        "joint_velocity": 2.000000000000001,
+        "previous_action": 0.2600000000000007,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.3200000000000012
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2600000000000007
+        },
+        "dq": {
+          "left_leg": 0.5600000000000014,
+          "right_leg": 0.40000000000000124,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.8200000000000012
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.56,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.3599999999999994,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.3000000000000016,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.3400000000000007,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.740000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.88,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03254583985106256
+      }
+    },
+    {
+      "label": "source",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r2.json",
+      "sha256": "983f4ca717386bb4e2a881c34df012fdb532a1041aef81da7b1f599a83e519b3",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.622624003070129,
+        "root_tilt_rad": 0.10533623271351975,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": 2.1800000000000006,
+        "action_pre_max_l2": 0.199964357818112,
+        "action_post_peak_l2": 0.9961482199980145,
+        "target_first_above_pre_max_s": 2.1800000000000006,
+        "target_pre_max_l2_rad": 0.05761679471284408,
+        "target_post_peak_l2_rad": 0.33760877906985143,
+        "pd_tracking_first_above_pre_max_s": 1.1000000000000005,
+        "pd_tracking_pre_max_l2_rad": 0.33399616007761435,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.1426975613987148,
+          "right_leg": 0.29891820245655837,
+          "waist": 0.06530698213847994
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.46,
+        "root_z_lt_0p45": 2.0600000000000014,
+        "heading_gt_0p30_from_move_start": -4.56,
+        "lateral_gt_0p30_from_move_start": -3.2
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4200000000000008,
+        "base_angular_velocity": 1.5000000000000009,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.9800000000000013,
+        "previous_action": 0.16000000000000103,
+        "gait_phase": null,
+        "current_action": 1.9000000000000012,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.7000000000000002,
+        "base_angular_velocity": 1.740000000000001,
+        "projected_gravity": 1.3200000000000012,
+        "command": null,
+        "joint_position": 2.0200000000000005,
+        "joint_velocity": 2.1800000000000006,
+        "previous_action": 0.28000000000000025,
+        "gait_phase": null,
+        "current_action": 2.0600000000000014,
+        "root_state": 1.5000000000000009
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.5000000000000009,
+          "right_leg": 1.2600000000000007,
+          "waist": null,
+          "upper_head": 8.881784197001252e-16
+        },
+        "dq": {
+          "left_leg": 1.7200000000000015,
+          "right_leg": 0.3000000000000016,
+          "waist": 0.3200000000000012,
+          "upper_head": 2.0200000000000005
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.56,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.2,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 0.16000000000000103,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "pd_tracking_error_above_pre_handoff_max",
+          "time_after_handoff_s": 1.1000000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.46,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.5000000000000009,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.9000000000000012,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 2.0600000000000014,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "action_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.1800000000000006,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "target_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.1800000000000006,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03292919917091986
+      }
+    },
+    {
+      "label": "source",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r3.json",
+      "sha256": "4cc8680061d61ca31d3ae710f3848a0e1fda311b8ce71d77d01f2a868e4f808c",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.62301212680915,
+        "root_tilt_rad": 0.10393350003131863,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": 2.2,
+        "action_pre_max_l2": 0.20134236121456478,
+        "action_post_peak_l2": 1.2485801573931707,
+        "target_first_above_pre_max_s": 2.2,
+        "target_pre_max_l2_rad": 0.05572926576375367,
+        "target_post_peak_l2_rad": 0.36745490141310205,
+        "pd_tracking_first_above_pre_max_s": 1.0600000000000014,
+        "pd_tracking_pre_max_l2_rad": 0.32322954215226757,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.2431658022868863,
+          "right_leg": 0.2648908522055617,
+          "waist": 0.07567254183981613
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.4800000000000013,
+        "root_z_lt_0p45": 2.0600000000000014,
+        "heading_gt_0p30_from_move_start": -3.3199999999999994,
+        "lateral_gt_0p30_from_move_start": -2.5
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4200000000000008,
+        "base_angular_velocity": 1.5200000000000005,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.9800000000000013,
+        "previous_action": 0.16000000000000103,
+        "gait_phase": null,
+        "current_action": 1.9000000000000012,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.7200000000000015,
+        "base_angular_velocity": 1.740000000000001,
+        "projected_gravity": 1.3200000000000012,
+        "command": null,
+        "joint_position": 2.0200000000000005,
+        "joint_velocity": 2.2,
+        "previous_action": 0.28000000000000025,
+        "gait_phase": null,
+        "current_action": 2.0600000000000014,
+        "root_state": 1.5200000000000005
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.4800000000000013,
+          "right_leg": 1.2800000000000002,
+          "waist": null,
+          "upper_head": 8.881784197001252e-16
+        },
+        "dq": {
+          "left_leg": 1.740000000000001,
+          "right_leg": 1.740000000000001,
+          "waist": 0.3200000000000012,
+          "upper_head": 2.0200000000000005
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -3.3199999999999994,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -2.5,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 0.16000000000000103,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "pd_tracking_error_above_pre_handoff_max",
+          "time_after_handoff_s": 1.0600000000000014,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.4800000000000013,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.5200000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.9000000000000012,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 2.0600000000000014,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "action_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.2,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "target_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.2,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03425641411909179
+      }
+    },
+    {
+      "label": "source",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r4.json",
+      "sha256": "d1b3b2675b2479112f7acfdb5bfb6830bcc90ac6c4c92a27b009983b3de5dcdf",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6190416167746632,
+        "root_tilt_rad": 0.08980593333831335,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.827924075653163,
+        "action_post_peak_l2": 1.2087798785017303,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.49768178700324056,
+        "target_post_peak_l2_rad": 0.38781819112686083,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.6522636312579503,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.22322210484909036,
+          "right_leg": 0.3124030539367577,
+          "waist": 0.05458180252281263
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.2800000000000002,
+        "root_z_lt_0p45": 1.8400000000000007,
+        "heading_gt_0p30_from_move_start": -2.26,
+        "lateral_gt_0p30_from_move_start": -1.58
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.16000000000000103,
+        "base_angular_velocity": 1.3000000000000016,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.7200000000000015,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.7000000000000002,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.5000000000000009,
+        "base_angular_velocity": 1.5200000000000005,
+        "projected_gravity": 1.1400000000000015,
+        "command": null,
+        "joint_position": 1.8200000000000012,
+        "joint_velocity": 1.96,
+        "previous_action": 0.2400000000000011,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.2800000000000002
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2400000000000011
+        },
+        "dq": {
+          "left_leg": 0.5200000000000005,
+          "right_leg": 0.3799999999999999,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.8000000000000016
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -2.26,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -1.58,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.2800000000000002,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.3000000000000016,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.7000000000000002,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.8400000000000007,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03604666024932074
+      }
+    },
+    {
+      "label": "source",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r5.json",
+      "sha256": "0e605f3d300655bbb09fdab96c0f3336990f7315825cf6ae377bc8b2398b43b9",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6260557889991305,
+        "root_tilt_rad": 0.08582989111761022,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 2.080801920909291,
+        "action_post_peak_l2": 1.0042410695632285,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.5014068023475732,
+        "target_post_peak_l2_rad": 0.3361725892543832,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.779483875459846,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.14208035648364029,
+          "right_leg": 0.29834612235868524,
+          "waist": 0.06176385141014424
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.4800000000000013,
+        "root_z_lt_0p45": 2.0600000000000014,
+        "heading_gt_0p30_from_move_start": -4.68,
+        "lateral_gt_0p30_from_move_start": -3.6399999999999997
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4200000000000008,
+        "base_angular_velocity": 1.5200000000000005,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.9400000000000004,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.9200000000000008,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.7200000000000015,
+        "base_angular_velocity": 1.740000000000001,
+        "projected_gravity": 1.3400000000000007,
+        "command": null,
+        "joint_position": 2.0200000000000005,
+        "joint_velocity": 2.1800000000000006,
+        "previous_action": 0.2600000000000007,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.5000000000000009
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.3200000000000012,
+          "right_leg": 1.3200000000000012,
+          "waist": null,
+          "upper_head": 0.22000000000000153
+        },
+        "dq": {
+          "left_leg": 1.7200000000000015,
+          "right_leg": 1.740000000000001,
+          "waist": 0.34000000000000075,
+          "upper_head": 2.0200000000000005
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.68,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.6399999999999997,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.4800000000000013,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.5200000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.9200000000000008,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 2.0600000000000014,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.0318744085782512
+      }
+    },
+    {
+      "label": "f000",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r1.json",
+      "sha256": "871d04a8444f3381f8a6af7625358b87a910ae8b6b2dad02330bf91f93324a6d",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6220729664489166,
+        "root_tilt_rad": 0.10442791736208551,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": 2.320000000000001,
+        "action_pre_max_l2": 0.2735728987172572,
+        "action_post_peak_l2": 1.1828223974938805,
+        "target_first_above_pre_max_s": 2.320000000000001,
+        "target_pre_max_l2_rad": 0.08462061463038349,
+        "target_post_peak_l2_rad": 0.3974407789320368,
+        "pd_tracking_first_above_pre_max_s": 1.4000000000000012,
+        "pd_tracking_pre_max_l2_rad": 0.37507071136222075,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.19855574601186843,
+          "right_leg": 0.3390492081093268,
+          "waist": 0.05983663563581181
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.6000000000000005,
+        "root_z_lt_0p45": 2.2,
+        "heading_gt_0p30_from_move_start": -4.7,
+        "lateral_gt_0p30_from_move_start": -3.66
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4800000000000013,
+        "base_angular_velocity": 1.660000000000001,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 2.1400000000000015,
+        "previous_action": 0.1800000000000006,
+        "gait_phase": null,
+        "current_action": 2.12,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.8400000000000007,
+        "base_angular_velocity": 1.88,
+        "projected_gravity": 1.46,
+        "command": null,
+        "joint_position": 2.1800000000000006,
+        "joint_velocity": 2.320000000000001,
+        "previous_action": 0.28000000000000025,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.660000000000001
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.34000000000000075,
+          "right_leg": 1.62,
+          "waist": 8.881784197001252e-16,
+          "upper_head": 8.881784197001252e-16
+        },
+        "dq": {
+          "left_leg": 1.9000000000000012,
+          "right_leg": 0.3000000000000016,
+          "waist": 0.3200000000000012,
+          "upper_head": 2.160000000000001
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.7,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.66,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 0.1800000000000006,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "pd_tracking_error_above_pre_handoff_max",
+          "time_after_handoff_s": 1.4000000000000012,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.6000000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.660000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 2.12,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 2.2,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "action_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.320000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "target_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.320000000000001,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.0320199545889801
+      }
+    },
+    {
+      "label": "f000",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r2.json",
+      "sha256": "8e2a4652ae4194a1613cd0d12e76338741b6d3a7c4dbcc36c64d6d5a35a1ee47",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6193091930879789,
+        "root_tilt_rad": 0.08536786493428263,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.6601190343167234,
+        "action_post_peak_l2": 1.1824767961271656,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.4703241348325019,
+        "target_post_peak_l2_rad": 0.3614213515688685,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.6818985132525371,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.2794223699827802,
+          "right_leg": 0.21425885451703058,
+          "waist": 0.0814964771270752
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.3200000000000012,
+        "root_z_lt_0p45": 1.9200000000000008,
+        "heading_gt_0p30_from_move_start": -4.9799999999999995,
+        "lateral_gt_0p30_from_move_start": -3.7
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.16000000000000103,
+        "base_angular_velocity": 1.38,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.8000000000000016,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.8600000000000003,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.5600000000000014,
+        "base_angular_velocity": 1.6000000000000005,
+        "projected_gravity": 1.1800000000000006,
+        "command": null,
+        "joint_position": 1.88,
+        "joint_velocity": 2.04,
+        "previous_action": 0.2600000000000007,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.3400000000000007
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2400000000000011
+        },
+        "dq": {
+          "left_leg": 1.6000000000000005,
+          "right_leg": 0.4400000000000004,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.8600000000000003
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.9799999999999995,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.7,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.3200000000000012,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.38,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.8600000000000003,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.9200000000000008,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03329084466096695
+      }
+    },
+    {
+      "label": "f000",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r3.json",
+      "sha256": "c95d5a335269bb9c72d9d1f0e3ac8313ed058722f49c7be41539dafa0a17e296",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6186582372814131,
+        "root_tilt_rad": 0.0876470142626665,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.7025810127557663,
+        "action_post_peak_l2": 1.1906300447473788,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.4696740864750181,
+        "target_post_peak_l2_rad": 0.3650589092471553,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.6665130259639317,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.2827778261025631,
+          "right_leg": 0.21681800731549392,
+          "waist": 0.07933889329433441
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.2800000000000002,
+        "root_z_lt_0p45": 1.88,
+        "heading_gt_0p30_from_move_start": -4.96,
+        "lateral_gt_0p30_from_move_start": -3.6799999999999997
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.14000000000000146,
+        "base_angular_velocity": 1.3200000000000012,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.7600000000000007,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.8000000000000016,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.5200000000000005,
+        "base_angular_velocity": 1.54,
+        "projected_gravity": 1.1400000000000015,
+        "command": null,
+        "joint_position": 1.8400000000000007,
+        "joint_velocity": 2.000000000000001,
+        "previous_action": 0.2600000000000007,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.3000000000000016
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2400000000000011
+        },
+        "dq": {
+          "left_leg": 1.54,
+          "right_leg": 0.4200000000000008,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.8200000000000012
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.96,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.6799999999999997,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.2800000000000002,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.3200000000000012,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.8000000000000016,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.88,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03302640390660545
+      }
+    },
+    {
+      "label": "f000",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r4.json",
+      "sha256": "9cbedf846f609b1dfef0b400f1d9544ea6091b18b9cec0c5151cafdf6cde44ce",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6220716866910367,
+        "root_tilt_rad": 0.10677314884442574,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": 2.2600000000000007,
+        "action_pre_max_l2": 0.31609096356489763,
+        "action_post_peak_l2": 1.332346592832611,
+        "target_first_above_pre_max_s": 2.2600000000000007,
+        "target_pre_max_l2_rad": 0.09646330575833531,
+        "target_post_peak_l2_rad": 0.4310619563241282,
+        "pd_tracking_first_above_pre_max_s": 1.2600000000000007,
+        "pd_tracking_pre_max_l2_rad": 0.36411995755479654,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.29213270017645565,
+          "right_leg": 0.3077834118556941,
+          "waist": 0.07577774781600392
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.5200000000000005,
+        "root_z_lt_0p45": 2.12,
+        "heading_gt_0p30_from_move_start": -3.0199999999999996,
+        "lateral_gt_0p30_from_move_start": -2.7399999999999993
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4400000000000004,
+        "base_angular_velocity": 1.580000000000001,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 2.0600000000000014,
+        "previous_action": 0.16000000000000103,
+        "gait_phase": null,
+        "current_action": 2.04,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.7600000000000007,
+        "base_angular_velocity": 1.7800000000000002,
+        "projected_gravity": 1.38,
+        "command": null,
+        "joint_position": 2.1000000000000005,
+        "joint_velocity": 2.240000000000001,
+        "previous_action": 0.28000000000000025,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.580000000000001
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.40000000000000124,
+          "right_leg": 1.5600000000000014,
+          "waist": 0.040000000000000036,
+          "upper_head": 8.881784197001252e-16
+        },
+        "dq": {
+          "left_leg": 1.8200000000000012,
+          "right_leg": 0.3000000000000016,
+          "waist": 0.3200000000000012,
+          "upper_head": 2.080000000000001
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -3.0199999999999996,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -2.7399999999999993,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 0.16000000000000103,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "pd_tracking_error_above_pre_handoff_max",
+          "time_after_handoff_s": 1.2600000000000007,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.5200000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.580000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 2.04,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 2.12,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "action_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.2600000000000007,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "target_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.2600000000000007,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03446582394559044
+      }
+    },
+    {
+      "label": "f000",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r5.json",
+      "sha256": "5e4c0d6a9f9e4aff655afc6411a41074c432f97c37507c8217698b65fd68b7d3",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6228546583419471,
+        "root_tilt_rad": 0.10688254539898039,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": 2.2200000000000015,
+        "action_pre_max_l2": 0.20962573831401454,
+        "action_post_peak_l2": 1.0276884438646072,
+        "target_first_above_pre_max_s": 2.2200000000000015,
+        "target_pre_max_l2_rad": 0.05872054310498907,
+        "target_post_peak_l2_rad": 0.3207507171749023,
+        "pd_tracking_first_above_pre_max_s": 1.12,
+        "pd_tracking_pre_max_l2_rad": 0.3379046633184253,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.15405293503858147,
+          "right_leg": 0.2768632323455375,
+          "waist": 0.04995464292129093
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.4800000000000013,
+        "root_z_lt_0p45": 2.1000000000000005,
+        "heading_gt_0p30_from_move_start": -4.46,
+        "lateral_gt_0p30_from_move_start": -3.0199999999999996
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4200000000000008,
+        "base_angular_velocity": 1.54,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 2.0200000000000005,
+        "previous_action": 0.16000000000000103,
+        "gait_phase": null,
+        "current_action": 2.0200000000000005,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.740000000000001,
+        "base_angular_velocity": 1.7600000000000007,
+        "projected_gravity": 1.3400000000000007,
+        "command": null,
+        "joint_position": 2.0600000000000014,
+        "joint_velocity": 2.2200000000000015,
+        "previous_action": 0.28000000000000025,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.54
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.3799999999999999,
+          "right_leg": 1.5600000000000014,
+          "waist": null,
+          "upper_head": 8.881784197001252e-16
+        },
+        "dq": {
+          "left_leg": 1.8000000000000016,
+          "right_leg": 0.3000000000000016,
+          "waist": 0.3200000000000012,
+          "upper_head": 2.04
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.46,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.0199999999999996,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 0.16000000000000103,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "pd_tracking_error_above_pre_handoff_max",
+          "time_after_handoff_s": 1.12,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.4800000000000013,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.54,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 2.0200000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 2.1000000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "action_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.2200000000000015,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "target_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.2200000000000015,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03207472339205469
+      }
+    },
+    {
+      "label": "f005",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r1.json",
+      "sha256": "b3f3cc6079d17fc481ddd6ef479b85b1444736a42041119413b42dda4853388d",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6198663897669906,
+        "root_tilt_rad": 0.08469871971879006,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.554402903170881,
+        "action_post_peak_l2": 1.2538867273928611,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.45575074282173317,
+        "target_post_peak_l2_rad": 0.4080718298991004,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.6506265160657595,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.21956407391148633,
+          "right_leg": 0.3346882560054482,
+          "waist": 0.07935998422771554
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.2000000000000002,
+        "root_z_lt_0p45": 1.7600000000000007,
+        "heading_gt_0p30_from_move_start": -4.58,
+        "lateral_gt_0p30_from_move_start": -3.34
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.1200000000000001,
+        "base_angular_velocity": 1.240000000000001,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.6800000000000006,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.6400000000000015,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.4200000000000008,
+        "base_angular_velocity": 1.4400000000000004,
+        "projected_gravity": 1.080000000000001,
+        "command": null,
+        "joint_position": 1.7200000000000015,
+        "joint_velocity": 1.88,
+        "previous_action": 0.2400000000000011,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 0.7400000000000011
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2600000000000007
+        },
+        "dq": {
+          "left_leg": 0.4800000000000013,
+          "right_leg": 0.40000000000000124,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.7000000000000002
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.58,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.34,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.2000000000000002,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.240000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.6400000000000015,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.7600000000000007,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03254655716919206
+      }
+    },
+    {
+      "label": "f005",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r2.json",
+      "sha256": "7a70738f0cfe4a28685484d419c6689675b91b1f0fe664f29b9d9b10df2e6c88",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6201314380621981,
+        "root_tilt_rad": 0.08526346722733007,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.819665601431741,
+        "action_post_peak_l2": 1.0891756392976157,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.416959083691134,
+        "target_post_peak_l2_rad": 0.35549912326135447,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.6666685292289621,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.15976859029187043,
+          "right_leg": 0.3095158150541327,
+          "waist": 0.07108856748532782
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.240000000000001,
+        "root_z_lt_0p45": 1.8000000000000016,
+        "heading_gt_0p30_from_move_start": -4.3,
+        "lateral_gt_0p30_from_move_start": -3.2399999999999993
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.1800000000000006,
+        "base_angular_velocity": 1.2800000000000002,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.740000000000001,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.660000000000001,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.46,
+        "base_angular_velocity": 1.4800000000000013,
+        "projected_gravity": 1.12,
+        "command": null,
+        "joint_position": 1.7600000000000007,
+        "joint_velocity": 1.9200000000000008,
+        "previous_action": 0.2400000000000011,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.240000000000001
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2400000000000011
+        },
+        "dq": {
+          "left_leg": 0.4800000000000013,
+          "right_leg": 0.4200000000000008,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.740000000000001
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.3,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.2399999999999993,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.240000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.2800000000000002,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.660000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.8000000000000016,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03284332229768882
+      }
+    },
+    {
+      "label": "f005",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r3.json",
+      "sha256": "366e5afcf256496cd010c03eb601a956e767501ae288b89f5d94087b607ad893",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6210040503750647,
+        "root_tilt_rad": 0.08571274829192521,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.6730312095867392,
+        "action_post_peak_l2": 1.1843822211603383,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.49017196725325973,
+        "target_post_peak_l2_rad": 0.38096097062931406,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.7219026907386292,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.1914670627374008,
+          "right_leg": 0.3211559184778256,
+          "waist": 0.0730102804829945
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.160000000000001,
+        "root_z_lt_0p45": 1.7200000000000015,
+        "heading_gt_0p30_from_move_start": -4.68,
+        "lateral_gt_0p30_from_move_start": -3.5199999999999996
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.10000000000000053,
+        "base_angular_velocity": 1.2200000000000015,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.62,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.6000000000000005,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.38,
+        "base_angular_velocity": 1.4000000000000012,
+        "projected_gravity": 1.04,
+        "command": null,
+        "joint_position": 1.6800000000000006,
+        "joint_velocity": 1.8400000000000007,
+        "previous_action": 0.2400000000000011,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 0.6800000000000006
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2400000000000011
+        },
+        "dq": {
+          "left_leg": 0.45999999999999996,
+          "right_leg": 0.40000000000000124,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.660000000000001
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.68,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.5199999999999996,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.160000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.2200000000000015,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.6000000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.7200000000000015,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03276704944228599
+      }
+    },
+    {
+      "label": "f005",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r4.json",
+      "sha256": "b805c34e5438be94010eca8cf6175ec7d6815c88fc8807d64448e34432102431",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6223456821197573,
+        "root_tilt_rad": 0.10376832345799325,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": 2.1000000000000005,
+        "action_pre_max_l2": 0.22720578237414316,
+        "action_post_peak_l2": 1.2278785781946593,
+        "target_first_above_pre_max_s": 2.1000000000000005,
+        "target_pre_max_l2_rad": 0.06831667127203497,
+        "target_post_peak_l2_rad": 0.39699653880883884,
+        "pd_tracking_first_above_pre_max_s": 1.0000000000000009,
+        "pd_tracking_pre_max_l2_rad": 0.3326669551214903,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.2820722131385816,
+          "right_leg": 0.25636506530766634,
+          "waist": 0.11098861063684172
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.38,
+        "root_z_lt_0p45": 1.9800000000000013,
+        "heading_gt_0p30_from_move_start": -3.8599999999999994,
+        "lateral_gt_0p30_from_move_start": -2.8599999999999994
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.4200000000000008,
+        "base_angular_velocity": 1.4200000000000008,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.9000000000000012,
+        "previous_action": 0.16000000000000103,
+        "gait_phase": null,
+        "current_action": 1.8200000000000012,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.62,
+        "base_angular_velocity": 1.62,
+        "projected_gravity": 1.240000000000001,
+        "command": null,
+        "joint_position": 1.9400000000000004,
+        "joint_velocity": 2.0600000000000014,
+        "previous_action": 0.2600000000000007,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.4000000000000012
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 0.2600000000000007,
+          "right_leg": 1.4000000000000012,
+          "waist": null,
+          "upper_head": 8.881784197001252e-16
+        },
+        "dq": {
+          "left_leg": 1.6400000000000015,
+          "right_leg": 0.3000000000000016,
+          "waist": 0.3200000000000012,
+          "upper_head": 1.9200000000000008
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -3.8599999999999994,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -2.8599999999999994,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 0.16000000000000103,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "pd_tracking_error_above_pre_handoff_max",
+          "time_after_handoff_s": 1.0000000000000009,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.38,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.4200000000000008,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.8200000000000012,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.9800000000000013,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "action_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.1000000000000005,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "target_step_above_pre_handoff_max",
+          "time_after_handoff_s": 2.1000000000000005,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.03421234110617362
+      }
+    },
+    {
+      "label": "f005",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r5.json",
+      "sha256": "db4f7e3f565a39564f53594d0e03e76a7f86cc2009371ee85e09bc27b8e2dd1f",
+      "valid": true,
+      "subgates": {
+        "stand": true,
+        "startup": true,
+        "move": false,
+        "stop": false
+      },
+      "handoff_state": {
+        "root_z_m": 0.6220204000644136,
+        "root_tilt_rad": 0.08631213535357278,
+        "support_phase": "generator_double_support"
+      },
+      "step_contract": {
+        "action_first_above_pre_max_s": null,
+        "action_pre_max_l2": 1.687828656907492,
+        "action_post_peak_l2": 1.2503907733843531,
+        "target_first_above_pre_max_s": null,
+        "target_pre_max_l2_rad": 0.49665029138402017,
+        "target_post_peak_l2_rad": 0.41023746927963334,
+        "pd_tracking_first_above_pre_max_s": null,
+        "pd_tracking_pre_max_l2_rad": 0.6854944893074194,
+        "post_handoff_peak_target_step_by_joint_group_l2_rad": {
+          "left_leg": 0.28263902456878726,
+          "right_leg": 0.280889926959032,
+          "waist": 0.09752339167970041
+        }
+      },
+      "physical_first": {
+        "root_tilt_gt_0p30": 1.2200000000000015,
+        "root_z_lt_0p45": 1.8000000000000016,
+        "heading_gt_0p30_from_move_start": -4.4799999999999995,
+        "lateral_gt_0p30_from_move_start": -3.2799999999999994
+      },
+      "v2_actor_source_first_ood": {
+        "base_linear_velocity": 0.14000000000000146,
+        "base_angular_velocity": 1.2800000000000002,
+        "projected_gravity": 8.881784197001252e-16,
+        "command": null,
+        "joint_position": 8.881784197001252e-16,
+        "joint_velocity": 1.6800000000000006,
+        "previous_action": 8.881784197001252e-16,
+        "gait_phase": null,
+        "current_action": 1.660000000000001,
+        "root_state": 8.881784197001252e-16
+      },
+      "stage335_first_ood": {
+        "base_linear_velocity": 1.4400000000000004,
+        "base_angular_velocity": 1.46,
+        "projected_gravity": 1.1000000000000005,
+        "command": null,
+        "joint_position": 1.7600000000000007,
+        "joint_velocity": 1.9000000000000012,
+        "previous_action": 0.2400000000000011,
+        "gait_phase": null,
+        "current_action": null,
+        "root_state": 1.2200000000000015
+      },
+      "v2_joint_group_p01_p99_first_exit": {
+        "q": {
+          "left_leg": 8.881784197001252e-16,
+          "right_leg": 8.881784197001252e-16,
+          "waist": null,
+          "upper_head": 0.2400000000000011
+        },
+        "dq": {
+          "left_leg": 0.4800000000000013,
+          "right_leg": 0.4200000000000008,
+          "waist": 0.34000000000000075,
+          "upper_head": 1.740000000000001
+        }
+      },
+      "event_sequence": [
+        {
+          "event": "heading_official_threshold",
+          "time_after_handoff_s": -4.4799999999999995,
+          "support_phase": "generator_left_support"
+        },
+        {
+          "event": "lateral_official_threshold",
+          "time_after_handoff_s": -3.2799999999999994,
+          "support_phase": "generator_right_support"
+        },
+        {
+          "event": "v2_previous_action_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_projected_gravity_imu_ood",
+          "time_after_handoff_s": 8.881784197001252e-16,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_tilt_gt_0p30",
+          "time_after_handoff_s": 1.2200000000000015,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_base_angular_velocity_imu_ood",
+          "time_after_handoff_s": 1.2800000000000002,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "v2_current_action_ood",
+          "time_after_handoff_s": 1.660000000000001,
+          "support_phase": "generator_double_support"
+        },
+        {
+          "event": "root_z_lt_0p45",
+          "time_after_handoff_s": 1.8000000000000016,
+          "support_phase": "generator_double_support"
+        }
+      ],
+      "upper_body": {
+        "fixed_target_excursion_abs_max_rad": 4.768371586472142e-08,
+        "tracking_rmse_rad": 0.033902218014065
+      }
+    }
+  ],
+  "interpretation": {
+    "candidate_changes_binary_outcome_or_event_order": false,
+    "post_fall_smaller_drift_is_recovery": false,
+    "physical_contact_observed": false,
+    "contact_field_is_generator_state_only": true,
+    "upper_body_is_common_cause_supported": false,
+    "pd_is_causal_supported": false,
+    "correlation_not_causation": true
+  },
+  "next_single_falsifiable_intervention": {
+    "name": "support_and_actor-history_gated_recovery_authority",
+    "control": "existing fixed 2.0s recovery authority handoff",
+    "candidate": "after 2.0s, retain existing brake until generator double-support AND previous-action is within frozen recorder-v2 LOO-p95 support; then apply the same 0.5s blend and same recovery actor",
+    "unchanged": "models, PD, command, stop trajectory, reward, training, thresholds",
+    "falsification": "if tilt/root-z sequence and collapse remain unchanged despite delayed in-support handoff, previous-action/support timing is not the dominant cause",
+    "training_required": false
+  }
+}

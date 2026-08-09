@@ -1,0 +1,529 @@
+{
+  "stage": "BASE Phase21 outcome-aware paired 5-update official gate",
+  "hypothesis": "A 5% balanced outcome-aware state-role reset curriculum improves recovery without regressing source or same-seed fraction-0 control.",
+  "intervention": "same source/seed/64env/5updates; fraction 0.00 -> 0.05 only",
+  "official_contract": {
+    "moving": "frozen Stage306",
+    "stationary": "frozen source i150",
+    "recovery": "source vs f000 vs f005",
+    "handoff_blend_s": 0.5,
+    "stiff_fixed_multiplier": 1.2,
+    "fixed_upper": true,
+    "expected_policy_slot_counts": {
+      "main": 360,
+      "stationary": 100,
+      "recovery": 300
+    }
+  },
+  "groups": {
+    "source": {
+      "recovery_model": "stand_backend_scratch_i150_actor.onnx",
+      "recovery_model_sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565",
+      "rows": [
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r1.json",
+          "file_sha256": "692a4e0a972f935f4b0dcde4b0a035723ddc9cfb9ae5bb1775b5a0cb32402a57",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.6383009466094878,
+          "lateral_displacement_m": 0.578561588869996,
+          "stop_drift_m": 0.27290489807099944,
+          "stop_settle_time_s": 4.3,
+          "root_pitch_mean_rad": {
+            "stand": -0.11127431363854914,
+            "startup": -0.08620486403467652,
+            "move": -0.13131228158830857,
+            "stop": -0.8312498000880626
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r2.json",
+          "file_sha256": "983f4ca717386bb4e2a881c34df012fdb532a1041aef81da7b1f599a83e519b3",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.5218551820768684,
+          "lateral_displacement_m": 0.5228399728984858,
+          "stop_drift_m": 0.396283482417377,
+          "stop_settle_time_s": 4.48,
+          "root_pitch_mean_rad": {
+            "stand": -0.11121045553394068,
+            "startup": -0.0859863545071499,
+            "move": -0.1339728221434994,
+            "stop": -0.7980340773870228
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r3.json",
+          "file_sha256": "4cc8680061d61ca31d3ae710f3848a0e1fda311b8ce71d77d01f2a868e4f808c",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.4145074277492343,
+          "lateral_displacement_m": 0.3729452342338643,
+          "stop_drift_m": 0.3968577055040191,
+          "stop_settle_time_s": 4.48,
+          "root_pitch_mean_rad": {
+            "stand": -0.1112677452686054,
+            "startup": -0.09413793548890037,
+            "move": -0.149866168783223,
+            "stop": -0.7964360141855602
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r4.json",
+          "file_sha256": "d1b3b2675b2479112f7acfdb5bfb6830bcc90ac6c4c92a27b009983b3de5dcdf",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.31640704386801044,
+          "lateral_displacement_m": 0.25228349457602156,
+          "stop_drift_m": 0.288387263351281,
+          "stop_settle_time_s": 4.28,
+          "root_pitch_mean_rad": {
+            "stand": -0.11120851415303383,
+            "startup": -0.09536855020104298,
+            "move": -0.17295776189921327,
+            "stop": -0.8347487182915959
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_source_matched_blend0p5_stiff1p2_fixed_r5.json",
+          "file_sha256": "0e605f3d300655bbb09fdab96c0f3336990f7315825cf6ae377bc8b2398b43b9",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.7597354257681654,
+          "lateral_displacement_m": 0.6843824175314711,
+          "stop_drift_m": 0.2820844861566209,
+          "stop_settle_time_s": 4.48,
+          "root_pitch_mean_rad": {
+            "stand": -0.11127612290567299,
+            "startup": -0.08558371326066866,
+            "move": -0.12321110083400073,
+            "stop": -0.802286825760556
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        }
+      ],
+      "aggregate": {
+        "valid": 5,
+        "subgates": {
+          "stand": 5,
+          "startup": 5,
+          "move": 0,
+          "stop": 0,
+          "full": 0
+        },
+        "metrics": {
+          "heading_max_rad": {
+            "mean": 0.5301612052143533,
+            "median": 0.5218551820768684,
+            "population_std": 0.1571840667288431
+          },
+          "lateral_displacement_m": {
+            "mean": 0.48220254162196774,
+            "median": 0.5228399728984858,
+            "population_std": 0.1527174491944507
+          },
+          "stop_drift_m": {
+            "mean": 0.3273035671000595,
+            "median": 0.288387263351281,
+            "population_std": 0.05677053118876222
+          },
+          "stop_settle_time_s": {
+            "mean": 4.404000000000001,
+            "median": 4.48,
+            "population_std": 0.09329523031752499
+          }
+        }
+      }
+    },
+    "f000": {
+      "recovery_model": "phase21_outcome_aware_f000_u5_actor.onnx",
+      "recovery_model_sha256": "20e1859a36760bf32f0c29c94c491c7ac6fab86f8fddd3b6fbe769ba3e636449",
+      "rows": [
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r1.json",
+          "file_sha256": "871d04a8444f3381f8a6af7625358b87a910ae8b6b2dad02330bf91f93324a6d",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.6977105038198035,
+          "lateral_displacement_m": 0.6553129155007982,
+          "stop_drift_m": 0.4004838041354064,
+          "stop_settle_time_s": 4.86,
+          "root_pitch_mean_rad": {
+            "stand": -0.11126927101885363,
+            "startup": -0.08502126392480097,
+            "move": -0.1241087232482976,
+            "stop": -0.7695623882180364
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r2.json",
+          "file_sha256": "8e2a4652ae4194a1613cd0d12e76338741b6d3a7c4dbcc36c64d6d5a35a1ee47",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.7530717152751469,
+          "lateral_displacement_m": 0.6474991723128761,
+          "stop_drift_m": 0.2725119529571452,
+          "stop_settle_time_s": 4.5,
+          "root_pitch_mean_rad": {
+            "stand": -0.11102472260988891,
+            "startup": -0.08480257472480293,
+            "move": -0.1395651768224508,
+            "stop": -0.8195452005637331
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r3.json",
+          "file_sha256": "c95d5a335269bb9c72d9d1f0e3ac8313ed058722f49c7be41539dafa0a17e296",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.7387560285996932,
+          "lateral_displacement_m": 0.6718068955642689,
+          "stop_drift_m": 0.28001892871082873,
+          "stop_settle_time_s": 4.46,
+          "root_pitch_mean_rad": {
+            "stand": -0.1111317401816344,
+            "startup": -0.08642345745399925,
+            "move": -0.13497486020822347,
+            "stop": -0.8248940423614134
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r4.json",
+          "file_sha256": "9cbedf846f609b1dfef0b400f1d9544ea6091b18b9cec0c5151cafdf6cde44ce",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.4121524632148059,
+          "lateral_displacement_m": 0.39612037317445836,
+          "stop_drift_m": 0.3968834093324054,
+          "stop_settle_time_s": 4.76,
+          "root_pitch_mean_rad": {
+            "stand": -0.11114878827601647,
+            "startup": -0.09448069612835362,
+            "move": -0.15123579846564622,
+            "stop": -0.7839135404717206
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f000_matched_blend0p5_stiff1p2_fixed_r5.json",
+          "file_sha256": "5e4c0d6a9f9e4aff655afc6411a41074c432f97c37507c8217698b65fd68b7d3",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.4037619146486213,
+          "lateral_displacement_m": 0.45603437753009307,
+          "stop_drift_m": 0.3862827938410085,
+          "stop_settle_time_s": 4.7,
+          "root_pitch_mean_rad": {
+            "stand": -0.11130435172445041,
+            "startup": -0.08590377624954315,
+            "move": -0.1285222217947017,
+            "stop": -0.7874501023556535
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        }
+      ],
+      "aggregate": {
+        "valid": 5,
+        "subgates": {
+          "stand": 5,
+          "startup": 5,
+          "move": 0,
+          "stop": 0,
+          "full": 0
+        },
+        "metrics": {
+          "heading_max_rad": {
+            "mean": 0.6010905251116142,
+            "median": 0.6977105038198035,
+            "population_std": 0.15875872576982905
+          },
+          "lateral_displacement_m": {
+            "mean": 0.5653547468164989,
+            "median": 0.6474991723128761,
+            "population_std": 0.11555384466914978
+          },
+          "stop_drift_m": {
+            "mean": 0.34723617779535887,
+            "median": 0.3862827938410085,
+            "population_std": 0.05818361261888521
+          },
+          "stop_settle_time_s": {
+            "mean": 4.656000000000001,
+            "median": 4.7,
+            "population_std": 0.153049011757672
+          }
+        }
+      }
+    },
+    "f005": {
+      "recovery_model": "phase21_outcome_aware_f005_u5_actor.onnx",
+      "recovery_model_sha256": "5735e4ef29a1ad39ae3ca957e6731efb4593ebdc004ef84856e9adfc8755cd34",
+      "rows": [
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r1.json",
+          "file_sha256": "b3f3cc6079d17fc481ddd6ef479b85b1444736a42041119413b42dda4853388d",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.6553688247530585,
+          "lateral_displacement_m": 0.5806468592826075,
+          "stop_drift_m": 0.2761267503744922,
+          "stop_settle_time_s": 4.22,
+          "root_pitch_mean_rad": {
+            "stand": -0.1111518632228792,
+            "startup": -0.08650894795516724,
+            "move": -0.13019465145250128,
+            "stop": -0.8388144247811183
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r2.json",
+          "file_sha256": "7a70738f0cfe4a28685484d419c6689675b91b1f0fe664f29b9d9b10df2e6c88",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.6176763105991059,
+          "lateral_displacement_m": 0.5513166865666139,
+          "stop_drift_m": 0.2743436316147086,
+          "stop_settle_time_s": 4.26,
+          "root_pitch_mean_rad": {
+            "stand": -0.11116320487832204,
+            "startup": -0.08782320511564042,
+            "move": -0.1314160602312758,
+            "stop": -0.8327899954842981
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r3.json",
+          "file_sha256": "366e5afcf256496cd010c03eb601a956e767501ae288b89f5d94087b607ad893",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.7126828647901151,
+          "lateral_displacement_m": 0.6430351801269663,
+          "stop_drift_m": 0.25817806445837493,
+          "stop_settle_time_s": 4.18,
+          "root_pitch_mean_rad": {
+            "stand": -0.11112068983091718,
+            "startup": -0.08642616912169201,
+            "move": -0.12700268743775592,
+            "stop": -0.8448299642627524
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r4.json",
+          "file_sha256": "b805c34e5438be94010eca8cf6175ec7d6815c88fc8807d64448e34432102431",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.4686417531396354,
+          "lateral_displacement_m": 0.4352469488062234,
+          "stop_drift_m": 0.3970912523537617,
+          "stop_settle_time_s": 4.4,
+          "root_pitch_mean_rad": {
+            "stand": -0.11121108370163162,
+            "startup": -0.0919890432805249,
+            "move": -0.1460997546479729,
+            "stop": -0.8080214153616099
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        },
+        {
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/phase21_outcome_aware_f005_matched_blend0p5_stiff1p2_fixed_r5.json",
+          "file_sha256": "db4f7e3f565a39564f53594d0e03e76a7f86cc2009371ee85e09bc27b8e2dd1f",
+          "valid": true,
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "full": false,
+          "heading_max_rad": 0.6403705358208827,
+          "lateral_displacement_m": 0.5440450311185862,
+          "stop_drift_m": 0.25229714520938307,
+          "stop_settle_time_s": 4.24,
+          "root_pitch_mean_rad": {
+            "stand": -0.11122528472935114,
+            "startup": -0.08848045631838888,
+            "move": -0.1415361356754075,
+            "stop": -0.8359282663805974
+          },
+          "policy_slot_counts": {
+            "main": 360,
+            "stationary": 100,
+            "recovery": 300
+          }
+        }
+      ],
+      "aggregate": {
+        "valid": 5,
+        "subgates": {
+          "stand": 5,
+          "startup": 5,
+          "move": 0,
+          "stop": 0,
+          "full": 0
+        },
+        "metrics": {
+          "heading_max_rad": {
+            "mean": 0.6189480578205595,
+            "median": 0.6403705358208827,
+            "population_std": 0.08144349137049031
+          },
+          "lateral_displacement_m": {
+            "mean": 0.5508581411801995,
+            "median": 0.5513166865666139,
+            "population_std": 0.06752266400238376
+          },
+          "stop_drift_m": {
+            "mean": 0.2916073688021441,
+            "median": 0.2743436316147086,
+            "population_std": 0.05353008112366696
+          },
+          "stop_settle_time_s": {
+            "mean": 4.26,
+            "median": 4.24,
+            "population_std": 0.07483314773547904
+          }
+        }
+      }
+    }
+  },
+  "decision": {
+    "all_15_valid": true,
+    "all_policy_slots_exact": true,
+    "candidate_subgates_not_worse_than_source_and_f000": {
+      "stand": true,
+      "startup": true,
+      "move": true,
+      "stop": true,
+      "full": true
+    },
+    "candidate_not_worse": true,
+    "candidate_moves_recovery_toward_5_of_5": false,
+    "phase21_promoted": false,
+    "updates25_unlocked": false
+  },
+  "diagnostic_only": {
+    "training_reward": true,
+    "episode_length": true,
+    "signed_pitch": true
+  }
+}

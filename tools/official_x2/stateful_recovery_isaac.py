@@ -17,6 +17,35 @@ from gear_sonic.envs.x2_velocity.actions import GaitTemplateLowerBodyJointPositi
 
 from .recovery_reset_curriculum import finalize_stateful_recovery
 from .role_aware_recovery_curriculum import finalize_role_aware_suffix
+from .outcome_aware_state_role_v2 import finalize_outcome_aware_v2
+
+
+def _phase20_override(env, key: str, fallback: torch.Tensor) -> torch.Tensor:
+    overrides = getattr(env, "_x2_phase20_obs_override", None)
+    until = getattr(env, "_x2_phase20_obs_override_until_step", None)
+    if overrides is None or until is None:
+        return fallback
+    active = env.episode_length_buf <= until.to(env.episode_length_buf.device)
+    if not bool(torch.any(active)):
+        return fallback
+    result = fallback.clone()
+    result[active] = overrides[key][active].to(result)
+    return result
+
+
+def stateful_base_lin_vel_observation(env, asset_cfg=None) -> torch.Tensor:
+    name = "robot" if asset_cfg is None else asset_cfg.name
+    return _phase20_override(env, "base_lin_vel", env.scene[name].data.root_lin_vel_b)
+
+
+def stateful_base_ang_vel_observation(env, asset_cfg=None) -> torch.Tensor:
+    name = "robot" if asset_cfg is None else asset_cfg.name
+    return _phase20_override(env, "base_ang_vel", env.scene[name].data.root_ang_vel_b)
+
+
+def stateful_projected_gravity_observation(env, asset_cfg=None) -> torch.Tensor:
+    name = "robot" if asset_cfg is None else asset_cfg.name
+    return _phase20_override(env, "projected_gravity", env.scene[name].data.projected_gravity_b)
 
 
 def _stateful_moving_mask(env, command_name: str, threshold: float = 0.1) -> torch.Tensor:
@@ -52,7 +81,9 @@ def stateful_gait_phase_observation(
     left_swing = (phase >= 0.5 + half_ds) & (phase < 1.0 - half_ds)
     desired = torch.stack((~left_swing, ~right_swing), dim=-1)
     desired = torch.where(moving.unsqueeze(-1), desired, torch.ones_like(desired))
-    return torch.cat((clock, desired.to(clock.dtype)), dim=-1)
+    return _phase20_override(
+        env, "gait_phase", torch.cat((clock, desired.to(clock.dtype)), dim=-1)
+    )
 
 
 class StatefulRecoveryGaitTemplateAction(GaitTemplateLowerBodyJointPositionAction):
@@ -110,6 +141,7 @@ class StatefulRecoveryRLEnv(ManagerBasedRLEnv):
         super()._reset_idx(env_ids)
         finalize_stateful_recovery(self)
         finalize_role_aware_suffix(self)
+        finalize_outcome_aware_v2(self)
 
 
 def configure_stateful_recovery_cfg(cfg) -> None:
@@ -117,6 +149,12 @@ def configure_stateful_recovery_cfg(cfg) -> None:
     cfg.actions.joint_pos.class_type = StatefulRecoveryGaitTemplateAction
     for group_name in ("policy", "critic"):
         group = getattr(cfg.observations, group_name)
+        if getattr(group, "base_lin_vel", None) is not None:
+            group.base_lin_vel.func = stateful_base_lin_vel_observation
+        if getattr(group, "base_ang_vel", None) is not None:
+            group.base_ang_vel.func = stateful_base_ang_vel_observation
+        if getattr(group, "projected_gravity", None) is not None:
+            group.projected_gravity.func = stateful_projected_gravity_observation
         gait = getattr(group, "gait_phase", None)
         if gait is None:
             raise RuntimeError(f"stateful recovery requires {group_name}.gait_phase")
@@ -127,5 +165,8 @@ __all__ = [
     "StatefulRecoveryGaitTemplateAction",
     "StatefulRecoveryRLEnv",
     "configure_stateful_recovery_cfg",
+    "stateful_base_ang_vel_observation",
+    "stateful_base_lin_vel_observation",
     "stateful_gait_phase_observation",
+    "stateful_projected_gravity_observation",
 ]

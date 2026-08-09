@@ -1,0 +1,934 @@
+{
+  "schema_version": "x2_wbt_gold_qualification_phase33_v1",
+  "preflight": {
+    "schema_version": "x2_wbt_gold_qualification_phase33_preflight_v1",
+    "motion_id": "PHUMA-LUNGE-R-001",
+    "phase28_cache": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase28_panel24/official_v1_model/x2_phase28_panel24.pkl",
+      "sha256": "e547dfa2caf2da76b929b01109ba52c7c53cb1d3582ea473da0fb8e2fd4a0471"
+    },
+    "phase30_cache": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/silver_contact/phase30_time_dilation/x2_phase30_time_dilation_1p46.pkl",
+      "sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+    },
+    "official_scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "official_control": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+      "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+    },
+    "phase12_runner": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/run_x2_native_gold_trackability_phase12.py",
+      "sha256": "6efa4976275407554f3f2d615c9d42d6af2693626c4e223c74d2bb9580126dac"
+    },
+    "gates": {
+      "source_joint_step_p95_max_rad": [
+        0.12,
+        0.45
+      ],
+      "source_joint_velocity_p95_max_radps": [
+        6.0,
+        20.0
+      ],
+      "prescribed_q_rmse_max_rad": 0.2,
+      "prescribed_body_relative_position_p95_m": 0.12,
+      "prescribed_body_relative_orientation_p95_rad": 0.35,
+      "prescribed_root_position_rmse_m": 0.005,
+      "prescribed_root_orientation_p95_rad": 0.01,
+      "prescribed_contact_agreement_min": 0.6,
+      "prescribed_realized_single_support_min": 0.02,
+      "prescribed_realized_single_support_fraction_of_source_min": 0.25,
+      "prescribed_slip_p95_max_mps": 0.5,
+      "prescribed_torque_saturation_max": 0.1,
+      "free_full_duration_fraction_min": 0.999,
+      "free_q_rmse_max_rad": 0.25,
+      "free_root_xy_rmse_max_m": 0.25,
+      "free_contact_agreement_min": 0.55,
+      "free_slip_p95_max_mps": 0.5
+    },
+    "preregistration": {
+      "comparison_type": "paired qualification, not pure causal single-variable A/B",
+      "reason": "Phase30 includes frozen Phase29 spatial repair plus 1.46x retime; numeric frame0 therefore differs from Phase28",
+      "same_runner": "Phase12 simulate/prescribed_gate/free_gate",
+      "same_official_scene_control_pd_action_limits_sole_contract": true,
+      "control_timebase_adapter": "both 30Hz paths are resampled as the same continuous path to official 50Hz using linear q/root position and quaternion Slerp",
+      "initialization_rule": "each reference starts from its own exact q/dq/root pose/root velocity frame0; solver/contact warmstart and controller hidden state unavailable",
+      "numeric_initial_state_equal": false,
+      "initial_q_rmse_max_abs_rad": [
+        0.04507981613278389,
+        0.18277323246002197
+      ],
+      "initial_root_position_delta_m": 0.04569924622774124,
+      "original_role": "contextual control; cannot tune or relax candidate gate",
+      "candidate_role": "sole Phase30 train Silver qualification target",
+      "execution_order": [
+        "original prescribed-root",
+        "candidate prescribed-root",
+        "candidate free-root only iff every prescribed gate passes"
+      ],
+      "parameter_scan_or_reference_change": false
+    },
+    "timebase_adapter_unit": {
+      "phase28_original": {
+        "metrics": {
+          "duration_source_adapted_error_s": 0.006666666666666821,
+          "endpoint_q_max_abs_rad": 0.0,
+          "endpoint_root_max_abs_m": 0.0,
+          "endpoint_quaternion_equivalent_error": 1.919745229450598e-08,
+          "inverse_path_q_max_abs_rad": 0.005781414674565222,
+          "inverse_path_root_max_abs_m": 0.0009100143315077247,
+          "inverse_path_quaternion_equivalent_error": 1.4262969499911904e-06,
+          "contact_transition_counts_native30_adapted50": {
+            "left": [
+              0,
+              0
+            ],
+            "right": [
+              0,
+              0
+            ]
+          }
+        },
+        "checks": {
+          "official_output_fps_50": true,
+          "duration_preserved_within_half_control_step": true,
+          "q_endpoints_exact": true,
+          "root_endpoints_exact": true,
+          "quaternion_endpoints_equivalent": true,
+          "continuous_q_path_preserved": true,
+          "continuous_root_path_preserved": true,
+          "slerp_path_preserved": true,
+          "contact_phase_transition_count_preserved": true
+        },
+        "pass": true
+      },
+      "phase30_candidate": {
+        "metrics": {
+          "duration_source_adapted_error_s": 0.0,
+          "endpoint_q_max_abs_rad": 0.0,
+          "endpoint_root_max_abs_m": 0.0,
+          "endpoint_quaternion_equivalent_error": 1.919745229450598e-08,
+          "inverse_path_q_max_abs_rad": 0.003233806292216035,
+          "inverse_path_root_max_abs_m": 0.001330097516377693,
+          "inverse_path_quaternion_equivalent_error": 3.7615245218614035e-07,
+          "contact_transition_counts_native30_adapted50": {
+            "left": [
+              5,
+              5
+            ],
+            "right": [
+              0,
+              0
+            ]
+          }
+        },
+        "checks": {
+          "official_output_fps_50": true,
+          "duration_preserved_within_half_control_step": true,
+          "q_endpoints_exact": true,
+          "root_endpoints_exact": true,
+          "quaternion_endpoints_equivalent": true,
+          "continuous_q_path_preserved": true,
+          "continuous_root_path_preserved": true,
+          "slerp_path_preserved": true,
+          "contact_phase_transition_count_preserved": true
+        },
+        "pass": true
+      }
+    },
+    "runtime_conflict": {
+      "port_51822_listeners": [],
+      "foreign_official_processes": []
+    },
+    "checks": {
+      "sole_phase30_silver_present": true,
+      "joint_order_equal": true,
+      "head_locked_both": true,
+      "fps_original_candidate": true,
+      "phase12_control_time_adapter_declared": true,
+      "timebase_adapter_unit_pass": true,
+      "port_51822_free": true,
+      "no_foreign_official_process": true
+    },
+    "pass": true
+  },
+  "preregistration": {
+    "comparison_type": "paired qualification, not pure causal single-variable A/B",
+    "reason": "Phase30 includes frozen Phase29 spatial repair plus 1.46x retime; numeric frame0 therefore differs from Phase28",
+    "same_runner": "Phase12 simulate/prescribed_gate/free_gate",
+    "same_official_scene_control_pd_action_limits_sole_contract": true,
+    "control_timebase_adapter": "both 30Hz paths are resampled as the same continuous path to official 50Hz using linear q/root position and quaternion Slerp",
+    "initialization_rule": "each reference starts from its own exact q/dq/root pose/root velocity frame0; solver/contact warmstart and controller hidden state unavailable",
+    "numeric_initial_state_equal": false,
+    "initial_q_rmse_max_abs_rad": [
+      0.04507981613278389,
+      0.18277323246002197
+    ],
+    "initial_root_position_delta_m": 0.04569924622774124,
+    "original_role": "contextual control; cannot tune or relax candidate gate",
+    "candidate_role": "sole Phase30 train Silver qualification target",
+    "execution_order": [
+      "original prescribed-root",
+      "candidate prescribed-root",
+      "candidate free-root only iff every prescribed gate passes"
+    ],
+    "parameter_scan_or_reference_change": false
+  },
+  "truth_boundary": {
+    "contact_is_model_collision_not_hardware_grf_cop_wrench": true,
+    "prescribed_root_is_not_balance": true,
+    "source_trace_is_not_replay": true,
+    "candidate_free_executed_only_after_all_prescribed_gates": true,
+    "physics_used_for_qualification_not_tuning": true,
+    "CEM_PPO_training_real_robot": false,
+    "invalid_attempt_before_report": "direct 30Hz input exercised only 60% reference duration because Phase12 expects one frame per 20ms control; no result retained and no parameter changed before correct 50Hz adapter rerun"
+  },
+  "provenance": {
+    "schema_version": "x2_wbt_gold_qualification_phase33_preflight_v1",
+    "motion_id": "PHUMA-LUNGE-R-001",
+    "phase28_cache": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase28_panel24/official_v1_model/x2_phase28_panel24.pkl",
+      "sha256": "e547dfa2caf2da76b929b01109ba52c7c53cb1d3582ea473da0fb8e2fd4a0471"
+    },
+    "phase30_cache": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/silver_contact/phase30_time_dilation/x2_phase30_time_dilation_1p46.pkl",
+      "sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+    },
+    "official_scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "official_control": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+      "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+    },
+    "phase12_runner": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/run_x2_native_gold_trackability_phase12.py",
+      "sha256": "6efa4976275407554f3f2d615c9d42d6af2693626c4e223c74d2bb9580126dac"
+    },
+    "gates": {
+      "source_joint_step_p95_max_rad": [
+        0.12,
+        0.45
+      ],
+      "source_joint_velocity_p95_max_radps": [
+        6.0,
+        20.0
+      ],
+      "prescribed_q_rmse_max_rad": 0.2,
+      "prescribed_body_relative_position_p95_m": 0.12,
+      "prescribed_body_relative_orientation_p95_rad": 0.35,
+      "prescribed_root_position_rmse_m": 0.005,
+      "prescribed_root_orientation_p95_rad": 0.01,
+      "prescribed_contact_agreement_min": 0.6,
+      "prescribed_realized_single_support_min": 0.02,
+      "prescribed_realized_single_support_fraction_of_source_min": 0.25,
+      "prescribed_slip_p95_max_mps": 0.5,
+      "prescribed_torque_saturation_max": 0.1,
+      "free_full_duration_fraction_min": 0.999,
+      "free_q_rmse_max_rad": 0.25,
+      "free_root_xy_rmse_max_m": 0.25,
+      "free_contact_agreement_min": 0.55,
+      "free_slip_p95_max_mps": 0.5
+    },
+    "preregistration": {
+      "comparison_type": "paired qualification, not pure causal single-variable A/B",
+      "reason": "Phase30 includes frozen Phase29 spatial repair plus 1.46x retime; numeric frame0 therefore differs from Phase28",
+      "same_runner": "Phase12 simulate/prescribed_gate/free_gate",
+      "same_official_scene_control_pd_action_limits_sole_contract": true,
+      "control_timebase_adapter": "both 30Hz paths are resampled as the same continuous path to official 50Hz using linear q/root position and quaternion Slerp",
+      "initialization_rule": "each reference starts from its own exact q/dq/root pose/root velocity frame0; solver/contact warmstart and controller hidden state unavailable",
+      "numeric_initial_state_equal": false,
+      "initial_q_rmse_max_abs_rad": [
+        0.04507981613278389,
+        0.18277323246002197
+      ],
+      "initial_root_position_delta_m": 0.04569924622774124,
+      "original_role": "contextual control; cannot tune or relax candidate gate",
+      "candidate_role": "sole Phase30 train Silver qualification target",
+      "execution_order": [
+        "original prescribed-root",
+        "candidate prescribed-root",
+        "candidate free-root only iff every prescribed gate passes"
+      ],
+      "parameter_scan_or_reference_change": false
+    },
+    "timebase_adapter_unit": {
+      "phase28_original": {
+        "metrics": {
+          "duration_source_adapted_error_s": 0.006666666666666821,
+          "endpoint_q_max_abs_rad": 0.0,
+          "endpoint_root_max_abs_m": 0.0,
+          "endpoint_quaternion_equivalent_error": 1.919745229450598e-08,
+          "inverse_path_q_max_abs_rad": 0.005781414674565222,
+          "inverse_path_root_max_abs_m": 0.0009100143315077247,
+          "inverse_path_quaternion_equivalent_error": 1.4262969499911904e-06,
+          "contact_transition_counts_native30_adapted50": {
+            "left": [
+              0,
+              0
+            ],
+            "right": [
+              0,
+              0
+            ]
+          }
+        },
+        "checks": {
+          "official_output_fps_50": true,
+          "duration_preserved_within_half_control_step": true,
+          "q_endpoints_exact": true,
+          "root_endpoints_exact": true,
+          "quaternion_endpoints_equivalent": true,
+          "continuous_q_path_preserved": true,
+          "continuous_root_path_preserved": true,
+          "slerp_path_preserved": true,
+          "contact_phase_transition_count_preserved": true
+        },
+        "pass": true
+      },
+      "phase30_candidate": {
+        "metrics": {
+          "duration_source_adapted_error_s": 0.0,
+          "endpoint_q_max_abs_rad": 0.0,
+          "endpoint_root_max_abs_m": 0.0,
+          "endpoint_quaternion_equivalent_error": 1.919745229450598e-08,
+          "inverse_path_q_max_abs_rad": 0.003233806292216035,
+          "inverse_path_root_max_abs_m": 0.001330097516377693,
+          "inverse_path_quaternion_equivalent_error": 3.7615245218614035e-07,
+          "contact_transition_counts_native30_adapted50": {
+            "left": [
+              5,
+              5
+            ],
+            "right": [
+              0,
+              0
+            ]
+          }
+        },
+        "checks": {
+          "official_output_fps_50": true,
+          "duration_preserved_within_half_control_step": true,
+          "q_endpoints_exact": true,
+          "root_endpoints_exact": true,
+          "quaternion_endpoints_equivalent": true,
+          "continuous_q_path_preserved": true,
+          "continuous_root_path_preserved": true,
+          "slerp_path_preserved": true,
+          "contact_phase_transition_count_preserved": true
+        },
+        "pass": true
+      }
+    },
+    "runtime_conflict": {
+      "port_51822_listeners": [],
+      "foreign_official_processes": []
+    },
+    "checks": {
+      "sole_phase30_silver_present": true,
+      "joint_order_equal": true,
+      "head_locked_both": true,
+      "fps_original_candidate": true,
+      "phase12_control_time_adapter_declared": true,
+      "timebase_adapter_unit_pass": true,
+      "port_51822_free": true,
+      "no_foreign_official_process": true
+    },
+    "pass": true
+  },
+  "source_reference": {
+    "phase28_original": {
+      "joint_step_abs_p95_max_rad": [
+        0.03888048496511263,
+        0.08891148789964587
+      ],
+      "recorded_joint_velocity_abs_p95_max_radps": [
+        1.9283378786510827,
+        4.444308887527454
+      ],
+      "target_joint_limit_saturation": {
+        "violating_samples": 0,
+        "limited_joint_samples": 6169,
+        "fraction": 0.0,
+        "max_excess_rad": 0.0,
+        "count_tolerance_rad": 1e-06,
+        "per_joint": {}
+      },
+      "contact_phase": {
+        "left_ratio": 0.0,
+        "right_ratio": 0.0,
+        "double_support_ratio": 0.0,
+        "single_support_ratio": 0.0,
+        "flight_ratio": 1.0
+      }
+    },
+    "phase30_candidate": {
+      "joint_step_abs_p95_max_rad": [
+        0.026569728255271607,
+        0.06070509552955572
+      ],
+      "recorded_joint_velocity_abs_p95_max_radps": [
+        1.313735842704783,
+        3.033872097730629
+      ],
+      "target_joint_limit_saturation": {
+        "violating_samples": 0,
+        "limited_joint_samples": 9021,
+        "fraction": 0.0,
+        "max_excess_rad": 0.0,
+        "count_tolerance_rad": 1e-06,
+        "per_joint": {}
+      },
+      "contact_phase": {
+        "left_ratio": 0.027491408934707903,
+        "right_ratio": 0.0,
+        "double_support_ratio": 0.0,
+        "single_support_ratio": 0.027491408934707903,
+        "flight_ratio": 0.9725085910652921
+      }
+    }
+  },
+  "paired_replay": {
+    "phase28_original_prescribed": {
+      "mode": "prescribed_root_trackability",
+      "interpretation": "root pose/velocity externally prescribed every physics step; trackability only",
+      "reference_duration_s": 3.96,
+      "simulated_duration_s": 3.96,
+      "duration_fraction": 1.0,
+      "fell": false,
+      "fall_time_s": null,
+      "nonfinite_time_s": null,
+      "q_tracking": {
+        "rmse_rad": 0.10985417590622272,
+        "abs_p95_rad": 0.21473969436547352,
+        "abs_max_rad": 1.5924059090227694
+      },
+      "body_tracking": {
+        "world_position_p95_max_m": [
+          0.14321625624857073,
+          0.2870157268493633
+        ],
+        "root_relative_position_p95_max_m": [
+          0.14321625624857073,
+          0.2870157268493633
+        ],
+        "orientation_p95_max_rad": [
+          0.5674058317951212,
+          1.830093732132296
+        ]
+      },
+      "root_tracking": {
+        "position_rmse_final_m": [
+          7.736565041839194e-17,
+          0.0
+        ],
+        "xy_rmse_final_m": [
+          7.367488557968652e-17,
+          0.0
+        ],
+        "orientation_p95_max_rad": [
+          0.0,
+          0.0
+        ],
+        "z_min_m": 0.5486588992855765,
+        "tilt_max_rad": 0.44911826311348896
+      },
+      "contact": {
+        "reference_phase": {
+          "left_ratio": 0.0,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.0,
+          "flight_ratio": 1.0
+        },
+        "realized_phase": {
+          "left_ratio": 0.10101010101010101,
+          "right_ratio": 0.030303030303030304,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.13131313131313133,
+          "flight_ratio": 0.8686868686868687
+        },
+        "agreement": {
+          "left": 0.898989898989899,
+          "right": 0.9696969696969697,
+          "mean": 0.9343434343434344
+        },
+        "f1": {
+          "left": 0.0,
+          "right": 0.0
+        },
+        "truth_boundary": "reference=model active-sole geometry; realized=official MuJoCo collision; neither is hardware GRF/COP/wrench"
+      },
+      "slip_p95_max_mps": [
+        0.4111652419314009,
+        0.7934173190466485
+      ],
+      "action_target": {
+        "joint_step_abs_p95_max_rad": [
+          0.03888048496511263,
+          0.08891148789964587
+        ],
+        "recorded_joint_velocity_abs_p95_max_radps": [
+          1.9283378786510827,
+          4.444308887527454
+        ],
+        "target_joint_limit_saturation": {
+          "violating_samples": 0,
+          "limited_joint_samples": 6169,
+          "fraction": 0.0,
+          "max_excess_rad": 0.0,
+          "count_tolerance_rad": 1e-06,
+          "per_joint": {}
+        },
+        "contact_phase": {
+          "left_ratio": 0.0,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.0,
+          "flight_ratio": 1.0
+        }
+      },
+      "torque": {
+        "saturation_fraction": 0.007380254154447703,
+        "raw_abs_over_limit_p95_max": [
+          0.148176968988495,
+          17.866817665583994
+        ],
+        "saturation_by_joint": {
+          "left_hip_pitch_joint": 0.0,
+          "left_hip_roll_joint": 0.0,
+          "left_hip_yaw_joint": 0.0,
+          "left_knee_joint": 0.0,
+          "left_ankle_pitch_joint": 0.0,
+          "left_ankle_roll_joint": 0.0,
+          "right_hip_pitch_joint": 0.0,
+          "right_hip_roll_joint": 0.0,
+          "right_hip_yaw_joint": 0.0,
+          "right_knee_joint": 0.0,
+          "right_ankle_pitch_joint": 0.0,
+          "right_ankle_roll_joint": 0.0,
+          "waist_yaw_joint": 0.0,
+          "waist_pitch_joint": 0.0,
+          "waist_roll_joint": 0.0,
+          "head_yaw_joint": 0.0,
+          "head_pitch_joint": 0.0,
+          "left_shoulder_pitch_joint": 0.0,
+          "left_shoulder_roll_joint": 0.0,
+          "left_shoulder_yaw_joint": 0.0,
+          "left_elbow_joint": 0.0,
+          "left_wrist_yaw_joint": 0.0,
+          "left_wrist_pitch_joint": 0.0952020202020202,
+          "left_wrist_roll_joint": 0.1143939393939394,
+          "right_shoulder_pitch_joint": 0.0,
+          "right_shoulder_roll_joint": 0.0,
+          "right_shoulder_yaw_joint": 0.0,
+          "right_elbow_joint": 0.0,
+          "right_wrist_yaw_joint": 0.0,
+          "right_wrist_pitch_joint": 0.01919191919191919,
+          "right_wrist_roll_joint": 0.0
+        }
+      },
+      "replay_joint_motion": {
+        "step_abs_p95_max_rad": [
+          0.04405865723984193,
+          0.18383349009143812
+        ],
+        "velocity_abs_p95_max_radps": [
+          2.2029328619920965,
+          9.191674504571907
+        ]
+      },
+      "initialization": {
+        "q": "recorded actual q frame0",
+        "dq": "recorded actual dq frame0 from Phase11 state adapter",
+        "root_pose": "recorded actual root position/quaternion frame0",
+        "root_velocity": "recorded actual root lin/ang velocity frame0 from Phase11 state adapter",
+        "solver_warmstart": "unavailable; reset default/zero",
+        "contact_constraint_warmstart": "unavailable; reconstructed by mj_forward",
+        "controller_hidden_state": "unavailable; replay uses stateless official position-PD, not original ONNX controller"
+      }
+    },
+    "phase30_candidate_prescribed": {
+      "mode": "prescribed_root_trackability",
+      "interpretation": "root pose/velocity externally prescribed every physics step; trackability only",
+      "reference_duration_s": 5.8,
+      "simulated_duration_s": 5.8,
+      "duration_fraction": 1.0,
+      "fell": false,
+      "fall_time_s": null,
+      "nonfinite_time_s": null,
+      "q_tracking": {
+        "rmse_rad": 0.047717817516605164,
+        "abs_p95_rad": 0.11469486622514391,
+        "abs_max_rad": 0.28486569657734706
+      },
+      "body_tracking": {
+        "world_position_p95_max_m": [
+          0.08127709253929294,
+          0.14446519015208412
+        ],
+        "root_relative_position_p95_max_m": [
+          0.08127709253929294,
+          0.14446519015208412
+        ],
+        "orientation_p95_max_rad": [
+          0.30798663402944965,
+          0.5679767889637303
+        ]
+      },
+      "root_tracking": {
+        "position_rmse_final_m": [
+          8.007424032465827e-17,
+          0.0
+        ],
+        "xy_rmse_final_m": [
+          7.431273308481225e-17,
+          0.0
+        ],
+        "orientation_p95_max_rad": [
+          0.0,
+          0.0
+        ],
+        "z_min_m": 0.5816049575805664,
+        "tilt_max_rad": 0.44887978618836594
+      },
+      "contact": {
+        "reference_phase": {
+          "left_ratio": 0.02413793103448276,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.02413793103448276,
+          "flight_ratio": 0.9758620689655172
+        },
+        "realized_phase": {
+          "left_ratio": 0.19310344827586207,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.19310344827586207,
+          "flight_ratio": 0.8068965517241379
+        },
+        "agreement": {
+          "left": 0.8310344827586207,
+          "right": 1.0,
+          "mean": 0.9155172413793103
+        },
+        "f1": {
+          "left": 0.2222222222222222,
+          "right": 0.0
+        },
+        "truth_boundary": "reference=model active-sole geometry; realized=official MuJoCo collision; neither is hardware GRF/COP/wrench"
+      },
+      "slip_p95_max_mps": [
+        0.14911837825615684,
+        0.21228397443603667
+      ],
+      "action_target": {
+        "joint_step_abs_p95_max_rad": [
+          0.026569728255271607,
+          0.06070509552955572
+        ],
+        "recorded_joint_velocity_abs_p95_max_radps": [
+          1.313735842704783,
+          3.033872097730629
+        ],
+        "target_joint_limit_saturation": {
+          "violating_samples": 0,
+          "limited_joint_samples": 9021,
+          "fraction": 0.0,
+          "max_excess_rad": 0.0,
+          "count_tolerance_rad": 1e-06,
+          "per_joint": {}
+        },
+        "contact_phase": {
+          "left_ratio": 0.027491408934707903,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.027491408934707903,
+          "flight_ratio": 0.9725085910652921
+        }
+      },
+      "torque": {
+        "saturation_fraction": 0.0,
+        "raw_abs_over_limit_p95_max": [
+          0.06499255191996704,
+          0.9812806218817015
+        ],
+        "saturation_by_joint": {
+          "left_hip_pitch_joint": 0.0,
+          "left_hip_roll_joint": 0.0,
+          "left_hip_yaw_joint": 0.0,
+          "left_knee_joint": 0.0,
+          "left_ankle_pitch_joint": 0.0,
+          "left_ankle_roll_joint": 0.0,
+          "right_hip_pitch_joint": 0.0,
+          "right_hip_roll_joint": 0.0,
+          "right_hip_yaw_joint": 0.0,
+          "right_knee_joint": 0.0,
+          "right_ankle_pitch_joint": 0.0,
+          "right_ankle_roll_joint": 0.0,
+          "waist_yaw_joint": 0.0,
+          "waist_pitch_joint": 0.0,
+          "waist_roll_joint": 0.0,
+          "head_yaw_joint": 0.0,
+          "head_pitch_joint": 0.0,
+          "left_shoulder_pitch_joint": 0.0,
+          "left_shoulder_roll_joint": 0.0,
+          "left_shoulder_yaw_joint": 0.0,
+          "left_elbow_joint": 0.0,
+          "left_wrist_yaw_joint": 0.0,
+          "left_wrist_pitch_joint": 0.0,
+          "left_wrist_roll_joint": 0.0,
+          "right_shoulder_pitch_joint": 0.0,
+          "right_shoulder_roll_joint": 0.0,
+          "right_shoulder_yaw_joint": 0.0,
+          "right_elbow_joint": 0.0,
+          "right_wrist_yaw_joint": 0.0,
+          "right_wrist_pitch_joint": 0.0,
+          "right_wrist_roll_joint": 0.0
+        }
+      },
+      "replay_joint_motion": {
+        "step_abs_p95_max_rad": [
+          0.028077976577737623,
+          0.06708978554984268
+        ],
+        "velocity_abs_p95_max_radps": [
+          1.4038988288868812,
+          3.354489277492134
+        ]
+      },
+      "initialization": {
+        "q": "recorded actual q frame0",
+        "dq": "recorded actual dq frame0 from Phase11 state adapter",
+        "root_pose": "recorded actual root position/quaternion frame0",
+        "root_velocity": "recorded actual root lin/ang velocity frame0 from Phase11 state adapter",
+        "solver_warmstart": "unavailable; reset default/zero",
+        "contact_constraint_warmstart": "unavailable; reconstructed by mj_forward",
+        "controller_hidden_state": "unavailable; replay uses stateless official position-PD, not original ONNX controller"
+      }
+    },
+    "phase30_candidate_free": {
+      "mode": "free_root_balance",
+      "interpretation": "free-root bare position-PD actual-q replay; not a learned-policy evaluation",
+      "reference_duration_s": 5.8,
+      "simulated_duration_s": 0.5750000000000001,
+      "duration_fraction": 0.09913793103448278,
+      "fell": true,
+      "fall_time_s": 0.5750000000000001,
+      "nonfinite_time_s": null,
+      "q_tracking": {
+        "rmse_rad": 0.10919152815149391,
+        "abs_p95_rad": 0.26356360181274807,
+        "abs_max_rad": 0.38909205454962914
+      },
+      "body_tracking": {
+        "world_position_p95_max_m": [
+          0.31447436966679443,
+          0.4751905440377214
+        ],
+        "root_relative_position_p95_max_m": [
+          0.22086410121559288,
+          0.34170575910417333
+        ],
+        "orientation_p95_max_rad": [
+          0.6246630172452817,
+          0.7051051068946079
+        ]
+      },
+      "root_tracking": {
+        "position_rmse_final_m": [
+          0.10148299689162323,
+          0.15918020152940068
+        ],
+        "xy_rmse_final_m": [
+          0.08401176581141839,
+          0.1483521247438548
+        ],
+        "orientation_p95_max_rad": [
+          0.5039211311157514,
+          0.5536574895771063
+        ],
+        "z_min_m": 0.5165605623318648,
+        "tilt_max_rad": 0.8803195267821597
+      },
+      "contact": {
+        "reference_phase": {
+          "left_ratio": 0.07142857142857142,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.07142857142857142,
+          "flight_ratio": 0.9285714285714286
+        },
+        "realized_phase": {
+          "left_ratio": 1.0,
+          "right_ratio": 0.9285714285714286,
+          "double_support_ratio": 0.9285714285714286,
+          "single_support_ratio": 0.07142857142857142,
+          "flight_ratio": 0.0
+        },
+        "agreement": {
+          "left": 0.07142857142857142,
+          "right": 0.07142857142857142,
+          "mean": 0.07142857142857142
+        },
+        "f1": {
+          "left": 0.13333333333333333,
+          "right": 0.0
+        },
+        "truth_boundary": "reference=model active-sole geometry; realized=official MuJoCo collision; neither is hardware GRF/COP/wrench"
+      },
+      "slip_p95_max_mps": [
+        0.03234098918661208,
+        0.10520637723048884
+      ],
+      "action_target": {
+        "joint_step_abs_p95_max_rad": [
+          0.026569728255271607,
+          0.06070509552955572
+        ],
+        "recorded_joint_velocity_abs_p95_max_radps": [
+          1.313735842704783,
+          3.033872097730629
+        ],
+        "target_joint_limit_saturation": {
+          "violating_samples": 0,
+          "limited_joint_samples": 9021,
+          "fraction": 0.0,
+          "max_excess_rad": 0.0,
+          "count_tolerance_rad": 1e-06,
+          "per_joint": {}
+        },
+        "contact_phase": {
+          "left_ratio": 0.027491408934707903,
+          "right_ratio": 0.0,
+          "double_support_ratio": 0.0,
+          "single_support_ratio": 0.027491408934707903,
+          "flight_ratio": 0.9725085910652921
+        }
+      },
+      "torque": {
+        "saturation_fraction": 0.0,
+        "raw_abs_over_limit_p95_max": [
+          0.3627482507507661,
+          0.7658984838762093
+        ],
+        "saturation_by_joint": {
+          "left_hip_pitch_joint": 0.0,
+          "left_hip_roll_joint": 0.0,
+          "left_hip_yaw_joint": 0.0,
+          "left_knee_joint": 0.0,
+          "left_ankle_pitch_joint": 0.0,
+          "left_ankle_roll_joint": 0.0,
+          "right_hip_pitch_joint": 0.0,
+          "right_hip_roll_joint": 0.0,
+          "right_hip_yaw_joint": 0.0,
+          "right_knee_joint": 0.0,
+          "right_ankle_pitch_joint": 0.0,
+          "right_ankle_roll_joint": 0.0,
+          "waist_yaw_joint": 0.0,
+          "waist_pitch_joint": 0.0,
+          "waist_roll_joint": 0.0,
+          "head_yaw_joint": 0.0,
+          "head_pitch_joint": 0.0,
+          "left_shoulder_pitch_joint": 0.0,
+          "left_shoulder_roll_joint": 0.0,
+          "left_shoulder_yaw_joint": 0.0,
+          "left_elbow_joint": 0.0,
+          "left_wrist_yaw_joint": 0.0,
+          "left_wrist_pitch_joint": 0.0,
+          "left_wrist_roll_joint": 0.0,
+          "right_shoulder_pitch_joint": 0.0,
+          "right_shoulder_roll_joint": 0.0,
+          "right_shoulder_yaw_joint": 0.0,
+          "right_elbow_joint": 0.0,
+          "right_wrist_yaw_joint": 0.0,
+          "right_wrist_pitch_joint": 0.0,
+          "right_wrist_roll_joint": 0.0
+        }
+      },
+      "replay_joint_motion": {
+        "step_abs_p95_max_rad": [
+          0.026870881570405448,
+          0.05973748936319767
+        ],
+        "velocity_abs_p95_max_radps": [
+          1.3435440785202724,
+          2.9868744681598836
+        ]
+      },
+      "initialization": {
+        "q": "recorded actual q frame0",
+        "dq": "recorded actual dq frame0 from Phase11 state adapter",
+        "root_pose": "recorded actual root position/quaternion frame0",
+        "root_velocity": "recorded actual root lin/ang velocity frame0 from Phase11 state adapter",
+        "solver_warmstart": "unavailable; reset default/zero",
+        "contact_constraint_warmstart": "unavailable; reconstructed by mj_forward",
+        "controller_hidden_state": "unavailable; replay uses stateless official position-PD, not original ONNX controller"
+      }
+    }
+  },
+  "gate": {
+    "original_prescribed": {
+      "checks": {
+        "full_duration": true,
+        "source_joint_step": true,
+        "source_joint_velocity": true,
+        "q_trackable": true,
+        "body_position_trackable": false,
+        "body_orientation_trackable": false,
+        "root_externally_prescribed_exact": true,
+        "contact_agreement": true,
+        "single_support_not_deleted": true,
+        "slip_bounded": true,
+        "torque_saturation_bounded": true,
+        "target_limits_bounded": true
+      },
+      "pass": false,
+      "failed": [
+        "body_position_trackable",
+        "body_orientation_trackable"
+      ]
+    },
+    "candidate_prescribed": {
+      "checks": {
+        "full_duration": true,
+        "source_joint_step": true,
+        "source_joint_velocity": true,
+        "q_trackable": true,
+        "body_position_trackable": true,
+        "body_orientation_trackable": true,
+        "root_externally_prescribed_exact": true,
+        "contact_agreement": true,
+        "single_support_not_deleted": true,
+        "slip_bounded": true,
+        "torque_saturation_bounded": true,
+        "target_limits_bounded": true
+      },
+      "pass": true,
+      "failed": []
+    },
+    "candidate_free": {
+      "checks": {
+        "full_duration": false,
+        "q_trackable": true,
+        "root_xy_trackable": true,
+        "contact_agreement": false,
+        "slip_bounded": true,
+        "torque_saturation_bounded": true
+      },
+      "pass": false,
+      "failed": [
+        "full_duration",
+        "contact_agreement"
+      ]
+    }
+  },
+  "decision": {
+    "status": "PHASE33_PRESCRIBED_PASSED_FREE_REJECTED",
+    "conclusion": "候选可由官方裸PD跟踪，但free-root失败，证明静态Silver/trackability不等于Gold平衡；不否定Any2Any。",
+    "next_step": "停止；保留为trackable Silver，不自动训练或调参。"
+  }
+}

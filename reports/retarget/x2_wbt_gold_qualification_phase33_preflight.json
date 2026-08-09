@@ -1,0 +1,154 @@
+{
+  "schema_version": "x2_wbt_gold_qualification_phase33_preflight_v1",
+  "motion_id": "PHUMA-LUNGE-R-001",
+  "phase28_cache": {
+    "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase28_panel24/official_v1_model/x2_phase28_panel24.pkl",
+    "sha256": "e547dfa2caf2da76b929b01109ba52c7c53cb1d3582ea473da0fb8e2fd4a0471"
+  },
+  "phase30_cache": {
+    "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/silver_contact/phase30_time_dilation/x2_phase30_time_dilation_1p46.pkl",
+    "sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+  },
+  "official_scene": {
+    "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+    "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+  },
+  "official_control": {
+    "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+    "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+  },
+  "phase12_runner": {
+    "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/run_x2_native_gold_trackability_phase12.py",
+    "sha256": "6efa4976275407554f3f2d615c9d42d6af2693626c4e223c74d2bb9580126dac"
+  },
+  "gates": {
+    "source_joint_step_p95_max_rad": [
+      0.12,
+      0.45
+    ],
+    "source_joint_velocity_p95_max_radps": [
+      6.0,
+      20.0
+    ],
+    "prescribed_q_rmse_max_rad": 0.2,
+    "prescribed_body_relative_position_p95_m": 0.12,
+    "prescribed_body_relative_orientation_p95_rad": 0.35,
+    "prescribed_root_position_rmse_m": 0.005,
+    "prescribed_root_orientation_p95_rad": 0.01,
+    "prescribed_contact_agreement_min": 0.6,
+    "prescribed_realized_single_support_min": 0.02,
+    "prescribed_realized_single_support_fraction_of_source_min": 0.25,
+    "prescribed_slip_p95_max_mps": 0.5,
+    "prescribed_torque_saturation_max": 0.1,
+    "free_full_duration_fraction_min": 0.999,
+    "free_q_rmse_max_rad": 0.25,
+    "free_root_xy_rmse_max_m": 0.25,
+    "free_contact_agreement_min": 0.55,
+    "free_slip_p95_max_mps": 0.5
+  },
+  "preregistration": {
+    "comparison_type": "paired qualification, not pure causal single-variable A/B",
+    "reason": "Phase30 includes frozen Phase29 spatial repair plus 1.46x retime; numeric frame0 therefore differs from Phase28",
+    "same_runner": "Phase12 simulate/prescribed_gate/free_gate",
+    "same_official_scene_control_pd_action_limits_sole_contract": true,
+    "control_timebase_adapter": "both 30Hz paths are resampled as the same continuous path to official 50Hz using linear q/root position and quaternion Slerp",
+    "initialization_rule": "each reference starts from its own exact q/dq/root pose/root velocity frame0; solver/contact warmstart and controller hidden state unavailable",
+    "numeric_initial_state_equal": false,
+    "initial_q_rmse_max_abs_rad": [
+      0.04507981613278389,
+      0.18277323246002197
+    ],
+    "initial_root_position_delta_m": 0.04569924622774124,
+    "original_role": "contextual control; cannot tune or relax candidate gate",
+    "candidate_role": "sole Phase30 train Silver qualification target",
+    "execution_order": [
+      "original prescribed-root",
+      "candidate prescribed-root",
+      "candidate free-root only iff every prescribed gate passes"
+    ],
+    "parameter_scan_or_reference_change": false
+  },
+  "timebase_adapter_unit": {
+    "phase28_original": {
+      "metrics": {
+        "duration_source_adapted_error_s": 0.006666666666666821,
+        "endpoint_q_max_abs_rad": 0.0,
+        "endpoint_root_max_abs_m": 0.0,
+        "endpoint_quaternion_equivalent_error": 1.919745229450598e-08,
+        "inverse_path_q_max_abs_rad": 0.005781414674565222,
+        "inverse_path_root_max_abs_m": 0.0009100143315077247,
+        "inverse_path_quaternion_equivalent_error": 1.4262969499911904e-06,
+        "contact_transition_counts_native30_adapted50": {
+          "left": [
+            0,
+            0
+          ],
+          "right": [
+            0,
+            0
+          ]
+        }
+      },
+      "checks": {
+        "official_output_fps_50": true,
+        "duration_preserved_within_half_control_step": true,
+        "q_endpoints_exact": true,
+        "root_endpoints_exact": true,
+        "quaternion_endpoints_equivalent": true,
+        "continuous_q_path_preserved": true,
+        "continuous_root_path_preserved": true,
+        "slerp_path_preserved": true,
+        "contact_phase_transition_count_preserved": true
+      },
+      "pass": true
+    },
+    "phase30_candidate": {
+      "metrics": {
+        "duration_source_adapted_error_s": 0.0,
+        "endpoint_q_max_abs_rad": 0.0,
+        "endpoint_root_max_abs_m": 0.0,
+        "endpoint_quaternion_equivalent_error": 1.919745229450598e-08,
+        "inverse_path_q_max_abs_rad": 0.003233806292216035,
+        "inverse_path_root_max_abs_m": 0.001330097516377693,
+        "inverse_path_quaternion_equivalent_error": 3.7615245218614035e-07,
+        "contact_transition_counts_native30_adapted50": {
+          "left": [
+            5,
+            5
+          ],
+          "right": [
+            0,
+            0
+          ]
+        }
+      },
+      "checks": {
+        "official_output_fps_50": true,
+        "duration_preserved_within_half_control_step": true,
+        "q_endpoints_exact": true,
+        "root_endpoints_exact": true,
+        "quaternion_endpoints_equivalent": true,
+        "continuous_q_path_preserved": true,
+        "continuous_root_path_preserved": true,
+        "slerp_path_preserved": true,
+        "contact_phase_transition_count_preserved": true
+      },
+      "pass": true
+    }
+  },
+  "runtime_conflict": {
+    "port_51822_listeners": [],
+    "foreign_official_processes": []
+  },
+  "checks": {
+    "sole_phase30_silver_present": true,
+    "joint_order_equal": true,
+    "head_locked_both": true,
+    "fps_original_candidate": true,
+    "phase12_control_time_adapter_declared": true,
+    "timebase_adapter_unit_pass": true,
+    "port_51822_free": true,
+    "no_foreign_official_process": true
+  },
+  "pass": true
+}

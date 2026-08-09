@@ -29,12 +29,6 @@ for value in (REPO / "tools", SONIC_ROOT, SRC_ROOT):
     if str(value) not in sys.path:
         sys.path.insert(0, str(value))
 
-from easydict import EasyDict
-from gear_sonic.utils.motion_lib.motion_lib_base import FixHeightMode
-from gear_sonic.utils.motion_lib.motion_lib_robot import MotionLibRobot
-
-from x2_native_gold_motionlib_adapter import apply_recorded_state_adapter
-from retarget.run_x2_native_gold_motionlib_phase11 import native_config
 import retarget.run_x2_forefoot_official_physics_screen as physics
 
 
@@ -118,6 +112,12 @@ def phase_stats(contact: dict[str, np.ndarray]) -> dict[str, float]:
 
 
 def build_reference(gold: Path, contract_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+    # Kept lazy so official replay/gate helpers can be reused for an already
+    # materialized reference without importing the legacy MotionLib/lxml stack.
+    from gear_sonic.utils.motion_lib.motion_lib_robot import MotionLibRobot
+    from x2_native_gold_motionlib_adapter import apply_recorded_state_adapter
+    from retarget.run_x2_native_gold_motionlib_phase11 import native_config
+
     entries = joblib.load(gold)
     first_key = list(entries)[0]
     source = entries[first_key]

@@ -216,6 +216,24 @@ parser.add_argument(
     default=None,
     help="Expected SHA-256 of the stateful Stage335 source report.",
 )
+parser.add_argument(
+    "--outcome_aware_reset_manifest",
+    type=Path,
+    default=None,
+    help="Optional Phase20 source-reference-only state-role manifest (stand_backend only).",
+)
+parser.add_argument(
+    "--outcome_aware_reset_manifest_sha256",
+    type=str,
+    default=None,
+    help="Required immutable file SHA-256 for the Phase20 manifest.",
+)
+parser.add_argument(
+    "--outcome_aware_reset_fraction",
+    type=float,
+    default=0.0,
+    help="Fraction of reset envs sampled from the Phase20 1:1 state-role mixture.",
+)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 
@@ -267,6 +285,10 @@ from official_x2.stateful_recovery_isaac import (  # noqa: E402
     StatefulRecoveryRLEnv,
     configure_stateful_recovery_cfg,
 )
+from official_x2.outcome_aware_state_role_v2 import (  # noqa: E402
+    load_manifest as load_outcome_aware_manifest,
+    reset_from_outcome_aware_v2,
+)
 
 
 def main() -> None:
@@ -288,6 +310,17 @@ def main() -> None:
         raise ValueError("stateful source report requires --recovery_reset_dataset")
     if args.recovery_reset_dataset is not None and args.profile != "stand_backend":
         raise ValueError("recovery reset curriculum is isolated to --profile stand_backend")
+    if not 0.0 <= args.outcome_aware_reset_fraction <= 1.0:
+        raise ValueError("--outcome_aware_reset_fraction must be in [0, 1]")
+    if args.outcome_aware_reset_manifest is not None and args.recovery_reset_dataset is not None:
+        raise ValueError("legacy recovery dataset and Phase20 manifest are mutually exclusive")
+    if args.outcome_aware_reset_fraction > 0.0 and args.outcome_aware_reset_manifest is None:
+        raise ValueError("positive outcome-aware fraction requires the Phase20 manifest")
+    if args.outcome_aware_reset_manifest is not None:
+        if args.profile != "stand_backend":
+            raise ValueError("Phase20 outcome-aware reset is isolated to --profile stand_backend")
+        if args.outcome_aware_reset_manifest_sha256 is None:
+            raise ValueError("Phase20 manifest requires --outcome_aware_reset_manifest_sha256")
     response_history_profile = args.profile == "privileged_teacher_phase_template_response_history"
     if response_history_profile:
         env_cfg = X2LowerVelocityTeacherPhaseTemplateResponseHistoryFlatEnvCfg()
@@ -637,6 +670,39 @@ def main() -> None:
         if any(event_names.index(name) > event_names.index("recovery_state_reset") for name in reset_predecessors):
             raise RuntimeError("recovery_state_reset must execute after inherited physical resets")
 
+    outcome_aware_manifest = None
+    if args.outcome_aware_reset_manifest is not None:
+        outcome_path = args.outcome_aware_reset_manifest.expanduser().resolve()
+        outcome_aware_manifest = load_outcome_aware_manifest(
+            outcome_path, args.outcome_aware_reset_manifest_sha256
+        )
+        configure_stateful_recovery_cfg(env_cfg)
+        env_class = StatefulRecoveryRLEnv
+        env_cfg.scene.robot.soft_joint_pos_limit_factor = 1.0
+        env_cfg.observations.policy.enable_corruption = False
+        env_cfg.events.base_external_force_torque = None
+        env_cfg.events.push_robot = None
+        env_cfg.events.recovery_state_reset = EventTermCfg(
+            func=reset_from_outcome_aware_v2,
+            mode="reset",
+            params={
+                "manifest_path": str(outcome_path),
+                "reset_fraction": args.outcome_aware_reset_fraction,
+                "state_role_name": "balanced",
+                "expected_manifest_sha256": args.outcome_aware_reset_manifest_sha256,
+                "asset_name": "robot",
+            },
+        )
+        event_names = list(env_cfg.events.__dict__)
+        reset_predecessors = [
+            name for name in ("reset_base", "reset_robot_joints") if name in event_names
+        ]
+        if any(
+            event_names.index(name) > event_names.index("recovery_state_reset")
+            for name in reset_predecessors
+        ):
+            raise RuntimeError("Phase20 reset must execute after inherited physical resets")
+
     if args.profile in {
         "privileged_teacher_phase_template_heading_hold",
         "privileged_teacher_phase_template_response_history",
@@ -727,6 +793,7 @@ def main() -> None:
         f"self_collisions={args.self_collisions} "
         f"recovery_reset_fraction={args.recovery_reset_fraction} "
         f"recovery_reset_sampling={args.recovery_reset_sampling} "
+        f"outcome_aware_reset_fraction={args.outcome_aware_reset_fraction} "
         f"report={actuator_response_report}",
         flush=True,
     )
@@ -734,6 +801,12 @@ def main() -> None:
         print(f"[Stage172] recovery_reset_audit={recovery_reset_audit}", flush=True)
     if recovery_stateful_audit is not None:
         print(f"[Stage172] recovery_stateful_audit={recovery_stateful_audit}", flush=True)
+    if outcome_aware_manifest is not None:
+        print(
+            f"[Stage172] outcome_aware_manifest_content_sha256="
+            f"{outcome_aware_manifest['content_sha256']} counts={outcome_aware_manifest['counts']}",
+            flush=True,
+        )
     if args.profile in {
         "privileged_teacher_phase_template_residual",
         "privileged_teacher_phase_template_heading_hold",

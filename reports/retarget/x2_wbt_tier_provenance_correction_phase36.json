@@ -1,0 +1,2015 @@
+{
+  "schema_version": "x2_wbt_tier_provenance_correction_phase36_v1",
+  "mode": "append_only_static_FK_collision_reaudit_no_mj_step_no_optimizer",
+  "provenance": {
+    "historical_phase28": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_panel_phase28.json",
+      "sha256": "e969f8c10f1e9289954f61a80955ff40d2ae57b1bbba7da984394fe7d17fe56a"
+    },
+    "historical_phase29": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_full_trajectory_repair_phase29.json",
+      "sha256": "6cbd749e216b09064f757f02899e321c84bf61d0a401754fb3863bcab6683ecf"
+    },
+    "historical_phase30": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_time_dilation_phase30.json",
+      "sha256": "3c71e126d50a29ca3f6dda20165c09a0d48cbb75248182206bdf8f6e79d46d43"
+    },
+    "cache28": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase28_panel24/official_v1_model/x2_phase28_panel24.pkl",
+      "sha256": "e547dfa2caf2da76b929b01109ba52c7c53cb1d3582ea473da0fb8e2fd4a0471"
+    },
+    "cache29": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase29_full_trajectory_repair/x2_phase29_full_trajectory_repair.pkl",
+      "sha256": "80b92be31c7139e28076d6adc77499785ae6cb87ec4752c89aa82252c8583b43"
+    },
+    "cache30": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/silver_contact/phase30_time_dilation/x2_phase30_time_dilation_1p46.pkl",
+      "sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+    },
+    "tier_gates_unchanged": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_wbt_tier_gates.json",
+      "sha256": "314edd1970083fa5549929f4c8e79e206e5ece07718955442a9d943e75d2a934"
+    },
+    "official_scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    }
+  },
+  "truth_boundary": {
+    "physics_integration_steps": 0,
+    "optimizer_training_ppo": false,
+    "trajectory_root_threshold_split_source_sha_changed": false,
+    "static_mj_forward_fk_collision_only": true,
+    "contact_is_model_estimate_not_hardware_grf_cop_wrench": true,
+    "historical_reports_overwritten": false
+  },
+  "contract_correction": {
+    "bug": "Phase7 Bronze reset-clearance + one-sphere-radius tolerance was reused as Silver contact",
+    "historical_tolerance_threshold_m": 0.010050000000000003,
+    "correct_official_collision_signed_distance_threshold_m": 0.0,
+    "active_sole_spheres_per_foot": 12,
+    "intent_definition_unchanged": "aligned source foot z <= min(left/right foot z p05) + 0.020 m",
+    "intent_geometry_consistency_gate": "existing intended-foot transition >=2 and event timing <=0.10s; no new numeric threshold"
+  },
+  "phase28_summary": {
+    "completed": 24,
+    "Silver": 0,
+    "Bronze": 2,
+    "Reject": 22,
+    "tier_changes": []
+  },
+  "phase29_summary": {
+    "completed": 3,
+    "Silver": 0,
+    "Bronze": 0,
+    "Reject": 3,
+    "tier_changes": []
+  },
+  "phase30_summary": {
+    "completed": 3,
+    "Silver": 0,
+    "Bronze": 1,
+    "Reject": 2,
+    "tier_changes": [
+      {
+        "id": "PHUMA-LUNGE-R-001",
+        "historical": "Silver",
+        "corrected": "Bronze"
+      }
+    ]
+  },
+  "phase28_corrected": [
+    {
+      "id": "AMASS-STAND-001",
+      "split": "train_candidate",
+      "entry_sha256": "1203e1cc4d9196967fb20bb51688ce7c64012dfc7bf42d234b2b25110e260d78",
+      "historical_tier": "Bronze",
+      "corrected": {
+        "tier": "Bronze",
+        "bronze_pass": true,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": true,
+          "dynamic_not_static_exception": false,
+          "complete_cycle": false,
+          "intended_feet_exist": false,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "silver:static_exception_not_dynamic_silver"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 1.0,
+            "right": 1.0
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.6555555555555556,
+            "right": 1.0
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-UPPER-001",
+      "split": "train_candidate",
+      "entry_sha256": "9d54e4f44e7981fa48a2bda6d639d60348664d303a2cbfa5ee957b04aec6c786",
+      "historical_tier": "Bronze",
+      "corrected": {
+        "tier": "Bronze",
+        "bronze_pass": true,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": true,
+          "dynamic_not_static_exception": false,
+          "complete_cycle": false,
+          "intended_feet_exist": false,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "silver:static_exception_not_dynamic_silver"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.0,
+            "right": 1.0
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 1.0,
+            "right": 0.0
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.0,
+            "right": 1.0
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-WALK-001",
+      "split": "train_candidate",
+      "entry_sha256": "a66e695bcf407ac88515f49a2064283ae2b2a348da33e9067328f5199fb6566e",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": true,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:sole_penetration_p95",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.5657894736842105,
+            "right": 0.5921052631578947
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.12280701754385964,
+            "right": 0.10526315789473684
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.32894736842105265,
+            "right": 0.32894736842105265
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.42105263157894735,
+            "right": 0.39035087719298245
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 13,
+            "right": 12
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.4,
+            "right": 0.415
+          },
+          "unintended_flight_fraction": 0.7719298245614035,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-TURN-L-001",
+      "split": "train_candidate",
+      "entry_sha256": "70b036aafed6f22b394cecb92223d791134b036d6e8297ccca9fcffc24df222b",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:sole_penetration_p95",
+          "bronze:sole_penetration_max",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.6,
+            "right": 0.6928571428571428
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.08214285714285714,
+            "right": 0.09642857142857143
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.31785714285714284,
+            "right": 0.2392857142857143
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.3357142857142857,
+            "right": 0.5
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 12,
+            "right": 13
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.8816666666666656,
+            "right": 0.4
+          },
+          "unintended_flight_fraction": 0.8214285714285714,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-TURN-R-001",
+      "split": "held_out",
+      "entry_sha256": "6842da374f7585ce8aa9fa46593013e7cfe16c69187b8cbefc66b861371ecb63",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": true,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:sole_penetration_p95",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.6385542168674698,
+            "right": 0.6345381526104418
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.08032128514056225,
+            "right": 0.10441767068273092
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.28112449799196787,
+            "right": 0.3092369477911647
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.42570281124497994,
+            "right": 0.40963855421686746
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 12,
+            "right": 12
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.4,
+            "right": 0.7333333333333333
+          },
+          "unintended_flight_fraction": 0.8152610441767069,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-SQUAT-001",
+      "split": "train_candidate",
+      "entry_sha256": "379cc42f5c8bcbbdf84e81c34686c55f5a7b21b2ca506fe1349cec5faa2d7f31",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 1.0,
+            "right": 0.9818181818181818
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.006060606060606061,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.006060606060606061,
+            "right": 0.01818181818181818
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.8909090909090909,
+            "right": 0.9757575757575757
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 2,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 0.9939393939393939,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-KICK-L-001",
+      "split": "train_candidate",
+      "entry_sha256": "60da6df15d905e46abbcb4305417e2b12a1ec826ea8d0b5571d331bc6695ffdb",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.7720588235294118,
+            "right": 0.9705882352941176
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.08823529411764706,
+            "right": 0.0661764705882353
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.3161764705882353,
+            "right": 0.09558823529411764
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.7279411764705882,
+            "right": 0.18382352941176472
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 6,
+            "right": 4
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.13166666666666665,
+            "right": 0.5233333333333333
+          },
+          "unintended_flight_fraction": 0.8455882352941176,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-KICK-R-001",
+      "split": "held_out",
+      "entry_sha256": "5aab06fc708b56bb710d0411cfc2362d9376f7f9a1b7010d9f91ff657c62aab7",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:sole_penetration_p95",
+          "bronze:sole_penetration_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.7325581395348837,
+            "right": 0.6511627906976745
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.12790697674418605,
+            "right": 0.03488372093023256
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.3023255813953488,
+            "right": 0.38372093023255816
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.32558139534883723,
+            "right": 0.5813953488372093
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 8,
+            "right": 4
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.24666666666666665,
+            "right": 0.16333333333333333
+          },
+          "unintended_flight_fraction": 0.8372093023255814,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-COORD-FAST-001",
+      "split": "held_out",
+      "entry_sha256": "082822c0dfd482854f1e5c284ed5dfd00855268f63bf360a13997783e58f4cb3",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:sole_penetration_p95",
+          "bronze:sole_penetration_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.7058823529411765,
+            "right": 0.6747404844290658
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.08304498269896193,
+            "right": 0.12802768166089964
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.27335640138408307,
+            "right": 0.328719723183391
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.4844290657439446,
+            "right": 0.5916955017301038
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 16,
+            "right": 24
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 1.6366666666666665,
+            "right": 0.8233333333333334
+          },
+          "unintended_flight_fraction": 0.7923875432525952,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-FAIL-CROUCH-001",
+      "split": "train_candidate",
+      "entry_sha256": "191fd43795e84ddaa9f5ad3d08516a97f11f055084dfa1cd6685b78cc85ed2f8",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:sole_penetration_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.4444444444444444,
+            "right": 0.4329501915708812
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.06513409961685823,
+            "right": 0.09578544061302682
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.4904214559386973,
+            "right": 0.47126436781609193
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.4559386973180077,
+            "right": 0.6091954022988506
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 12,
+            "right": 16
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 1.0516666666666663,
+            "right": 1.8699999999999999
+          },
+          "unintended_flight_fraction": 0.8390804597701149,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-FAIL-CIRCLE-001",
+      "split": "held_out",
+      "entry_sha256": "c700310b76b33c8c0f5a47cd8747d604444ddb213ab695f195ba4c2d8fa33efc",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": true,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:sole_penetration_p95",
+          "bronze:tracked_keypoint_p95",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.09292929292929293,
+            "right": 0.5595959595959596
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.1191919191919192,
+            "right": 0.15353535353535352
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.7878787878787878,
+            "right": 0.3434343434343434
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.3212121212121212,
+            "right": 0.36767676767676766
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 32,
+            "right": 28
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.3983333333333333,
+            "right": 0.43333333333333335
+          },
+          "unintended_flight_fraction": 0.7272727272727273,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-FAIL-THROW-001",
+      "split": "held_out",
+      "entry_sha256": "db65dac2f5dba84a51425145253996df399d82ddf492fcf2176bb5c7505e924b",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": false,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 1.0,
+            "right": 1.0
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.35374149659863946,
+            "right": 0.9727891156462585
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-LUNGE-R-001",
+      "split": "train_candidate",
+      "entry_sha256": "a3cd97cfe521e7c290aba7046092fb827201428a8a078224d5a6d0ac0241b7bc",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.8666666666666667,
+            "right": 0.35833333333333334
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.13333333333333333,
+            "right": 0.6416666666666667
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.8666666666666667,
+            "right": 0.2
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-LUNGE-L-MIRROR-001",
+      "split": "train_candidate",
+      "entry_sha256": "e5d3acec7250072d032fdd27d1116c5e4fd5c1ad57f9942c8dd80abec032adf6",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.35833333333333334,
+            "right": 0.8666666666666667
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.6416666666666667,
+            "right": 0.13333333333333333
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.2,
+            "right": 0.8666666666666667
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-RAISE-L-001",
+      "split": "train_candidate",
+      "entry_sha256": "06347fcaa68af3bf0aef3e91bdac2d51d405ecb64c967da12288e23045b728e2",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": true,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.5068493150684932,
+            "right": 1.0
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.4931506849315068,
+            "right": 0.0
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.136986301369863,
+            "right": 1.0
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": 0.0
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-RAISE-R-001",
+      "split": "held_out",
+      "entry_sha256": "7d573dbfb6059d74f779e8f0d88ce6a1ae3fdcd5965993414adc96fdeb1cf5d1",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": true,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:tracked_keypoint_p95",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 1.0,
+            "right": 0.417910447761194
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.0,
+            "right": 0.582089552238806
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 1.0,
+            "right": 0.05970149253731343
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.0,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-SQUAT-001",
+      "split": "train_candidate",
+      "entry_sha256": "61ab824ead56d10d9c45ccbd6d79e501dac0b8098dd2c2cf1e589b95804f9d29",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": false,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:semantic_review"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 1.0,
+            "right": 1.0
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 1.0,
+            "right": 1.0
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-FAIL-MOVE28-001",
+      "split": "held_out",
+      "entry_sha256": "1d11174ff8d1d56619b2e85028d25c9d59e74ae2e6d3b5e5e62e2fb0c407ac8b",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.875,
+            "right": 0.7666666666666667
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.125,
+            "right": 0.23333333333333334
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.75,
+            "right": 0.5666666666666667
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-COORD-001",
+      "split": "held_out",
+      "entry_sha256": "c586ce5599adf02c6533dbdd4d8043f4da98277ec475520f9306b0488c32abe9",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": true,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.0,
+            "right": 0.11607142857142858
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 1.0,
+            "right": 0.8839285714285714
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.6607142857142857,
+            "right": 0.41964285714285715
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 0.0,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "BONES-WALK-FAIL-001",
+      "split": "train_candidate",
+      "entry_sha256": "8e4c6584d972ea205db3f8f10eba3378b34ffa60408fe101dc0a2b59ea7e1edd",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.37047353760445684,
+            "right": 0.7325905292479109
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.6295264623955432,
+            "right": 0.26740947075208915
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.3593314763231198,
+            "right": 0.8328690807799443
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "BONES-TURN-FAIL-001",
+      "split": "held_out",
+      "entry_sha256": "512cb1147683e4efed3d4c98a3ec63b6b05f6e57a3d251a60b1debf4056fa6f5",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.7328767123287672,
+            "right": 0.6438356164383562
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.2671232876712329,
+            "right": 0.3561643835616438
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.9452054794520548,
+            "right": 0.11301369863013698
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "BONES-STOP-FAIL-001",
+      "split": "train_candidate",
+      "entry_sha256": "5faa1781b2090e88083b20fcda7930bd950717feb6b079678bd27895ca098251",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.16298342541436464,
+            "right": 0.1298342541436464
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.8370165745856354,
+            "right": 0.8701657458563536
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.20994475138121546,
+            "right": 0.9447513812154696
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "BONES-SIDE-FAIL-001",
+      "split": "train_candidate",
+      "entry_sha256": "a7b4c876baa43af66608c69fd4927b7e2c41eb2ceac4881e7f140641b172e546",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.4958217270194986,
+            "right": 0.0807799442896936
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.5041782729805014,
+            "right": 0.9192200557103064
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.7883008356545961,
+            "right": 0.4623955431754875
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "BONES-JOG-FAIL-001",
+      "split": "held_out",
+      "entry_sha256": "ef5cafc86eb971d8a92b86ccdcfb55d6a973e55bc2fd70333fe1d59c11c7a38a",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max",
+          "bronze:no_severe_self_collision"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.32432432432432434,
+            "right": 0.34534534534534533
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.6756756756756757,
+            "right": 0.6546546546546547
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.5585585585585585,
+            "right": 0.4804804804804805
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    }
+  ],
+  "phase29_corrected": [
+    {
+      "id": "AMASS-WALK-001",
+      "split": "train_candidate",
+      "entry_sha256": "cbecda83b7e40d38950c211a73abfa8671f76aa2c6c493fe40d001a40c4ddf7b",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": true,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.5701754385964912,
+            "right": 0.5921052631578947
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.021929824561403508,
+            "right": 0.021929824561403508
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.4517543859649123,
+            "right": 0.4298245614035088
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.34649122807017546,
+            "right": 0.29385964912280704
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 7,
+            "right": 8
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 1.18,
+            "right": 2.7399999999999998
+          },
+          "unintended_flight_fraction": 0.956140350877193,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-LUNGE-R-001",
+      "split": "train_candidate",
+      "entry_sha256": "15efaf5c9b248a3e4ebf8b9c11a16b60b90ef183589eaee7c56d52385d77537a",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.8666666666666667,
+            "right": 0.35
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.03333333333333333,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.16666666666666666,
+            "right": 0.65
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.825,
+            "right": 0.275
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 5,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 1.4216666666666664,
+            "right": null
+          },
+          "unintended_flight_fraction": 0.9666666666666667,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-KICK-L-001",
+      "split": "train_candidate",
+      "entry_sha256": "5b8577bc03d65396729acfdb3c15773663e2bd8a7d717314ed4cff2414e46ce1",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": false
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:joint_step_max",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.4338235294117647,
+            "right": 0.5514705882352942
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.007352941176470588,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.5588235294117647,
+            "right": 0.4485294117647059
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.7352941176470589,
+            "right": 0.8602941176470589
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 2,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 3.046666666666667,
+            "right": null
+          },
+          "unintended_flight_fraction": 0.9926470588235294,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    }
+  ],
+  "phase30_corrected": [
+    {
+      "id": "AMASS-WALK-001",
+      "split": "train_candidate",
+      "entry_sha256": "e38aaaee2e9ba6023672987563aa9e04156d88a4693e75bea01e8f2505c04ad8",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": true,
+          "stance_speed_each": false,
+          "stance_excursion_each": true,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:tracked_keypoint_p95"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.5692771084337349,
+            "right": 0.5903614457831325
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.02108433734939759,
+            "right": 0.018072289156626505
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.45180722891566266,
+            "right": 0.42771084337349397
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.3463855421686747,
+            "right": 0.2891566265060241
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 7,
+            "right": 8
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 1.7266666666666666,
+            "right": 4.011666666666666
+          },
+          "unintended_flight_fraction": 0.9608433734939759,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "PHUMA-LUNGE-R-001",
+      "split": "train_candidate",
+      "entry_sha256": "1ace093d6a0d22e26ffc281797f76465c45441a6bc1543427d9b305e1597cfee",
+      "historical_tier": "Silver",
+      "corrected": {
+        "tier": "Bronze",
+        "bronze_pass": true,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": true,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": true,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "silver:complete_cycle",
+          "silver:transitions_each_intended",
+          "silver:stance_speed_each",
+          "silver:stance_excursion_each",
+          "silver:clearance_p50_each_intended",
+          "silver:timing_each_intended",
+          "silver:intent_official_consistent_under_existing_event_gates",
+          "silver:flight"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.8685714285714285,
+            "right": 0.3485714285714286
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.03428571428571429,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.1657142857142857,
+            "right": 0.6514285714285715
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.8285714285714286,
+            "right": 0.26857142857142857
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 5,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": 2.0683333333333334,
+            "right": null
+          },
+          "unintended_flight_fraction": 0.9657142857142857,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    },
+    {
+      "id": "AMASS-KICK-L-001",
+      "split": "train_candidate",
+      "entry_sha256": "6a1eb238012052bc355589c223e0a8335a6c1765fff5dbb52662b03604e2307c",
+      "historical_tier": "Reject",
+      "corrected": {
+        "tier": "Reject",
+        "bronze_pass": false,
+        "silver_pass": false,
+        "silver_checks": {
+          "bronze_prerequisite": false,
+          "dynamic_not_static_exception": true,
+          "complete_cycle": false,
+          "intended_feet_exist": true,
+          "transitions_each_intended": false,
+          "stance_speed_each": false,
+          "stance_excursion_each": false,
+          "clearance_p50_each_intended": false,
+          "clearance_p95_each_intended": false,
+          "timing_each_intended": false,
+          "intent_official_consistent_under_existing_event_gates": false,
+          "official_collision_matches_signed_distance": true,
+          "flight": false,
+          "root_acceleration": true
+        },
+        "reject_reasons": [
+          "bronze:joint_step_p95",
+          "bronze:tracked_keypoint_p95",
+          "bronze:tracked_keypoint_max"
+        ],
+        "contact": {
+          "source_intent_contact_ratio": {
+            "left": 0.43434343434343436,
+            "right": 0.5505050505050505
+          },
+          "official_geometry_contact_ratio": {
+            "left": 0.0,
+            "right": 0.0
+          },
+          "intent_official_frame_agreement": {
+            "left": 0.5656565656565656,
+            "right": 0.4494949494949495
+          },
+          "legacy_bronze_tolerance_contact_ratio_not_silver": {
+            "left": 0.7323232323232324,
+            "right": 0.8636363636363636
+          },
+          "official_signed_distance_threshold_m": 0.0,
+          "legacy_bronze_tolerance_threshold_m": 0.010050000000000003,
+          "collision_signed_distance_exact": true,
+          "target_contact_transitions": {
+            "left": 0,
+            "right": 0
+          },
+          "complete_ds_ss_ds_cycles": 0,
+          "contact_timing_error_p95_s": {
+            "left": null,
+            "right": null
+          },
+          "unintended_flight_fraction": 1.0,
+          "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force"
+        }
+      }
+    }
+  ],
+  "decision": {
+    "phase30_lunge_silver_revoked": true,
+    "minimum_train_gmr_silver": false,
+    "faithful_any2any_optimizer_or_ppo_qualified": false,
+    "conclusion": "Phase30唯一train Silver来自contact审计provenance错误；官方geometry复审后降级，历史Silver与其后续optimizer资格正式撤销。该更正不否定1.46 retime对连续性/PD trackability的改善。",
+    "next_step": "保持optimizer/PPO锁定；回到contact-feasible reference生成，不做root-z repair或阈值扫描。"
+  }
+}

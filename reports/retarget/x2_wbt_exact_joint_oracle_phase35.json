@@ -1,0 +1,230 @@
+{
+  "schema_version": "x2_wbt_exact_joint_oracle_phase35_v1",
+  "preflight": {
+    "schema_version": "x2_wbt_exact_joint_oracle_phase35_preflight_v1",
+    "motion_id": "PHUMA-LUNGE-R-001",
+    "reference_cache_sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea",
+    "phase33_report_sha256": "5d215aea971e3246ea3cf2f820e443e83fb85bc6f6d92f8c4b94f1e87118b246",
+    "official_scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+    "official_control_sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400",
+    "phase33_scene_control_hash_match": true,
+    "reference_frames_fps": [
+      291,
+      50.0
+    ],
+    "head_reference_locked_zero": true,
+    "existing_free_pd_not_repeated": true,
+    "new_physics_mode_count": 1,
+    "training_ppo_optimizer_cem_pd_scan_warmup_reference_change": false,
+    "attribution_thresholds_frozen_before_run": {
+      "PD_OR_CLOSED_LOOP_PRIMARY": "full duration and contact agreement >=0.55",
+      "REFERENCE_GEOMETRY_CONTACT_PRIMARY": "fall <= max(1.0s, 2x existing PD survival)",
+      "MIXED_OR_UNRESOLVED": "otherwise"
+    },
+    "pass": true
+  },
+  "truth_boundary": {
+    "kinematic_oracle_not_executable_controller": true,
+    "direct_qdq_overwrite_breaks_momentum": true,
+    "contact_is_official_sim_model_not_hardware_truth": true,
+    "phase33_pd_baseline_not_repeated": true,
+    "root_reference_pd_warmup_contact_labels_unchanged": true,
+    "training_ppo_optimizer_cem_real_robot_base_port51822": false
+  },
+  "paired_control_existing_phase33_free_pd": {
+    "simulated_duration_s": 0.5750000000000001,
+    "reference_duration_s": 5.8,
+    "contact": {
+      "reference_phase": {
+        "left_ratio": 0.07142857142857142,
+        "right_ratio": 0.0,
+        "double_support_ratio": 0.0,
+        "single_support_ratio": 0.07142857142857142,
+        "flight_ratio": 0.9285714285714286
+      },
+      "realized_phase": {
+        "left_ratio": 1.0,
+        "right_ratio": 0.9285714285714286,
+        "double_support_ratio": 0.9285714285714286,
+        "single_support_ratio": 0.07142857142857142,
+        "flight_ratio": 0.0
+      },
+      "agreement": {
+        "left": 0.07142857142857142,
+        "right": 0.07142857142857142,
+        "mean": 0.07142857142857142
+      },
+      "f1": {
+        "left": 0.13333333333333333,
+        "right": 0.0
+      },
+      "truth_boundary": "reference=model active-sole geometry; realized=official MuJoCo collision; neither is hardware GRF/COP/wrench"
+    },
+    "root_tracking": {
+      "position_rmse_final_m": [
+        0.10148299689162323,
+        0.15918020152940068
+      ],
+      "xy_rmse_final_m": [
+        0.08401176581141839,
+        0.1483521247438548
+      ],
+      "orientation_p95_max_rad": [
+        0.5039211311157514,
+        0.5536574895771063
+      ],
+      "z_min_m": 0.5165605623318648,
+      "tilt_max_rad": 0.8803195267821597
+    },
+    "q_tracking": {
+      "rmse_rad": 0.10919152815149391,
+      "abs_p95_rad": 0.26356360181274807,
+      "abs_max_rad": 0.38909205454962914
+    },
+    "torque": {
+      "saturation_fraction": 0.0,
+      "raw_abs_over_limit_p95_max": [
+        0.3627482507507661,
+        0.7658984838762093
+      ],
+      "saturation_by_joint": {
+        "left_hip_pitch_joint": 0.0,
+        "left_hip_roll_joint": 0.0,
+        "left_hip_yaw_joint": 0.0,
+        "left_knee_joint": 0.0,
+        "left_ankle_pitch_joint": 0.0,
+        "left_ankle_roll_joint": 0.0,
+        "right_hip_pitch_joint": 0.0,
+        "right_hip_roll_joint": 0.0,
+        "right_hip_yaw_joint": 0.0,
+        "right_knee_joint": 0.0,
+        "right_ankle_pitch_joint": 0.0,
+        "right_ankle_roll_joint": 0.0,
+        "waist_yaw_joint": 0.0,
+        "waist_pitch_joint": 0.0,
+        "waist_roll_joint": 0.0,
+        "head_yaw_joint": 0.0,
+        "head_pitch_joint": 0.0,
+        "left_shoulder_pitch_joint": 0.0,
+        "left_shoulder_roll_joint": 0.0,
+        "left_shoulder_yaw_joint": 0.0,
+        "left_elbow_joint": 0.0,
+        "left_wrist_yaw_joint": 0.0,
+        "left_wrist_pitch_joint": 0.0,
+        "left_wrist_roll_joint": 0.0,
+        "right_shoulder_pitch_joint": 0.0,
+        "right_shoulder_roll_joint": 0.0,
+        "right_shoulder_yaw_joint": 0.0,
+        "right_elbow_joint": 0.0,
+        "right_wrist_yaw_joint": 0.0,
+        "right_wrist_pitch_joint": 0.0,
+        "right_wrist_roll_joint": 0.0
+      }
+    }
+  },
+  "oracle": {
+    "mode": "free_root_exact_joint_control_tick_oracle",
+    "interpretation": "kinematic feasibility oracle; direct q/dq overwrite breaks joint momentum and is not an executable controller",
+    "reference_duration_s": 5.8,
+    "simulated_duration_s": 0.324,
+    "duration_fraction": 0.05586206896551724,
+    "terminal": {
+      "time_s": 0.324,
+      "trigger": "tilt",
+      "root_z_m": 0.5409191181184152,
+      "root_tilt_rad": 0.9014770596066547,
+      "control_frame": 16,
+      "substep": 4,
+      "q_error_rmse_max_rad": [
+        0.002515422637198117,
+        0.007602945430760455
+      ],
+      "official_sole_collision_lr": [
+        true,
+        false
+      ]
+    },
+    "q_error_all_physics_frames_rmse_p95_max_rad": [
+      0.01629433932415193,
+      0.0372587084987055,
+      0.12427038546874501
+    ],
+    "control_tick_overwrite_prejump_abs_p95_max_rad": [
+      0.07130777109985248,
+      0.12365344163253285
+    ],
+    "root": {
+      "z_min_m": 0.5291763865281666,
+      "tilt_p95_max_rad": [
+        0.844460651632292,
+        0.9014770596066547
+      ],
+      "final_position_m": [
+        -0.14449524685361104,
+        -0.17279229806335994,
+        0.5409191181184152
+      ],
+      "final_linear_velocity_mps": [
+        -0.6466555966260559,
+        -1.1281594442213623,
+        0.018025135902496575
+      ],
+      "final_angular_velocity_radps": [
+        -0.37221342579479794,
+        3.5858000297857178,
+        0.23067551842608636
+      ]
+    },
+    "contact": {
+      "reference_ratio_lr": [
+        0.11764705882352941,
+        0.0
+      ],
+      "realized_ratio_lr": [
+        1.0,
+        0.8235294117647058
+      ],
+      "agreement_lr_mean": [
+        0.11764705882352941,
+        0.17647058823529413,
+        0.14705882352941177
+      ],
+      "realized_double_single_flight_ratio": [
+        0.8235294117647058,
+        0.17647058823529413,
+        0.0
+      ],
+      "linear_impulse_sum_abs_lr_Ns": [
+        155.3498797280873,
+        162.42484040359508
+      ],
+      "torque_impulse_sum_abs_lr_Nms": [
+        0.0,
+        0.0
+      ],
+      "truth_boundary": "official MuJoCo sole collision/wrench estimate; not hardware GRF/COP/wrench"
+    },
+    "generalized_force": {
+      "actuator_wbt29_abs_max": 0.0,
+      "constraint_wbt29_abs_p95_max": [
+        50.89769820670236,
+        388.77524244567854
+      ]
+    },
+    "pre_registered_attribution": {
+      "oracle_full_and_contact_agreement_ge_0p55": "PD_OR_CLOSED_LOOP_PRIMARY",
+      "oracle_quick_fall_le_max_1s_or_2x_pd": "REFERENCE_GEOMETRY_CONTACT_PRIMARY",
+      "otherwise": "MIXED_OR_UNRESOLVED",
+      "decision": "REFERENCE_GEOMETRY_CONTACT_PRIMARY"
+    }
+  },
+  "trace": {
+    "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_wbt_phase35_exact_joint_oracle_trace.npz",
+    "sha256": "ea0eb6875b953b372150c775b333e0f78d696c32deb1bca68f94e9249af04d47"
+  },
+  "decision": {
+    "status": "PHASE35_REFERENCE_GEOMETRY_CONTACT_PRIMARY",
+    "conclusion": "即使消除29DOF关节跟踪误差，free root仍快速失败；当前主因收敛到reference geometry/contact feasibility，而不是裸PD跟踪误差。",
+    "next_step": "停止oracle，不调PD/加warmup；回到contact-feasible reference生成合同。"
+  }
+}

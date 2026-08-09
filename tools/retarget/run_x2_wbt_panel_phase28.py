@@ -83,7 +83,7 @@ OFFLINE_METRIC_CONTRACT = {
     "tracked_keypoints": list(KEYPOINT_LABELS),
     "keypoint_error": "one Umeyama similarity fit per whole clip, then Euclidean residual over six named points",
     "source_contact_intent": "aligned source foot z <= min(left/right foot z p05) + 0.020 m",
-    "official_contact": "Phase7 active-sole signed distance <= official reset clearance + one sole-sphere radius",
+    "official_contact": "official x2.xml active-sole collision from mj_forward; equivalently active-sphere/floor signed distance <= 0",
     "contact_timing": "p95 nearest same-foot target transition error for each source-intended transition",
     "stance_speed": "official ankle-roll body XY speed during model-estimated contact",
     "stance_excursion": "maximum XY distance from the first frame of each contiguous model-estimated stance window",
@@ -446,6 +446,7 @@ def target_kinematics(entry: dict[str, Any], model: mujoco.MjModel) -> dict[str,
     data = mujoco.MjData(model)
     target = np.zeros((len(entry["dof"]), len(body_ids), 3), dtype=np.float64)
     distance = {side: np.zeros(len(entry["dof"]), dtype=np.float64) for side in feet}
+    official_collision_contact = {side: np.zeros(len(entry["dof"]), dtype=bool) for side in feet}
     severe_self = np.zeros(len(entry["dof"]), dtype=bool)
     fromto = np.zeros(6, dtype=np.float64)
     for frame in range(len(entry["dof"])):
@@ -455,11 +456,26 @@ def target_kinematics(entry: dict[str, Any], model: mujoco.MjModel) -> dict[str,
             distance[side][frame] = min(float(mujoco.mj_geomDistance(model, data, floor, geom, 1.0, fromto)) for geom in geoms)
         for contact_index in range(data.ncon):
             contact = data.contact[contact_index]
+            geom1, geom2 = int(contact.geom1), int(contact.geom2)
+            for side, geoms in feet.items():
+                if (geom1 == floor and geom2 in geoms) or (geom2 == floor and geom1 in geoms):
+                    official_collision_contact[side][frame] = True
             body1 = int(model.geom_bodyid[contact.geom1])
             body2 = int(model.geom_bodyid[contact.geom2])
             if body1 != 0 and body2 != 0 and contact.dist < -0.03:
                 severe_self[frame] = True
-    return {"target_points": target, "sole_distance": distance, "severe_self_collision_fraction": float(np.mean(severe_self))}
+    signed_distance_contact = {side: values <= 0.0 for side, values in distance.items()}
+    return {
+        "target_points": target,
+        "sole_distance": distance,
+        "official_collision_contact": official_collision_contact,
+        "signed_distance_contact": signed_distance_contact,
+        "collision_signed_distance_exact": all(
+            np.array_equal(official_collision_contact[side], signed_distance_contact[side])
+            for side in feet
+        ),
+        "severe_self_collision_fraction": float(np.mean(severe_self)),
+    }
 
 
 def semantic_gate(row: dict[str, Any], entry: dict[str, Any], target: np.ndarray) -> dict[str, Any]:
@@ -511,8 +527,14 @@ def audit_tier(row: dict[str, Any], entry: dict[str, Any], model: mujoco.MjModel
     keypoint_error = np.linalg.norm(source_fit-target, axis=2)
     source_ground = min(percentile(source_fit[:, 2, 2], 5), percentile(source_fit[:, 3, 2], 5))
     source_contact = {"left": source_fit[:, 2, 2] <= source_ground+SOURCE_CONTACT_HEIGHT_M, "right": source_fit[:, 3, 2] <= source_ground+SOURCE_CONTACT_HEIGHT_M}
-    contact_threshold = float(reset["reset_clearance_m"] + reset["sole_sphere_radius_m"])
-    target_contact = {side: values <= contact_threshold for side, values in kin["sole_distance"].items()}
+    # Phase7's reset-clearance + one-radius band is a Bronze ground tolerance,
+    # not an official collision/contact label.  Silver must use the actual
+    # official active-sole collision geometry (signed surface distance <= 0).
+    target_contact = {side: np.asarray(values, dtype=bool) for side, values in kin["official_collision_contact"].items()}
+    legacy_tolerance_threshold = float(reset["reset_clearance_m"] + reset["sole_sphere_radius_m"])
+    legacy_tolerance_contact = {
+        side: np.asarray(values) <= legacy_tolerance_threshold for side, values in kin["sole_distance"].items()
+    }
 
     model_names = [mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, i) for i in range(model.njnt)]
     ranges = {}
@@ -589,10 +611,22 @@ def audit_tier(row: dict[str, Any], entry: dict[str, Any], model: mujoco.MjModel
         "swing_clearance_m": clearance, "contact_timing_error_p95_s": timing,
         "unintended_flight_fraction": float(np.mean(~target_contact["left"] & ~target_contact["right"])),
         "root_horizontal_acceleration_p95_mps2": percentile(np.linalg.norm(root_acceleration, axis=1), 95),
-        "contact_provenance": "source height intent vs official-X2 FK/collision model estimate; not real GRF/COP/force",
+        "source_intent_contact_ratio": {side: float(np.mean(source_contact[side])) for side in ("left", "right")},
+        "official_geometry_contact_ratio": {side: float(np.mean(target_contact[side])) for side in ("left", "right")},
+        "intent_official_frame_agreement": {side: float(np.mean(source_contact[side] == target_contact[side])) for side in ("left", "right")},
+        "legacy_bronze_tolerance_contact_ratio_not_silver": {side: float(np.mean(legacy_tolerance_contact[side])) for side in ("left", "right")},
+        "official_signed_distance_threshold_m": 0.0,
+        "legacy_bronze_tolerance_threshold_m": legacy_tolerance_threshold,
+        "collision_signed_distance_exact": bool(kin["collision_signed_distance_exact"]),
+        "contact_provenance": "source height intent reported separately from official x2.xml 12-spheres-per-foot collision; model estimate, not real GRF/COP/force",
     }
     s = gates["silver_contact"]["metrics"]
     is_static_exception = row["category"] in ("standing", "upper_only")
+    event_consistent = bool(intended) and all(
+        len(transitions(target_contact[side])) >= s["contact_transitions_per_intended_foot"]["min"]
+        and timing[side] <= s["contact_timing_error_s"]["max"]
+        for side in intended
+    )
     silver_checks = {
         "bronze_prerequisite": bronze_pass,
         "dynamic_not_static_exception": not is_static_exception,
@@ -604,6 +638,8 @@ def audit_tier(row: dict[str, Any], entry: dict[str, Any], model: mujoco.MjModel
         "clearance_p50_each_intended": bool(intended) and all(clearance[side]["p50"] >= s["swing_clearance_p50_m_each_intended_foot"]["min"] for side in intended),
         "clearance_p95_each_intended": bool(intended) and all(clearance[side]["p95"] >= s["swing_clearance_p95_m_each_intended_foot"]["min"] for side in intended),
         "timing_each_intended": bool(intended) and all(timing[side] <= s["contact_timing_error_s"]["max"] for side in intended),
+        "intent_official_consistent_under_existing_event_gates": event_consistent,
+        "official_collision_matches_signed_distance": bool(kin["collision_signed_distance_exact"]),
         "flight": silver_metrics["unintended_flight_fraction"] <= s["unintended_flight_fraction"]["max"],
         "root_acceleration": silver_metrics["root_horizontal_acceleration_p95_mps2"] <= s["root_horizontal_acceleration_p95_mps2"]["max"],
     }

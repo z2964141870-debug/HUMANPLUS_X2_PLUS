@@ -17,12 +17,12 @@
   "historical_source_reproducibility": {
     "runner_enforces_capture_time_frozen_hashes": true,
     "historical_adapter_sha256": "e682da8ca7c18d1a55ac1a65bc9974ed490c24a12704df83ad7e302ac1c5dae3",
-    "current_adapter_sha256": "6b7c6c353727c75877938372ef2240b8e87e45ad967abb361aacce2e5f66f9d9",
+    "current_adapter_sha256": "a02faa192b2fed9c5cac502019d724a922eaa9261bb1d699a5adafa7ac673cfa",
     "current_adapter_matches_historical": false,
     "historical_handoff_sha256": "9277f405b74c455ac525510001f2e89860d9b525f89fd51cffe0aaba62cf4644",
     "current_handoff_sha256": "cd4df30310205a0001f52d1b5e44aae63ccd5ed6f5bd13367a59e09afe2c1a32",
     "current_handoff_matches_historical": false,
-    "boundary": "Phase13 through Phase19 evolved the live adapter/handoff sources; Phase19 added a default-off recorder-v2 only. Phase11 results remain bound to the historical digests in frozen_sha256 and its runner; the current sources must not be substituted or described as exact reproductions."
+    "boundary": "Phase13 through Phase23 evolved the live adapter/handoff sources; Phase19 added a default-off recorder-v2 and Phase23 added a default-off support-gated handoff. Phase11 results remain bound to the historical digests in frozen_sha256 and its runner; the current sources must not be substituted or described as exact reproductions."
   },
   "pure_tests": {
     "passed": 20,

@@ -61,6 +61,7 @@ from official_x2.skill_handoff_contract import (
     should_emergency_latch,
     stop_policy_slot,
 )
+from official_x2.handoff_support_gate import handoff_gate_decision, load_contract as load_handoff_gate_contract
 
 
 ISAAC_JOINTS = (
@@ -387,6 +388,16 @@ class Stage208OfficialAdapter(Node):
         self.last_move_targets: dict[str, float] | None = None
         self.stop_hold_targets: dict[str, float] | None = None
         self.stop_hold_latch_s: float | None = None
+        self.curriculum_handoff_gate_contract = (
+            None
+            if args.curriculum_recovery_handoff_gate_contract is None
+            else load_handoff_gate_contract(
+                args.curriculum_recovery_handoff_gate_contract,
+                args.curriculum_recovery_handoff_gate_contract_sha256,
+            )
+        )
+        self.curriculum_handoff_gate_last: dict[str, object] | None = None
+        self.curriculum_handoff_gate_wait_ticks = 0
         self.stop_emergency_latch = False
         self.heading_target_rad: float | None = None
         self.heading_origin_xy: tuple[float, float] | None = None
@@ -1658,6 +1669,14 @@ class Stage208OfficialAdapter(Node):
                     if unblended_policy_action is None
                     else unblended_policy_action.tolist()
                 ),
+                "curriculum_handoff_gate": (
+                    None
+                    if self.curriculum_handoff_gate_last is None
+                    else dict(self.curriculum_handoff_gate_last)
+                ),
+                "curriculum_handoff_gate_wait_s": (
+                    self.curriculum_handoff_gate_wait_ticks * 0.02
+                ),
                 "upper_target_rad": self.upper_last_target.tolist(),
                 "upper_actual_rad": [float(self.joints[name][0]) for name in ARM_JOINTS],
             }
@@ -1915,7 +1934,39 @@ class Stage208OfficialAdapter(Node):
                         transition_s=transition,
                         recovery_model=self.args.recovery_model,
                     )
-                    if self.stop_hold_latch_s is None:
+                    gate_waiting = False
+                    if (
+                        self.curriculum_handoff_gate_contract is not None
+                        and self.stop_hold_latch_s is None
+                    ):
+                        gate_phase = self._phase_features(
+                            self.args.move_seconds + stop_elapsed,
+                            moving=True,
+                        )
+                        gate = handoff_gate_decision(
+                            self.previous_actions["main"],
+                            gate_phase,
+                            self.curriculum_handoff_gate_contract,
+                        )
+                        gate["stop_elapsed_s"] = float(stop_elapsed)
+                        gate["wait_s"] = float(self.curriculum_handoff_gate_wait_ticks * 0.02)
+                        self.curriculum_handoff_gate_last = gate
+                        if not gate["allow_handoff"]:
+                            # Continue the exact Stage306 zero-command brake
+                            # path.  Do not infer recovery and never force a
+                            # handoff at the end of the stop horizon.
+                            targets, obs, action = self._policy_targets(
+                                self.args.move_seconds + stop_elapsed,
+                                0.0,
+                                future_command_vx=0.0,
+                                force_moving=True,
+                                template_multiplier=0.0,
+                                policy_slot="main",
+                            )
+                            self.stop_hold_targets = dict(targets)
+                            self.curriculum_handoff_gate_wait_ticks += 1
+                            gate_waiting = True
+                    if not gate_waiting and self.stop_hold_latch_s is None:
                         # Carry the action that was actually executed at the
                         # end of matched deceleration into the exact policy
                         # slot that owns post-transition recovery.
@@ -1926,12 +1977,18 @@ class Stage208OfficialAdapter(Node):
                             "main"
                         ].copy()
                         self.stop_hold_latch_s = stop_elapsed
-                    targets, obs, action = self._policy_targets(
-                        0.0,
-                        0.0,
-                        policy_slot=stop_slot,
-                    )
-                    if self.args.curriculum_recovery_handoff_blend_seconds > 0.0:
+                        if self.curriculum_handoff_gate_last is not None:
+                            self.curriculum_handoff_gate_last["latched"] = True
+                    if not gate_waiting:
+                        targets, obs, action = self._policy_targets(
+                            0.0,
+                            0.0,
+                            policy_slot=stop_slot,
+                        )
+                    if (
+                        not gate_waiting
+                        and self.args.curriculum_recovery_handoff_blend_seconds > 0.0
+                    ):
                         if self.stop_hold_targets is None or self.stop_hold_latch_s is None:
                             raise RuntimeError("curriculum recovery blend lacks a pre-handoff target")
                         unblended_policy_action = action.copy()
@@ -2137,6 +2194,24 @@ class Stage208OfficialAdapter(Node):
             "curriculum_recovery_handoff_blend_seconds": (
                 self.args.curriculum_recovery_handoff_blend_seconds
             ),
+            "curriculum_recovery_handoff_gate_enabled": (
+                self.curriculum_handoff_gate_contract is not None
+            ),
+            "curriculum_recovery_handoff_gate_contract": (
+                self.args.curriculum_recovery_handoff_gate_contract
+            ),
+            "curriculum_recovery_handoff_gate_contract_sha256": (
+                self.args.curriculum_recovery_handoff_gate_contract_sha256
+            ),
+            "curriculum_recovery_handoff_gate_wait_s": (
+                self.curriculum_handoff_gate_wait_ticks * 0.02
+            ),
+            "curriculum_recovery_handoff_gate_handoff_s": self.stop_hold_latch_s,
+            "curriculum_recovery_handoff_gate_timed_out": bool(
+                self.curriculum_handoff_gate_contract is not None
+                and self.stop_hold_latch_s is None
+            ),
+            "curriculum_recovery_handoff_gate_last": self.curriculum_handoff_gate_last,
             "stop_transition_seconds": self.args.stop_transition_seconds,
             "stop_intent_decelerate_seconds": self.args.stop_intent_decelerate_seconds,
             "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
@@ -2864,6 +2939,17 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--curriculum-recovery-handoff-gate-contract",
+        help=(
+            "Default-off Phase23 previous-action/generator-support gate. Only "
+            "curriculum_then_policy may use it; timeout never forces handoff."
+        ),
+    )
+    parser.add_argument(
+        "--curriculum-recovery-handoff-gate-contract-sha256",
+        help="Required frozen file SHA256 when the Phase23 gate is enabled.",
+    )
+    parser.add_argument(
         "--stop-intent-decelerate-seconds",
         type=float,
         default=2.0,
@@ -2927,6 +3013,17 @@ def parse_args() -> argparse.Namespace:
         parser.error("--stationary-blend must be in [0, 1]")
     if args.curriculum_recovery_handoff_blend_seconds < 0.0:
         parser.error("--curriculum-recovery-handoff-blend-seconds must be non-negative")
+    if args.curriculum_recovery_handoff_gate_contract is not None:
+        if args.curriculum_recovery_handoff_gate_contract_sha256 is None:
+            parser.error("handoff gate requires its frozen --sha256")
+        if args.stop_controller != "curriculum_then_policy":
+            parser.error("handoff gate requires --stop-controller curriculum_then_policy")
+        if args.recovery_model is None:
+            parser.error("handoff gate requires --recovery-model")
+        if args.clock_mode != "step":
+            parser.error("handoff gate requires --clock-mode step")
+    elif args.curriculum_recovery_handoff_gate_contract_sha256 is not None:
+        parser.error("handoff gate --sha256 requires a contract path")
     if not 0.0 <= args.post_handoff_snapshot_horizon_seconds <= 1.5:
         parser.error("--post-handoff-snapshot-horizon-seconds must be in [0, 1.5]")
     if args.post_handoff_snapshot_output is not None:
