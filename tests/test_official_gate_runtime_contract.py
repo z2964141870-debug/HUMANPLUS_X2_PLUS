@@ -36,6 +36,9 @@ def test_official_gate_uses_init_and_sufficient_timeout() -> None:
     assert "docker run --rm --init --name" in runner
     assert 'ROS_DOMAIN_BASE="${ROS_DOMAIN_BASE:-190}"' in panel
     assert 'ROS_DOMAIN_ID="$((ROS_DOMAIN_BASE + repeat))"' in panel
+    assert "ROS_DOMAIN_BASE + REPEATS must stay within CycloneDDS domain 0..232" in panel
+    assert 'HEADING_GAIN="${HEADING_GAIN:-0.0}"' in panel
+    assert '"heading_gain": heading_gain' in panel
 
 
 def test_transition_event_smoke_budget_is_explicit_and_positive() -> None:
@@ -46,3 +49,11 @@ def test_transition_event_smoke_budget_is_explicit_and_positive() -> None:
     assert 'UPDATES="${UPDATES:-1}"' in runner
     assert 'UPDATES must be a positive integer' in runner
     assert '--max_iterations "$UPDATES"' in runner
+
+
+def test_matched_event_preserves_episode_heading_across_stand_to_move() -> None:
+    adapter = (
+        REPO_ROOT / "tools/official_x2/stage208_official_mujoco_adapter.py"
+    ).read_text(encoding="utf-8")
+
+    assert "if self.args.move_accelerate_seconds <= 0.0 or self.heading_target_rad is None:" in adapter

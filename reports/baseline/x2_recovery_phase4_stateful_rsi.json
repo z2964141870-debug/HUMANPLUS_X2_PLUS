@@ -1,0 +1,150 @@
+{
+  "stage": "x2_recovery_phase4_stateful_rsi",
+  "date": "2026-08-09",
+  "status": "logical_snapshot_ready_physical_equivalence_failed_full_event_continuation_blocked_training_locked",
+  "hypothesis": "A Stage335 physical reset is not a valid recovery RSI unless episode clock, prior raw/effective action, gait phase, velocity-command event state, and the low-command moving latch are restored after Isaac Lab resets its managers.",
+  "intervention": {
+    "training_updates": 0,
+    "implementation": [
+      "post-manager-reset StatefulRecoveryRLEnv finalizer",
+      "strict Stage335-to-official-trace sidecar join",
+      "episode clock and four-value gait phase reconstruction",
+      "raw policy action and prior issued action restoration",
+      "velocity command, standing mask, event timer, and bounded force-moving latch restoration"
+    ],
+    "files": [
+      "tools/official_x2/recovery_reset_curriculum.py",
+      "tools/official_x2/stateful_recovery_isaac.py",
+      "scripts/probe_x2_stateful_recovery_reset.py",
+      "tests/test_recovery_reset_curriculum.py"
+    ]
+  },
+  "control": {
+    "recovery_fraction": 0.0,
+    "expected_behavior": "strict no-op: no pending stateful payload and no modified clock/action/command buffers",
+    "test_passed": true
+  },
+  "immutable_inputs": {
+    "recovery_npz": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage335_stage306_stiff_fixed_stop_recovery_states.npz",
+      "sha256": "4d8ce06b6e8dd9b43363dadedb781e9feb75f72ac092b475de2a1e2772545013",
+      "state_count": 90,
+      "eventual_pass_count": 63,
+      "eventual_fail_count": 27,
+      "source_counts": {
+        "0": 21,
+        "1": 8,
+        "2": 21,
+        "3": 21,
+        "4": 19
+      }
+    },
+    "source_report": {
+      "path": "reports/official_x2/stage335_stop_recovery_state_extraction.json",
+      "sha256": "b4755acd98ecfa72717de7057d5ab9b23c54585dd2acd40e322dde55afc8f926",
+      "source_trace_count": 5,
+      "official_full_gate_pass_count": 3,
+      "official_full_gate_total": 5,
+      "domain": "aimdk_x2_v1_official_mujoco",
+      "pd": "official_kp_ankle x1.2",
+      "control_period_s": 0.02,
+      "observation_contract": "Stage208 deterministic 93D",
+      "action_contract": "15D lower/waist raw residual plus gait template, clipped before execution"
+    }
+  },
+  "contract_audit": {
+    "all_90_rows_hash_joined_to_source": true,
+    "max_source_observation_crosscheck_error": 0.0,
+    "moving_phase_count": 35,
+    "stationary_phase_count": 55,
+    "low_command_forced_moving_count": 12,
+    "previous_issued_action_missing_count": 0,
+    "gait_phase_reconstructable_from_clock": true,
+    "important_finding": "Twelve states have command magnitude <= 0.1 while the source gait phase is still moving; command threshold alone would silently change their action semantics."
+  },
+  "tests": {
+    "pure_unit_command": "PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH=tools conda run -n x2-sonic-isaaclab python -m pytest -q -p no:cacheprovider tests/test_recovery_reset_curriculum.py tests/test_stop_recovery_states.py",
+    "pure_unit_result": "9 passed in 1.03s",
+    "isaac_zero_update_probe": {
+      "output": "/tmp/x2_recovery_phase4_stateful_probe_official_limits_v6.json",
+      "num_envs": 16,
+      "training_updates": 0,
+      "selected_env_count": 16,
+      "policy_observation_shape": [16, 93],
+      "action_dim": 15,
+      "max_errors": {
+        "joint_pos_rad": 0.0,
+        "joint_vel_radps": 1.6970096826553345,
+        "root_position_m": 0.0,
+        "root_quaternion_one_minus_abs_dot": 1.7881393432617188e-7,
+        "root_linear_velocity_mps": 0.0,
+        "root_angular_velocity_radps": 0.0,
+        "policy_base_lin_vel": 2.9802322387695312e-8,
+        "policy_base_ang_vel": 5.960464477539063e-8,
+        "policy_projected_gravity": 5.960464477539063e-8,
+        "episode_clock_steps": 0,
+        "policy_command": 0.0,
+        "policy_joint_pos_vs_raw_source": 0.00012790411710739136,
+        "policy_joint_vel_vs_raw_source": 1.6970096826553345,
+        "policy_previous_action": 0.0,
+        "policy_gait_phase": 6.439054800466693e-7,
+        "manager_action": 0.0,
+        "manager_prev_action": 0.0,
+        "term_raw_action": 0.0,
+        "term_effective_action": 0.0
+      },
+      "source_to_isaac_projection": {
+        "all_state_count": 90,
+        "generic_soft_limit_factor_0p9_changed_state_count": 90,
+        "generic_soft_limit_factor_0p9_max_change_rad": 0.1529281735420227,
+        "official_limit_factor_1p0_changed_state_count": 6,
+        "official_limit_factor_1p0_max_change_rad": 0.00022811070084571838,
+        "joint_velocity_static_limit_changed_state_count": 0,
+        "runtime_joint_velocity_max_error_radps": 1.6970096826553345,
+        "remaining_affected_position_joints": {
+          "left_shoulder_roll_joint": 6
+        },
+        "important_finding": "The generic 0.9 contraction excludes the official/default zero pose for X2's asymmetric shoulder-roll limits. Matching the official hard limits removes the large 90/90 projection but does not resolve runtime joint-velocity mismatch."
+      },
+      "finite": true,
+      "one_zero_action_step_survivors": 16,
+      "one_zero_action_step_total": 16,
+      "logical_and_root_contract_passed": true,
+      "full_source_snapshot_equivalence_passed": false,
+      "passed": false
+    },
+    "official_matched_event_observational_gate": {
+      "training_updates": 0,
+      "source": "the five immutable Stage326 official AimDK v1.0 matched-event traces from which Stage335 was extracted",
+      "source_contract_valid_count": 5,
+      "source_contract_total": 5,
+      "full_gate_pass_count": 3,
+      "full_gate_total": 5,
+      "what_it_proves": "The selected states and eventual-pass labels have exact official matched-event provenance under one common 50 Hz/PD/observation/action contract.",
+      "what_it_does_not_prove": "It does not prove that resetting a fresh official MuJoCo process into one selected row reproduces the recorded continuation."
+    }
+  },
+  "result": {
+    "logical_snapshot_contract_pass": true,
+    "full_physical_source_snapshot_equivalence_pass": false,
+    "fraction_zero_noop_pass": true,
+    "official_source_provenance_pass": true,
+    "fresh_official_mid_event_reset_pass": null,
+    "fresh_official_mid_event_reset_status": "blocked",
+    "ppo_authorized": false,
+    "long_training_authorized": false
+  },
+  "blocker": {
+    "cause": "After matching official hard limits, 6/90 source states still require a small left-shoulder-roll projection (max 0.000228 rad), reset-return joint velocities differ from source by up to 1.69701 rad/s, and the traces also omit the complete future brake feedback schedule plus lateral-supervisor/controller internal state.",
+    "why_a_normal_full_episode_rerun_is_not_a_substitute": "It starts from the ordinary initial state and therefore tests frozen backend stochasticity, not the stateful reset injection contract.",
+    "required_to_unblock": [
+      "retain the official hard-limit contract and handle the remaining 6 small shoulder-roll violations",
+      "locate and eliminate the reset-return joint-velocity mismatch",
+      "serialize the official controller/supervisor event state at every selected row, including brake/latch/slew state",
+      "add an isolated official runner that restores full qpos/qvel plus controller state before continuing",
+      "compare a source suffix and a restored suffix under deterministic matched control"
+    ]
+  },
+  "conclusion": "The logical stateful reset implementation is valid and strictly isolated. Matching official hard limits fixes the dominant shoulder-roll position projection, but the strengthened physical audit still rejects source-snapshot equivalence because joint velocities are not restored and full matched-event continuation remains unavailable. Training stays locked.",
+  "next": "First resolve the remaining small position violations and joint-velocity reset semantics; then extend data capture and the official runner for deterministic suffix-replay equivalence."
+}

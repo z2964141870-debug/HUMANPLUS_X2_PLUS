@@ -1,4 +1,39 @@
-from official_x2.skill_handoff_contract import should_emergency_latch, stop_policy_slot
+import pytest
+
+from official_x2.skill_handoff_contract import (
+    matched_event_speed,
+    should_emergency_latch,
+    stop_policy_slot,
+)
+
+
+def test_matched_event_speed_hits_training_boundaries() -> None:
+    common = dict(
+        cruise_speed_mps=0.3,
+        accelerate_s=1.0,
+        cruise_s=4.2,
+        decelerate_s=2.0,
+    )
+    assert matched_event_speed(elapsed_s=0.0, **common) == 0.0
+    assert matched_event_speed(elapsed_s=0.5, **common) == pytest.approx(0.15)
+    assert matched_event_speed(elapsed_s=1.0, **common) == pytest.approx(0.3)
+    assert matched_event_speed(elapsed_s=5.2, **common) == pytest.approx(0.3)
+    assert matched_event_speed(elapsed_s=6.2, **common) == pytest.approx(0.15)
+    assert matched_event_speed(elapsed_s=7.2, **common) == 0.0
+    assert matched_event_speed(elapsed_s=8.0, **common) == 0.0
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"accelerate_s": 0.0, "cruise_s": 1.0, "decelerate_s": 1.0},
+        {"accelerate_s": 1.0, "cruise_s": -0.1, "decelerate_s": 1.0},
+        {"accelerate_s": 1.0, "cruise_s": 1.0, "decelerate_s": 0.0},
+    ],
+)
+def test_matched_event_speed_rejects_invalid_durations(kwargs) -> None:
+    with pytest.raises(ValueError):
+        matched_event_speed(elapsed_s=0.0, cruise_speed_mps=0.3, **kwargs)
 
 
 def test_stop_policy_slot_separates_nominal_stand_and_recovery() -> None:

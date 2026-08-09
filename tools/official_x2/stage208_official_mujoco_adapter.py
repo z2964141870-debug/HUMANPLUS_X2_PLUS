@@ -23,7 +23,11 @@ from rclpy.node import Node
 from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Imu
 
-from official_x2.skill_handoff_contract import should_emergency_latch, stop_policy_slot
+from official_x2.skill_handoff_contract import (
+    matched_event_speed,
+    should_emergency_latch,
+    stop_policy_slot,
+)
 
 
 ISAAC_JOINTS = (
@@ -1100,10 +1104,30 @@ class Stage208OfficialAdapter(Node):
 
     def _curriculum_stop_speed(self, stop_elapsed: float) -> float:
         """Match the C1 positive-to-zero schedule used by Stage306 training."""
+        if self.args.move_accelerate_seconds > 0.0:
+            return matched_event_speed(
+                elapsed_s=self.args.move_seconds + stop_elapsed,
+                cruise_speed_mps=self.args.vx,
+                accelerate_s=self.args.move_accelerate_seconds,
+                cruise_s=self.args.move_seconds - self.args.move_accelerate_seconds,
+                decelerate_s=self.args.stop_intent_decelerate_seconds,
+            )
         duration = max(self.args.stop_intent_decelerate_seconds, 1.0e-6)
         phase = float(np.clip(stop_elapsed / duration, 0.0, 1.0))
         smooth = phase * phase * (3.0 - 2.0 * phase)
         return float(self.args.vx * (1.0 - smooth))
+
+    def _curriculum_move_speed(self, move_elapsed: float) -> float:
+        """Return the matched start ramp, or the legacy step command."""
+        if self.args.move_accelerate_seconds <= 0.0:
+            return float(self.args.vx)
+        return matched_event_speed(
+            elapsed_s=move_elapsed,
+            cruise_speed_mps=self.args.vx,
+            accelerate_s=self.args.move_accelerate_seconds,
+            cruise_s=self.args.move_seconds - self.args.move_accelerate_seconds,
+            decelerate_s=self.args.stop_intent_decelerate_seconds,
+        )
 
     def _replay_target(self, elapsed: float) -> dict[str, float]:
         assert self.replay_targets is not None
@@ -1220,11 +1244,16 @@ class Stage208OfficialAdapter(Node):
             # The first locomotion target must be filtered from the action
             # actually being executed by the stand actor, not from zeros.
             self.issued_actions["main"] = self.issued_actions["stationary"].copy()
-            self.heading_target_rad = yaw_from_quaternion(self.odom)
-            self.heading_origin_xy = (
-                float(self.odom.pose.pose.position.x),
-                float(self.odom.pose.pose.position.y),
-            )
+            # The matched transition curriculum keeps one heading target for
+            # the whole episode.  Do not silently bless yaw accumulated by
+            # the stand actor as the new desired heading at handoff.  Legacy
+            # step-command evaluations retain their move-start rebase.
+            if self.args.move_accelerate_seconds <= 0.0 or self.heading_target_rad is None:
+                self.heading_target_rad = yaw_from_quaternion(self.odom)
+                self.heading_origin_xy = (
+                    float(self.odom.pose.pose.position.x),
+                    float(self.odom.pose.pose.position.y),
+                )
             self.move_heading_initialized = True
         if move_elapsed >= self.args.move_seconds:
             stop_elapsed = move_elapsed - self.args.move_seconds
@@ -1441,11 +1470,22 @@ class Stage208OfficialAdapter(Node):
             self._publish(targets, upper_elapsed=move_elapsed)
             self._record("move", move_elapsed)
         else:
-            policy_vx = math.copysign(
-                max(abs(self.args.vx), self.args.policy_vx_floor), self.args.vx
-            )
+            scheduled_vx = self._curriculum_move_speed(move_elapsed)
+            policy_vx = scheduled_vx
+            if abs(scheduled_vx) > 0.0 and self.args.policy_vx_floor > 0.0:
+                policy_vx = math.copysign(
+                    max(abs(scheduled_vx), self.args.policy_vx_floor), scheduled_vx
+                )
             future_policy_vx = None
-            if self.args.future_stop_preview_seconds > 0.0:
+            if self.args.move_accelerate_seconds > 0.0:
+                future_policy_vx = matched_event_speed(
+                    elapsed_s=move_elapsed + 1.0,
+                    cruise_speed_mps=self.args.vx,
+                    accelerate_s=self.args.move_accelerate_seconds,
+                    cruise_s=self.args.move_seconds - self.args.move_accelerate_seconds,
+                    decelerate_s=self.args.stop_intent_decelerate_seconds,
+                )
+            elif self.args.future_stop_preview_seconds > 0.0:
                 time_to_stop = self.args.move_seconds - move_elapsed
                 fraction = float(
                     np.clip(
@@ -1568,6 +1608,7 @@ class Stage208OfficialAdapter(Node):
             "prepare_seconds": self.args.prepare_seconds,
             "stand_seconds": self.args.stand_seconds,
             "move_seconds": self.args.move_seconds,
+            "move_accelerate_seconds": self.args.move_accelerate_seconds,
             "move_template_multiplier": self.args.move_template_multiplier,
             "stop_seconds": self.args.stop_seconds,
             "control_steps": len(move),
@@ -1915,6 +1956,7 @@ def parse_args() -> argparse.Namespace:
         help="Blend fraction of the stationary actor after handoff (0=main actor, 1=stationary actor).",
     )
     parser.add_argument("--move-seconds", type=float, default=8.0)
+    parser.add_argument("--move-accelerate-seconds", type=float, default=0.0)
     parser.add_argument(
         "--move-template-multiplier",
         type=float,
@@ -2122,6 +2164,10 @@ def parse_args() -> argparse.Namespace:
         parser.error("--action-bias-ramp-seconds must be non-negative")
     if args.future_stop_preview_seconds < 0.0:
         parser.error("--future-stop-preview-seconds must be non-negative")
+    if args.move_accelerate_seconds < 0.0:
+        parser.error("--move-accelerate-seconds must be non-negative")
+    if args.move_accelerate_seconds >= args.move_seconds and args.move_accelerate_seconds > 0.0:
+        parser.error("--move-accelerate-seconds must be smaller than --move-seconds")
     if args.turn_feedback_fade_seconds < 0.0:
         parser.error("--turn-feedback-fade-seconds must be non-negative")
     if not 0.0 <= args.state_prediction_seconds <= 0.02:

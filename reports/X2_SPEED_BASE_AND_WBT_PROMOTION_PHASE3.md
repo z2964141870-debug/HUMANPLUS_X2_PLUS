@@ -38,3 +38,13 @@ BASE 将随机时钟控制的 `1/5` 提升到相位一致单更新的 `4/5`，�
 - stiff-fixed：尚未达到 5/5；stiff-fast 和完整矩阵不解锁。
 - WBT Silver/Gold：0；忠实 Any2Any PPO 不解锁。
 - 真机：未发送命令、未升级固件/SDK。
+
+## Phase4 方法学更正（不改写 Phase3 原始结果）
+
+后续审计确认，Phase3 的 `1/5→4/5` 使用的是同一个**旧部署门**，因此它仍能证明
+aligned-u1 相对 random-clock control 的提升；但这个门并没有复现训练事件：旧门是
+立即给 0.3 m/s、行走 4 s、再由 brake supervisor 停车，而训练是 1 s 加速、
+4.2 s 巡航、2 s 减速。把官方评估改成真实 matched event 后，aligned-u1 和冻结
+Stage306 分别为 0/5 与 0/5。故 Phase3 的 4/5 不能解释成“训练事件已经在官方域
+通过”，长训锁定决定不变。完整证据见
+[Phase4 matched-event audit](X2_MATCHED_EVENT_CONTRACT_PHASE4.md)。

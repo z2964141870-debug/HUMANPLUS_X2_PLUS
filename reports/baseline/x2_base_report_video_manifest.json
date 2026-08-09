@@ -1,0 +1,155 @@
+{
+  "stage": "x2_base_report_video_manifest",
+  "date": "2026-08-09",
+  "scope": "frozen BASE locomotion capability and matched-event limitation visualization only",
+  "training_updates": 0,
+  "real_robot_used": false,
+  "domain": "aimdk_x2_v1_official_mujoco",
+  "common": {
+    "control_frequency_hz": 50,
+    "control_period_s": 0.02,
+    "viewer_capture_fps": 30,
+    "scene": "official AimDK v1.0 X2 MuJoCo scene/model with report camera",
+    "action_contract": "15D normalized lower/waist position-PD residual plus gait template; not torque and not full-31DoF",
+    "upper_body": "fixed",
+    "temporal_editing": "viewer loading frames trimmed; MP4 physical playback speed unchanged; no motion frames synthesized",
+    "visual_inspection_claim": "none; the artifacts are provided for human inspection"
+  },
+  "hypothesis": "A report must show both the verified nominal capability envelope and the strict stiff matched-event failure, instead of presenting only a favorable clip.",
+  "intervention": "Reuse three immutable Stage250 full-gate recordings for capability and record one fresh frozen Stage350 stiff limitation case; add only command/contract labels.",
+  "control": "Every label is fail-closed against the corresponding official JSON full_gate_pass field before video composition.",
+  "capability": {
+    "role": "nominal verified envelope",
+    "checkpoint": {
+      "name": "Stage219 model_2600.pt",
+      "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb"
+    },
+    "onnx": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx",
+      "sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9"
+    },
+    "stationary_onnx": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+      "sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565"
+    },
+    "pd": {
+      "profile": "official_kp_ankle",
+      "kp_multiplier": 1.0,
+      "kd_multiplier": 1.0
+    },
+    "cases": [
+      {
+        "name": "straight",
+        "command": {"vx_mps": 0.3, "wz_radps": 0.0},
+        "source": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_straight.json",
+        "stand_gate_pass": true,
+        "startup_gate_pass": true,
+        "move_gate_pass": true,
+        "stop_gate_pass": true,
+        "full_gate_pass": true,
+        "control_wall_dt_s_p50": 0.019994743997813202
+      },
+      {
+        "name": "turn_right",
+        "command": {"vx_mps": 0.3, "wz_radps": 0.15},
+        "source": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_turn_right.json",
+        "stand_gate_pass": true,
+        "startup_gate_pass": true,
+        "move_gate_pass": true,
+        "stop_gate_pass": true,
+        "full_gate_pass": true,
+        "control_wall_dt_s_p50": 0.01999734299897682
+      },
+      {
+        "name": "turn_left",
+        "command": {"vx_mps": 0.3, "wz_radps": -0.09},
+        "source": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_turn_left.json",
+        "stand_gate_pass": true,
+        "startup_gate_pass": true,
+        "move_gate_pass": true,
+        "stop_gate_pass": true,
+        "full_gate_pass": true,
+        "control_wall_dt_s_p50": 0.019999634998384863
+      }
+    ],
+    "mp4": {
+      "path": "videos/official_x2/report/x2_base_capability_official_stage250_final.mp4",
+      "sha256": "6eab35853effec1828348a0fedf3b1daf3770d2d0799804e9fd7e0dca01dd474",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration_s": 41.6,
+      "size_bytes": 1231726,
+      "real_time": true,
+      "downsampled": false
+    },
+    "gif_preview": {
+      "path": "videos/official_x2/report/x2_base_capability_official_stage250_final.gif",
+      "sha256": "2b6b68d6a86f92ec8cd97a4f3d0456fe40b7a961ddca1fce126249c2a06504ae",
+      "width": 640,
+      "height": 360,
+      "fps": 6,
+      "duration_s": 41.67,
+      "size_bytes": 1092644,
+      "real_time": true,
+      "downsampled": true
+    }
+  },
+  "limitation": {
+    "role": "strict matched-event stiff failure; failure end retained",
+    "checkpoint": {
+      "name": "Stage306 model_2652.pt",
+      "sha256": "fa2cce83d3ec58c41d16f31bb5a627bdeeb80ea8dba86238301ba10a998a5365"
+    },
+    "onnx": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage306_s2652_transition_head_actor.onnx",
+      "sha256": "da95011f7c7153bc538ab2d31948ddaee2e8916429d0ebca961ce0dc7532bc4c"
+    },
+    "stationary_and_recovery_onnx": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+      "sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565"
+    },
+    "pd": {
+      "profile": "official_kp_ankle",
+      "kp_multiplier": 1.2,
+      "kd_multiplier": 1.2
+    },
+    "command": {"vx_mps": 0.3, "wz_radps": 0.0},
+    "event": "stand -> accelerated start -> 5.2 s straight -> curriculum_then_policy stop",
+    "official_result": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage354_report_limitation_stage350_stiff_fixed.json",
+      "sha256": "5c6bc02905eadf06434c530088572b4a6ac994b0cf42073a3ee5656751cd9118",
+      "stand_gate_pass": true,
+      "startup_gate_pass": false,
+      "move_gate_pass": false,
+      "stop_gate_pass": false,
+      "full_gate_pass": false,
+      "move_lateral_displacement_m": 0.5498855191069923,
+      "move_heading_max_deviation_rad": 0.7054583255620259,
+      "stop_root_z_min_m": 0.13441974903869067,
+      "stop_root_tilt_max_rad": 1.5369637716080473,
+      "control_wall_dt_s_p50": 0.019999185999040492
+    },
+    "raw_mp4": {
+      "path": "videos/official_x2/report/x2_base_limitation_stage350_stiff_fixed_raw.mp4",
+      "sha256": "37fe439ea3b95cbdbf922dd95708086829cb8f4dfe2e415b831bdb69560a0654",
+      "duration_s": 22.7,
+      "note": "unaltered X11 capture including viewer loading and complete failure"
+    },
+    "report_mp4": {
+      "path": "videos/official_x2/report/x2_base_limitation_official_stage350_stiff_fixed_final.mp4",
+      "sha256": "bf07bba65384fc0aac19eea5cb0de0c266597c412a794dec3dfafa734ff2c904",
+      "width": 1280,
+      "height": 720,
+      "fps": 30,
+      "duration_s": 14.4,
+      "size_bytes": 416561,
+      "real_time": true,
+      "downsampled": false,
+      "trim": "viewer loading only; visible physical sequence and fallen end retained"
+    }
+  },
+  "result": "capability and limitation artifacts generated and labels crosschecked against official gate JSON",
+  "conclusion": "The nominal Stage219/Stage250 envelope can be shown honestly alongside the unresolved Stage350 stiff fixed-upper failure; neither video implies WBT or stiff-domain promotion.",
+  "next": "Human visual review only; no automatic visual-quality conclusion was made."
+}

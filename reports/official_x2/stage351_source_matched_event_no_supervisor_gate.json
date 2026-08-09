@@ -1,0 +1,49 @@
+{
+  "stage": "stage351_source_matched_event_no_supervisor_gate",
+  "hypothesis": "Five additional matched PPO updates turn the 4/5 Stage337 f010 signal into a strict 5/5 official stiff-fixed gate.",
+  "single_variable": "stand/recovery checkpoint Stage337 model_155 -> Stage339 model_160",
+  "matched_contract": {
+    "moving_model": "stage306_s2652_transition_head_actor.onnx",
+    "stationary_model": "stand_backend_scratch_i150_actor.onnx",
+    "recovery_model": "stand_backend_scratch_i150_actor.onnx",
+    "pd": "official_kp_ankle x1.2",
+    "upper": "fixed",
+    "command_vx_mps": 0.3,
+    "move_seconds": 5.2,
+    "move_accelerate_seconds": 1.0,
+    "stop_controller": "curriculum_then_policy",
+    "stop_transition_seconds": 2.0,
+    "stop_intent_decelerate_seconds": 2.0,
+    "action_bias_mode": "none",
+    "action_bias": 0.0,
+    "ankle_roll_common_bias": 0.0,
+    "lateral_position_gain": 0.0,
+    "lateral_velocity_gain": 0.0,
+    "heading_gain": 0.0
+  },
+  "historical": {
+    "source_stand_backend": "3/5",
+    "stage337_f010_u5": "4/5"
+  },
+  "current_invocation_runner_nonzero_count": 0,
+  "rows": [
+    {
+      "status": "fail",
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage351_source_matched_event_no_supervisor_stiff1p2_fixed_r1.json",
+      "stand": true,
+      "startup": false,
+      "move": false,
+      "stop": false,
+      "move_heading_max_deviation_rad": 0.43795270653913343,
+      "stop_root_z_min_m": 0.619036107923469,
+      "stop_tilt_max_rad": 0.2272470149476913,
+      "stop_drift_m": 0.4479099190252684,
+      "stop_tail_speed_mps": 0.0007497668364008221,
+      "stop_settle_time_s": 3.46
+    }
+  ],
+  "passes": 0,
+  "valid": 1,
+  "full_gate_failures": 1,
+  "promotion_gate_pass": false
+}

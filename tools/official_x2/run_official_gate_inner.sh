@@ -17,6 +17,7 @@ DEFAULT_POSE_PROFILE="${DEFAULT_POSE_PROFILE:-stage208}"
 PREPARE_SECONDS="${PREPARE_SECONDS:-0.2}"
 STAND_SECONDS="${STAND_SECONDS:-2.0}"
 MOVE_SECONDS="${MOVE_SECONDS:-4.0}"
+MOVE_ACCELERATE_SECONDS="${MOVE_ACCELERATE_SECONDS:-0.0}"
 MOVE_TEMPLATE_MULTIPLIER="${MOVE_TEMPLATE_MULTIPLIER:-1.0}"
 STOP_SECONDS="${STOP_SECONDS:-8.0}"
 STATE_PREDICTION_SECONDS="${STATE_PREDICTION_SECONDS:-0.0}"
@@ -144,6 +145,7 @@ python3 tools/official_x2/stage208_official_mujoco_adapter.py \
   --prepare-seconds "$PREPARE_SECONDS" --stand-seconds "$STAND_SECONDS" \
   --stationary-warmup-seconds "$STATIONARY_WARMUP_SECONDS" --stationary-blend "$STATIONARY_BLEND" \
   --move-seconds "$MOVE_SECONDS" --stop-seconds "$STOP_SECONDS" \
+  --move-accelerate-seconds "$MOVE_ACCELERATE_SECONDS" \
   --move-template-multiplier "$MOVE_TEMPLATE_MULTIPLIER" \
   --state-prediction-seconds "$STATE_PREDICTION_SECONDS" \
   --state-qos-depth "$STATE_QOS_DEPTH" \

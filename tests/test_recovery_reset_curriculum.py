@@ -5,10 +5,14 @@ import pytest
 import torch
 
 from official_x2.recovery_reset_curriculum import (
+    audit_stateful_recovery_sidecar,
     audit_recovery_dataset,
     balanced_sample_indices,
+    finalize_stateful_recovery,
+    gait_phase_from_steps,
     joint_reorder_indices,
     load_recovery_dataset,
+    load_stateful_recovery_sidecar,
     reset_from_recovery_dataset,
 )
 
@@ -18,6 +22,10 @@ DATASET = (
     "stage335_stage306_stiff_fixed_stop_recovery_states.npz"
 )
 SHA256 = "4d8ce06b6e8dd9b43363dadedb781e9feb75f72ac092b475de2a1e2772545013"
+SOURCE_REPORT = (
+    "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/official_x2/"
+    "stage335_stop_recovery_state_extraction.json"
+)
 
 
 def test_stage335_dataset_exact_contract():
@@ -114,3 +122,131 @@ def test_zero_fraction_is_exact_noop():
     assert env._x2_recovery_reset_last["selected_env_ids"].numel() == 0
     assert asset.root_pose is None
     assert asset.joint_pos is None
+
+
+def test_stateful_sidecar_is_lossless_and_clock_reconstructs_phase():
+    audit = audit_stateful_recovery_sidecar(DATASET, SOURCE_REPORT, SHA256)
+    assert audit.state_count == 90
+    assert audit.moving_phase_count == 35
+    assert audit.stationary_phase_count == 55
+    assert audit.low_command_forced_moving_count == 12
+    assert audit.max_observation_crosscheck_error <= 1.0e-7
+    assert audit.previous_issued_action_missing_count == 0
+    arrays = load_recovery_dataset(DATASET, SHA256)
+    sidecar = load_stateful_recovery_sidecar(DATASET, SOURCE_REPORT, SHA256)
+    reconstructed = gait_phase_from_steps(
+        sidecar["episode_clock_steps"], sidecar["force_moving"]
+    )
+    assert np.max(np.abs(reconstructed - arrays["gait_phase"])) < 1.0e-5
+    assert np.isfinite(sidecar["previous_issued_action"]).all()
+
+
+class _FakeActionTerm:
+    def __init__(self, num_envs=4):
+        self._raw_actions = torch.zeros(num_envs, 15)
+        self._processed_actions = torch.zeros(num_envs, 15)
+        self._combined_normalized_actions = torch.zeros(num_envs, 15)
+        self._preclip_combined_actions = torch.zeros(num_envs, 15)
+        self._normalized_template_bias = torch.zeros(num_envs, 15)
+        self._scale = torch.full((num_envs, 15), 0.25)
+        self._offset = torch.zeros(num_envs, 15)
+        self._clip = torch.stack(
+            (-torch.ones(num_envs, 15), torch.ones(num_envs, 15)), dim=-1
+        )
+
+
+class _FakeActionManager:
+    def __init__(self, num_envs=4):
+        self._action = torch.zeros(num_envs, 15)
+        self._prev_action = torch.zeros(num_envs, 15)
+        self.term = _FakeActionTerm(num_envs)
+
+    def get_term(self, name):
+        assert name == "joint_pos"
+        return self.term
+
+
+class _FakeCommandTerm:
+    def __init__(self, num_envs=4):
+        self.vel_command_b = torch.zeros(num_envs, 3)
+        self.is_standing_env = torch.ones(num_envs, dtype=torch.bool)
+        self.is_heading_env = torch.zeros(num_envs, dtype=torch.bool)
+        self.heading_target = torch.zeros(num_envs)
+        self.time_left = torch.zeros(num_envs)
+        self.command_counter = torch.zeros(num_envs, dtype=torch.long)
+
+
+class _FakeCommandManager:
+    def __init__(self, num_envs=4):
+        self.term = _FakeCommandTerm(num_envs)
+
+    def get_term(self, name):
+        assert name == "base_velocity"
+        return self.term
+
+
+def _fake_stateful_env(num_envs=4):
+    return SimpleNamespace(
+        num_envs=num_envs,
+        device="cpu",
+        step_dt=0.02,
+        episode_length_buf=torch.zeros(num_envs, dtype=torch.long),
+        action_manager=_FakeActionManager(num_envs),
+        command_manager=_FakeCommandManager(num_envs),
+        _x2_recovery_reset_last={},
+    )
+
+
+def test_post_manager_stateful_finalizer_restores_all_snapshot_buffers():
+    arrays = load_recovery_dataset(DATASET, SHA256)
+    sidecar = load_stateful_recovery_sidecar(DATASET, SOURCE_REPORT, SHA256)
+    env = _fake_stateful_env()
+    selected = torch.tensor([1, 3])
+    sample_ids = torch.tensor([0, 4])
+    env._x2_recovery_stateful_pending = {
+        "selected_env_ids": selected,
+        "sample_indices": sample_ids,
+        "dataset_path": DATASET,
+        "expected_dataset_sha256": SHA256,
+        "source_report_path": SOURCE_REPORT,
+        "expected_source_report_sha256": None,
+    }
+    result = finalize_stateful_recovery(env)
+    expected_previous = torch.as_tensor(arrays["previous_action"][[0, 4]])
+    expected_issued = torch.as_tensor(sidecar["previous_issued_action"][[0, 4]])
+    assert result["selected_env_count"] == 2
+    assert torch.allclose(env.action_manager._action[selected], expected_previous)
+    assert torch.allclose(env.action_manager._prev_action[selected], expected_previous)
+    assert torch.allclose(env.action_manager.term._raw_actions[selected], expected_previous)
+    assert torch.allclose(
+        env.action_manager.term._combined_normalized_actions[selected], expected_issued
+    )
+    assert torch.allclose(
+        env.action_manager.term._processed_actions[selected], expected_issued * 0.25
+    )
+    assert torch.equal(
+        env.episode_length_buf[selected],
+        torch.as_tensor(sidecar["episode_clock_steps"][[0, 4]]),
+    )
+    assert torch.allclose(
+        env.command_manager.term.vel_command_b[selected],
+        torch.as_tensor(sidecar["command_velocity_mps_radps"][[0, 4]]),
+    )
+    assert env._x2_recovery_reset_last["stateful_finalized"] is True
+
+
+def test_stateful_finalizer_without_pending_payload_is_strict_noop():
+    env = _fake_stateful_env()
+    env.episode_length_buf[:] = torch.arange(4)
+    env.action_manager._action[:] = 0.37
+    env.command_manager.term.vel_command_b[:] = 0.19
+    before = (
+        env.episode_length_buf.clone(),
+        env.action_manager._action.clone(),
+        env.command_manager.term.vel_command_b.clone(),
+    )
+    result = finalize_stateful_recovery(env)
+    assert result == {"selected_env_count": 0, "no_op": True}
+    assert torch.equal(env.episode_length_buf, before[0])
+    assert torch.equal(env.action_manager._action, before[1])
+    assert torch.equal(env.command_manager.term.vel_command_b, before[2])

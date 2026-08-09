@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Validated Stage335 reset-state curriculum for the X2 stand backend.
 
-This module deliberately changes only the *initial physical state*.  It does
-not treat official MuJoCo rollouts as reference motion and it does not restore
-the actor's previous-action/gait-clock buffers.  Isaac Lab resets those manager
-buffers after reset events, so pretending to restore the full 93-D observation
-would create a false contract.
+The phase-1 reset term changes only physical state.  The optional phase-4
+contract adds a post-manager-reset finalizer: Isaac Lab runs reset events
+*before* it clears action/command buffers and episode time, so logical state
+cannot be restored honestly from an event callback alone.  A dedicated env
+mixin calls :func:`finalize_stateful_recovery` after ``super()._reset_idx``.
 """
 
 from __future__ import annotations
@@ -13,6 +13,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import lru_cache
 import hashlib
+import json
+import math
 from pathlib import Path
 from typing import Sequence
 
@@ -59,6 +61,19 @@ class RecoveryDatasetAudit:
     max_abs_tilt_rad: float
     max_body_speed_mps: float
     gravity_norm_max_error: float
+
+
+@dataclass(frozen=True)
+class StatefulRecoveryAudit:
+    source_report_path: str
+    source_report_sha256: str
+    source_count: int
+    state_count: int
+    moving_phase_count: int
+    stationary_phase_count: int
+    low_command_forced_moving_count: int
+    max_observation_crosscheck_error: float
+    previous_issued_action_missing_count: int
 
 
 def _shape_matches(actual: tuple[int, ...], expected: tuple[int | None, ...], n: int) -> bool:
@@ -126,6 +141,194 @@ def audit_recovery_dataset(path: str | Path, expected_sha256: str | None = None)
     )
 
 
+def gait_phase_from_steps(
+    steps: np.ndarray,
+    moving: np.ndarray,
+    *,
+    step_dt: float = 0.02,
+    cycle_time_s: float = 0.8,
+    double_support_fraction: float = 0.30,
+) -> np.ndarray:
+    """Pure NumPy mirror of the X2 four-value gait observation."""
+    steps = np.asarray(steps, dtype=np.int64)
+    moving = np.asarray(moving, dtype=bool)
+    phase = np.remainder(steps.astype(np.float64) * step_dt / cycle_time_s, 1.0)
+    angle = 2.0 * math.pi * phase
+    clock = np.stack((np.sin(angle), np.cos(angle)), axis=-1)
+    clock *= moving[:, None]
+    half_ds = double_support_fraction / 4.0
+    right_swing = (phase >= half_ds) & (phase < 0.5 - half_ds)
+    left_swing = (phase >= 0.5 + half_ds) & (phase < 1.0 - half_ds)
+    contacts = np.stack((~left_swing, ~right_swing), axis=-1)
+    contacts = np.where(moving[:, None], contacts, np.ones_like(contacts))
+    return np.concatenate((clock, contacts.astype(np.float64)), axis=-1)
+
+
+@lru_cache(maxsize=4)
+def load_stateful_recovery_sidecar(
+    dataset_path_string: str,
+    source_report_path_string: str,
+    expected_dataset_sha256: str | None = None,
+    expected_source_report_sha256: str | None = None,
+) -> dict[str, np.ndarray]:
+    """Rejoin Stage335 rows with their immutable official trace snapshots.
+
+    The original NPZ intentionally contains the 93-D observation slices but
+    omitted the command and the issued (post-template) action.  ``source_index``
+    and ``trace_index`` form a lossless foreign key into the five hashed source
+    traces.  This function validates that join before returning any logical
+    reset state; it never modifies the phase-1 NPZ.
+    """
+    dataset_path = Path(dataset_path_string).expanduser().resolve()
+    source_report_path = Path(source_report_path_string).expanduser().resolve()
+    arrays = load_recovery_dataset(str(dataset_path), expected_dataset_sha256)
+    report_digest = sha256_file(source_report_path)
+    if expected_source_report_sha256 is not None and report_digest != expected_source_report_sha256:
+        raise ValueError(
+            f"source report SHA-256 mismatch: {report_digest} != {expected_source_report_sha256}"
+        )
+    report = json.loads(source_report_path.read_text(encoding="utf-8"))
+    sources = report.get("source_files")
+    if not isinstance(sources, list) or not sources:
+        raise ValueError("source report has no source_files provenance")
+
+    payloads: list[dict] = []
+    for source in sources:
+        path = Path(source["path"]).expanduser().resolve()
+        digest = sha256_file(path)
+        if digest != source["sha256"]:
+            raise ValueError(f"source trace SHA-256 mismatch: {path}")
+        payloads.append(json.loads(path.read_text(encoding="utf-8")))
+
+    commands = []
+    clock_steps = []
+    event_remaining = []
+    force_moving = []
+    force_moving_remaining = []
+    previous_issued = []
+    current_issued = []
+    max_crosscheck_error = 0.0
+    missing_previous = 0
+    control_dt = 0.02
+    obs_slices = (
+        (slice(0, 3), "base_lin_vel_body_mps"),
+        (slice(3, 6), "base_ang_vel_body_radps"),
+        (slice(6, 9), "projected_gravity"),
+        (slice(12, 43), "joint_pos_rel_rad"),
+        (slice(43, 74), "joint_vel_radps"),
+        (slice(74, 89), "previous_action"),
+        (slice(89, 93), "gait_phase"),
+    )
+    for row, (source_index, trace_index) in enumerate(
+        zip(arrays["source_index"], arrays["trace_index"])
+    ):
+        source_index = int(source_index)
+        trace_index = int(trace_index)
+        if not 0 <= source_index < len(payloads):
+            raise ValueError(f"invalid source_index at row {row}: {source_index}")
+        payload = payloads[source_index]
+        trace = payload.get("trace", [])
+        if not 0 <= trace_index < len(trace):
+            raise ValueError(f"invalid trace_index at row {row}: {trace_index}")
+        item = trace[trace_index]
+        if item.get("stage") != "stop":
+            raise ValueError(f"stateful row {row} does not join to a stop event")
+        elapsed = float(arrays["elapsed_s"][row])
+        if abs(float(item["elapsed_s"]) - elapsed) > 1.0e-8:
+            raise ValueError(f"elapsed-time join mismatch at row {row}")
+        obs = np.asarray(item.get("obs", []), dtype=np.float64)
+        if obs.shape != (93,) or not np.isfinite(obs).all():
+            raise ValueError(f"source observation is not finite 93-D at row {row}")
+        for source_slice, dataset_key in obs_slices:
+            error = float(np.max(np.abs(obs[source_slice] - arrays[dataset_key][row])))
+            max_crosscheck_error = max(max_crosscheck_error, error)
+            if error > 1.0e-6:
+                raise ValueError(
+                    f"source/NPZ observation mismatch at row {row} key={dataset_key}: {error}"
+                )
+
+        command = obs[9:12]
+        moving = bool(np.linalg.norm(obs[89:91]) > 0.5)
+        steps = int(round(elapsed / control_dt))
+        reconstructed = gait_phase_from_steps(
+            np.asarray([steps]), np.asarray([moving]), step_dt=control_dt
+        )[0]
+        if float(np.max(np.abs(reconstructed - obs[89:93]))) > 1.0e-5:
+            raise ValueError(f"episode clock cannot reconstruct gait phase at row {row}")
+
+        prior_action = None
+        if trace_index > 0:
+            candidate = np.asarray(trace[trace_index - 1].get("action", []), dtype=np.float64)
+            if candidate.shape == (15,) and np.isfinite(candidate).all():
+                prior_action = candidate
+        if prior_action is None:
+            missing_previous += 1
+            prior_action = np.full(15, np.nan, dtype=np.float64)
+        issued = np.asarray(item.get("action", []), dtype=np.float64)
+        if issued.shape != (15,) or not np.isfinite(issued).all():
+            raise ValueError(f"current issued action is missing at row {row}")
+
+        summary = payload["summary"]
+        stop_seconds = float(summary["stop_seconds"])
+        latch = summary.get("stop_hold_latch_s")
+        latch = stop_seconds if latch is None else float(latch)
+        commands.append(command)
+        clock_steps.append(steps)
+        event_remaining.append(max(control_dt, stop_seconds - elapsed))
+        force_moving.append(moving)
+        force_moving_remaining.append(max(0.0, latch - elapsed) if moving else 0.0)
+        previous_issued.append(prior_action)
+        current_issued.append(issued)
+
+    if missing_previous:
+        raise ValueError(f"{missing_previous} stateful rows lack a previous issued action")
+    result = {
+        "command_velocity_mps_radps": np.asarray(commands, dtype=np.float32),
+        "episode_clock_steps": np.asarray(clock_steps, dtype=np.int64),
+        "event_remaining_s": np.asarray(event_remaining, dtype=np.float32),
+        "force_moving": np.asarray(force_moving, dtype=bool),
+        "force_moving_remaining_s": np.asarray(force_moving_remaining, dtype=np.float32),
+        "previous_issued_action": np.asarray(previous_issued, dtype=np.float32),
+        "current_issued_action": np.asarray(current_issued, dtype=np.float32),
+        "source_control_dt_s": np.asarray(control_dt, dtype=np.float64),
+        "source_report_sha256": np.asarray(report_digest),
+        "source_count": np.asarray(len(sources), dtype=np.int64),
+        "max_observation_crosscheck_error": np.asarray(max_crosscheck_error, dtype=np.float64),
+    }
+    return result
+
+
+def audit_stateful_recovery_sidecar(
+    dataset_path: str | Path,
+    source_report_path: str | Path,
+    expected_dataset_sha256: str | None = None,
+    expected_source_report_sha256: str | None = None,
+) -> StatefulRecoveryAudit:
+    dataset = load_recovery_dataset(
+        str(Path(dataset_path).expanduser().resolve()), expected_dataset_sha256
+    )
+    sidecar = load_stateful_recovery_sidecar(
+        str(Path(dataset_path).expanduser().resolve()),
+        str(Path(source_report_path).expanduser().resolve()),
+        expected_dataset_sha256,
+        expected_source_report_sha256,
+    )
+    moving = sidecar["force_moving"]
+    commands = sidecar["command_velocity_mps_radps"]
+    low_command_forced = moving & (np.linalg.norm(commands[:, :2], axis=1) <= 0.1)
+    return StatefulRecoveryAudit(
+        source_report_path=str(Path(source_report_path).expanduser().resolve()),
+        source_report_sha256=str(sidecar["source_report_sha256"].item()),
+        source_count=int(sidecar["source_count"].item()),
+        state_count=int(len(dataset["root_z_m"])),
+        moving_phase_count=int(moving.sum()),
+        stationary_phase_count=int((~moving).sum()),
+        low_command_forced_moving_count=int(low_command_forced.sum()),
+        max_observation_crosscheck_error=float(sidecar["max_observation_crosscheck_error"].item()),
+        previous_issued_action_missing_count=0,
+    )
+
+
 def joint_reorder_indices(dataset_joint_names: Sequence[str], asset_joint_names: Sequence[str]) -> np.ndarray:
     """Return indices that reorder dataset vectors into articulation order."""
     dataset_names = list(dataset_joint_names)
@@ -160,6 +363,8 @@ def reset_from_recovery_dataset(
     sampling_mode: str = "balanced",
     expected_sha256: str | None = None,
     asset_name: str = "robot",
+    stateful_source_report: str | None = None,
+    stateful_source_report_sha256: str | None = None,
 ):
     """Final reset event that overwrites a subset with Stage335 physical states.
 
@@ -279,3 +484,178 @@ def reset_from_recovery_dataset(
         "selected_env_ids": selected.clone(),
         "sample_indices": sample_ids.clone(),
     }
+    if stateful_source_report is not None:
+        # This pending payload is intentionally finalized only after Isaac
+        # Lab's action/command managers and episode clock have been reset.
+        # Merely setting it in this event is not a stateful reset contract.
+        env._x2_recovery_stateful_pending = {
+            "selected_env_ids": selected.clone(),
+            "sample_indices": sample_ids.clone(),
+            "dataset_path": str(Path(dataset_path).expanduser().resolve()),
+            "expected_dataset_sha256": expected_sha256,
+            "source_report_path": str(Path(stateful_source_report).expanduser().resolve()),
+            "expected_source_report_sha256": stateful_source_report_sha256,
+        }
+
+
+def finalize_stateful_recovery(
+    env,
+    *,
+    action_name: str = "joint_pos",
+    command_name: str = "base_velocity",
+) -> dict[str, object]:
+    """Restore logical buffers after Isaac Lab's normal manager reset.
+
+    This must run *after* ``ManagerBasedRLEnv._reset_idx``.  It fails closed
+    when the expected manager internals are unavailable; silently restoring a
+    subset of the 93-D contract would make the curriculum invalid.
+    """
+    import torch
+
+    pending = getattr(env, "_x2_recovery_stateful_pending", None)
+    if pending is None:
+        return {"selected_env_count": 0, "no_op": True}
+    delattr(env, "_x2_recovery_stateful_pending")
+    selected = pending["selected_env_ids"]
+    sample_ids = pending["sample_indices"]
+    if len(selected) == 0:
+        return {"selected_env_count": 0, "no_op": True}
+    sidecar = load_stateful_recovery_sidecar(
+        pending["dataset_path"],
+        pending["source_report_path"],
+        pending["expected_dataset_sha256"],
+        pending["expected_source_report_sha256"],
+    )
+    dataset = load_recovery_dataset(
+        pending["dataset_path"], pending["expected_dataset_sha256"]
+    )
+    sample_cpu = sample_ids.detach().cpu().numpy()
+    step_dt = float(env.step_dt)
+    source_dt = float(sidecar["source_control_dt_s"].item())
+    if abs(step_dt - source_dt) > 1.0e-9:
+        raise RuntimeError(
+            f"stateful recovery requires matched 50 Hz control: env={step_dt} source={source_dt}"
+        )
+
+    if not hasattr(env, "episode_length_buf"):
+        raise RuntimeError("environment does not expose episode_length_buf")
+    action_manager = env.action_manager
+    for name in ("_action", "_prev_action"):
+        if not hasattr(action_manager, name):
+            raise RuntimeError(f"action manager lacks required buffer {name}")
+    action_term = action_manager.get_term(action_name)
+    required_action_buffers = (
+        "_raw_actions",
+        "_processed_actions",
+        "_combined_normalized_actions",
+        "_preclip_combined_actions",
+        "_normalized_template_bias",
+        "_scale",
+        "_offset",
+    )
+    missing = [name for name in required_action_buffers if not hasattr(action_term, name)]
+    if missing:
+        raise RuntimeError(f"stateful gait action lacks required buffers: {missing}")
+
+    command_term = env.command_manager.get_term(command_name)
+    required_command_buffers = (
+        "vel_command_b",
+        "is_standing_env",
+        "is_heading_env",
+        "heading_target",
+        "time_left",
+        "command_counter",
+    )
+    missing = [name for name in required_command_buffers if not hasattr(command_term, name)]
+    if missing:
+        raise RuntimeError(f"velocity command term lacks required buffers: {missing}")
+
+    device = action_manager._action.device
+    dtype = action_manager._action.dtype
+    previous_action = torch.as_tensor(
+        dataset["previous_action"][sample_cpu], device=device, dtype=dtype
+    )
+    issued_action = torch.as_tensor(
+        sidecar["previous_issued_action"][sample_cpu], device=device, dtype=dtype
+    )
+    clock_steps = torch.as_tensor(
+        sidecar["episode_clock_steps"][sample_cpu],
+        device=env.episode_length_buf.device,
+        dtype=env.episode_length_buf.dtype,
+    )
+    command = torch.as_tensor(
+        sidecar["command_velocity_mps_radps"][sample_cpu],
+        device=command_term.vel_command_b.device,
+        dtype=command_term.vel_command_b.dtype,
+    )
+    moving = torch.as_tensor(
+        sidecar["force_moving"][sample_cpu], device=device, dtype=torch.bool
+    )
+    event_remaining = torch.as_tensor(
+        sidecar["event_remaining_s"][sample_cpu],
+        device=command_term.time_left.device,
+        dtype=command_term.time_left.dtype,
+    )
+    moving_remaining = torch.as_tensor(
+        sidecar["force_moving_remaining_s"][sample_cpu],
+        device=env.episode_length_buf.device,
+        dtype=torch.float32,
+    )
+
+    env.episode_length_buf[selected] = clock_steps
+    action_manager._action[selected] = previous_action
+    action_manager._prev_action[selected] = previous_action
+    action_term._raw_actions[selected] = previous_action
+    action_term._combined_normalized_actions[selected] = issued_action
+    action_term._preclip_combined_actions[selected] = issued_action
+    action_term._normalized_template_bias[selected] = issued_action - previous_action
+    scale = torch.as_tensor(action_term._scale, device=device, dtype=dtype)
+    offset = torch.as_tensor(action_term._offset, device=device, dtype=dtype)
+    processed = issued_action * scale[selected] + offset[selected]
+    clip = getattr(action_term, "_clip", None)
+    if clip is not None:
+        processed = torch.clamp(processed, min=clip[selected, :, 0], max=clip[selected, :, 1])
+    action_term._processed_actions[selected] = processed
+
+    command_term.vel_command_b[selected] = command
+    command_term.is_standing_env[selected] = ~moving.to(command_term.is_standing_env.device)
+    command_term.is_heading_env[selected] = False
+    # Direct-yaw Stage326 commands do not carry a separate heading target.
+    command_term.heading_target[selected] = 0.0
+    command_term.time_left[selected] = event_remaining
+    command_term.command_counter[selected] = 1
+    for optional in (
+        "heading_error_integral",
+        "heading_integral_contribution",
+        "heading_error",
+    ):
+        if hasattr(command_term, optional):
+            getattr(command_term, optional)[selected] = 0.0
+
+    if not hasattr(env, "_x2_recovery_force_moving"):
+        env._x2_recovery_force_moving = torch.zeros(
+            env.num_envs, device=env.device, dtype=torch.bool
+        )
+        env._x2_recovery_force_moving_until_step = torch.full(
+            (env.num_envs,), -1, device=env.device, dtype=torch.long
+        )
+    extra_steps = torch.ceil(moving_remaining / step_dt).to(dtype=torch.long)
+    env._x2_recovery_force_moving[selected] = moving
+    env._x2_recovery_force_moving_until_step[selected] = torch.where(
+        moving,
+        clock_steps.to(env.device) + torch.clamp(extra_steps.to(env.device), min=1),
+        torch.full_like(clock_steps.to(env.device), -1),
+    )
+
+    result = {
+        "selected_env_count": int(len(selected)),
+        "no_op": False,
+        "episode_clock_steps": clock_steps.clone(),
+        "previous_action": previous_action.clone(),
+        "previous_issued_action": issued_action.clone(),
+        "command": command.clone(),
+        "force_moving": moving.clone(),
+    }
+    env._x2_recovery_reset_last["stateful_finalized"] = True
+    env._x2_recovery_reset_last["stateful_result"] = result
+    return result

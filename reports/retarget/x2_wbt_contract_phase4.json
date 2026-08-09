@@ -1,0 +1,1330 @@
+{
+  "schema_version": "x2_wbt_contract_phase4_v1",
+  "provenance": {
+    "current": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase1_forefoot_smoothing_ab/current_v4_exact30/x2_current_v4_exact30.pkl",
+      "sha256": "3e4618f7b46313b8bb8a91217dff984b799f09c160d5221ca5a557786547b7a1"
+    },
+    "scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "control": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+      "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+    },
+    "contact_cache": {
+      "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/bronze_kinematic/phase4_official_contact_contract/official_contact_schedule.pkl",
+      "sha256": "e63100333dd2a1ccfc793e125428ffb9915d9da0a23656513b8ee81b450e136f"
+    }
+  },
+  "truth_boundary": {
+    "contact_source": "official prescribed-root MuJoCo floor-foot collision object, >=50% frame occupancy",
+    "com_dcm_contact_are_model_estimates": true,
+    "not_hardware_truth": true,
+    "training_or_checkpoint_load": false,
+    "turn_nonzero_search_executed": false,
+    "official_contact_interpretation": "collision events are authoritative for the current official geometry, but sparse events can expose root-z/ground misalignment rather than intended gait phase"
+  },
+  "initial_velocity_ab": {
+    "walk_straight": {
+      "zero": {
+        "mode": "free_root_balance",
+        "initial_velocity": "zero",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 1.557,
+        "duration_fraction": 0.19543933054393303,
+        "fell": true,
+        "fall_time_s": 1.557,
+        "root_tilt_max_rad": 0.8922549313039262,
+        "root_z_min_m": 0.4190705929092013,
+        "stance_slip_p95_mps": 0.010058375583549765,
+        "contact_match_fraction_to_official_schedule": 0.031149646756583174,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.33204414708482755,
+          "root_angular_norm_radps": 25.22133678024729,
+          "joint_p95_abs_radps": 2.239063829183582,
+          "joint_max_abs_radps": 2.6804021000861877
+        }
+      },
+      "reference_frame0": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 0.928,
+        "duration_fraction": 0.11648535564853557,
+        "fell": true,
+        "fall_time_s": 0.928,
+        "root_tilt_max_rad": 0.9000247074034521,
+        "root_z_min_m": 0.5226142774928153,
+        "stance_slip_p95_mps": 0.6290123609414351,
+        "contact_match_fraction_to_official_schedule": 0.53125,
+        "torque_saturation_fraction": 0.01800611790878754,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.33204414708482755,
+          "root_angular_norm_radps": 25.22133678024729,
+          "joint_p95_abs_radps": 2.239063829183582,
+          "joint_max_abs_radps": 2.6804021000861877
+        }
+      },
+      "survival_delta_s": -0.6289999999999999
+    },
+    "turn_left": {
+      "zero": {
+        "mode": "free_root_balance",
+        "initial_velocity": "zero",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 1.8900000000000001,
+        "duration_fraction": 0.2372384937238494,
+        "fell": true,
+        "fall_time_s": 1.8900000000000001,
+        "root_tilt_max_rad": 0.9015823628419167,
+        "root_z_min_m": 0.5006572080532019,
+        "stance_slip_p95_mps": 0.14897778633594666,
+        "contact_match_fraction_to_official_schedule": 0.5608465608465608,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.2531137033645492,
+          "root_angular_norm_radps": 3.912253039999811,
+          "joint_p95_abs_radps": 0.7829265855252634,
+          "joint_max_abs_radps": 0.9908585250377744
+        }
+      },
+      "reference_frame0": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 0.859,
+        "duration_fraction": 0.10782426778242678,
+        "fell": true,
+        "fall_time_s": 0.859,
+        "root_tilt_max_rad": 0.9020740629509514,
+        "root_z_min_m": 0.540622572751082,
+        "stance_slip_p95_mps": 0.1284937838595862,
+        "contact_match_fraction_to_official_schedule": 0.6722933643771828,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.2531137033645492,
+          "root_angular_norm_radps": 3.912253039999811,
+          "joint_p95_abs_radps": 0.7829265855252634,
+          "joint_max_abs_radps": 0.9908585250377744
+        }
+      },
+      "survival_delta_s": -1.0310000000000001
+    },
+    "turn_right": {
+      "zero": {
+        "mode": "free_root_balance",
+        "initial_velocity": "zero",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 1.117,
+        "duration_fraction": 0.1402092050209205,
+        "fell": true,
+        "fall_time_s": 1.117,
+        "root_tilt_max_rad": 0.8800537245493579,
+        "root_z_min_m": 0.4192818153268897,
+        "stance_slip_p95_mps": 0.09868667576905896,
+        "contact_match_fraction_to_official_schedule": 0.8836168307967771,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.26522130080536044,
+          "root_angular_norm_radps": 5.018792496574347,
+          "joint_p95_abs_radps": 0.9003804624080763,
+          "joint_max_abs_radps": 1.1932682991027677
+        }
+      },
+      "reference_frame0": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 0.593,
+        "duration_fraction": 0.07443514644351464,
+        "fell": true,
+        "fall_time_s": 0.593,
+        "root_tilt_max_rad": 0.9008647566809573,
+        "root_z_min_m": 0.5369871237999774,
+        "stance_slip_p95_mps": 0.3545804404497474,
+        "contact_match_fraction_to_official_schedule": 0.6930860033726813,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.26522130080536044,
+          "root_angular_norm_radps": 5.018792496574347,
+          "joint_p95_abs_radps": 0.9003804624080763,
+          "joint_max_abs_radps": 1.1932682991027677
+        }
+      },
+      "survival_delta_s": -0.524
+    },
+    "stand_to_walk": {
+      "zero": {
+        "mode": "free_root_balance",
+        "initial_velocity": "zero",
+        "contact_activation": "collision",
+        "reference_duration_s": 6.166666666666667,
+        "simulated_duration_s": 1.603,
+        "duration_fraction": 0.25994594594594594,
+        "fell": true,
+        "fall_time_s": 1.603,
+        "root_tilt_max_rad": 0.9003308173517498,
+        "root_z_min_m": 0.42865054145312964,
+        "stance_slip_p95_mps": 0.00590486063434377,
+        "contact_match_fraction_to_official_schedule": 0.9566437928883343,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.09979099190593996,
+          "root_angular_norm_radps": 2.6797934864271515,
+          "joint_p95_abs_radps": 0.3466447256505398,
+          "joint_max_abs_radps": 0.38455680012705606
+        }
+      },
+      "reference_frame0": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 6.166666666666667,
+        "simulated_duration_s": 0.747,
+        "duration_fraction": 0.12113513513513513,
+        "fell": true,
+        "fall_time_s": 0.747,
+        "root_tilt_max_rad": 0.9015029890513669,
+        "root_z_min_m": 0.5784073293982733,
+        "stance_slip_p95_mps": 0.12820136662431403,
+        "contact_match_fraction_to_official_schedule": 1.0,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.09979099190593996,
+          "root_angular_norm_radps": 2.6797934864271515,
+          "joint_p95_abs_radps": 0.3466447256505398,
+          "joint_max_abs_radps": 0.38455680012705606
+        }
+      },
+      "survival_delta_s": -0.856
+    },
+    "walk_to_stand": {
+      "zero": {
+        "mode": "free_root_balance",
+        "initial_velocity": "zero",
+        "contact_activation": "collision",
+        "reference_duration_s": 5.633333333333334,
+        "simulated_duration_s": 1.952,
+        "duration_fraction": 0.34650887573964495,
+        "fell": true,
+        "fall_time_s": 1.952,
+        "root_tilt_max_rad": 0.865274156400863,
+        "root_z_min_m": 0.4199321663947807,
+        "stance_slip_p95_mps": 0.06708758799255186,
+        "contact_match_fraction_to_official_schedule": 0.5476434426229508,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.6490453807946442,
+          "root_angular_norm_radps": 7.011570265177294,
+          "joint_p95_abs_radps": 0.9222489595413219,
+          "joint_max_abs_radps": 1.208195686340341
+        }
+      },
+      "reference_frame0": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 5.633333333333334,
+        "simulated_duration_s": 0.735,
+        "duration_fraction": 0.13047337278106508,
+        "fell": true,
+        "fall_time_s": 0.735,
+        "root_tilt_max_rad": 0.8873374979615088,
+        "root_z_min_m": 0.4193355918645001,
+        "stance_slip_p95_mps": 0.2321470852841686,
+        "contact_match_fraction_to_official_schedule": 0.7333333333333333,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.6490453807946442,
+          "root_angular_norm_radps": 7.011570265177294,
+          "joint_p95_abs_radps": 0.9222489595413219,
+          "joint_max_abs_radps": 1.208195686340341
+        }
+      },
+      "survival_delta_s": -1.217
+    }
+  },
+  "contact_contract": {
+    "walk_straight": {
+      "motion_key": "KIT__424__walking_slow02_stageii",
+      "extraction": {
+        "mode": "official prescribed-root replay",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "official MuJoCo floor-foot collision object (not GRF)",
+        "frame_occupancy_threshold": 0.5,
+        "smoothing": false
+      },
+      "comparison": {
+        "per_side": {
+          "left": {
+            "confusion": {
+              "tp": 0,
+              "fp": 181,
+              "fn": 0,
+              "tn": 59
+            },
+            "agreement": 0.24583333333333332,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "official_events": {
+              "touchdown": [],
+              "liftoff": []
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                128,
+                188
+              ],
+              "liftoff": [
+                98,
+                159
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [],
+              "touchdown": []
+            }
+          },
+          "right": {
+            "confusion": {
+              "tp": 1,
+              "fp": 194,
+              "fn": 0,
+              "tn": 45
+            },
+            "agreement": 0.19166666666666668,
+            "precision": 0.005128205128205128,
+            "recall": 1.0,
+            "f1": 0.010204081632653062,
+            "official_events": {
+              "touchdown": [
+                130
+              ],
+              "liftoff": [
+                131
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                2,
+                90,
+                154,
+                201
+              ],
+              "liftoff": [
+                1,
+                66,
+                140,
+                195
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                9
+              ],
+              "touchdown": [
+                24
+              ]
+            }
+          }
+        },
+        "macro_agreement": 0.21875,
+        "macro_f1": 0.005102040816326531,
+        "max_nearest_event_error_frames": 24
+      },
+      "official_geometry_clearance": {
+        "semantics": "official MuJoCo signed floor-to-foot-collision geometry distance; positive means separated",
+        "per_side": {
+          "left": {
+            "signed_distance_min_m": 0.009065138825485018,
+            "signed_distance_p05_m": 0.00949116578330827,
+            "signed_distance_p50_m": 0.0166008020136381,
+            "collision_frame_fraction": 0.0,
+            "within_5mm_frame_fraction": 0.0,
+            "hover_signature": true,
+            "deep_penetration_signature": false
+          },
+          "right": {
+            "signed_distance_min_m": -0.014150946310055292,
+            "signed_distance_p05_m": 0.0021439201150165975,
+            "signed_distance_p50_m": 0.014503012465867247,
+            "collision_frame_fraction": 0.05,
+            "within_5mm_frame_fraction": 0.07083333333333333,
+            "hover_signature": false,
+            "deep_penetration_signature": false
+          }
+        },
+        "minimum_p05_m": 0.0021439201150165975,
+        "both_feet_hover_p05_gt_5mm": false,
+        "severe_root_ground_misalignment": true
+      }
+    },
+    "turn_left": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B11_-_walk_turn_left_(135)_stageii",
+      "extraction": {
+        "mode": "official prescribed-root replay",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "official MuJoCo floor-foot collision object (not GRF)",
+        "frame_occupancy_threshold": 0.5,
+        "smoothing": false
+      },
+      "comparison": {
+        "per_side": {
+          "left": {
+            "confusion": {
+              "tp": 116,
+              "fp": 43,
+              "fn": 13,
+              "tn": 68
+            },
+            "agreement": 0.7666666666666667,
+            "precision": 0.7295597484276729,
+            "recall": 0.8992248062015504,
+            "f1": 0.8055555555555556,
+            "official_events": {
+              "touchdown": [
+                0,
+                2,
+                11,
+                53,
+                88,
+                91,
+                122,
+                134,
+                173,
+                210
+              ],
+              "liftoff": [
+                1,
+                8,
+                32,
+                70,
+                90,
+                111,
+                128,
+                156,
+                191,
+                226
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                9,
+                12,
+                45,
+                83,
+                126,
+                165,
+                201,
+                238
+              ],
+              "liftoff": [
+                2,
+                11,
+                33,
+                69,
+                110,
+                156,
+                191,
+                226
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                1,
+                3,
+                1,
+                1,
+                20,
+                1,
+                18,
+                0,
+                0,
+                0
+              ],
+              "touchdown": [
+                0,
+                2,
+                1,
+                8,
+                5,
+                8,
+                4,
+                8,
+                8,
+                9
+              ]
+            }
+          },
+          "right": {
+            "confusion": {
+              "tp": 115,
+              "fp": 49,
+              "fn": 51,
+              "tn": 25
+            },
+            "agreement": 0.5833333333333334,
+            "precision": 0.7012195121951219,
+            "recall": 0.6927710843373494,
+            "f1": 0.6969696969696969,
+            "official_events": {
+              "touchdown": [
+                0,
+                18,
+                31,
+                47,
+                55,
+                67,
+                70,
+                78,
+                94,
+                116,
+                129,
+                140,
+                161,
+                175,
+                199,
+                212,
+                235
+              ],
+              "liftoff": [
+                15,
+                30,
+                43,
+                48,
+                66,
+                69,
+                75,
+                86,
+                108,
+                126,
+                130,
+                158,
+                169,
+                195,
+                204,
+                231
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                17,
+                28,
+                64,
+                103,
+                147,
+                184,
+                220
+              ],
+              "liftoff": [
+                15,
+                19,
+                51,
+                90,
+                133,
+                171,
+                208
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                0,
+                11,
+                8,
+                3,
+                15,
+                18,
+                15,
+                4,
+                18,
+                7,
+                3,
+                13,
+                2,
+                13,
+                4,
+                23
+              ],
+              "touchdown": [
+                0,
+                1,
+                3,
+                17,
+                9,
+                3,
+                6,
+                14,
+                9,
+                13,
+                18,
+                7,
+                14,
+                9,
+                15,
+                8,
+                15
+              ]
+            }
+          }
+        },
+        "macro_agreement": 0.675,
+        "macro_f1": 0.7512626262626263,
+        "max_nearest_event_error_frames": 23
+      },
+      "official_geometry_clearance": {
+        "semantics": "official MuJoCo signed floor-to-foot-collision geometry distance; positive means separated",
+        "per_side": {
+          "left": {
+            "signed_distance_min_m": -0.06864634602158662,
+            "signed_distance_p05_m": -0.058157919163122525,
+            "signed_distance_p50_m": -0.01876702039162857,
+            "collision_frame_fraction": 0.8958333333333334,
+            "within_5mm_frame_fraction": 0.9416666666666667,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          },
+          "right": {
+            "signed_distance_min_m": -0.08653883852678547,
+            "signed_distance_p05_m": -0.0704438917780619,
+            "signed_distance_p50_m": -0.016036994783369177,
+            "collision_frame_fraction": 0.8833333333333333,
+            "within_5mm_frame_fraction": 0.9208333333333333,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          }
+        },
+        "minimum_p05_m": -0.0704438917780619,
+        "both_feet_hover_p05_gt_5mm": false,
+        "severe_root_ground_misalignment": true
+      }
+    },
+    "turn_right": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B13_-_walk_turn_right_(45)_stageii",
+      "extraction": {
+        "mode": "official prescribed-root replay",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "official MuJoCo floor-foot collision object (not GRF)",
+        "frame_occupancy_threshold": 0.5,
+        "smoothing": false
+      },
+      "comparison": {
+        "per_side": {
+          "left": {
+            "confusion": {
+              "tp": 111,
+              "fp": 48,
+              "fn": 10,
+              "tn": 71
+            },
+            "agreement": 0.7583333333333333,
+            "precision": 0.6981132075471698,
+            "recall": 0.9173553719008265,
+            "f1": 0.7928571428571428,
+            "official_events": {
+              "touchdown": [
+                0,
+                51,
+                89,
+                126,
+                160,
+                195,
+                231
+              ],
+              "liftoff": [
+                30,
+                69,
+                104,
+                140,
+                177,
+                213
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                3,
+                44,
+                81,
+                117,
+                153,
+                187,
+                223
+              ],
+              "liftoff": [
+                2,
+                31,
+                66,
+                104,
+                139,
+                174,
+                211
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                1,
+                3,
+                0,
+                1,
+                3,
+                2
+              ],
+              "touchdown": [
+                0,
+                7,
+                8,
+                9,
+                7,
+                8,
+                8
+              ]
+            }
+          },
+          "right": {
+            "confusion": {
+              "tp": 124,
+              "fp": 33,
+              "fn": 60,
+              "tn": 23
+            },
+            "agreement": 0.6125,
+            "precision": 0.7898089171974523,
+            "recall": 0.6739130434782609,
+            "f1": 0.7272727272727273,
+            "official_events": {
+              "touchdown": [
+                0,
+                42,
+                44,
+                47,
+                53,
+                80,
+                91,
+                103,
+                116,
+                118,
+                120,
+                125,
+                149,
+                162,
+                185,
+                198,
+                220,
+                235
+              ],
+              "liftoff": [
+                41,
+                43,
+                46,
+                48,
+                79,
+                83,
+                102,
+                115,
+                117,
+                119,
+                121,
+                147,
+                156,
+                182,
+                190,
+                218,
+                225
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                25,
+                63,
+                98,
+                134,
+                161,
+                171,
+                193,
+                206,
+                238
+              ],
+              "liftoff": [
+                9,
+                54,
+                88,
+                121,
+                158,
+                163,
+                192,
+                194,
+                227
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                13,
+                11,
+                8,
+                6,
+                9,
+                5,
+                14,
+                6,
+                4,
+                2,
+                0,
+                11,
+                2,
+                10,
+                2,
+                9,
+                2
+              ],
+              "touchdown": [
+                0,
+                17,
+                19,
+                16,
+                10,
+                17,
+                7,
+                5,
+                18,
+                16,
+                14,
+                9,
+                12,
+                1,
+                8,
+                5,
+                14,
+                3
+              ]
+            }
+          }
+        },
+        "macro_agreement": 0.6854166666666667,
+        "macro_f1": 0.7600649350649351,
+        "max_nearest_event_error_frames": 19
+      },
+      "official_geometry_clearance": {
+        "semantics": "official MuJoCo signed floor-to-foot-collision geometry distance; positive means separated",
+        "per_side": {
+          "left": {
+            "signed_distance_min_m": -0.0694170751004828,
+            "signed_distance_p05_m": -0.053560964266063216,
+            "signed_distance_p50_m": -0.02002075773210474,
+            "collision_frame_fraction": 0.9,
+            "within_5mm_frame_fraction": 0.9291666666666667,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          },
+          "right": {
+            "signed_distance_min_m": -0.0702658131102983,
+            "signed_distance_p05_m": -0.05949285750181474,
+            "signed_distance_p50_m": -0.016251430975743202,
+            "collision_frame_fraction": 0.9666666666666667,
+            "within_5mm_frame_fraction": 0.9833333333333333,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          }
+        },
+        "minimum_p05_m": -0.05949285750181474,
+        "both_feet_hover_p05_gt_5mm": false,
+        "severe_root_ground_misalignment": true
+      }
+    },
+    "stand_to_walk": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B1_-_stand_to_walk_stageii",
+      "extraction": {
+        "mode": "official prescribed-root replay",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "official MuJoCo floor-foot collision object (not GRF)",
+        "frame_occupancy_threshold": 0.5,
+        "smoothing": false
+      },
+      "comparison": {
+        "per_side": {
+          "left": {
+            "confusion": {
+              "tp": 98,
+              "fp": 15,
+              "fn": 18,
+              "tn": 55
+            },
+            "agreement": 0.8225806451612904,
+            "precision": 0.8672566371681416,
+            "recall": 0.8448275862068966,
+            "f1": 0.8558951965065502,
+            "official_events": {
+              "touchdown": [
+                0,
+                59,
+                104,
+                147
+              ],
+              "liftoff": [
+                45,
+                82,
+                127,
+                172
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                57,
+                98,
+                141,
+                185
+              ],
+              "liftoff": [
+                35,
+                82,
+                124,
+                167
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                10,
+                0,
+                3,
+                5
+              ],
+              "touchdown": [
+                0,
+                2,
+                6,
+                6
+              ]
+            }
+          },
+          "right": {
+            "confusion": {
+              "tp": 128,
+              "fp": 11,
+              "fn": 35,
+              "tn": 12
+            },
+            "agreement": 0.7526881720430108,
+            "precision": 0.920863309352518,
+            "recall": 0.7852760736196319,
+            "f1": 0.8476821192052981,
+            "official_events": {
+              "touchdown": [
+                0,
+                65,
+                81,
+                102,
+                108,
+                141,
+                150
+              ],
+              "liftoff": [
+                60,
+                80,
+                101,
+                103,
+                136,
+                144
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                76,
+                119,
+                163
+              ],
+              "liftoff": [
+                60,
+                104,
+                147
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                0,
+                20,
+                3,
+                1,
+                11,
+                3
+              ],
+              "touchdown": [
+                0,
+                11,
+                5,
+                17,
+                11,
+                22,
+                13
+              ]
+            }
+          }
+        },
+        "macro_agreement": 0.7876344086021505,
+        "macro_f1": 0.8517886578559242,
+        "max_nearest_event_error_frames": 22
+      },
+      "official_geometry_clearance": {
+        "semantics": "official MuJoCo signed floor-to-foot-collision geometry distance; positive means separated",
+        "per_side": {
+          "left": {
+            "signed_distance_min_m": -0.06717795888652706,
+            "signed_distance_p05_m": -0.047942168588448124,
+            "signed_distance_p50_m": -0.019927705939933517,
+            "collision_frame_fraction": 0.8064516129032258,
+            "within_5mm_frame_fraction": 0.8440860215053764,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          },
+          "right": {
+            "signed_distance_min_m": -0.08693612788786806,
+            "signed_distance_p05_m": -0.06251276904127476,
+            "signed_distance_p50_m": -0.028045795672939477,
+            "collision_frame_fraction": 0.9838709677419355,
+            "within_5mm_frame_fraction": 0.9946236559139785,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          }
+        },
+        "minimum_p05_m": -0.06251276904127476,
+        "both_feet_hover_p05_gt_5mm": false,
+        "severe_root_ground_misalignment": true
+      }
+    },
+    "walk_to_stand": {
+      "motion_key": "ACCAD__Female1Walking_c3d__B2_-_walk_to_stand_stageii",
+      "extraction": {
+        "mode": "official prescribed-root replay",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "official MuJoCo floor-foot collision object (not GRF)",
+        "frame_occupancy_threshold": 0.5,
+        "smoothing": false
+      },
+      "comparison": {
+        "per_side": {
+          "left": {
+            "confusion": {
+              "tp": 92,
+              "fp": 30,
+              "fn": 10,
+              "tn": 38
+            },
+            "agreement": 0.7647058823529411,
+            "precision": 0.7540983606557377,
+            "recall": 0.9019607843137255,
+            "f1": 0.8214285714285715,
+            "official_events": {
+              "touchdown": [
+                2,
+                13,
+                15,
+                57,
+                96,
+                136,
+                139
+              ],
+              "liftoff": [
+                8,
+                14,
+                37,
+                76,
+                117,
+                138
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                3,
+                9,
+                13,
+                49,
+                89,
+                128
+              ],
+              "liftoff": [
+                2,
+                4,
+                12,
+                35,
+                75,
+                115
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                4,
+                2,
+                2,
+                1,
+                2,
+                23
+              ],
+              "touchdown": [
+                1,
+                0,
+                2,
+                8,
+                7,
+                8,
+                11
+              ]
+            }
+          },
+          "right": {
+            "confusion": {
+              "tp": 71,
+              "fp": 55,
+              "fn": 32,
+              "tn": 12
+            },
+            "agreement": 0.48823529411764705,
+            "precision": 0.5634920634920635,
+            "recall": 0.6893203883495146,
+            "f1": 0.6200873362445415,
+            "official_events": {
+              "touchdown": [
+                0,
+                20,
+                51,
+                58,
+                72,
+                82,
+                89,
+                92,
+                98,
+                114,
+                131,
+                133
+              ],
+              "liftoff": [
+                15,
+                46,
+                53,
+                69,
+                81,
+                87,
+                91,
+                93,
+                112,
+                129,
+                132,
+                135
+              ]
+            },
+            "fk_events": {
+              "touchdown": [
+                0,
+                30,
+                69,
+                109
+              ],
+              "liftoff": [
+                16,
+                55,
+                93
+              ]
+            },
+            "nearest_event_error_frames": {
+              "liftoff": [
+                1,
+                9,
+                2,
+                14,
+                12,
+                6,
+                2,
+                0,
+                19,
+                36,
+                39,
+                42
+              ],
+              "touchdown": [
+                0,
+                10,
+                18,
+                11,
+                3,
+                13,
+                20,
+                17,
+                11,
+                5,
+                22,
+                24
+              ]
+            }
+          }
+        },
+        "macro_agreement": 0.6264705882352941,
+        "macro_f1": 0.7207579538365565,
+        "max_nearest_event_error_frames": 42
+      },
+      "official_geometry_clearance": {
+        "semantics": "official MuJoCo signed floor-to-foot-collision geometry distance; positive means separated",
+        "per_side": {
+          "left": {
+            "signed_distance_min_m": -0.06996753017609532,
+            "signed_distance_p05_m": -0.05135194292168268,
+            "signed_distance_p50_m": -0.017212691000516613,
+            "collision_frame_fraction": 0.888235294117647,
+            "within_5mm_frame_fraction": 0.9294117647058824,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          },
+          "right": {
+            "signed_distance_min_m": -0.08183568068770641,
+            "signed_distance_p05_m": -0.062263326681389626,
+            "signed_distance_p50_m": -0.016373694504798284,
+            "collision_frame_fraction": 0.9764705882352941,
+            "within_5mm_frame_fraction": 0.9882352941176471,
+            "hover_signature": false,
+            "deep_penetration_signature": true
+          }
+        },
+        "minimum_p05_m": -0.062263326681389626,
+        "both_feet_hover_p05_gt_5mm": false,
+        "severe_root_ground_misalignment": true
+      }
+    }
+  },
+  "turn_representation": {
+    "new_variables": [
+      "root_yaw_knots_rad",
+      "landing_foot_yaw_rad",
+      "stance_orientation_gain"
+    ],
+    "tasks": [
+      "stance foot XYZ+orientation",
+      "swing foot XYZ+landing orientation"
+    ],
+    "nonzero_panel_preregistered_but_not_run": {
+      "roles": [
+        "turn_left",
+        "turn_right"
+      ],
+      "required_before_run": [
+        "official contact schedule",
+        "reference_frame0 qvel",
+        "zero-update exact gate",
+        "fixed candidate vectors before physics"
+      ],
+      "promotion_gate": "survival +0.5s, official-contact slip not worse, prescribed action/torque smoothness"
+    }
+  },
+  "turn_zero_update_gate": {
+    "turn_left": {
+      "vector": {
+        "root_yaw_knots_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "landing_foot_yaw_rad": 0.0,
+        "stance_orientation_gain": 0.0
+      },
+      "diagnostics": {
+        "exact_zero_update": true,
+        "orientation_residual_p95_rad": 0.0
+      },
+      "arrays_exact": true,
+      "physics_metrics_exact": true,
+      "adapter_result": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 0.859,
+        "duration_fraction": 0.10782426778242678,
+        "fell": true,
+        "fall_time_s": 0.859,
+        "root_tilt_max_rad": 0.9020740629509514,
+        "root_z_min_m": 0.540622572751082,
+        "stance_slip_p95_mps": 0.1284937838595862,
+        "contact_match_fraction_to_official_schedule": 0.6722933643771828,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.2531137033645492,
+          "root_angular_norm_radps": 3.912253039999811,
+          "joint_p95_abs_radps": 0.7829265855252634,
+          "joint_max_abs_radps": 0.9908585250377744
+        }
+      }
+    },
+    "turn_right": {
+      "vector": {
+        "root_yaw_knots_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "landing_foot_yaw_rad": 0.0,
+        "stance_orientation_gain": 0.0
+      },
+      "diagnostics": {
+        "exact_zero_update": true,
+        "orientation_residual_p95_rad": 0.0
+      },
+      "arrays_exact": true,
+      "physics_metrics_exact": true,
+      "adapter_result": {
+        "mode": "free_root_balance",
+        "initial_velocity": "reference_frame0",
+        "contact_activation": "collision",
+        "reference_duration_s": 7.966666666666667,
+        "simulated_duration_s": 0.593,
+        "duration_fraction": 0.07443514644351464,
+        "fell": true,
+        "fall_time_s": 0.593,
+        "root_tilt_max_rad": 0.9008647566809573,
+        "root_z_min_m": 0.5369871237999774,
+        "stance_slip_p95_mps": 0.3545804404497474,
+        "contact_match_fraction_to_official_schedule": 0.6930860033726813,
+        "torque_saturation_fraction": 0.0,
+        "initial_reference_qvel": {
+          "root_linear_norm_mps": 0.26522130080536044,
+          "root_angular_norm_radps": 5.018792496574347,
+          "joint_p95_abs_radps": 0.9003804624080763,
+          "joint_max_abs_radps": 1.1932682991027677
+        }
+      }
+    }
+  },
+  "decision": {
+    "checks": {
+      "initial_qvel_has_material_effect_on_at_least_one_action": true,
+      "raw_reference_qvel_safe_to_adopt": false,
+      "fk_contact_mismatch_detected": true,
+      "turn_orientation_zero_update_exact": true,
+      "official_geometry_root_ground_misalignment_detected": true
+    },
+    "mean_reference_qvel_survival_delta_s": -0.8513999999999999,
+    "status": "CONTRACT_AUDIT_FOUND_REFERENCE_START_AND_ROOT_GROUND_MISMATCH",
+    "result": "reference-frame0 qvel paired mean survival delta=-0.851s; contact mismatch=True; turn zero-update exact=True.",
+    "conclusion": "raw frame0 qvel 不安全；官方几何确认walk存在悬空、turn/start-stop存在厘米级穿地。当前contact事件首先反映root-z/ground生成器错误，不是X2动力学否证。",
+    "next_step": "先修reference起始连续性与官方floor几何对齐，再重新提取official collision contact；turn非零panel继续锁定。",
+    "official_geometry_misaligned_roles": [
+      "walk_straight",
+      "turn_left",
+      "turn_right",
+      "stand_to_walk",
+      "walk_to_stand"
+    ]
+  }
+}
