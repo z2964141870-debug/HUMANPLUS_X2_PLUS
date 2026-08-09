@@ -1,0 +1,87 @@
+{
+  "stage": "BASE Phase11 recovery role semantics",
+  "date": "2026-08-09",
+  "status": "completed_not_promoted",
+  "hypothesis": "Keeping the source stand actor for stand/start while giving Phase9 f005 authority only after the matched stop transition can improve recovery without damaging startup.",
+  "intervention": "In curriculum_then_policy only, route the post-transition policy slot and previous/issued action handoff through stop_policy_slot(recovery_model).",
+  "control": "moving=Stage306, stationary=source stand i150, recovery=source stand i150, repeats=5",
+  "candidate": "moving=Stage306, stationary=source stand i150, recovery=Phase9 f005 u5, repeats=5",
+  "single_variable": "post-transition recovery model",
+  "frozen_sha256": {
+    "adapter": "e682da8ca7c18d1a55ac1a65bc9974ed490c24a12704df83ad7e302ac1c5dae3",
+    "handoff_contract": "9277f405b74c455ac525510001f2e89860d9b525f89fd51cffe0aaba62cf4644",
+    "moving_stage306": "da95011f7c7153bc538ab2d31948ddaee2e8916429d0ebca961ce0dc7532bc4c",
+    "source_stand_i150": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565",
+    "phase9_f005_u5": "9bc672fc3c535dbe6cd2709cdec4531eb9b61990457172e9c813a8ac713fc0ca"
+  },
+  "historical_source_reproducibility": {
+    "runner_enforces_capture_time_frozen_hashes": true,
+    "historical_adapter_sha256": "e682da8ca7c18d1a55ac1a65bc9974ed490c24a12704df83ad7e302ac1c5dae3",
+    "current_adapter_sha256": "46634845d68d1de80bb001b4e102855c80ae21192e5f111460ed9115254a05bd",
+    "current_adapter_matches_historical": false,
+    "historical_handoff_sha256": "9277f405b74c455ac525510001f2e89860d9b525f89fd51cffe0aaba62cf4644",
+    "current_handoff_sha256": "cd4df30310205a0001f52d1b5e44aae63ccd5ed6f5bd13367a59e09afe2c1a32",
+    "current_handoff_matches_historical": false,
+    "boundary": "Phase13 and later evolved the live adapter/handoff sources. Phase11 results remain bound to the historical digests in this report and runner; the current sources must not be substituted or described as exact reproductions."
+  },
+  "pure_tests": {
+    "passed": 20,
+    "no_recovery_route": "main x100 -> stationary x300",
+    "recovery_route": "main x100 -> recovery x300",
+    "same_slot_previous_and_issued_handoff": true,
+    "other_stop_modes_modified": false
+  },
+  "official_gate": {
+    "contract": "Phase9 matched-event, stiff=1.2, fixed upper, 5.2 s move, 8.0 s curriculum stop, 2.0 s transition",
+    "all_episodes_valid": true,
+    "expected_policy_slot_counts": {
+      "main": 360,
+      "stationary": 100,
+      "recovery": 300
+    },
+    "episodes_with_exact_slot_counts": "10/10",
+    "control": {
+      "full": "0/5",
+      "stand": "5/5",
+      "startup": "5/5",
+      "move": "0/5",
+      "stop": "0/5",
+      "heading_max_rad_mean": 0.56577572207804,
+      "lateral_displacement_m_mean": 0.5361132370826334,
+      "stop_drift_m_mean": 0.30337148741202624,
+      "stop_settle_time_s_mean": 4.396,
+      "signed_pitch_mean_rad": {
+        "stand": -0.11112224926684998,
+        "startup": -0.08585852209437138,
+        "move": -0.1416617297315289,
+        "stop": -0.8181084620374058
+      }
+    },
+    "candidate": {
+      "full": "0/5",
+      "stand": "5/5",
+      "startup": "4/5",
+      "move": "0/5",
+      "stop": "0/5",
+      "heading_max_rad_mean": 0.6519179148260993,
+      "lateral_displacement_m_mean": 0.6028116415925143,
+      "stop_drift_m_mean": 0.2757560019400223,
+      "stop_settle_time_s_mean": 5.2,
+      "signed_pitch_mean_rad": {
+        "stand": -0.11119092891307797,
+        "startup": -0.08576580027834545,
+        "move": -0.144828356209928,
+        "stop": -0.77393210639438
+      }
+    }
+  },
+  "result": "The role repair is correct, but f005 does not pass recovery: both groups fall during stop. Candidate stop drift is 9.1% lower and mean stop pitch is 0.044 rad less negative, but settle time is 18.3% longer and stop/full remain 0/5.",
+  "causal_limit": "Pre-handoff startup/move differences cannot be caused by the recovery actor and expose run-to-run simulator variability; they are not credited to f005.",
+  "decision": {
+    "role_contract_accepted": true,
+    "f005_promoted": false,
+    "updates25_unlocked": false,
+    "training_locked": true
+  },
+  "next": "Do not extend f005 training. Localize the first post-handoff divergence/fall field from the existing traces before proposing a new recovery objective or handoff state distribution."
+}

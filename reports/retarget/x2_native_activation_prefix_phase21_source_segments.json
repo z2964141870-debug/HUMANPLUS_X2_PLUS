@@ -1,0 +1,155 @@
+{
+  "scope": "offline source-state segmentation only; FK/contact reconstruction uses mj_forward, never mj_step",
+  "segments": {
+    "joint_prefix": {
+      "start_s": 5.437038254,
+      "stop_s": 10.259814789,
+      "frames": 242,
+      "joint_step_p95_max_rad": [
+        0.010826204670593143,
+        0.12146425247192383
+      ],
+      "joint_step_max_joint": "right_hip_pitch_joint",
+      "joint_step_max_time_s": 7.197345089000001,
+      "recorded_dq_p95_max_radps": [
+        0.5303507626056669,
+        8.936528205871582
+      ],
+      "recorded_dq_max_joint": "left_hip_pitch_joint",
+      "recorded_dq_max_time_s": 7.197345089000001,
+      "joint_limits": {
+        "violating_samples": 336,
+        "limited_joint_samples": 7502,
+        "fraction": 0.044788056518261794,
+        "max_excess_rad": 0.02052968554198742,
+        "count_tolerance_rad": 1e-06,
+        "per_joint": {
+          "left_knee_joint": 150,
+          "right_knee_joint": 150,
+          "left_shoulder_roll_joint": 18,
+          "right_shoulder_roll_joint": 18
+        }
+      },
+      "root_z_min_final_m": [
+        0.06615860760211945,
+        0.07741328328847885
+      ],
+      "root_tilt_p95_max_rad": [
+        1.3976861926776294,
+        1.4915695985972273
+      ],
+      "first_root_z_below_0p42_s": 7.0178312620000005,
+      "contact_phase": {
+        "double_support": 0.9008264462809917,
+        "single_support": 0.0,
+        "flight": 0.09917355371900827
+      }
+    },
+    "mode_boundary_pm100ms": {
+      "start_s": 10.159814789,
+      "stop_s": 10.359814789,
+      "frames": 10,
+      "joint_step_p95_max_rad": [
+        0.08803778886795034,
+        0.26348546147346497
+      ],
+      "joint_step_max_joint": "left_knee_joint",
+      "joint_step_max_time_s": 10.357036225,
+      "recorded_dq_p95_max_radps": [
+        4.608645725250246,
+        16.39589500427246
+      ],
+      "recorded_dq_max_joint": "left_knee_joint",
+      "recorded_dq_max_time_s": 10.357036225,
+      "joint_limits": {
+        "violating_samples": 14,
+        "limited_joint_samples": 310,
+        "fraction": 0.04516129032258064,
+        "max_excess_rad": 0.00023066889843903482,
+        "count_tolerance_rad": 1e-06,
+        "per_joint": {
+          "left_knee_joint": 7,
+          "right_knee_joint": 7
+        }
+      },
+      "root_z_min_final_m": [
+        0.07741328328847885,
+        0.09628891944885254
+      ],
+      "root_tilt_p95_max_rad": [
+        1.6645072921429012,
+        1.6762253984541138
+      ],
+      "first_root_z_below_0p42_s": 10.177077213,
+      "contact_phase": {
+        "double_support": 0.5,
+        "single_support": 0.0,
+        "flight": 0.5
+      }
+    },
+    "rl_internal_after100ms": {
+      "start_s": 10.359814789,
+      "stop_s": 30.597645330000002,
+      "frames": 1011,
+      "joint_step_p95_max_rad": [
+        0.11493357643485068,
+        0.5821032524108887
+      ],
+      "joint_step_max_joint": "right_knee_joint",
+      "joint_step_max_time_s": 19.877499661,
+      "recorded_dq_p95_max_radps": [
+        5.872037887573242,
+        31.31452178955078
+      ],
+      "recorded_dq_max_joint": "right_knee_joint",
+      "recorded_dq_max_time_s": 19.877499661,
+      "joint_limits": {
+        "violating_samples": 1651,
+        "limited_joint_samples": 31341,
+        "fraction": 0.052678599917041574,
+        "max_excess_rad": 0.14394971179962157,
+        "count_tolerance_rad": 1e-06,
+        "per_joint": {
+          "waist_pitch_joint": 48,
+          "waist_roll_joint": 75,
+          "left_knee_joint": 79,
+          "left_ankle_pitch_joint": 126,
+          "right_ankle_pitch_joint": 751,
+          "left_ankle_roll_joint": 216,
+          "right_ankle_roll_joint": 241,
+          "left_wrist_pitch_joint": 2,
+          "right_wrist_pitch_joint": 106,
+          "left_wrist_roll_joint": 7
+        }
+      },
+      "root_z_min_final_m": [
+        0.07453998923301697,
+        0.22900111973285675
+      ],
+      "root_tilt_p95_max_rad": [
+        1.8166711079645137,
+        2.0347756318899757
+      ],
+      "first_root_z_below_0p42_s": 10.377251848,
+      "contact_phase": {
+        "double_support": 0.26904055390702275,
+        "single_support": 0.27200791295746785,
+        "flight": 0.4589515331355094
+      }
+    }
+  },
+  "frozen_max_gates": {
+    "joint_step_rad": 0.45,
+    "recorded_dq_radps": 20.0
+  },
+  "replay_error_segmentation": {
+    "available": false,
+    "reason": "Phase21 aggregate JSON did not persist replay q/body/contact traces; no new physics run is allowed"
+  },
+  "decision": {
+    "step_velocity_failure_origin": "RL internal, not JOINT interpolation or the ±100ms mode boundary",
+    "joint_prefix_physics": "smooth in q/dq but root fell below 0.42m 1.581s after first complete snapshot and was already collapsed before RL",
+    "reference_use": "do not score the whole JOINT prefix as motion reference; its first complete state/command context may remain an initialization seed",
+    "any2any_boundary": "mixed-mode aggregate failure cannot be attributed to WBT/Any2Any"
+  }
+}

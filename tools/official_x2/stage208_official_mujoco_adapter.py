@@ -32,9 +32,21 @@ from official_x2.controller_snapshot_contract import (
     capture_controller_state,
     restore_controller_state,
 )
+from official_x2.recovery_suffix_aggregation import (
+    build_recovery_suffix_snapshot,
+    build_suffix_sidecar,
+    canonical_sha256,
+    physical_state_payload,
+    recovery_capture_eligible,
+    sha256_file,
+    write_suffix_sidecar,
+)
 from official_x2.analyze_sagittal_posture import signed_pitch_from_xyzw_rad
 from official_x2.skill_handoff_contract import (
+    blend_curriculum_recovery_targets,
+    curriculum_stop_policy_slot,
     matched_event_speed,
+    normalized_action_from_physical_targets,
     should_emergency_latch,
     stop_policy_slot,
 )
@@ -390,6 +402,9 @@ class Stage208OfficialAdapter(Node):
         self.previous_control_wall_time: float | None = None
         self.current_control_wall_dt: float | None = None
         self.trace: list[dict[str, float | list[float] | str]] = []
+        # Default-off Phase15 evidence channel.  It never participates in
+        # control and is written only to a separate hash-bound sidecar.
+        self.recovery_suffix_snapshots: list[dict[str, object]] = []
         self.finished = False
         self.timer = self.create_timer(0.02, self._control)
 
@@ -412,6 +427,80 @@ class Stage208OfficialAdapter(Node):
             state,
             expected_physical_state_sha256=expected_physical_state_sha256,
         )
+
+    def _maybe_record_recovery_suffix_snapshot(
+        self,
+        *,
+        stage: str,
+        elapsed: float,
+        obs: np.ndarray | None,
+        action: np.ndarray | None,
+    ) -> None:
+        """Capture recovery-authority rows without touching the control path."""
+        output_enabled = self.args.post_handoff_snapshot_output is not None
+        handoff = self.stop_hold_latch_s
+        time_after_handoff = -1.0 if handoff is None else elapsed - handoff
+        authority_slot = (
+            "recovery"
+            if (
+                stage == "stop"
+                and self.args.stop_controller == "curriculum_then_policy"
+                and self.args.recovery_model is not None
+                and handoff is not None
+            )
+            else "none"
+        )
+        if not recovery_capture_eligible(
+            output_enabled=output_enabled,
+            authority_slot=authority_slot,
+            time_after_handoff_s=time_after_handoff,
+            horizon_s=self.args.post_handoff_snapshot_horizon_seconds,
+        ):
+            return
+        if obs is None or action is None:
+            raise RuntimeError("recovery suffix row lacks the actor observation/action")
+        assert self.odom is not None
+        pose = self.odom.pose.pose
+        twist = self.odom.twist.twist
+        physical = physical_state_payload(
+            joint_names=ISAAC_JOINTS,
+            joint_position_rad=[self.joints[name][0] for name in ISAAC_JOINTS],
+            joint_velocity_radps=[self.joints[name][1] for name in ISAAC_JOINTS],
+            root_position_m=[pose.position.x, pose.position.y, pose.position.z],
+            root_quaternion_xyzw=[
+                pose.orientation.x,
+                pose.orientation.y,
+                pose.orientation.z,
+                pose.orientation.w,
+            ],
+            root_linear_velocity_world_mps=[
+                twist.linear.x,
+                twist.linear.y,
+                twist.linear.z,
+            ],
+            root_angular_velocity_world_radps=[
+                twist.angular.x,
+                twist.angular.y,
+                twist.angular.z,
+            ],
+        )
+        physical_sha = canonical_sha256(physical)
+        controller_state = self.export_controller_state(
+            physical_state_sha256=physical_sha
+        )
+        snapshot = build_recovery_suffix_snapshot(
+            episode_id=Path(self.args.output).stem,
+            source_tick=self.sequence_step - 1,
+            time_after_handoff_s=time_after_handoff,
+            physical_state=physical,
+            observation=obs,
+            previous_action_input=np.asarray(obs[74:89], dtype=np.float32),
+            issued_action=action,
+            command=np.asarray(obs[9:12], dtype=np.float32),
+            gait_phase=np.asarray(obs[89:93], dtype=np.float32),
+            controller_state=controller_state,
+        )
+        self.recovery_suffix_snapshots.append(snapshot)
 
     def _joint_callback(self, msg: JointStateArray) -> None:
         sample_time = self._message_sample_time(msg)
@@ -1215,7 +1304,16 @@ class Stage208OfficialAdapter(Node):
             targets[name] = float(self.replay_targets[index, joint_index])
         return targets
 
-    def _record(self, stage: str, elapsed: float, obs: np.ndarray | None = None, action: np.ndarray | None = None) -> None:
+    def _record(
+        self,
+        stage: str,
+        elapsed: float,
+        obs: np.ndarray | None = None,
+        action: np.ndarray | None = None,
+        *,
+        physical_targets: dict[str, float] | None = None,
+        unblended_policy_action: np.ndarray | None = None,
+    ) -> None:
         assert self.odom is not None
         pose = self.odom.pose.pose
         twist = self.odom.twist.twist
@@ -1258,9 +1356,25 @@ class Stage208OfficialAdapter(Node):
                 "source_callback_age_max_s": source_callback_age,
                 "obs": [] if obs is None else obs.tolist(),
                 "action": [] if action is None else action.tolist(),
+                "physical_lower_target_rad": (
+                    []
+                    if physical_targets is None
+                    else [float(physical_targets[name]) for name in LOWER_JOINTS]
+                ),
+                "unblended_policy_action": (
+                    []
+                    if unblended_policy_action is None
+                    else unblended_policy_action.tolist()
+                ),
                 "upper_target_rad": self.upper_last_target.tolist(),
                 "upper_actual_rad": [float(self.joints[name][0]) for name in ARM_JOINTS],
             }
+        )
+        self._maybe_record_recovery_suffix_snapshot(
+            stage=stage,
+            elapsed=elapsed,
+            obs=obs,
+            action=action,
         )
 
     def _control(self) -> None:
@@ -1345,6 +1459,7 @@ class Stage208OfficialAdapter(Node):
                 self.previous_actions[stop_slot] = self.previous_actions["main"].copy()
                 self.issued_actions[stop_slot] = self.issued_actions["main"].copy()
                 self.stop_policy_initialized = True
+            unblended_policy_action = None
             if self.args.stop_controller == "event_hold":
                 if self.stop_hold_targets is None:
                     targets, obs, action = self._policy_targets(self.args.move_seconds, 0.0)
@@ -1483,23 +1598,59 @@ class Stage208OfficialAdapter(Node):
                         force_moving=True,
                         template_multiplier=template_multiplier,
                     )
+                    if self.args.curriculum_recovery_handoff_blend_seconds > 0.0:
+                        # Capture the last target actually issued by the
+                        # matched deceleration.  This mapping is already part
+                        # of the stateful controller snapshot contract.
+                        self.stop_hold_targets = dict(targets)
                 else:
+                    stop_slot = curriculum_stop_policy_slot(
+                        stop_elapsed_s=stop_elapsed,
+                        transition_s=transition,
+                        recovery_model=self.args.recovery_model,
+                    )
                     if self.stop_hold_latch_s is None:
                         # Carry the action that was actually executed at the
-                        # end of the matched deceleration into the stationary
-                        # policy's last-action observation.
-                        self.previous_actions["stationary"] = self.previous_actions[
+                        # end of matched deceleration into the exact policy
+                        # slot that owns post-transition recovery.
+                        self.previous_actions[stop_slot] = self.previous_actions[
                             "main"
                         ].copy()
-                        self.issued_actions["stationary"] = self.issued_actions[
+                        self.issued_actions[stop_slot] = self.issued_actions[
                             "main"
                         ].copy()
                         self.stop_hold_latch_s = stop_elapsed
                     targets, obs, action = self._policy_targets(
                         0.0,
                         0.0,
-                        policy_slot="stationary",
+                        policy_slot=stop_slot,
                     )
+                    if self.args.curriculum_recovery_handoff_blend_seconds > 0.0:
+                        if self.stop_hold_targets is None or self.stop_hold_latch_s is None:
+                            raise RuntimeError("curriculum recovery blend lacks a pre-handoff target")
+                        unblended_policy_action = action.copy()
+                        targets = blend_curriculum_recovery_targets(
+                            self.stop_hold_targets,
+                            targets,
+                            elapsed_after_handoff_s=stop_elapsed - self.stop_hold_latch_s,
+                            blend_seconds=self.args.curriculum_recovery_handoff_blend_seconds,
+                        )
+                        # Recovery is a no-template branch, so the physical
+                        # position target can be inverted exactly.  Synchronize
+                        # both recurrent action buffers with what was actually
+                        # issued; never expose the actor's unexecuted proposal
+                        # as next-step last_action.
+                        action = np.asarray(
+                            normalized_action_from_physical_targets(
+                                targets,
+                                self.default,
+                                LOWER_JOINTS,
+                                LOWER_SCALE,
+                            ),
+                            dtype=np.float32,
+                        )
+                        self.issued_actions[stop_slot] = action.copy()
+                        self.previous_actions[stop_slot] = action.copy()
             elif self.args.stop_controller == "ramp_policy":
                 ramp = max(0.0, 1.0 - stop_elapsed / self.args.stop_seconds)
                 targets, obs, action = self._policy_targets(
@@ -1540,7 +1691,14 @@ class Stage208OfficialAdapter(Node):
                     policy_slot="stationary",
                 )
             self._publish(targets, upper_return=True)
-            self._record("stop", stop_elapsed, obs, action)
+            self._record(
+                "stop",
+                stop_elapsed,
+                obs,
+                action,
+                physical_targets=targets,
+                unblended_policy_action=unblended_policy_action,
+            )
             return
         if self.args.control_mode == "isaac_target_replay":
             targets = self._replay_target(move_elapsed)
@@ -1670,6 +1828,9 @@ class Stage208OfficialAdapter(Node):
             "upper_stop_mode": self.args.upper_stop_mode,
             "stationary_controller": self.args.stationary_controller,
             "stop_controller": self.args.stop_controller,
+            "curriculum_recovery_handoff_blend_seconds": (
+                self.args.curriculum_recovery_handoff_blend_seconds
+            ),
             "stop_transition_seconds": self.args.stop_transition_seconds,
             "stop_intent_decelerate_seconds": self.args.stop_intent_decelerate_seconds,
             "future_stop_preview_seconds": self.args.future_stop_preview_seconds,
@@ -1972,9 +2133,41 @@ class Stage208OfficialAdapter(Node):
         if stop:
             required_gates.append(bool(summary.get("stop_gate_pass")))
         summary["full_gate_pass"] = bool(required_gates and all(required_gates))
+        if self.args.post_handoff_snapshot_output is not None:
+            summary.update(
+                {
+                    "post_handoff_snapshot_schema": (
+                        "aimdk_x2_recovery_suffix_sidecar_v1"
+                    ),
+                    "post_handoff_snapshot_output": self.args.post_handoff_snapshot_output,
+                    "post_handoff_snapshot_horizon_s": (
+                        self.args.post_handoff_snapshot_horizon_seconds
+                    ),
+                    "post_handoff_snapshot_count": len(
+                        self.recovery_suffix_snapshots
+                    ),
+                    "post_handoff_snapshot_control_authority": "recovery only",
+                }
+            )
         output = Path(self.args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps({"summary": summary, "trace": self.trace}, indent=2) + "\n", encoding="utf-8")
+        if self.args.post_handoff_snapshot_output is not None:
+            assert self.args.recovery_model is not None
+            adapter_path = Path(__file__).resolve()
+            recovery_model_path = Path(self.args.recovery_model).resolve()
+            sidecar = build_suffix_sidecar(
+                self.recovery_suffix_snapshots,
+                source_trace_path=output.resolve(),
+                source_trace_sha256=sha256_file(output),
+                adapter_path=adapter_path,
+                adapter_sha256=sha256_file(adapter_path),
+                recovery_model_path=recovery_model_path,
+                recovery_model_sha256=sha256_file(recovery_model_path),
+                episode_outcome=summary,
+                horizon_s=self.args.post_handoff_snapshot_horizon_seconds,
+            )
+            write_suffix_sidecar(self.args.post_handoff_snapshot_output, sidecar)
         print(json.dumps(summary, indent=2), flush=True)
 
 
@@ -1987,6 +2180,19 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--template", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument(
+        "--post-handoff-snapshot-output",
+        help=(
+            "Optional Phase15 recovery-authority sidecar. Default off; when set, "
+            "records only the first post-handoff recovery suffix and never changes control."
+        ),
+    )
+    parser.add_argument(
+        "--post-handoff-snapshot-horizon-seconds",
+        type=float,
+        default=1.5,
+        help="Recovery-authority capture horizon; constrained to [0, 1.5] seconds.",
+    )
     parser.add_argument("--vx", type=float, default=0.30)
     parser.add_argument(
         "--policy-vx-floor",
@@ -2227,6 +2433,15 @@ def parse_args() -> argparse.Namespace:
         help="Duration of the moving-to-stationary target blend used by blend_to_policy.",
     )
     parser.add_argument(
+        "--curriculum-recovery-handoff-blend-seconds",
+        type=float,
+        default=0.0,
+        help=(
+            "C2 physical-target blend after curriculum_then_policy hands control "
+            "to recovery; 0 preserves the historical target path exactly."
+        ),
+    )
+    parser.add_argument(
         "--stop-intent-decelerate-seconds",
         type=float,
         default=2.0,
@@ -2288,6 +2503,23 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
     if not 0.0 <= args.stationary_blend <= 1.0:
         parser.error("--stationary-blend must be in [0, 1]")
+    if args.curriculum_recovery_handoff_blend_seconds < 0.0:
+        parser.error("--curriculum-recovery-handoff-blend-seconds must be non-negative")
+    if not 0.0 <= args.post_handoff_snapshot_horizon_seconds <= 1.5:
+        parser.error("--post-handoff-snapshot-horizon-seconds must be in [0, 1.5]")
+    if args.post_handoff_snapshot_output is not None:
+        if args.clock_mode != "step":
+            parser.error("post-handoff snapshot recording requires --clock-mode step")
+        if args.stop_controller != "curriculum_then_policy":
+            parser.error(
+                "post-handoff snapshot recording requires --stop-controller curriculum_then_policy"
+            )
+        if args.recovery_model is None:
+            parser.error("post-handoff snapshot recording requires --recovery-model")
+        if args.mirror_policy:
+            parser.error("post-handoff snapshot recording requires the canonical unmirrored actor frame")
+        if Path(args.post_handoff_snapshot_output).resolve() == Path(args.output).resolve():
+            parser.error("post-handoff snapshot output must differ from the main trace")
     if not 0.0 <= args.actor_symmetry_projection_alpha <= 1.0:
         parser.error("--actor-symmetry-projection-alpha must be in [0, 1]")
     if args.actor_symmetry_projection_alpha > 0.0 and args.mirror_policy:

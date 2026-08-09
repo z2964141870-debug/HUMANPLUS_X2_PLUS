@@ -85,3 +85,20 @@ def test_recovery_training_requires_phase46_stateful_contract() -> None:
     assert "env_class = StatefulRecoveryRLEnv" in trainer
     assert "stateful_source_report_sha256" in trainer
     assert "env_cfg.scene.robot.soft_joint_pos_limit_factor = 1.0" in trainer
+
+
+def test_curriculum_recovery_role_routes_handoff_state_to_same_slot() -> None:
+    adapter = (
+        REPO_ROOT / "tools/official_x2/stage208_official_mujoco_adapter.py"
+    ).read_text(encoding="utf-8")
+    start = adapter.index('elif self.args.stop_controller == "curriculum_then_policy":')
+    end = adapter.index('elif self.args.stop_controller == "ramp_policy":', start)
+    branch = adapter[start:end]
+    assert "stop_slot = curriculum_stop_policy_slot(" in branch
+    assert 'self.previous_actions[stop_slot] = self.previous_actions[' in branch
+    assert 'self.issued_actions[stop_slot] = self.issued_actions[' in branch
+    assert "policy_slot=stop_slot" in branch
+    assert 'policy_slot="stationary"' not in branch
+    # Stand remains source-stationary; move/deceleration remain main.
+    assert 'policy_slot="stationary" if use_stationary else "main"' in adapter
+    assert 'policy_slot="main"' not in branch.split("else:", 1)[0]

@@ -1,0 +1,113 @@
+{
+  "stage": "base_phase10_recovery_role_contract_audit",
+  "status": "blocked_noop_recovery_model_under_phase9_contract",
+  "hypothesis": "Keeping stationary=source while changing only recovery_model to f005 isolates post-handoff recovery behavior.",
+  "control": {
+    "phase9_source_panel": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/official_x2/phase9_stateful_recovery_paired_gate.json",
+    "valid_runs": 5,
+    "contract_identical_across_5": true,
+    "contract": {
+      "model": "/models/stage306_s2652_transition_head_actor.onnx",
+      "stationary_model": "/models/stand_backend_scratch_i150_actor.onnx",
+      "recovery_model": "/models/stand_backend_scratch_i150_actor.onnx",
+      "command_vx_mps": 0.3,
+      "prepare_seconds": 0.2,
+      "stand_seconds": 2.0,
+      "move_seconds": 5.2,
+      "move_accelerate_seconds": 1.0,
+      "stop_seconds": 8.0,
+      "stationary_controller": "policy",
+      "stationary_blend": 0.5,
+      "stop_controller": "curriculum_then_policy",
+      "stop_transition_seconds": 2.0,
+      "stop_intent_decelerate_seconds": 2.0,
+      "action_bias_mode": "none",
+      "action_bias": 0.0,
+      "ankle_roll_common_bias": 0.0,
+      "lateral_position_gain": 0.0,
+      "lateral_velocity_gain": 0.0,
+      "heading_gain": 0.0,
+      "pd_profile": "official_kp_ankle",
+      "pd_kp_multiplier": 1.2,
+      "pd_kd_multiplier": 1.2,
+      "clock_mode": "step"
+    },
+    "policy_slot_counts": [
+      {
+        "main": 360,
+        "stationary": 400,
+        "recovery": 0
+      },
+      {
+        "main": 360,
+        "stationary": 400,
+        "recovery": 0
+      },
+      {
+        "main": 360,
+        "stationary": 400,
+        "recovery": 0
+      },
+      {
+        "main": 360,
+        "stationary": 400,
+        "recovery": 0
+      },
+      {
+        "main": 360,
+        "stationary": 400,
+        "recovery": 0
+      }
+    ]
+  },
+  "hashes": {
+    "adapter": "d80900b2e7e1fac98aa586dc44c9dfb3d8561592e93167d931b8177afed7e8f9",
+    "moving_model": "da95011f7c7153bc538ab2d31948ddaee2e8916429d0ebca961ce0dc7532bc4c",
+    "stationary_model": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565",
+    "candidate_recovery_model": "9bc672fc3c535dbe6cd2709cdec4531eb9b61990457172e9c813a8ac713fc0ca"
+  },
+  "expected_hashes": {
+    "adapter": "d80900b2e7e1fac98aa586dc44c9dfb3d8561592e93167d931b8177afed7e8f9",
+    "moving_model": "da95011f7c7153bc538ab2d31948ddaee2e8916429d0ebca961ce0dc7532bc4c",
+    "stationary_model": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565",
+    "candidate_recovery_model": "9bc672fc3c535dbe6cd2709cdec4531eb9b61990457172e9c813a8ac713fc0ca"
+  },
+  "hash_match": {
+    "adapter": true,
+    "moving_model": true,
+    "stationary_model": true,
+    "candidate_recovery_model": true
+  },
+  "authority_audit": {
+    "main_counts": [
+      360,
+      360,
+      360,
+      360,
+      360
+    ],
+    "stationary_counts": [
+      400,
+      400,
+      400,
+      400,
+      400
+    ],
+    "recovery_counts": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "curriculum_then_policy_uses_stationary": true,
+    "curriculum_then_policy_uses_recovery": false,
+    "brake_blend_to_policy_uses_recovery_router": true,
+    "proposed_intervention_has_authority": false
+  },
+  "result": "Phase9 source uses recovery 0 times in every episode. Under the exact curriculum_then_policy branch, post-transition inference is hard-coded to stationary, so substituting RECOVERY_MODEL is a strict no-op.",
+  "alternative_rejected": "brake_blend_to_policy routes through recovery_model, but switching to it changes the frozen Phase9 stop contract and is not the requested single-variable A/B.",
+  "official_runs_started": 0,
+  "training_updates": 0,
+  "next": "Require a separately preregistered controller-role change or a new contract whose source control already exercises recovery; do not run five no-op episodes."
+}

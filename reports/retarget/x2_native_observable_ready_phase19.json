@@ -1,0 +1,166 @@
+{
+  "phase": 19,
+  "scope": "single isolated domain218 observable ready attempt; no mode publish or physics after failure",
+  "provenance": {
+    "readiness": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_reset_prefix_phase19_20260809/official_native_event_v2_observable_ready_phase19.readiness.json",
+      "sha256": "82d7f2c99031ec10a863dba53594be17fd5d604928685439c4bc3368a43516dc"
+    },
+    "recorder_log": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_reset_prefix_phase19_20260809/logs/official_native_event_v2_observable_ready_phase19/recorder.log",
+      "sha256": "90b0908ffcf65da599b6b10e31aa215fdbb61146488878cabbd7af9c6241c164"
+    },
+    "controller_log": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_reset_prefix_phase19_20260809/logs/official_native_event_v2_observable_ready_phase19/controller.log",
+      "sha256": "e19a8b0678fe29e2e2d68b9014eee213fbef78684bf524bd8b98aea8fdea89a9"
+    },
+    "simulator_log": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_reset_prefix_phase19_20260809/logs/official_native_event_v2_observable_ready_phase19/simulator.log",
+      "sha256": "9baa65b39a1d6aef5c12e858daf89c272c06b56304a331e6cf76458bd7f289fb"
+    },
+    "ros_domain_id": 218
+  },
+  "readiness": {
+    "schema_version": "x2_official_readiness_diagnostics_v1",
+    "capture_start_monotonic_ns": 20273747959483,
+    "diagnostic_receipt_monotonic_ns": 20288912443826,
+    "diagnostic_elapsed_ns": 15164484343,
+    "snapshot_ready": false,
+    "state_joint_seen_count": 0,
+    "state_joint_expected_count": 31,
+    "state_joint_seen": [],
+    "state_joint_missing": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_pitch_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_roll_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "head_yaw_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "head_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint"
+    ],
+    "state_by_group": {
+      "leg": {
+        "seen": 0,
+        "expected": 12,
+        "missing": [
+          "left_hip_pitch_joint",
+          "right_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "right_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "right_hip_yaw_joint",
+          "left_knee_joint",
+          "right_knee_joint",
+          "left_ankle_pitch_joint",
+          "right_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_ankle_roll_joint"
+        ]
+      },
+      "waist": {
+        "seen": 0,
+        "expected": 3,
+        "missing": [
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ]
+      },
+      "arm": {
+        "seen": 0,
+        "expected": 14,
+        "missing": [
+          "left_shoulder_pitch_joint",
+          "right_shoulder_pitch_joint",
+          "left_shoulder_roll_joint",
+          "right_shoulder_roll_joint",
+          "left_shoulder_yaw_joint",
+          "right_shoulder_yaw_joint",
+          "left_elbow_joint",
+          "right_elbow_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_yaw_joint",
+          "left_wrist_pitch_joint",
+          "right_wrist_pitch_joint",
+          "left_wrist_roll_joint",
+          "right_wrist_roll_joint"
+        ]
+      },
+      "head": {
+        "seen": 0,
+        "expected": 2,
+        "missing": [
+          "head_yaw_joint",
+          "head_pitch_joint"
+        ]
+      }
+    },
+    "state_joint_first_elapsed_ns": {},
+    "odom_seen": false,
+    "odom_first_elapsed_ns": null,
+    "imu_seen": false,
+    "imu_first_elapsed_ns": null
+  },
+  "checks": {
+    "diagnostic_reached_at_least_15s": true,
+    "snapshot_ready": false,
+    "state_31_complete": false,
+    "odom_seen": false,
+    "imu_seen": false,
+    "all_state_groups_zero": true,
+    "controller_loaded": true,
+    "simulator_initialized": true,
+    "joint_mode_not_published": true,
+    "rl_mode_not_published": true,
+    "npz_not_written": true,
+    "manifest_not_written": true,
+    "timeout_diagnostic_present_in_log": true
+  },
+  "qualification": {
+    "passed": false,
+    "ready_receipt_s": null,
+    "joint_mode_receipt_s": null,
+    "first_complete_snapshot_s": null,
+    "rl_mode_receipt_s": null,
+    "scoreable_joint_prefix_s": null
+  },
+  "truth_boundary": {
+    "observation_window_s": 15.164484343000002,
+    "proves_no_telemetry_before_joint_within_15s_not_forever": true,
+    "strict_ready_before_joint_infeasible_under_current_bound": true,
+    "joint_or_rl_never_published": true,
+    "no_npz_or_manifest": true,
+    "no_prescribed_or_free_physics": true,
+    "no_training_base_real_robot": true
+  },
+  "decision": {
+    "status": "PHASE19_ZERO_MODE_TELEMETRY_ABSENT_NO_CAPTURE",
+    "result": "After 15.090 s, state remained 0/31 across every group, odom and IMU were unseen, and snapshot_ready remained false.",
+    "conclusion": "In the current official stack and 15 s bound, telemetry required for a complete reference does not start before JOINT_DEFAULT; a complete-ready-before-JOINT handshake is therefore not implementable as specified.",
+    "next_step": "Stop without physics. If separately authorized, publish JOINT_DEFAULT to activate telemetry, wait for the first real complete snapshot, then hold JOINT for four additional scoreable seconds before RL; do not use topic existence or sleep as ready."
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "schema_version": "x2_native_control_contract_phase13_v1",
+  "provenance": {
+    "source_npz": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/official_native_dance_teacher_50hz_60s.npz",
+      "sha256": "72a495c62b448e322281785738454e4dd6636de568b11ca3d023477c33b063d5"
+    },
+    "source_manifest": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/official_native_dance_teacher_50hz_60s.manifest.json",
+      "sha256": "b7af1c8f4ea67815d7d1c6b46424660502161f05074c47f3841fef7b6a1cf010"
+    },
+    "recorder": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/official_x2_rollout_recorder.py",
+      "sha256": "0eeb4b31a99d5b4b1c6d90483b4d40110b6545a04be256b853d0ddaeb497c503"
+    },
+    "official_controller": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/src/motion_control_node.cc",
+      "sha256": "1c90388c1a572974270584310a7c394ef7495223b0d4c7ed244e55ff64a1d746"
+    },
+    "official_message_header": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/aimdk_msgs/interface/robot/common/msg/MessageHeader.msg",
+      "sha256": "ea70387167120925f14373d1ac9030ac529b1c44c49503db6c2ac012d5a3efb4"
+    },
+    "official_onnx_current_file": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/rl_model/kuailechongbai.onnx",
+      "sha256": "4505ed67b3fbe9b28d4ae0e01b2637b8f9d7fe266ca7448acfc23da625f4c53e"
+    },
+    "official_control_current_file": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_controller/config/motion_control.yaml",
+      "sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400"
+    }
+  },
+  "truth_boundary": {
+    "command_is_control_input_candidate_not_reference": true,
+    "source_trace_is_official_simulation_not_hardware": true,
+    "captured_values_are_ros_command_topic_snapshots": true,
+    "snapshots_are_not_exact_original_500hz_event_stream": true,
+    "physics_prescribed_free_ab_executed": false,
+    "training_ppo_lora_gold_source_base_real_robot_git_baidu": false
+  },
+  "hypothesis": "Phase10 command/Kp/Kd may form an exact source actuator-control replay contract.",
+  "intervention": "Read-only schema, timestamp, source-publisher and recorder-semantics audit before any physics.",
+  "control": "Phase10 NPZ/manifest and immutable official/recorder source code.",
+  "audit": {
+    "samples": 3000,
+    "joint_count": 31,
+    "joint_order": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_pitch_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_roll_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "head_yaw_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "head_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint"
+    ],
+    "fields": {
+      "command_q_rad": {
+        "present": true,
+        "shape": [
+          3000,
+          31
+        ],
+        "expected_shape": [
+          3000,
+          31
+        ],
+        "shape_exact": true,
+        "finite": true
+      },
+      "command_dq_radps": {
+        "present": true,
+        "shape": [
+          3000,
+          31
+        ],
+        "expected_shape": [
+          3000,
+          31
+        ],
+        "shape_exact": true,
+        "finite": true
+      },
+      "command_effort": {
+        "present": true,
+        "shape": [
+          3000,
+          31
+        ],
+        "expected_shape": [
+          3000,
+          31
+        ],
+        "shape_exact": true,
+        "finite": true
+      },
+      "command_kp": {
+        "present": true,
+        "shape": [
+          3000,
+          31
+        ],
+        "expected_shape": [
+          3000,
+          31
+        ],
+        "shape_exact": true,
+        "finite": true
+      },
+      "command_kd": {
+        "present": true,
+        "shape": [
+          3000,
+          31
+        ],
+        "expected_shape": [
+          3000,
+          31
+        ],
+        "shape_exact": true,
+        "finite": true
+      },
+      "command_valid": {
+        "present": true,
+        "shape": [
+          3000,
+          31
+        ],
+        "expected_shape": [
+          3000,
+          31
+        ],
+        "shape_exact": true,
+        "finite": true
+      }
+    },
+    "snapshot_time": {
+      "semantics": "recorder 50Hz sample timer, not original command publication time",
+      "dt_mean_s": 0.02000025383661275,
+      "dt_std_s": 0.0005895654838871293,
+      "dt_min_s": 0.015696471000410384,
+      "dt_max_s": 0.023903868999695987
+    },
+    "command_values": {
+      "valid_fraction": 1.0,
+      "kp_unique": [
+        0.0,
+        20.0,
+        40.0,
+        40.17919921875,
+        50.0,
+        100.0,
+        120.0,
+        150.0,
+        200.0
+      ],
+      "kd_unique": [
+        0.0,
+        2.0,
+        2.5578999519348145,
+        3.0,
+        4.0,
+        5.0
+      ],
+      "kp_change_count": 0,
+      "kd_change_count": 0,
+      "command_dq_all_zero": true,
+      "command_effort_all_zero": true
+    },
+    "event_contract": {
+      "official_publisher_hz": 500,
+      "recorder_snapshot_hz": 50,
+      "latest_value_cache": true,
+      "message_header_defines_stamp_and_sequence": true,
+      "official_createCommand_populates_header": false,
+      "recorder_saves_header_or_callback_receipt_time": false,
+      "four_group_arrival_metadata_saved": false,
+      "policy_config_identity_saved": false
+    },
+    "source_policy_evidence": {
+      "manifest_label": "AimDK X2 v1.0 official MuJoCo + shipped kuailechongbai.onnx",
+      "direct_subscription_to_official_output_topics": true,
+      "controller_maps_policy_action_to_position_and_config_kp_kd": true,
+      "strength": "strong value provenance, insufficient exact per-event timing/config identity"
+    }
+  },
+  "contract_gate": {
+    "required_all": true,
+    "checks": {
+      "source_manifest_hash_matches": true,
+      "all_command_arrays_complete": true,
+      "all_joint_commands_valid": true,
+      "archive_joint_order_exact_recorder": true,
+      "snapshot_timestamps_monotonic": true,
+      "values_are_sampled_from_official_command_topics": true,
+      "official_publisher_emits_control_fields": true,
+      "original_command_event_timestamp_preserved": false,
+      "original_command_sequence_preserved": false,
+      "four_group_atomic_cycle_preserved": false,
+      "source_policy_and_config_identity_hashes_preserved": false
+    },
+    "pass": false,
+    "failed": [
+      "original_command_event_timestamp_preserved",
+      "original_command_sequence_preserved",
+      "four_group_atomic_cycle_preserved",
+      "source_policy_and_config_identity_hashes_preserved"
+    ]
+  },
+  "decision": {
+    "status": "PHASE13_CONTROL_CONTRACT_INCOMPLETE_STOP",
+    "result": "q/dq/effort/Kp/Kd 值与关节顺序完整且来自官方 command topics，但缺少原始500Hz事件时间戳/sequence、四组原子同步和policy/config身份hash；按规则未运行物理。",
+    "conclusion": "现有NPZ适合command-to-state响应证据，不能被提升为可精确复现source闭环的控制事件流；这不否定Gold、Any2Any或官方policy。",
+    "next_step": "若未来可重录，保存四个topic每条消息的callback monotonic time、header/sequence、group、mode、ONNX/config hash；在此之前不做Phase13 physics。"
+  }
+}

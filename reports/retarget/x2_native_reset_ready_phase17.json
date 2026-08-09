@@ -1,0 +1,73 @@
+{
+  "schema_version": "x2_native_reset_ready_phase17_v1",
+  "phase": 17,
+  "hypothesis": "A recorder-ready handshake emitted only after complete 31DOF state plus odom and IMU should permit a scoreable four-second JOINT_DEFAULT prefix before RL_DEFAULT.",
+  "intervention": "Move ready-file emission from subscription construction to ReplayBuffer.snapshot_ready(); perform one isolated domain216 capture attempt.",
+  "control": "Phase16 emitted ready immediately after subscriptions and produced only 0.882 s of complete scoreable JOINT prefix.",
+  "provenance": {
+    "ros_domain_id": 216,
+    "recorder": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/official_x2_rollout_recorder_v2.py",
+      "sha256": "6aadabca145f41c3e430836ef3894e159d493cf0931fbec40ed54b3506d9a1ac"
+    },
+    "outer_launcher": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_official_native_reset_prefix_capture_phase17.sh",
+      "sha256": "49b85d88d42d8bcf82f3899b534d92bf126e6390500dc223442cfb23c744f831"
+    },
+    "inner_launcher": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_official_native_reset_prefix_capture_v2_inner.sh",
+      "sha256": "94ad69c4492cec0dcb178293f978f90678692a589b8f6b94e7e657663a9b0016"
+    },
+    "logs": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_reset_prefix_phase17_20260809/logs/official_native_event_v2_reset_ready_phase17"
+  },
+  "static_gate": {
+    "ready_requires_complete_31_state_odom_imu": true,
+    "recorder_started_before_mode_publish": true,
+    "isolated_domain216": true,
+    "domain232_forbidden": true,
+    "mode_events_preserved": true,
+    "tests_passed": 7
+  },
+  "capture_attempt": {
+    "attempt_count": 1,
+    "ready_wait_budget_s": 5.0,
+    "ready_receipt_s": null,
+    "joint_mode_receipt_s": null,
+    "first_complete_snapshot_s": null,
+    "rl_mode_receipt_s": null,
+    "scoreable_joint_prefix_s": null,
+    "npz_written": false,
+    "manifest_written": false,
+    "exit_reason": "recorder did not become ready",
+    "domain216_process_remaining": false
+  },
+  "qualification_gate": {
+    "complete_snapshot_before_joint": false,
+    "joint_mode_event_recorded": false,
+    "complete_scoreable_joint_prefix_at_least_4s": false,
+    "rl_mode_event_recorded": false,
+    "passed": false,
+    "failed": [
+      "complete_snapshot_before_joint",
+      "joint_mode_event_recorded",
+      "complete_scoreable_joint_prefix_at_least_4s",
+      "rl_mode_event_recorded"
+    ]
+  },
+  "truth_boundary": {
+    "failure_is_capture_handshake_not_physics": true,
+    "five_second_wait_budget_may_be_too_short": true,
+    "zero_mode_complete_state_reachability_not_decided": true,
+    "phase16_first_complete_snapshot_was_about_5p195s": true,
+    "second_capture_not_run": true,
+    "prescribed_physics_executed": false,
+    "free_root_executed": false,
+    "training_base_real_robot": false
+  },
+  "decision": {
+    "status": "PHASE17_READY_HANDSHAKE_CAPTURE_ABORTED_NO_PHYSICS",
+    "result": "The strict ready handshake did not occur within the launcher's 5.0 s wait budget; JOINT_DEFAULT and RL_DEFAULT were therefore never published and no replay-qualified artifact was written.",
+    "conclusion": "The semantic ready fix is implemented and statically tested, but the single capture attempt cannot distinguish a too-short wait budget from complete-state unavailability before JOINT mode. This is not a reset-prefix, dynamics, or Any2Any result.",
+    "next_step": "Stop without a second capture. If separately authorized, use a materially longer readiness timeout and retain the same strict no-JOINT-before-ready contract; do not enter physics unless the saved artifact proves at least four seconds of complete scoreable prefix."
+  }
+}
