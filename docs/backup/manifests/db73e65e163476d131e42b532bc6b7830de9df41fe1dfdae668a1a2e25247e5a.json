@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "reports/X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE3.json",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-09/phase3/X2_SPEED_BASE_AND_WBT_PROMOTION_PHASE3.json",
+  "local_size": 1056,
+  "remote_size": null,
+  "local_sha256": "319d97e91bbb7aee132c394567b9fc6f470ad1aa3b29f9d6dfc0bfe7431c530f",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-09T12:51:49+08:00"
+}
