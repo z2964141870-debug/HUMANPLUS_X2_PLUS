@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "status": "completed_no_training",
+  "intervention": {
+    "base": "toe_to_forefoot_exact30_smooth9",
+    "modified_joints": [
+      "left_knee_joint",
+      "right_knee_joint"
+    ],
+    "knee_windows": [
+      11,
+      13,
+      15
+    ],
+    "untouched_dof_count": 29
+  },
+  "variants": {
+    "11": {
+      "foot_semantic_p95_max_m": 0.10985818955710216,
+      "joint_step_max_rad": 0.15217196941375732,
+      "joint_step_p95_max_rad": 0.1437303125858307,
+      "valid_contact_actions": 9,
+      "stance_slip_p95_mps": {
+        "left": 0.951315365638068,
+        "right": 0.30360841295111896
+      },
+      "swing_clearance_p50_m": {
+        "left": 0.07341558881180897,
+        "right": 0.07741112012556774
+      }
+    },
+    "13": {
+      "foot_semantic_p95_max_m": 0.10976722838428164,
+      "joint_step_max_rad": 0.13850514590740204,
+      "joint_step_p95_max_rad": 0.12401356175541878,
+      "valid_contact_actions": 9,
+      "stance_slip_p95_mps": {
+        "left": 1.331191940051567,
+        "right": 0.45892576469158336
+      },
+      "swing_clearance_p50_m": {
+        "left": 0.08438910866664344,
+        "right": 0.08002650452797601
+      }
+    },
+    "15": {
+      "foot_semantic_p95_max_m": 0.12104228682592574,
+      "joint_step_max_rad": 0.13850514590740204,
+      "joint_step_p95_max_rad": 0.12349284584634006,
+      "valid_contact_actions": 9,
+      "stance_slip_p95_mps": {
+        "left": 1.7166902203192074,
+        "right": 0.47024961118292785
+      },
+      "swing_clearance_p50_m": {
+        "left": 0.08443387839105607,
+        "right": 0.07660707004369569
+      }
+    }
+  },
+  "gates": {
+    "11": {
+      "semantic_nonregression_vs_toe_smooth9": true,
+      "joint_step_max_within_current_v4_110pct": true,
+      "joint_step_p95_within_current_v4_110pct": true,
+      "contact_coverage_7_of_9": true,
+      "stance_slip_nonregression_vs_current": false,
+      "swing_clearance_not_compressed_vs_current": true,
+      "winner": false
+    },
+    "13": {
+      "semantic_nonregression_vs_toe_smooth9": true,
+      "joint_step_max_within_current_v4_110pct": true,
+      "joint_step_p95_within_current_v4_110pct": true,
+      "contact_coverage_7_of_9": true,
+      "stance_slip_nonregression_vs_current": false,
+      "swing_clearance_not_compressed_vs_current": true,
+      "winner": false
+    },
+    "15": {
+      "semantic_nonregression_vs_toe_smooth9": false,
+      "joint_step_max_within_current_v4_110pct": true,
+      "joint_step_p95_within_current_v4_110pct": true,
+      "contact_coverage_7_of_9": true,
+      "stance_slip_nonregression_vs_current": false,
+      "swing_clearance_not_compressed_vs_current": true,
+      "winner": false
+    }
+  },
+  "first_passing_window": null,
+  "training": false,
+  "contact_truth": "kinematic_model_estimate"
+}

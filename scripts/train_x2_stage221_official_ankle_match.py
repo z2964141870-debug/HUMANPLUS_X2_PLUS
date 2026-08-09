@@ -175,6 +175,32 @@ parser.add_argument(
     default="foundation",
     help="Pre-registered environment/reward profile.",
 )
+parser.add_argument(
+    "--recovery_reset_dataset",
+    type=Path,
+    default=None,
+    help=(
+        "Optional Stage335 physical reset-state NPZ. This is isolated to the "
+        "stand_backend profile and never changes the motion reference."
+    ),
+)
+parser.add_argument(
+    "--recovery_reset_fraction",
+    type=float,
+    default=0.0,
+    help="Fraction of reset environments overwritten by recovery states.",
+)
+parser.add_argument(
+    "--recovery_reset_sampling",
+    choices=("all", "balanced", "eventual_pass", "eventual_fail"),
+    default="balanced",
+)
+parser.add_argument(
+    "--recovery_reset_expected_sha256",
+    type=str,
+    default=None,
+    help="Optional immutable dataset hash; mismatch aborts before environment creation.",
+)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 
@@ -185,6 +211,7 @@ import torch  # noqa: E402
 from rsl_rl.runners import OnPolicyRunner  # noqa: E402
 
 from isaaclab.envs import ManagerBasedRLEnv  # noqa: E402
+from isaaclab.managers import EventTermCfg  # noqa: E402
 from isaaclab.utils.io import dump_yaml  # noqa: E402
 from isaaclab_rl.rsl_rl import RslRlSymmetryCfg, RslRlVecEnvWrapper  # noqa: E402
 
@@ -216,9 +243,19 @@ from gear_sonic.envs.manager_env.modular_tracking_env_cfg import (  # noqa: E402
 from gear_sonic.envs.manager_env.robots.x2 import (  # noqa: E402
     X2_URDF_BY_COLLISION_PROFILE,
 )
+from official_x2.recovery_reset_curriculum import (  # noqa: E402
+    audit_recovery_dataset,
+    reset_from_recovery_dataset,
+)
 
 
 def main() -> None:
+    if not 0.0 <= args.recovery_reset_fraction <= 1.0:
+        raise ValueError("--recovery_reset_fraction must be in [0, 1]")
+    if args.recovery_reset_fraction > 0.0 and args.recovery_reset_dataset is None:
+        raise ValueError("a positive recovery reset fraction requires --recovery_reset_dataset")
+    if args.recovery_reset_dataset is not None and args.profile != "stand_backend":
+        raise ValueError("recovery reset curriculum is isolated to --profile stand_backend")
     response_history_profile = args.profile == "privileged_teacher_phase_template_response_history"
     if response_history_profile:
         env_cfg = X2LowerVelocityTeacherPhaseTemplateResponseHistoryFlatEnvCfg()
@@ -509,6 +546,34 @@ def main() -> None:
         env_cfg.scene.robot.actuators["feet"].stiffness = 40.0
         env_cfg.scene.robot.actuators["feet"].damping = 20.0
 
+    recovery_reset_audit = None
+    if args.recovery_reset_dataset is not None:
+        recovery_path = args.recovery_reset_dataset.expanduser().resolve()
+        recovery_reset_audit = audit_recovery_dataset(
+            recovery_path,
+            args.recovery_reset_expected_sha256,
+        )
+        # Append a final reset term rather than replacing inherited reset_base
+        # or reset_robot_joints. Non-selected envs therefore retain the exact
+        # baseline behavior, and selected envs are overwritten atomically.
+        env_cfg.events.recovery_state_reset = EventTermCfg(
+            func=reset_from_recovery_dataset,
+            mode="reset",
+            params={
+                "dataset_path": str(recovery_path),
+                "recovery_fraction": args.recovery_reset_fraction,
+                "sampling_mode": args.recovery_reset_sampling,
+                "expected_sha256": args.recovery_reset_expected_sha256,
+                "asset_name": "robot",
+            },
+        )
+        event_names = list(env_cfg.events.__dict__)
+        reset_predecessors = [
+            name for name in ("reset_base", "reset_robot_joints") if name in event_names
+        ]
+        if any(event_names.index(name) > event_names.index("recovery_state_reset") for name in reset_predecessors):
+            raise RuntimeError("recovery_state_reset must execute after inherited physical resets")
+
     if args.profile in {
         "privileged_teacher_phase_template_heading_hold",
         "privileged_teacher_phase_template_response_history",
@@ -597,9 +662,13 @@ def main() -> None:
         f"response_adapter_mask={args.response_adapter_mask} "
         f"collision_profile={args.collision_profile} "
         f"self_collisions={args.self_collisions} "
+        f"recovery_reset_fraction={args.recovery_reset_fraction} "
+        f"recovery_reset_sampling={args.recovery_reset_sampling} "
         f"report={actuator_response_report}",
         flush=True,
     )
+    if recovery_reset_audit is not None:
+        print(f"[Stage172] recovery_reset_audit={recovery_reset_audit}", flush=True)
     if args.profile in {
         "privileged_teacher_phase_template_residual",
         "privileged_teacher_phase_template_heading_hold",

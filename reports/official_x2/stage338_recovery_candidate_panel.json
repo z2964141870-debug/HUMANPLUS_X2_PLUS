@@ -1,0 +1,304 @@
+{
+  "stage": "stage338_recovery_candidate_panel",
+  "question": "Does low-fraction recovery reset training improve the frozen Stage326 stiff-fixed stop gate?",
+  "matched_contract": {
+    "moving_model": "stage306_s2652_transition_head_actor.onnx",
+    "pd": "official_kp_ankle x1.2",
+    "upper": "fixed",
+    "command_vx_mps": 0.3,
+    "move_seconds": 4.0,
+    "stop_seconds": 8.0,
+    "future_stop_preview_seconds": 0.5,
+    "stop_controller": "brake_blend_to_policy"
+  },
+  "historical_source_control": {
+    "stationary_model": "stand_backend_scratch_i150_actor.onnx",
+    "source_glob": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage326_s2652_*stiff1p2_fixed_r*.json",
+    "rows": [
+      {
+        "status": "pass",
+        "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage326_s2652_preview0p5_split_intent_brake_stiff1p2_fixed_r1.json",
+        "stand": true,
+        "startup": true,
+        "move": true,
+        "stop": true,
+        "stop_root_z_min_m": 0.6006738317529746,
+        "stop_tilt_max_rad": 0.19201392986491686,
+        "stop_drift_m": 0.13755440271558825,
+        "stop_tail_speed_mps": 0.005429842039717074,
+        "stop_settle_time_s": 2.12
+      },
+      {
+        "status": "fail",
+        "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage326_s2652_preview0p5_split_intent_brake_stiff1p2_fixed_r2.json",
+        "stand": true,
+        "startup": true,
+        "move": true,
+        "stop": false,
+        "stop_root_z_min_m": 0.1385444401825461,
+        "stop_tilt_max_rad": 1.5314179663333047,
+        "stop_drift_m": 0.5655000639194595,
+        "stop_tail_speed_mps": 0.0003723182397342859,
+        "stop_settle_time_s": 2.58
+      },
+      {
+        "status": "pass",
+        "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage326_s2652_preview0p5_split_intent_brake_stiff1p2_fixed_r3.json",
+        "stand": true,
+        "startup": true,
+        "move": true,
+        "stop": true,
+        "stop_root_z_min_m": 0.6280012595558861,
+        "stop_tilt_max_rad": 0.23318176369606305,
+        "stop_drift_m": 0.14894763996043073,
+        "stop_tail_speed_mps": 0.005245481410133371,
+        "stop_settle_time_s": 3.62
+      },
+      {
+        "status": "pass",
+        "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage326_s2652_preview0p5_split_intent_brake_stiff1p2_fixed_r4.json",
+        "stand": true,
+        "startup": true,
+        "move": true,
+        "stop": true,
+        "stop_root_z_min_m": 0.632996524911848,
+        "stop_tilt_max_rad": 0.22539031190368097,
+        "stop_drift_m": 0.14061975889943049,
+        "stop_tail_speed_mps": 0.0053794595707436586,
+        "stop_settle_time_s": 2.48
+      },
+      {
+        "status": "fail",
+        "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage326_s2652_preview0p5_split_intent_brake_stiff1p2_fixed_r5.json",
+        "stand": true,
+        "startup": true,
+        "move": true,
+        "stop": false,
+        "stop_root_z_min_m": 0.1391367291927572,
+        "stop_tilt_max_rad": 1.5549677852649655,
+        "stop_drift_m": 0.5774918263776586,
+        "stop_tail_speed_mps": 0.0003798130853883908,
+        "stop_settle_time_s": 4.98
+      }
+    ],
+    "passes": 3,
+    "valid": 5
+  },
+  "current_invocation_runner_nonzero_count": 0,
+  "candidates": {
+    "f000": {
+      "rows": [
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f000_stiff1p2_fixed_r1.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "stop_root_z_min_m": 0.13762626240733117,
+          "stop_tilt_max_rad": 1.544673819915691,
+          "stop_drift_m": 0.6024274038526558,
+          "stop_tail_speed_mps": 0.0008748736334029656,
+          "stop_settle_time_s": 4.04
+        },
+        {
+          "status": "pass",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f000_stiff1p2_fixed_r2.json",
+          "stand": true,
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_root_z_min_m": 0.6315643626684672,
+          "stop_tilt_max_rad": 0.2087600590605855,
+          "stop_drift_m": 0.11575396532597779,
+          "stop_tail_speed_mps": 0.005637424310634313,
+          "stop_settle_time_s": 2.92
+        },
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f000_stiff1p2_fixed_r3.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "stop_root_z_min_m": 0.13766874260868725,
+          "stop_tilt_max_rad": 1.5426949991484205,
+          "stop_drift_m": 0.5914932405147136,
+          "stop_tail_speed_mps": 0.0009427890229584843,
+          "stop_settle_time_s": 4.04
+        },
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f000_stiff1p2_fixed_r4.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": true,
+          "stop_root_z_min_m": 0.6402434012670876,
+          "stop_tilt_max_rad": 0.22153659263933306,
+          "stop_drift_m": 0.14181981752377298,
+          "stop_tail_speed_mps": 0.0056458778856045,
+          "stop_settle_time_s": 3.0
+        },
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f000_stiff1p2_fixed_r5.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": true,
+          "stop_root_z_min_m": 0.6391210499414705,
+          "stop_tilt_max_rad": 0.21489126318082735,
+          "stop_drift_m": 0.13721575749566342,
+          "stop_tail_speed_mps": 0.005626142166728545,
+          "stop_settle_time_s": 3.0
+        }
+      ],
+      "passes": 1,
+      "valid": 5
+    },
+    "f005": {
+      "rows": [
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f005_stiff1p2_fixed_r1.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": true,
+          "stop_root_z_min_m": 0.6307900967017892,
+          "stop_tilt_max_rad": 0.22269192585546868,
+          "stop_drift_m": 0.09233077227392862,
+          "stop_tail_speed_mps": 0.005348076007731802,
+          "stop_settle_time_s": 2.68
+        },
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f005_stiff1p2_fixed_r2.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": true,
+          "stop_root_z_min_m": 0.6283219042954568,
+          "stop_tilt_max_rad": 0.22497973692565873,
+          "stop_drift_m": 0.11367947840442748,
+          "stop_tail_speed_mps": 0.005294306421165682,
+          "stop_settle_time_s": 2.72
+        },
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f005_stiff1p2_fixed_r3.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": true,
+          "stop_root_z_min_m": 0.6436261238314052,
+          "stop_tilt_max_rad": 0.24026568381505964,
+          "stop_drift_m": 0.14762741024878892,
+          "stop_tail_speed_mps": 0.00536780864040688,
+          "stop_settle_time_s": 2.4
+        },
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f005_stiff1p2_fixed_r4.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "stop_root_z_min_m": 0.6415611895026189,
+          "stop_tilt_max_rad": 0.22463114266549442,
+          "stop_drift_m": 0.15314223876999522,
+          "stop_tail_speed_mps": 0.005328338647369863,
+          "stop_settle_time_s": 2.64
+        },
+        {
+          "status": "pass",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f005_stiff1p2_fixed_r5.json",
+          "stand": true,
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_root_z_min_m": 0.6361929786223609,
+          "stop_tilt_max_rad": 0.2434799883112029,
+          "stop_drift_m": 0.12118650534466875,
+          "stop_tail_speed_mps": 0.00536134963123048,
+          "stop_settle_time_s": 2.66
+        }
+      ],
+      "passes": 1,
+      "valid": 5
+    },
+    "f010": {
+      "rows": [
+        {
+          "status": "fail",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f010_stiff1p2_fixed_r1.json",
+          "stand": true,
+          "startup": true,
+          "move": false,
+          "stop": false,
+          "stop_root_z_min_m": 0.643284830371003,
+          "stop_tilt_max_rad": 0.23324791613537002,
+          "stop_drift_m": 0.15628219937244994,
+          "stop_tail_speed_mps": 0.00533472193290829,
+          "stop_settle_time_s": 3.7
+        },
+        {
+          "status": "pass",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f010_stiff1p2_fixed_r2.json",
+          "stand": true,
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_root_z_min_m": 0.6298338458381506,
+          "stop_tilt_max_rad": 0.23277466021607932,
+          "stop_drift_m": 0.08468452576803585,
+          "stop_tail_speed_mps": 0.005369709635226636,
+          "stop_settle_time_s": 2.7
+        },
+        {
+          "status": "pass",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f010_stiff1p2_fixed_r3.json",
+          "stand": true,
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_root_z_min_m": 0.6281374735800874,
+          "stop_tilt_max_rad": 0.21599047076315428,
+          "stop_drift_m": 0.08581409016534233,
+          "stop_tail_speed_mps": 0.005267526845489527,
+          "stop_settle_time_s": 3.22
+        },
+        {
+          "status": "pass",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f010_stiff1p2_fixed_r4.json",
+          "stand": true,
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_root_z_min_m": 0.6267164543203805,
+          "stop_tilt_max_rad": 0.21298440547180184,
+          "stop_drift_m": 0.0761425638134016,
+          "stop_tail_speed_mps": 0.005367965019808324,
+          "stop_settle_time_s": 2.72
+        },
+        {
+          "status": "pass",
+          "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage338_recovery_f010_stiff1p2_fixed_r5.json",
+          "stand": true,
+          "startup": true,
+          "move": true,
+          "stop": true,
+          "stop_root_z_min_m": 0.6278413352411562,
+          "stop_tilt_max_rad": 0.212856979073943,
+          "stop_drift_m": 0.07849241000631545,
+          "stop_tail_speed_mps": 0.0053513125803146535,
+          "stop_settle_time_s": 2.72
+        }
+      ],
+      "passes": 4,
+      "valid": 5
+    }
+  },
+  "full_gate_failures": 9
+}
