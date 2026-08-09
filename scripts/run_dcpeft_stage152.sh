@@ -326,6 +326,9 @@ RUNTIME_BLEND_EXPONENT="${RUNTIME_BLEND_EXPONENT:-2.0}"
 RUNTIME_BLEND_PASSTHROUGH_TOKENS="${RUNTIME_BLEND_PASSTHROUGH_TOKENS:-[]}"
 RUNTIME_BLEND_PASSTHROUGH_GATE="${RUNTIME_BLEND_PASSTHROUGH_GATE:-1.0}"
 ACTOR_LORA_PREFIXES="${ACTOR_LORA_PREFIXES:-[actor_module.decoders.g1_dyn]}"
+CRITIC_LORA_PREFIXES="${CRITIC_LORA_PREFIXES:-[critic_module]}"
+FAITHFUL_WBT29="${FAITHFUL_WBT29:-false}"
+FAITHFUL_WBT29_TRAINER_TARGET="${FAITHFUL_WBT29_TRAINER_TARGET:-x2_faithful_live_phase46.Phase46LiveZeroTrainer}"
 ACTOR_INPUT_MASK_ENABLED="${ACTOR_INPUT_MASK_ENABLED:-false}"
 ACTOR_INPUT_MASK_LAYERS="${ACTOR_INPUT_MASK_LAYERS:-[actor_module.decoders.g1_dyn.module.0]}"
 ACTOR_INPUT_MASK_DECODER="${ACTOR_INPUT_MASK_DECODER:-g1_dyn}"
@@ -615,6 +618,50 @@ case "${SOURCE_CANONICAL_REFERENCE}" in
   *) echo "unsupported SOURCE_CANONICAL_REFERENCE=${SOURCE_CANONICAL_REFERENCE}" >&2; exit 2 ;;
 esac
 
+# Dedicated opt-in boundary for the faithful Any2Any/WBT path.  Historical
+# Stage152 jobs retain their original 31-DoF behavior unless explicitly set.
+WBT29_SOURCE_JOINTS='[left_hip_pitch_joint,right_hip_pitch_joint,waist_yaw_joint,left_hip_roll_joint,right_hip_roll_joint,waist_roll_joint,left_hip_yaw_joint,right_hip_yaw_joint,waist_pitch_joint,left_knee_joint,right_knee_joint,left_shoulder_pitch_joint,right_shoulder_pitch_joint,left_ankle_pitch_joint,right_ankle_pitch_joint,left_shoulder_roll_joint,right_shoulder_roll_joint,left_ankle_roll_joint,right_ankle_roll_joint,left_shoulder_yaw_joint,right_shoulder_yaw_joint,left_elbow_joint,right_elbow_joint,left_wrist_roll_joint,right_wrist_roll_joint,left_wrist_pitch_joint,right_wrist_pitch_joint,left_wrist_yaw_joint,right_wrist_yaw_joint]'
+WBT14_SOURCE_BODIES='[base_link,left_hip_roll_link,left_knee_link,left_ankle_roll_link,right_hip_roll_link,right_knee_link,right_ankle_roll_link,torso_link,left_shoulder_roll_link,left_elbow_link,left_wrist_yaw_link,right_shoulder_roll_link,right_elbow_link,right_wrist_yaw_link]'
+VR_3POINT_BODY_NAMES='[left_wrist_roll_link,right_wrist_roll_link,torso_link]'
+case "${FAITHFUL_WBT29}" in
+  false)
+    FAITHFUL_WBT29_OVERRIDES=()
+    ACTUATOR_CONTEXT_OBS_OVERRIDES=(
+      "manager_env.observations.policy.x2_actuator_response_context.params.fixed_context=${ACTUATOR_RESPONSE_CONTEXT_OVERRIDE}"
+    )
+    ;;
+  true)
+    # Keep the live critic on the released SONIC 14-body semantic contract.
+    # The generic X2 launcher would otherwise overwrite this later with every
+    # X2 link and silently expand the frozen critic input 1645 -> 1807.
+    TRACKED_BODY_NAMES="${WBT14_SOURCE_BODIES}"
+    TRACKED_BODY_SET=source14
+    VR_3POINT_BODY_NAMES='[left_wrist_yaw_link,right_wrist_yaw_link,torso_link]'
+    REWARD_POINT_BODY_NAMES='[torso_link,left_wrist_yaw_link,right_wrist_yaw_link]'
+    REWARD_POINT_BODY_OFFSETS='[[0.0,0.0,0.5],[0.0,0.0,0.0],[0.0,0.0,0.0]]'
+    REWARD_POINT_MODE=source3
+    REWARD_WRIST_LINK=yaw
+    FAITHFUL_WBT29_OVERRIDES=(
+      'manager_env._target_=x2_faithful_live_actions_phase46.FaithfulWBT29TrackingEnvCfg'
+      'manager_env.actions.joint_pos._target_=x2_faithful_live_actions_phase46.WBT29JointPositionActionCfg'
+      "manager_env.actions.joint_pos.joint_names=${WBT29_SOURCE_JOINTS}"
+      '+manager_env.actions.joint_pos.preserve_order=true'
+      "++manager_env.observations.policy.joint_pos.params.asset_cfg={_target_:isaaclab.managers.SceneEntityCfg,name:robot,joint_names:${WBT29_SOURCE_JOINTS},preserve_order:true}"
+      "++manager_env.observations.policy.joint_vel.params.asset_cfg={_target_:isaaclab.managers.SceneEntityCfg,name:robot,joint_names:${WBT29_SOURCE_JOINTS},preserve_order:true}"
+      "++manager_env.observations.critic.joint_pos.params.asset_cfg={_target_:isaaclab.managers.SceneEntityCfg,name:robot,joint_names:${WBT29_SOURCE_JOINTS},preserve_order:true}"
+      "++manager_env.observations.critic.joint_vel.params.asset_cfg={_target_:isaaclab.managers.SceneEntityCfg,name:robot,joint_names:${WBT29_SOURCE_JOINTS},preserve_order:true}"
+      'manager_env.observations.tokenizer.command_multi_future_nonflat.func=x2_faithful_live_phase46:command_multi_future_source29'
+      'manager_env.observations.critic.command_multi_future.func=x2_faithful_live_phase46:command_multi_future_source29'
+      "+algo.trl.seed=${SEED}"
+      "trainer._target_=${FAITHFUL_WBT29_TRAINER_TARGET}"
+    )
+    # The faithful source observation contains only the frozen G1
+    # proprioception terms; response context is not part of exact S7.
+    ACTUATOR_CONTEXT_OBS_OVERRIDES=()
+    ;;
+  *) echo "unsupported FAITHFUL_WBT29=${FAITHFUL_WBT29}" >&2; exit 2 ;;
+esac
+
 case "${VR_WRIST_OFFSET_MODE}" in
   current)
     VR_3POINT_OFFSETS='[[0.18,-0.025,0.0],[0.18,0.025,0.0],[0.0,0.0,0.35]]'
@@ -749,6 +796,7 @@ echo "semantic_neutral_init_unmapped=${SEMANTIC_NEUTRAL_INIT_UNMAPPED}"
 echo "semantic_copy_strict=${SEMANTIC_COPY_STRICT}"
 echo "runtime_residual_blend=enabled:${RUNTIME_RESIDUAL_BLEND_ENABLED},root_enabled:${RUNTIME_BLEND_ROOT_ENABLED},root_onset:${RUNTIME_BLEND_ROOT_ONSET},root_threshold:${RUNTIME_BLEND_ROOT_THRESHOLD},ee_enabled:${RUNTIME_BLEND_EE_ENABLED},ee_onset:${RUNTIME_BLEND_EE_ONSET},ee_threshold:${RUNTIME_BLEND_EE_THRESHOLD},ee_bodies:${RUNTIME_BLEND_EE_BODY_NAMES},ee_side_specific:${RUNTIME_BLEND_EE_SIDE_SPECIFIC},ee_action_tokens:${RUNTIME_BLEND_EE_ACTION_TOKENS},foot_enabled:${RUNTIME_BLEND_FOOT_ENABLED},foot_onset:${RUNTIME_BLEND_FOOT_ONSET},foot_threshold:${RUNTIME_BLEND_FOOT_THRESHOLD},foot_bodies:${RUNTIME_BLEND_FOOT_BODY_NAMES},foot_side_specific:${RUNTIME_BLEND_FOOT_SIDE_SPECIFIC},foot_action_tokens:${RUNTIME_BLEND_FOOT_ACTION_TOKENS},gate_range:[${RUNTIME_BLEND_MIN_GATE},${RUNTIME_BLEND_MAX_GATE}],exponent:${RUNTIME_BLEND_EXPONENT},passthrough_tokens:${RUNTIME_BLEND_PASSTHROUGH_TOKENS},passthrough_gate:${RUNTIME_BLEND_PASSTHROUGH_GATE}"
 echo "actor_lora_prefixes=${ACTOR_LORA_PREFIXES}"
+echo "critic_lora_prefixes=${CRITIC_LORA_PREFIXES} faithful_wbt29=${FAITHFUL_WBT29}"
 echo "actor_input_mask=enabled:${ACTOR_INPUT_MASK_ENABLED},layers:${ACTOR_INPUT_MASK_LAYERS},decoder:${ACTOR_INPUT_MASK_DECODER},features:${ACTOR_INPUT_MASK_FEATURES}"
 echo "actor_output_mask=enabled:${ACTOR_OUTPUT_MASK_ENABLED},layers:${ACTOR_OUTPUT_MASK_LAYERS},tokens:${ACTOR_OUTPUT_MASK_TOKENS},aux_tokens:${ACTOR_OUTPUT_AUX_TOKENS},aux_scale:${ACTOR_OUTPUT_AUX_SCALE},unselected_scale:${ACTOR_OUTPUT_UNSELECTED_SCALE},excluded:[head_yaw_joint,head_pitch_joint]"
 echo "response_aware_lora=enabled:${RESPONSE_AWARE_LORA_ENABLED},layers:${RESPONSE_AWARE_LORA_LAYERS},input_scale:${RESPONSE_AWARE_INPUT_SCALE},hidden_dim:${RESPONSE_AWARE_HIDDEN_DIM},max_condition:${RESPONSE_AWARE_MAX_CONDITION},history:${RESPONSE_AWARE_HISTORY_LENGTH}x${RESPONSE_AWARE_JOINT_COUNT},component_scales:${RESPONSE_AWARE_TARGET_POSITION_SCALE}/${RESPONSE_AWARE_JOINT_POSITION_SCALE}/${RESPONSE_AWARE_JOINT_VELOCITY_SCALE}/${RESPONSE_AWARE_TRACKING_ERROR_SCALE},input_tokens:${RESPONSE_AWARE_JOINT_INCLUDE_TOKENS},output_tokens:${RESPONSE_AWARE_OUTPUT_ACTION_TOKENS},contact_error_gate:${RESPONSE_AWARE_CONTACT_GATE_BY_TRACKING_ERROR}@${RESPONSE_AWARE_TRACKING_ERROR_ACTIVITY_SCALE},response_only:${RESPONSE_AWARE_TRAIN_RESPONSE_ONLY}"
@@ -804,13 +852,14 @@ timeout "${TIMEOUT_SECONDS:-600}s" env \
   "+manager_env.config.x2_action_preemphasis.max_abs_delta_rad=${ACTION_PREEMPHASIS_MAX_DELTA_RAD}" \
   "+manager_env.config.x2_action_preemphasis.actuator_group_names=${ACTION_PREEMPHASIS_GROUPS}" \
   "+manager_env.config.x2_action_preemphasis.require_response_actuator=true" \
-  "manager_env.observations.policy.x2_actuator_response_context.params.fixed_context=${ACTUATOR_RESPONSE_CONTEXT_OVERRIDE}" \
+  "${ACTUATOR_CONTEXT_OBS_OVERRIDES[@]}" \
   "${ACTUATOR_GAIN_EVENT_OVERRIDE}" \
   "${RIGID_BODY_MASS_EVENT_OVERRIDE}" \
   "${CLEAN_EVAL_OVERRIDES[@]}" \
   "${COMMAND_INIT_OVERRIDES[@]}" \
   "${ENCODER_SAMPLE_OVERRIDE[@]}" \
   "${SOURCE_CANONICAL_OVERRIDES[@]}" \
+  "${FAITHFUL_WBT29_OVERRIDES[@]}" \
   "${ANCHOR_POS_XY_TERMINATION_OVERRIDES[@]}" \
   manager_env.terminations.anchor_pos.params.threshold="${ANCHOR_POS_THRESHOLD}" \
   manager_env.terminations.anchor_ori_full.params.threshold="${ANCHOR_ORI_FULL_THRESHOLD}" \
@@ -931,7 +980,7 @@ timeout "${TIMEOUT_SECONDS:-600}s" env \
   "+manager_env.commands.motion.motion_lib_cfg.max_unique_motions=${MOTIONS}" \
   "+manager_env.commands.motion.motion_lib_cfg.override_num_motions_to_load=${MOTIONS}" \
   manager_env.commands.motion.anchor_body=base_link \
-  'manager_env.commands.motion.vr_3point_body=[left_wrist_roll_link,right_wrist_roll_link,torso_link]' \
+  "manager_env.commands.motion.vr_3point_body=${VR_3POINT_BODY_NAMES}" \
   "manager_env.commands.motion.vr_3point_body_offset=${VR_3POINT_OFFSETS}" \
   "manager_env.commands.motion.reward_point_body=${REWARD_POINT_BODY_NAMES}" \
   "manager_env.commands.motion.reward_point_body_offset=${REWARD_POINT_BODY_OFFSETS}" \
@@ -1146,7 +1195,7 @@ timeout "${TIMEOUT_SECONDS:-600}s" env \
   +algo.config.any2any_lora.response_aware.tracking_error_activity_scale="${RESPONSE_AWARE_TRACKING_ERROR_ACTIVITY_SCALE}" \
   +algo.config.any2any_lora.response_aware.train_response_only="${RESPONSE_AWARE_TRAIN_RESPONSE_ONLY}" \
   +algo.config.any2any_lora.pretrain_export_path="${PRETRAIN_EXPORT_PATH}" \
-  '+algo.config.any2any_lora.critic_lora_prefixes=[critic_module]' \
+  "+algo.config.any2any_lora.critic_lora_prefixes=${CRITIC_LORA_PREFIXES}" \
   "+algo.config.any2any_lora.train_boundary_keys=${TRAIN_BOUNDARY_KEYS}" \
   +algo.config.source_policy_retention.enabled="${SOURCE_RETENTION_ENABLED}" \
   +algo.config.source_policy_retention.action_mean_coef="${SOURCE_RETENTION_ACTION_COEF}" \

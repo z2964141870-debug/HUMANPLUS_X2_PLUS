@@ -1,0 +1,26 @@
+{
+  "stage": "BASE Phase32",
+  "event": "PRE_PHYSICS_CONTAINER_ABI_CORRECTION",
+  "first_closed_start": {
+    "entered_physics": false,
+    "error": "host-built shim required GLIBC_2.38; official container provides GLIBC_2.35",
+    "episode_or_mmap_created": false
+  },
+  "correction": {
+    "source_unchanged_sha256": "921562b7da1445feedc35a334cc4986c0cbb2be39246b1a31960d77fc29d127a",
+    "header_unchanged_sha256": "5a5992b25507d74873b4ab5cb3822ecfade9412270b52ea7ca81c11d5f120412",
+    "build_environment": "network-disabled x2-aimdk-humble:1.0, Ubuntu glibc 2.35",
+    "compatible_shim_sha256": "ec4fe929a1ab1d01f71c1a7a939b512274f832dc15fad4ead725e396c9cfacd3",
+    "maximum_required_glibc": "GLIBC_2.34"
+  },
+  "revalidation": {
+    "toy_qpos_qvel_absmax": 0.0,
+    "toy_committed_dropped": [606, 0],
+    "official_scene_qpos_qvel_absmax": 0.0,
+    "official_scene_committed_dropped": [1252, 0],
+    "official_scene_wall_control_s": 0.04779637200408615,
+    "official_scene_wall_hook_s": 0.05066147300385637,
+    "decision": "NO_PERTURBATION_GATE_REPASSED_WITH_CONTAINER_COMPATIBLE_BINARY"
+  },
+  "closed_capture_policy": "one actual physics capture remains permitted because the failed loader invocation never entered physics; no retry is allowed after that capture starts"
+}

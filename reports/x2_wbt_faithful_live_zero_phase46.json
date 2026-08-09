@@ -1,0 +1,40 @@
+{
+  "schema_version": "x2_wbt_faithful_live_zero_phase46_summary_v1",
+  "decision": "PASS_LIVE_ZERO_UPDATE_ONLY",
+  "optimizer_steps": 0,
+  "environment_control_steps": 0,
+  "environment_resets": 2,
+  "checkpoint_created": false,
+  "train": {
+    "artifact": "artifacts/retarget/x2_phase45_kinematic_bronze_train.pkl",
+    "sha256": "06b759e7926bd841537cf515d7cc46793d47503a9fab5da95c649a2f0b6ec4a6",
+    "keys": ["AMASS-STAND-001", "AMASS-UPPER-001", "PHUMA-LUNGE-R-001"],
+    "runtime_report": "logs/x2_faithful_live_zero_phase46_train/phase46_live_zero_train.json",
+    "decision": "PASS"
+  },
+  "held_out": {
+    "artifact": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/held_out/official_native_dance_held_out.pkl",
+    "sha256": "45ffda2f8ddc64cbeb4ccc714d37a0c98ca328e8e6473edb12670dcdfd19a3dc",
+    "keys": ["official_native_dance_held_out_000", "official_native_dance_held_out_001", "official_native_dance_held_out_002"],
+    "runtime_report": "logs/x2_faithful_live_zero_phase46_held_out/phase46_live_zero_held_out.json",
+    "decision": "PASS"
+  },
+  "runtime_contract": {
+    "policy_observation": 930,
+    "critic_observation": 1645,
+    "tokenizer_future_reference": [10, 58],
+    "policy_action": 29,
+    "sim_articulation": 31,
+    "head_policy_dofs": 0,
+    "head_nominal": [0.0, 0.0],
+    "actor_s7_layers": [0, 2, 4, 6, 8, 10, 12],
+    "critic_s7_layers": [2, 4, 6, 8, 10]
+  },
+  "equivalence": {
+    "fixed_batches_per_split": 2,
+    "action_B0_max_abs": 0.0,
+    "value_B0_max_abs": 0.0,
+    "finite": true
+  },
+  "boundary": "This proves live ingestion and zero-residual numerical equivalence only. It is not a physics rollout, PPO update, stability result, or evidence that Bronze references are dynamically feasible."
+}

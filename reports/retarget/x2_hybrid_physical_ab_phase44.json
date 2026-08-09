@@ -1,0 +1,130 @@
+{
+  "schema_version": "x2_hybrid_physical_ab_phase44_v1",
+  "truth_boundary": {
+    "physics_executed": false,
+    "ppo_or_optimizer": false,
+    "prescribed_is_not_free_balance": true,
+    "base_files_modified": false
+  },
+  "qualification": {
+    "manifest": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/official_x2/phase28_stage250_extended_direct_manifest.json",
+    "manifest_exists": true,
+    "manifest_sha256": "5833e7e8c85aae9526ceb985e3f3bd3464f85dfd48536739a31a6b394e91e745",
+    "execution_unlock": false,
+    "manifest_decision": {},
+    "qualified_flag": false,
+    "extended_contact_instrumentation_declared": true
+  },
+  "provenance": {
+    "phase43_report_sha256": "d56774dac89da2ef8302c36fef9d955c9375ebac62eff10f3c3c3dacb339bfff",
+    "phase43_artifact_sha256": "1e8ef20869d01c73bf681b7cdb51385bd51be6763d8a3afd6fb1f0c669b5685e",
+    "gate_runner_sha256": "9ede01690381a869437b86429f9746cbe1f7a49cebfecb80a538f65806ab7792"
+  },
+  "upper_contract": {
+    "representation": "absolute PD target = stage208 default + bounded residual from AMASS baseline",
+    "raw_shape": [
+      200,
+      14
+    ],
+    "bounded_shape": [
+      200,
+      14
+    ],
+    "scale": 0.25,
+    "time_scale": 1.0,
+    "max_excursion_rad": 0.12,
+    "max_velocity_radps": 0.2,
+    "bounded_qstep_max_rad": 0.0040000000000000036,
+    "PD": {
+      "shoulder_elbow": {
+        "kp": 40.0,
+        "kd": 5.0
+      },
+      "wrist": {
+        "kp": 30.0,
+        "kd": 3.0
+      }
+    },
+    "artifact": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz",
+      "sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef"
+    }
+  },
+  "static_checks": {
+    "phase43_hash_frozen": true,
+    "official_joint_order_exact": true,
+    "upper_joint_order_exact": true,
+    "bounded_rate": true,
+    "bounded_excursion": true,
+    "bounded_joint_limits": true,
+    "native_owned_fields_exact": true,
+    "gmr_lower_root_contact_absent": true
+  },
+  "ab_contract": {
+    "A": "qualified BASE Phase28 Stage250 native straight lower/root/waist/head",
+    "B": "same backend and commands plus Phase44 bounded AMASS upper14",
+    "composition_direct_write_mask": [
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint"
+    ],
+    "lower_direct_write_forbidden": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint"
+    ],
+    "A_must_reproduce_seed_before_B": true
+  },
+  "gates": {
+    "A": "frozen Stage250 straight native all-body control",
+    "B": "same lower12/waist3/root/intended contact schedule + frozen AMASS upper14; head unchanged",
+    "prescribed_root": {
+      "survival_delta_B_minus_A_min_s": -0.1,
+      "upper_joint_error_p95_max_rad": 0.15,
+      "upper_joint_error_max_rad": 0.3,
+      "lower_waist_target_difference_A_vs_B_max_rad": 0.0,
+      "root_schedule_difference_A_vs_B_max_m_rad": 0.0
+    },
+    "free_root": {
+      "survival_delta_B_minus_A_min_s": -0.1,
+      "root_z_min_m": 0.45,
+      "root_tilt_max_rad": 0.4,
+      "realized_contact_agreement_min": 0.85,
+      "realized_contact_agreement_delta_B_minus_A_min": -0.05,
+      "stance_slip_p95_max_mps": 0.1,
+      "signed_pitch_mean_abs_degradation_max_rad": 0.035,
+      "signed_pitch_p95_abs_degradation_max_rad": 0.035
+    },
+    "truth_rule": "prescribed and free reported separately; Stage250 source trace survival never substitutes replay survival"
+  },
+  "executions": [],
+  "decision": {
+    "status": "BLOCKED_BY_NATIVE_SEED",
+    "physical_ab_executed": false,
+    "conclusion": "runner/schema/hash/upper-target合同已实现，但BASE Phase28尚未提供qualified且带substep realized-contact的native dynamic seed；默认fail-closed，未运行physics。",
+    "next_step": "等待BASE Phase28 manifest；若qualified则另行显式--execute，先A复现再B。"
+  }
+}

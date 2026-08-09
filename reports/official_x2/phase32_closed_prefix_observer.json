@@ -1,0 +1,77 @@
+{
+  "stage": "BASE Phase32",
+  "scope": "LD_PRELOAD observation and one closed prefix capture; no training/hardware/WBT",
+  "assets": {
+    "mmap": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/phase32_closed_prefix/phase32_stage250_closed_prefix_once.mmap",
+    "mmap_sha256": "fc91073c3938e8883a6f11f1ba42a02b0caa10e4589a779ebaf95a5c8dbf562e",
+    "rollout": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/phase32_closed_prefix/phase32_stage250_closed_prefix_once.json",
+    "rollout_sha256": "45d947fdb709f04e271f1b224e6d13d5df32223abecd98de95bfc6707a6f1d0f",
+    "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+  },
+  "direct_no_perturbation": {
+    "toy": {
+      "qpos_absmax": 0.0,
+      "qvel_absmax": 0.0,
+      "control_wall_s": 0.0015171740014920942,
+      "hook_wall_s": 0.0018314109984203242,
+      "wall_ratio": 1.2071199457802384
+    },
+    "official_scene": {
+      "qpos_absmax": 0.0,
+      "qvel_absmax": 0.0,
+      "control_wall_s": 0.04779637200408615,
+      "hook_wall_s": 0.05066147300385637,
+      "wall_ratio": 1.0599439011715215
+    }
+  },
+  "no_perturbation_gate_pass": true,
+  "closed_rollout_gate": {
+    "startup_gate_pass": true,
+    "move_gate_pass": true,
+    "stop_gate_pass": true,
+    "full_gate_pass": true
+  },
+  "closed_trace": {
+    "magic": "X2MJSHIMV1",
+    "format_version": 1,
+    "header_size": 256,
+    "record_size": 19024,
+    "max_records": 4096,
+    "committed_records_header": 607,
+    "committed_rows_scanned": 607,
+    "dropped_records": 0,
+    "process_id": 153,
+    "max_time_s": 0.3,
+    "mujoco_version": "3.3.7",
+    "call_counts": {"1": 3, "2": 303, "3": 301},
+    "data_pointer_counts": {"129606504719872": 607},
+    "sequence_contiguous": true,
+    "last_reset_sequence": 4,
+    "relevant_step_count": 300,
+    "first_relevant_step_time_s": 0.001,
+    "last_relevant_step_time_s": 0.3000000000000002,
+    "first_nonzero_ctrl_time_s": 0.001,
+    "first_contact_time_s": 0.06600000000000004
+  },
+  "telemetry_alignment": {
+    "physics_minus_elapsed_s": 0.026000000000000106,
+    "aligned_rows": 14,
+    "max_alignment_score": 4.984960787392115e-11,
+    "first_stand_telemetry_index": 10,
+    "first_stand_physics_time_s": 0.22600000000000017
+  },
+  "first_stand_actor_row_hidden_state": {
+    "joint_q_absmax_vs_obs": 2.852127637468626e-05,
+    "joint_dq_absmax_vs_obs": 0.003757096596071409,
+    "root_xyz_absmax_vs_telemetry": 0.0,
+    "root_velocity_absmax_vs_obs_reconstruction": 0.008597643091026678,
+    "qacc_l2": 46.50061940121793,
+    "qacc_warmstart_l2": 46.50061940121793,
+    "ctrl_l2": 19.16591283862886,
+    "ncon": 20,
+    "nisland": 1,
+    "nefc": 111
+  },
+  "decision": "CLOSED_PREFIX_OBSERVABLE_WITHOUT_DETECTED_PHYSICS_PERTURBATION",
+  "causal_boundary": "The capture identifies hidden integration state and call order for this new episode. It does not prove the old Stage250 episode had bit-identical hidden state or isolate one causal field."
+}

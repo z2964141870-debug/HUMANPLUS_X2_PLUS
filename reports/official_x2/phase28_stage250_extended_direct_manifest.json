@@ -1,0 +1,226 @@
+{
+  "stage": "BASE Phase28",
+  "contract": {
+    "unchanged_official_scene": true,
+    "control_hz": 50,
+    "physics_hz": 1000,
+    "stand_move_stop_ticks": [
+      100,
+      200,
+      400
+    ],
+    "single_rollout_max": 1,
+    "domain": "direct official MuJoCo; not closed AimDK ROS"
+  },
+  "assets": {
+    "scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "actor": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx",
+      "sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9"
+    },
+    "stationary_actor": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+      "sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565"
+    },
+    "template": {
+      "path": "/home/humanplus/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+      "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"
+    },
+    "historical_trace": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_straight.json",
+      "sha256": "310924d7887987c319ebb832ae08a5e47a08dfc94d069ac93c9f96d61fe30c64"
+    }
+  },
+  "historical_action_preflight": {
+    "decoded_rows": 700,
+    "previous_action_abs_max_error": 2.980232238769531e-07,
+    "historical_final_action_abs_max_error": 2.980232238769531e-07,
+    "raw_actor_abs_max": 4.39972448348999,
+    "first_clip_abs_max": 1.0,
+    "consistent_within_float32_5e7": true
+  },
+  "fork_preflight": {
+    "ticks": 10,
+    "max_errors": {
+      "qpos": 0.0,
+      "qvel": 0.0,
+      "obs": 0.0,
+      "action": 0.0
+    },
+    "event_equal": true,
+    "exact": true
+  },
+  "preflight_pass": true,
+  "rollout_executed": true,
+  "qualified_native_dynamic_seed": false,
+  "rollout_count": 1,
+  "episode": {
+    "metrics": {
+      "stand_root_z_min_m": 0.07681562835932941,
+      "stand_tilt_max_rad": 1.7095110817167887,
+      "stand_xy_drift_m": 1.2765115510911045,
+      "stand_tail_speed_mps": 1.1803919647093357,
+      "startup_root_z_min_m": 0.07184229553639963,
+      "startup_tilt_max_rad": 1.6719697391283588,
+      "startup_forward_m": -0.14451610610787244,
+      "startup_backward_excursion_m": 0.14451610610787244,
+      "move_root_z_min_m": 0.07184229553639963,
+      "move_tilt_max_rad": 1.737476875096368,
+      "move_forward_m": -0.166439152337788,
+      "move_lateral_m": -0.05222669913863748,
+      "move_heading_max_rad": 3.1367275022585255,
+      "stop_root_z_min_m": 0.06936642613567291,
+      "stop_tilt_max_rad": 1.8843605228961522,
+      "stop_xy_drift_m": 0.1503711630885673,
+      "stop_tail_speed_mps": 0.8458982209698647
+    },
+    "gates": {
+      "stand": false,
+      "startup": false,
+      "move": false,
+      "stop": false,
+      "full": false
+    },
+    "realized_contact": {
+      "left": {
+        "contact_fraction": 0.275,
+        "contact_slip_mps": {
+          "count": 55,
+          "mean": 1.7437287711401157,
+          "p50": 1.3987951862694679,
+          "p95": 3.7998355739102103,
+          "max": 5.418633347009197
+        },
+        "normal_force_n": {
+          "count": 200,
+          "mean": 101.86129786514903,
+          "p50": 0.0,
+          "p95": 578.1077619201232,
+          "max": 1163.435491597434
+        }
+      },
+      "right": {
+        "contact_fraction": 0.2,
+        "contact_slip_mps": {
+          "count": 40,
+          "mean": 1.8780636531629487,
+          "p50": 1.7172083190960128,
+          "p95": 3.984216715870746,
+          "max": 4.292415975092443
+        },
+        "normal_force_n": {
+          "count": 200,
+          "mean": 62.58601418901763,
+          "p50": 0.0,
+          "p95": 403.9853826617299,
+          "max": 1352.9169007348783
+        }
+      },
+      "ds_ss_ds_cycles": 0,
+      "provenance": "mujoco.mj_contactForce at every 1ms substep; model contact, not hardware force"
+    }
+  },
+  "cache": {
+    "substeps": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/cache/phase28_stage250_extended_direct/stage250_straight_substeps.jsonl.gz",
+      "sha256": "2581e8228425e39bbd4f228be32566c6488b9f28916ff8827520b9ae324ecaab",
+      "bytes": 16219528,
+      "rows": 14000
+    },
+    "control_ticks": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/cache/phase28_stage250_extended_direct/stage250_straight_control_ticks.json",
+      "sha256": "9abc1574535c1f36ae36a094c0be77019ce6a5bdd5aaefc5aa0bc19af3b0f40a",
+      "bytes": 3431119,
+      "rows": 700
+    }
+  },
+  "qualification_boundary": "full nominal gate is necessary; realized contact metrics remain official-MJCF model evidence, not hardware truth",
+  "extended_realized_contact_audit": {
+    "physics_substep_contact_source": "mujoco.mj_contactForce on unchanged official scene.xml",
+    "hardware_or_closed_ros_force": false,
+    "contact_impulse_definition": "normal force \u00d7 0.001 s; derived approximation, not a separately exposed impulse",
+    "move": {
+      "ds_ss_ds_cycles": 0,
+      "left": {
+        "contact_tick_fraction": 0.275,
+        "contact_point_slip_mps": {
+          "count": 3950,
+          "mean": 0.8769291929394728,
+          "p50": 0.6933415475418225,
+          "p95": 2.4227238259475845,
+          "max": 5.418633347009197
+        },
+        "swing_sole_clearance_m": {
+          "count": 145,
+          "mean": 0.0544117375262542,
+          "p50": 0.0442308869906586,
+          "p95": 0.13787611491074928,
+          "max": 0.2208350513493999
+        },
+        "contact_normal_force_n": {
+          "count": 3950,
+          "mean": 185.18376785798878,
+          "p50": 99.43129813029115,
+          "p95": 638.2057955780535,
+          "max": 1779.7161866648928
+        },
+        "contact_normal_impulse_ns": {
+          "count": 3950,
+          "mean": 0.1851837678579888,
+          "p50": 0.09943129813029115,
+          "p95": 0.6382057955780536,
+          "max": 1.7797161866648927
+        }
+      },
+      "right": {
+        "contact_tick_fraction": 0.2,
+        "contact_point_slip_mps": {
+          "count": 3652,
+          "mean": 0.8592065951359338,
+          "p50": 0.594276944815028,
+          "p95": 2.601326349016341,
+          "max": 4.86884923937926
+        },
+        "swing_sole_clearance_m": {
+          "count": 160,
+          "mean": 0.10047095693510855,
+          "p50": 0.07621782202463549,
+          "p95": 0.2546917501124753,
+          "max": 0.27595072172313023
+        },
+        "contact_normal_force_n": {
+          "count": 3652,
+          "mean": 161.24609286743868,
+          "p50": 73.76456660991327,
+          "p95": 565.9418241030438,
+          "max": 1637.6810231525064
+        },
+        "contact_normal_impulse_ns": {
+          "count": 3652,
+          "mean": 0.16124609286743868,
+          "p50": 0.07376456660991328,
+          "p95": 0.5659418241030438,
+          "max": 1.6376810231525065
+        }
+      }
+    },
+    "interpretation": "episode had already collapsed during stand; these are realized failure-domain contacts, not a valid locomotion seed",
+    "historical_state_divergence": {
+      "initial_obs93_abs_max_error": 0.0,
+      "initial_action_abs_max_error": 7.450580596923828e-08,
+      "first_material_divergence": {
+        "control_tick": 2,
+        "elapsed_from_initial_state_s": 0.06,
+        "root_z_abs_error_m": 0.0016415339114862482,
+        "root_tilt_abs_error_rad": 0.05309510185539066,
+        "diagnostic_thresholds_not_gates": {
+          "root_z_m": 0.01,
+          "root_tilt_rad": 0.05
+        }
+      }
+    }
+  }
+}

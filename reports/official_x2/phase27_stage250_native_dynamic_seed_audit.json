@@ -1,0 +1,922 @@
+{
+  "stage": "BASE Phase27",
+  "scene": {
+    "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/x2.xml",
+    "sha256": "3ff43f05beb57412a804ba9fe05cd9adcdfce78e9ce73a95a71ac58ad20d91a3"
+  },
+  "actors": {
+    "main": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx",
+      "sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+      "input_shape": [
+        "batch",
+        93
+      ],
+      "output_shape": [
+        "batch",
+        15
+      ]
+    },
+    "stationary": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+      "sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565",
+      "input_shape": [
+        "batch",
+        93
+      ],
+      "output_shape": [
+        "batch",
+        15
+      ]
+    }
+  },
+  "method_boundary": {
+    "offline_only": true,
+    "new_rollout": false,
+    "training": false,
+    "official_fk": true,
+    "grf_is_model_estimate": true,
+    "grf_is_closed_ros_or_hardware_truth": false
+  },
+  "cases": {
+    "stage250_video_straight": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_straight.json",
+      "sha256": "310924d7887987c319ebb832ae08a5e47a08dfc94d069ac93c9f96d61fe30c64",
+      "schema_contract": {
+        "rows_total": 710,
+        "rows_decoded": 700,
+        "obs_widths": [
+          0,
+          93
+        ],
+        "action_widths": [
+          0,
+          15
+        ],
+        "joint_order": [
+          "left_hip_pitch_joint",
+          "right_hip_pitch_joint",
+          "waist_yaw_joint",
+          "left_hip_roll_joint",
+          "right_hip_roll_joint",
+          "waist_pitch_joint",
+          "left_hip_yaw_joint",
+          "right_hip_yaw_joint",
+          "waist_roll_joint",
+          "left_knee_joint",
+          "right_knee_joint",
+          "head_yaw_joint",
+          "left_shoulder_pitch_joint",
+          "right_shoulder_pitch_joint",
+          "left_ankle_pitch_joint",
+          "right_ankle_pitch_joint",
+          "head_pitch_joint",
+          "left_shoulder_roll_joint",
+          "right_shoulder_roll_joint",
+          "left_ankle_roll_joint",
+          "right_ankle_roll_joint",
+          "left_shoulder_yaw_joint",
+          "right_shoulder_yaw_joint",
+          "left_elbow_joint",
+          "right_elbow_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_yaw_joint",
+          "left_wrist_pitch_joint",
+          "right_wrist_pitch_joint",
+          "left_wrist_roll_joint",
+          "right_wrist_roll_joint"
+        ],
+        "action_order": [
+          "left_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "left_knee_joint",
+          "left_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_hip_pitch_joint",
+          "right_hip_roll_joint",
+          "right_hip_yaw_joint",
+          "right_knee_joint",
+          "right_ankle_pitch_joint",
+          "right_ankle_roll_joint",
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ],
+        "gravity_reconstruction_abs_max": 3.059177977604577e-08,
+        "yaw_reconstruction_abs_max_rad": 8.326672684688674e-17,
+        "joint_limit_excess_max_rad": 0.0,
+        "summary_contracts": {
+          "observation_contract": "Stage208 deterministic 93D",
+          "action_contract": "RSL actor clip [-1,1] -> 15D lower/waist residual + template_scale=0.15 -> execution clip [-1,1]",
+          "default_pose_profile": "stage208",
+          "pd_profile": "official_kp_ankle",
+          "model": "/models/stage219_s2600_actor.onnx",
+          "stationary_model": "/models/stand_backend_scratch_i150_actor.onnx",
+          "template": "/template.npz",
+          "full_gate_pass": true
+        }
+      },
+      "continuity": {
+        "qpos_fd_vs_recorded_qvel": {
+          "root_linear": {
+            "count": 699,
+            "mean": 0.007534724040403994,
+            "p50": 0.0017206444515060924,
+            "p95": 0.028305774092946673,
+            "max": 0.0809030299221179
+          },
+          "root_angular": {
+            "count": 699,
+            "mean": 0.04593857118012783,
+            "p50": 0.0031877398593744884,
+            "p95": 0.23778963640640577,
+            "max": 0.43062813289032725
+          },
+          "joint": {
+            "count": 699,
+            "mean": 0.03867471518459371,
+            "p50": 0.0028203940163488038,
+            "p95": 0.1829634983000346,
+            "max": 0.3599290395005286
+          }
+        },
+        "action_delta_l2": {
+          "count": 699,
+          "mean": 0.29819300622397504,
+          "p50": 0.021991005986322133,
+          "p95": 1.454289394036474,
+          "max": 1.9027123141470699
+        },
+        "com_fd_vs_model_velocity_mps": {
+          "count": 700,
+          "mean": 0.007886741381040669,
+          "p50": 0.0014019751150645325,
+          "p95": 0.030368360437544005,
+          "max": 0.06714415432772344
+        }
+      },
+      "centroidal": {
+        "mass_kg": 43.47479665927261,
+        "com_height_m": {
+          "count": 200,
+          "mean": 0.6965492613412816,
+          "p50": 0.6962747657408803,
+          "p95": 0.7000818781974736,
+          "max": 0.7028747167319939
+        },
+        "com_speed_mps": {
+          "count": 200,
+          "mean": 0.3049066888000722,
+          "p50": 0.3147575969766768,
+          "p95": 0.37173051450679406,
+          "max": 0.40467406032698466
+        },
+        "centroidal_angular_momentum_norm": {
+          "count": 200,
+          "mean": 1.7070387513328822,
+          "p50": 1.6568689319835666,
+          "p95": 2.9806790172977395,
+          "max": 3.8437121663489484
+        }
+      },
+      "contact": {
+        "source": "50Hz finite-difference + official MJCF inverse-dynamics/friction-pyramid model estimate",
+        "measured_or_closed_ros_force": false,
+        "force_threshold_n": 34.119020418197145,
+        "left": {
+          "estimated_contact_fraction_move": 0.795,
+          "generator_agreement_move": 0.605,
+          "stance_slip_mps": {
+            "count": 159,
+            "mean": 0.14316314075046457,
+            "p50": 0.030017972614858918,
+            "p95": 0.8845562010723832,
+            "max": 1.5656877855750213
+          },
+          "swing_clearance_m": {
+            "count": 41,
+            "mean": 0.002717196426542121,
+            "p50": 0.001951700848543421,
+            "p95": 0.00783573131125358,
+            "max": 0.0095497258607854
+          },
+          "generator_stance_slip_mps": {
+            "count": 130,
+            "mean": 0.22243570336992605,
+            "p50": 0.03614146812565694,
+            "p95": 1.1164877416212828,
+            "max": 1.3052035767952
+          },
+          "generator_swing_clearance_m": {
+            "count": 70,
+            "mean": 0.0011971407961110872,
+            "p50": 0.0,
+            "p95": 0.0069341636809572725,
+            "max": 0.0095497258607854
+          },
+          "sole_min_z_m": {
+            "count": 200,
+            "mean": 2.7666611173523885e-05,
+            "p50": -0.0004921255441666271,
+            "p95": 0.0049415504747909195,
+            "max": 0.0095497258607854
+          },
+          "estimated_normal_force_n": {
+            "count": 200,
+            "mean": 180.7071264469534,
+            "p50": 138.4135738534368,
+            "p95": 422.631416292864,
+            "max": 507.3266823269536
+          }
+        },
+        "right": {
+          "estimated_contact_fraction_move": 0.89,
+          "generator_agreement_move": 0.62,
+          "stance_slip_mps": {
+            "count": 178,
+            "mean": 0.20791579708786592,
+            "p50": 0.043355681268164636,
+            "p95": 0.9879201441441516,
+            "max": 1.4709014113528274
+          },
+          "swing_clearance_m": {
+            "count": 22,
+            "mean": 0.00672081806392801,
+            "p50": 0.006597110070000305,
+            "p95": 0.010636081664046924,
+            "max": 0.011524752589312199
+          },
+          "generator_stance_slip_mps": {
+            "count": 130,
+            "mean": 0.34446843619472584,
+            "p50": 0.05245054897149823,
+            "p95": 1.4063645332076373,
+            "max": 1.6602379872036168
+          },
+          "generator_swing_clearance_m": {
+            "count": 70,
+            "mean": 0.0011253430965779746,
+            "p50": 0.0,
+            "p95": 0.008316384096810094,
+            "max": 0.011524752589312199
+          },
+          "sole_min_z_m": {
+            "count": 200,
+            "mean": 3.9498069755622563e-05,
+            "p50": -0.0008551063077812974,
+            "p95": 0.006659518735202465,
+            "max": 0.011524752589312199
+          },
+          "estimated_normal_force_n": {
+            "count": 200,
+            "mean": 246.84419944201116,
+            "p50": 264.32330576849847,
+            "p95": 472.6753288082884,
+            "max": 540.0842646870016
+          }
+        },
+        "estimated_ds_ss_ds_cycles_move_raw": 28,
+        "generator_ds_ss_ds_cycles_move": 10,
+        "warning": "force split uses an underdetermined 16-ray/6-root-equation NNLS; raw force-contact switches are not authoritative contact labels"
+      },
+      "dynamics": {
+        "root_generalized_residual_relative": {
+          "count": 200,
+          "mean": 0.011340488862010422,
+          "p50": 4.864890045976018e-16,
+          "p95": 0.05271317044656185,
+          "max": 0.11741202393042242
+        },
+        "full_generalized_residual_relative": {
+          "count": 200,
+          "mean": 0.16439890870754292,
+          "p50": 0.15650911787261182,
+          "p95": 0.2764466265527535,
+          "max": 0.37723297596833616
+        },
+        "caveat": "qacc is finite-differenced at 50Hz; PD torque is reconstructed, not recorded; GRF is a model estimate"
+      },
+      "posture_and_turn": {
+        "move_signed_root_pitch_rad": {
+          "count": 200,
+          "mean": -0.19702398441139138,
+          "p50": -0.2010386472322247,
+          "p95": -0.140651615304155,
+          "max": -0.13144889333457965
+        },
+        "move_waist_pitch_rad": {
+          "count": 200,
+          "mean": -0.13496348299086094,
+          "p50": -0.1366945207118988,
+          "p95": -0.08688789084553725,
+          "max": -0.05579078197479248
+        },
+        "move_yaw_progress_rad": 0.07151762201843231,
+        "summary_yaw_progress_rad": 0.07151762201843231,
+        "summary_forward_m": 1.2036644122198,
+        "summary_lateral_m": -0.09855508557813922
+      },
+      "qualification": {
+        "native_kinematic_control_seed": true,
+        "contact_consistent_seed": false,
+        "dynamics_truth_seed": false,
+        "reasons": [
+          "Target-native full-gate rollout may warm-start X2 trajectory optimization if continuity passes.",
+          "GRF/contact/centroidal outputs are official-MJCF model estimates from 50Hz state, not measured labels.",
+          "Persistent negative pelvis pitch must be preserved as a known bias, not treated as a natural-pose target."
+        ]
+      }
+    },
+    "stage250_video_turn_right": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_turn_right.json",
+      "sha256": "9067029136ff9e919eeb3a2439df7229ce2641715c0c08c34bd3790439a58026",
+      "schema_contract": {
+        "rows_total": 710,
+        "rows_decoded": 700,
+        "obs_widths": [
+          0,
+          93
+        ],
+        "action_widths": [
+          0,
+          15
+        ],
+        "joint_order": [
+          "left_hip_pitch_joint",
+          "right_hip_pitch_joint",
+          "waist_yaw_joint",
+          "left_hip_roll_joint",
+          "right_hip_roll_joint",
+          "waist_pitch_joint",
+          "left_hip_yaw_joint",
+          "right_hip_yaw_joint",
+          "waist_roll_joint",
+          "left_knee_joint",
+          "right_knee_joint",
+          "head_yaw_joint",
+          "left_shoulder_pitch_joint",
+          "right_shoulder_pitch_joint",
+          "left_ankle_pitch_joint",
+          "right_ankle_pitch_joint",
+          "head_pitch_joint",
+          "left_shoulder_roll_joint",
+          "right_shoulder_roll_joint",
+          "left_ankle_roll_joint",
+          "right_ankle_roll_joint",
+          "left_shoulder_yaw_joint",
+          "right_shoulder_yaw_joint",
+          "left_elbow_joint",
+          "right_elbow_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_yaw_joint",
+          "left_wrist_pitch_joint",
+          "right_wrist_pitch_joint",
+          "left_wrist_roll_joint",
+          "right_wrist_roll_joint"
+        ],
+        "action_order": [
+          "left_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "left_knee_joint",
+          "left_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_hip_pitch_joint",
+          "right_hip_roll_joint",
+          "right_hip_yaw_joint",
+          "right_knee_joint",
+          "right_ankle_pitch_joint",
+          "right_ankle_roll_joint",
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ],
+        "gravity_reconstruction_abs_max": 3.077485399849422e-08,
+        "yaw_reconstruction_abs_max_rad": 1.6653345369377348e-16,
+        "joint_limit_excess_max_rad": 0.0,
+        "summary_contracts": {
+          "observation_contract": "Stage208 deterministic 93D",
+          "action_contract": "RSL actor clip [-1,1] -> 15D lower/waist residual + template_scale=0.15 -> execution clip [-1,1]",
+          "default_pose_profile": "stage208",
+          "pd_profile": "official_kp_ankle",
+          "model": "/models/stage219_s2600_actor.onnx",
+          "stationary_model": "/models/stand_backend_scratch_i150_actor.onnx",
+          "template": "/template.npz",
+          "full_gate_pass": true
+        }
+      },
+      "continuity": {
+        "qpos_fd_vs_recorded_qvel": {
+          "root_linear": {
+            "count": 699,
+            "mean": 0.008673453376783161,
+            "p50": 0.0016933112331568747,
+            "p95": 0.03294696035229097,
+            "max": 0.08975037036647783
+          },
+          "root_angular": {
+            "count": 699,
+            "mean": 0.04749099480195696,
+            "p50": 0.002849477542386193,
+            "p95": 0.2539691349262611,
+            "max": 0.4676754808346189
+          },
+          "joint": {
+            "count": 699,
+            "mean": 0.04161729370908339,
+            "p50": 0.0025246196001635518,
+            "p95": 0.19750417506293216,
+            "max": 0.4580080194918071
+          }
+        },
+        "action_delta_l2": {
+          "count": 699,
+          "mean": 0.2970710568485221,
+          "p50": 0.02091212105421854,
+          "p95": 1.499464552372825,
+          "max": 1.8627187718598341
+        },
+        "com_fd_vs_model_velocity_mps": {
+          "count": 700,
+          "mean": 0.00828490478332863,
+          "p50": 0.001312365689998458,
+          "p95": 0.032664051209286074,
+          "max": 0.08198656085656751
+        }
+      },
+      "centroidal": {
+        "mass_kg": 43.47479665927261,
+        "com_height_m": {
+          "count": 200,
+          "mean": 0.6976902718530863,
+          "p50": 0.6977540005474713,
+          "p95": 0.7010756946089004,
+          "max": 0.7023164298754048
+        },
+        "com_speed_mps": {
+          "count": 200,
+          "mean": 0.33778842995570485,
+          "p50": 0.3584461850430788,
+          "p95": 0.4118409058346678,
+          "max": 0.4418274158179074
+        },
+        "centroidal_angular_momentum_norm": {
+          "count": 200,
+          "mean": 1.759110050650031,
+          "p50": 1.6573677766456987,
+          "p95": 3.12677729795141,
+          "max": 4.152673879153655
+        }
+      },
+      "contact": {
+        "source": "50Hz finite-difference + official MJCF inverse-dynamics/friction-pyramid model estimate",
+        "measured_or_closed_ros_force": false,
+        "force_threshold_n": 34.119020418197145,
+        "left": {
+          "estimated_contact_fraction_move": 0.805,
+          "generator_agreement_move": 0.595,
+          "stance_slip_mps": {
+            "count": 161,
+            "mean": 0.15563226123357723,
+            "p50": 0.0328227217973761,
+            "p95": 0.8405225596836448,
+            "max": 1.966582680624186
+          },
+          "swing_clearance_m": {
+            "count": 39,
+            "mean": 0.003183620084421538,
+            "p50": 0.0030630011527176025,
+            "p95": 0.007658001489429617,
+            "max": 0.009127311143867892
+          },
+          "generator_stance_slip_mps": {
+            "count": 130,
+            "mean": 0.256086021843663,
+            "p50": 0.0389016711251007,
+            "p95": 1.2386821129434709,
+            "max": 1.5163466067259677
+          },
+          "generator_swing_clearance_m": {
+            "count": 70,
+            "mean": 0.0012087388848250316,
+            "p50": 0.0,
+            "p95": 0.00740011856165337,
+            "max": 0.009127311143867892
+          },
+          "sole_min_z_m": {
+            "count": 200,
+            "mean": 1.3158804262853827e-05,
+            "p50": -0.0005555821581257293,
+            "p95": 0.0055178855032462695,
+            "max": 0.009127311143867892
+          },
+          "estimated_normal_force_n": {
+            "count": 200,
+            "mean": 198.41814793745806,
+            "p50": 183.29938450556813,
+            "p95": 416.4995898169144,
+            "max": 519.1141336241676
+          }
+        },
+        "right": {
+          "estimated_contact_fraction_move": 0.845,
+          "generator_agreement_move": 0.595,
+          "stance_slip_mps": {
+            "count": 169,
+            "mean": 0.2129966992671362,
+            "p50": 0.04658169424448728,
+            "p95": 0.9857810814715429,
+            "max": 1.5264387463728553
+          },
+          "swing_clearance_m": {
+            "count": 31,
+            "mean": 0.007822955394766927,
+            "p50": 0.007252490154491757,
+            "p95": 0.01233877698530315,
+            "max": 0.014192695869817671
+          },
+          "generator_stance_slip_mps": {
+            "count": 130,
+            "mean": 0.3953187182650196,
+            "p50": 0.06998948815355316,
+            "p95": 1.42784654902803,
+            "max": 1.6485869901222314
+          },
+          "generator_swing_clearance_m": {
+            "count": 70,
+            "mean": 0.001536912410113071,
+            "p50": 0.0,
+            "p95": 0.009518599402317604,
+            "max": 0.011476964106342611
+          },
+          "sole_min_z_m": {
+            "count": 200,
+            "mean": 0.0006002334174390996,
+            "p50": -0.0007243137298853187,
+            "p95": 0.009101202304286574,
+            "max": 0.014192695869817671
+          },
+          "estimated_normal_force_n": {
+            "count": 200,
+            "mean": 229.19304528174035,
+            "p50": 257.6218059769727,
+            "p95": 452.40497353038637,
+            "max": 507.1136978845671
+          }
+        },
+        "estimated_ds_ss_ds_cycles_move_raw": 28,
+        "generator_ds_ss_ds_cycles_move": 10,
+        "warning": "force split uses an underdetermined 16-ray/6-root-equation NNLS; raw force-contact switches are not authoritative contact labels"
+      },
+      "dynamics": {
+        "root_generalized_residual_relative": {
+          "count": 200,
+          "mean": 0.009880823035208774,
+          "p50": 3.91233003548851e-16,
+          "p95": 0.0499349981332026,
+          "max": 0.13065417341675847
+        },
+        "full_generalized_residual_relative": {
+          "count": 200,
+          "mean": 0.16613271138859328,
+          "p50": 0.16254458725589804,
+          "p95": 0.2914749995234553,
+          "max": 0.4440839140676178
+        },
+        "caveat": "qacc is finite-differenced at 50Hz; PD torque is reconstructed, not recorded; GRF is a model estimate"
+      },
+      "posture_and_turn": {
+        "move_signed_root_pitch_rad": {
+          "count": 200,
+          "mean": -0.17799070403973605,
+          "p50": -0.17899290380325972,
+          "p95": -0.1393216648460778,
+          "max": -0.1310671498933427
+        },
+        "move_waist_pitch_rad": {
+          "count": 200,
+          "mean": -0.11530737765133381,
+          "p50": -0.11190462857484818,
+          "p95": -0.06920781433582307,
+          "max": -0.05445085093379021
+        },
+        "move_yaw_progress_rad": 0.3381546383440162,
+        "summary_yaw_progress_rad": 0.3381546383440162,
+        "summary_forward_m": 1.3006063145487359,
+        "summary_lateral_m": 0.14224291874768075
+      },
+      "qualification": {
+        "native_kinematic_control_seed": true,
+        "contact_consistent_seed": false,
+        "dynamics_truth_seed": false,
+        "reasons": [
+          "Target-native full-gate rollout may warm-start X2 trajectory optimization if continuity passes.",
+          "GRF/contact/centroidal outputs are official-MJCF model estimates from 50Hz state, not measured labels.",
+          "Persistent negative pelvis pitch must be preserved as a known bias, not treated as a natural-pose target."
+        ]
+      }
+    },
+    "stage250_video_turn_left": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/official_native_strict_20260807/stage250_video_turn_left.json",
+      "sha256": "b631a43626da330a4958c94f87388cfddfebffdb6009f39d98beed9325dbbbf4",
+      "schema_contract": {
+        "rows_total": 710,
+        "rows_decoded": 700,
+        "obs_widths": [
+          0,
+          93
+        ],
+        "action_widths": [
+          0,
+          15
+        ],
+        "joint_order": [
+          "left_hip_pitch_joint",
+          "right_hip_pitch_joint",
+          "waist_yaw_joint",
+          "left_hip_roll_joint",
+          "right_hip_roll_joint",
+          "waist_pitch_joint",
+          "left_hip_yaw_joint",
+          "right_hip_yaw_joint",
+          "waist_roll_joint",
+          "left_knee_joint",
+          "right_knee_joint",
+          "head_yaw_joint",
+          "left_shoulder_pitch_joint",
+          "right_shoulder_pitch_joint",
+          "left_ankle_pitch_joint",
+          "right_ankle_pitch_joint",
+          "head_pitch_joint",
+          "left_shoulder_roll_joint",
+          "right_shoulder_roll_joint",
+          "left_ankle_roll_joint",
+          "right_ankle_roll_joint",
+          "left_shoulder_yaw_joint",
+          "right_shoulder_yaw_joint",
+          "left_elbow_joint",
+          "right_elbow_joint",
+          "left_wrist_yaw_joint",
+          "right_wrist_yaw_joint",
+          "left_wrist_pitch_joint",
+          "right_wrist_pitch_joint",
+          "left_wrist_roll_joint",
+          "right_wrist_roll_joint"
+        ],
+        "action_order": [
+          "left_hip_pitch_joint",
+          "left_hip_roll_joint",
+          "left_hip_yaw_joint",
+          "left_knee_joint",
+          "left_ankle_pitch_joint",
+          "left_ankle_roll_joint",
+          "right_hip_pitch_joint",
+          "right_hip_roll_joint",
+          "right_hip_yaw_joint",
+          "right_knee_joint",
+          "right_ankle_pitch_joint",
+          "right_ankle_roll_joint",
+          "waist_yaw_joint",
+          "waist_pitch_joint",
+          "waist_roll_joint"
+        ],
+        "gravity_reconstruction_abs_max": 3.035071083345997e-08,
+        "yaw_reconstruction_abs_max_rad": 8.326672684688674e-17,
+        "joint_limit_excess_max_rad": 0.0,
+        "summary_contracts": {
+          "observation_contract": "Stage208 deterministic 93D",
+          "action_contract": "RSL actor clip [-1,1] -> 15D lower/waist residual + template_scale=0.15 -> execution clip [-1,1]",
+          "default_pose_profile": "stage208",
+          "pd_profile": "official_kp_ankle",
+          "model": "/models/stage219_s2600_actor.onnx",
+          "stationary_model": "/models/stand_backend_scratch_i150_actor.onnx",
+          "template": "/template.npz",
+          "full_gate_pass": true
+        }
+      },
+      "continuity": {
+        "qpos_fd_vs_recorded_qvel": {
+          "root_linear": {
+            "count": 699,
+            "mean": 0.03313342094457102,
+            "p50": 0.012139932910303087,
+            "p95": 0.12291050369192161,
+            "max": 0.37414323039074404
+          },
+          "root_angular": {
+            "count": 699,
+            "mean": 0.19512260590985456,
+            "p50": 0.053605573863285134,
+            "p95": 0.8334432382012429,
+            "max": 1.992066756369437
+          },
+          "joint": {
+            "count": 699,
+            "mean": 0.039705564155165816,
+            "p50": 0.002708622981016551,
+            "p95": 0.18268881252778224,
+            "max": 0.3328773534464914
+          }
+        },
+        "action_delta_l2": {
+          "count": 699,
+          "mean": 0.2998236659487692,
+          "p50": 0.021780760670288068,
+          "p95": 1.5063812614979424,
+          "max": 1.928617578466409
+        },
+        "com_fd_vs_model_velocity_mps": {
+          "count": 700,
+          "mean": 0.03179017256652955,
+          "p50": 0.013676370507860955,
+          "p95": 0.11543014759155479,
+          "max": 0.36017478029258976
+        }
+      },
+      "centroidal": {
+        "mass_kg": 43.47479665927261,
+        "com_height_m": {
+          "count": 200,
+          "mean": 0.6973857966691673,
+          "p50": 0.6973851222943735,
+          "p95": 0.7004915171957605,
+          "max": 0.7021365353652311
+        },
+        "com_speed_mps": {
+          "count": 200,
+          "mean": 0.3222746262852946,
+          "p50": 0.3425373622690101,
+          "p95": 0.38440067393165367,
+          "max": 0.4015199437679372
+        },
+        "centroidal_angular_momentum_norm": {
+          "count": 200,
+          "mean": 1.7088648077517803,
+          "p50": 1.6365763002398461,
+          "p95": 3.0572425152229736,
+          "max": 3.7751709184882607
+        }
+      },
+      "contact": {
+        "source": "50Hz finite-difference + official MJCF inverse-dynamics/friction-pyramid model estimate",
+        "measured_or_closed_ros_force": false,
+        "force_threshold_n": 34.119020418197145,
+        "left": {
+          "estimated_contact_fraction_move": 0.785,
+          "generator_agreement_move": 0.595,
+          "stance_slip_mps": {
+            "count": 157,
+            "mean": 0.23025891132346393,
+            "p50": 0.1352189584101837,
+            "p95": 0.8907154470211273,
+            "max": 1.5251794076009442
+          },
+          "swing_clearance_m": {
+            "count": 43,
+            "mean": 0.0027879697130321,
+            "p50": 0.0025849668303655387,
+            "p95": 0.0070010767788898,
+            "max": 0.008129008747814807
+          },
+          "generator_stance_slip_mps": {
+            "count": 130,
+            "mean": 0.30791939346130953,
+            "p50": 0.1576183805032702,
+            "p95": 1.102133289372897,
+            "max": 1.346985702449775
+          },
+          "generator_swing_clearance_m": {
+            "count": 70,
+            "mean": 0.0010621212085982275,
+            "p50": 0.0,
+            "p95": 0.006165580915313643,
+            "max": 0.008129008747814807
+          },
+          "sole_min_z_m": {
+            "count": 200,
+            "mean": 1.853900799816742e-05,
+            "p50": -0.000524097089224111,
+            "p95": 0.0047777839723848765,
+            "max": 0.008129008747814807
+          },
+          "estimated_normal_force_n": {
+            "count": 200,
+            "mean": 196.18777538597726,
+            "p50": 159.06934765094314,
+            "p95": 441.6316966046481,
+            "max": 496.7745218217801
+          }
+        },
+        "right": {
+          "estimated_contact_fraction_move": 0.825,
+          "generator_agreement_move": 0.575,
+          "stance_slip_mps": {
+            "count": 165,
+            "mean": 0.2207097564119423,
+            "p50": 0.0960345546221413,
+            "p95": 0.9426606811961552,
+            "max": 1.6030108746633165
+          },
+          "swing_clearance_m": {
+            "count": 35,
+            "mean": 0.0058960518859927785,
+            "p50": 0.0062647708230553255,
+            "p95": 0.011654845365361696,
+            "max": 0.012074321572678865
+          },
+          "generator_stance_slip_mps": {
+            "count": 130,
+            "mean": 0.3889800255259636,
+            "p50": 0.12293019236503201,
+            "p95": 1.3766547017496804,
+            "max": 1.6393118926082266
+          },
+          "generator_swing_clearance_m": {
+            "count": 70,
+            "mean": 0.0011432004394331362,
+            "p50": 0.0,
+            "p95": 0.007689550422355613,
+            "max": 0.009456739833184877
+          },
+          "sole_min_z_m": {
+            "count": 200,
+            "mean": 0.0003692367475820874,
+            "p50": -0.0008138472907271042,
+            "p95": 0.007830564082350758,
+            "max": 0.012074321572678865
+          },
+          "estimated_normal_force_n": {
+            "count": 200,
+            "mean": 230.64792113467374,
+            "p50": 259.4992815508292,
+            "p95": 480.6013804406536,
+            "max": 509.9527221483922
+          }
+        },
+        "estimated_ds_ss_ds_cycles_move_raw": 28,
+        "generator_ds_ss_ds_cycles_move": 10,
+        "warning": "force split uses an underdetermined 16-ray/6-root-equation NNLS; raw force-contact switches are not authoritative contact labels"
+      },
+      "dynamics": {
+        "root_generalized_residual_relative": {
+          "count": 200,
+          "mean": 0.01100002318273647,
+          "p50": 4.094156607131585e-16,
+          "p95": 0.05743643586286942,
+          "max": 0.1058337345375667
+        },
+        "full_generalized_residual_relative": {
+          "count": 200,
+          "mean": 0.503517898411827,
+          "p50": 0.5045879567264719,
+          "p95": 0.6207827320842332,
+          "max": 0.6681577288682325
+        },
+        "caveat": "qacc is finite-differenced at 50Hz; PD torque is reconstructed, not recorded; GRF is a model estimate"
+      },
+      "posture_and_turn": {
+        "move_signed_root_pitch_rad": {
+          "count": 200,
+          "mean": -0.18710311671066684,
+          "p50": -0.19087100739797758,
+          "p95": -0.13830107949313855,
+          "max": -0.1311457876496992
+        },
+        "move_waist_pitch_rad": {
+          "count": 200,
+          "mean": -0.12576618196442724,
+          "p50": -0.12685054540634155,
+          "p95": -0.08102973401546479,
+          "max": -0.05362538620829582
+        },
+        "move_yaw_progress_rad": -0.31150782054658366,
+        "summary_yaw_progress_rad": -0.31150782054658366,
+        "summary_forward_m": 1.2589962808140294,
+        "summary_lateral_m": -0.09716859000922556
+      },
+      "qualification": {
+        "native_kinematic_control_seed": true,
+        "contact_consistent_seed": false,
+        "dynamics_truth_seed": false,
+        "reasons": [
+          "Target-native full-gate rollout may warm-start X2 trajectory optimization if continuity passes.",
+          "GRF/contact/centroidal outputs are official-MJCF model estimates from 50Hz state, not measured labels.",
+          "Persistent negative pelvis pitch must be preserved as a known bias, not treated as a natural-pose target."
+        ]
+      }
+    }
+  },
+  "minimum_record_extension_for_dynamics_truth": [
+    "1kHz simulator qpos/qvel or exact per-sample timestamps for high-confidence qacc",
+    "actual applied actuator torque after saturation (31D)",
+    "MuJoCo contact identities, positions, impulses/forces at every physics substep",
+    "full root quaternion and free-base linear/angular velocity in explicitly named frames",
+    "controller target before/after clipping plus Kp/Kd per joint"
+  ],
+  "decision": {
+    "usable_as_native_warm_start": true,
+    "usable_as_contact_consistent_dynamic_seed": false,
+    "usable_as_dynamics_ground_truth": false
+  }
+}

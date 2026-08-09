@@ -1,0 +1,276 @@
+{
+  "schema_version": "x2_faithful_bronze_exact_s7_phase45_v1",
+  "provenance": {
+    "config": {
+      "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/configs/x2_faithful_bronze_exact_s7_phase45.yaml",
+      "sha256": "d966a5fa9a7dab32f68178efda8551b87bda94d60803fb28d256ac056d9df296"
+    },
+    "source_checkpoint": {
+      "path": "/home/humanplus/humanoid-GPT/A/sonic_release/last.pt",
+      "sha256": "e6bdab3f64a39336b3d41877d4f497d05f58af275f288ec0e6746c283ded8909"
+    },
+    "dense_hash_before": "9523f691926874d5fb9a5f6f8d447686cdc81dd7a52eca7ab6c5ecbf21fac4ae",
+    "dense_hash_after": "9523f691926874d5fb9a5f6f8d447686cdc81dd7a52eca7ab6c5ecbf21fac4ae"
+  },
+  "truth_boundary": {
+    "train_reference_tier": "kinematic_bronze",
+    "train_reference_is_silver": false,
+    "train_reference_is_dynamics_truth": false,
+    "model_contact_is_hardware_grf_cop_wrench": false,
+    "held_gold_role": "pipeline/source-ability regression, not cross-embodiment held-out",
+    "isaac_environment_instances": 0,
+    "physics_steps": 0,
+    "optimizer_minibatch_steps": 0
+  },
+  "bronze_provenance": {
+    "selected_keys_exact": true,
+    "all_selected_are_bronze": true,
+    "none_selected_are_silver": true,
+    "evidence": {
+      "AMASS-STAND-001": {
+        "source": "phase28_tier_report",
+        "tier": "Bronze",
+        "bronze_pass": true,
+        "silver_pass": false,
+        "recommended_split": "train_candidate",
+        "entry_sha256": "1203e1cc4d9196967fb20bb51688ce7c64012dfc7bf42d234b2b25110e260d78"
+      },
+      "AMASS-UPPER-001": {
+        "source": "phase28_tier_report",
+        "tier": "Bronze",
+        "bronze_pass": true,
+        "silver_pass": false,
+        "recommended_split": "train_candidate",
+        "entry_sha256": "9d54e4f44e7981fa48a2bda6d639d60348664d303a2cbfa5ee957b04aec6c786"
+      },
+      "PHUMA-LUNGE-R-001": {
+        "source": "phase36_tier_correction",
+        "historical_tier": "Silver",
+        "tier": "Bronze",
+        "bronze_pass": true,
+        "silver_pass": false,
+        "split": "train_candidate",
+        "entry_sha256": "1ace093d6a0d22e26ffc281797f76465c45441a6bc1543427d9b305e1597cfee",
+        "historical_silver_revoked": true
+      }
+    },
+    "phase36_silver_revocation_preserved": true
+  },
+  "bronze_hook": {
+    "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase45_kinematic_bronze_train.pkl",
+    "sha256": "06b759e7926bd841537cf515d7cc46793d47503a9fab5da95c649a2f0b6ec4a6",
+    "sampler_keys": [
+      "AMASS-STAND-001",
+      "AMASS-UPPER-001",
+      "PHUMA-LUNGE-R-001"
+    ],
+    "frames": 437,
+    "optimizer_eligible": true,
+    "tier": "kinematic_bronze",
+    "motionlib_sampler_keys_exact": true,
+    "motionlib_internal_fps": 50.0
+  },
+  "held_gold_hook": {
+    "split": "held_out",
+    "path": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/held_out/official_native_dance_held_out.pkl",
+    "sha256": "45ffda2f8ddc64cbeb4ccc714d37a0c98ca328e8e6473edb12670dcdfd19a3dc",
+    "sampler_keys": [
+      "official_native_dance_held_out_000",
+      "official_native_dance_held_out_001",
+      "official_native_dance_held_out_002"
+    ],
+    "optimizer_eligible": false,
+    "frames": 1200,
+    "state_adapter": {
+      "source_pkl": "/home/humanplus/projects/ZHY/x2_wbt_official_v1/motion_lib_x2_official_v1/gold_dynamic_native_seed_v1/held_out/official_native_dance_held_out.pkl",
+      "frames": 1200,
+      "restored_fields": [
+        "dof_vel",
+        "root_lin_vel_w_mps",
+        "root_ang_vel",
+        "model_contact"
+      ],
+      "unchanged_fields": {
+        "dof_pos_exact": true,
+        "body_pos_exact": true,
+        "body_quat_exact": true
+      }
+    }
+  },
+  "guards": {
+    "all_frozen_hashes_exact": true,
+    "phase25_declared_train_domain_ready": true,
+    "phase25_files_exact": true,
+    "phase25_runtime_exact": true,
+    "phase26_B1_B5_zero_historical_pass": true,
+    "phase24_exact_s7_static_pass": true
+  },
+  "fixed_batches": {
+    "train_bronze": {
+      "key": "PHUMA-LUNGE-R-001",
+      "input_source_frames": 175,
+      "metrics": {
+        "input_finite": true,
+        "reference_token_max_abs": 0.0,
+        "action_source_max_abs": 0.0,
+        "action_target_max_abs": 0.0,
+        "action_official_nonhead_max_abs": 0.0,
+        "value_max_abs": 0.0,
+        "std_source_exact": true,
+        "head_nominal_exact": true,
+        "all_outputs_finite": true,
+        "token_sha256": "90bd158cb9f6f866a20c831ba3e9d39899769108954b95001af7448976460439",
+        "action_source_sha256": "f0520006e689b9bde0fdba07a09886d21568fb77ec389c6aa6d17f1754b0bd39",
+        "value_sha256": "def491819b31202fc38810773b972109d10663feb82db5be741ee81804db94ff"
+      }
+    },
+    "held_gold": {
+      "key": "official_native_dance_held_out_000",
+      "source_frame_range": [
+        1800,
+        2200
+      ],
+      "metrics": {
+        "input_finite": true,
+        "reference_token_max_abs": 0.0,
+        "action_source_max_abs": 0.0,
+        "action_target_max_abs": 0.0,
+        "action_official_nonhead_max_abs": 0.0,
+        "value_max_abs": 0.0,
+        "std_source_exact": true,
+        "head_nominal_exact": true,
+        "all_outputs_finite": true,
+        "token_sha256": "6ff0cde40b03acb8b6a5402946d27cf50246a7d0827a3fef755686527e1b553b",
+        "action_source_sha256": "7716d196fe2f3e71a0d1120b66dd358ee9269321c94f9449f7047b7374d79ab6",
+        "value_sha256": "f5f1cf4e18f795bdedd6a9a738b06f11164fc050a53cc9abb09b031b52a31a74"
+      }
+    }
+  },
+  "exact_s7": {
+    "manifest": "figure7_exact_s7",
+    "trainable_names_actual": [
+      "policy.actor_module.decoders.g1_dyn.module.0.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.0.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.10.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.10.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.12.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.12.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.2.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.2.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.4.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.4.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.6.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.6.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.8.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.8.lora_B",
+      "value_model.critic_module.module.10.lora_A",
+      "value_model.critic_module.module.10.lora_B",
+      "value_model.critic_module.module.2.lora_A",
+      "value_model.critic_module.module.2.lora_B",
+      "value_model.critic_module.module.4.lora_A",
+      "value_model.critic_module.module.4.lora_B",
+      "value_model.critic_module.module.6.lora_A",
+      "value_model.critic_module.module.6.lora_B",
+      "value_model.critic_module.module.8.lora_A",
+      "value_model.critic_module.module.8.lora_B"
+    ],
+    "trainable_names_expected": [
+      "policy.actor_module.decoders.g1_dyn.module.0.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.0.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.10.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.10.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.12.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.12.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.2.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.2.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.4.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.4.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.6.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.6.lora_B",
+      "policy.actor_module.decoders.g1_dyn.module.8.lora_A",
+      "policy.actor_module.decoders.g1_dyn.module.8.lora_B",
+      "value_model.critic_module.module.10.lora_A",
+      "value_model.critic_module.module.10.lora_B",
+      "value_model.critic_module.module.2.lora_A",
+      "value_model.critic_module.module.2.lora_B",
+      "value_model.critic_module.module.4.lora_A",
+      "value_model.critic_module.module.4.lora_B",
+      "value_model.critic_module.module.6.lora_A",
+      "value_model.critic_module.module.6.lora_B",
+      "value_model.critic_module.module.8.lora_A",
+      "value_model.critic_module.module.8.lora_B"
+    ],
+    "input_masks": {
+      "module.0": {
+        "selected_columns": [
+          64,
+          994
+        ],
+        "selected_count": 930,
+        "input_width": 994
+      }
+    }
+  },
+  "zero_update_checks": {
+    "guards_pass": true,
+    "bronze_provenance_pass": true,
+    "bronze_sampler_keys_exact": true,
+    "dynamic_train_key_is_lunge": true,
+    "held_gold_optimizer_ineligible": true,
+    "held_gold_absent_from_train_sampler": true,
+    "fixed_forward_batches_exactly_two": true,
+    "zero_B_token_exact": true,
+    "zero_B_target_action_exact": true,
+    "zero_B_value_exact": true,
+    "head_nominal_exact": true,
+    "std_source_exact": true,
+    "all_finite": true,
+    "dense_checkpoint_hash_unchanged": true,
+    "exact_s7_trainable_names": true,
+    "no_optimizer_or_physics": true,
+    "one_update_not_executed": true,
+    "five_update_locked": true
+  },
+  "one_update_preregistered": {
+    "static_contract_closed": true,
+    "workload_exact": true,
+    "optimizer_train_keys": [
+      "AMASS-STAND-001",
+      "AMASS-UPPER-001",
+      "PHUMA-LUNGE-R-001"
+    ],
+    "optimizer_held_keys": [],
+    "dynamic_train_diagnostic": {
+      "finite": true,
+      "survival_drop_max_s": 0.1,
+      "termination_rate_increase_max": 0.05,
+      "tracking_direction_rule": "at_least_one_preregistered_tracking_error_decreases_and_none_increases_more_than_10_percent"
+    },
+    "held_gold_role": {
+      "role": "pipeline_and_source_ability_regression_only",
+      "cross_embodiment_performance_claim_allowed": false,
+      "optimizer_eligible": false,
+      "fixed_key": "official_native_dance_held_out_000"
+    },
+    "five_update_unlock": {
+      "authorized_in_phase45": false,
+      "locked_until_one_update_passes": true,
+      "maximum_updates": 5,
+      "note": "finite_loss_alone_never_unlocks",
+      "additional_unlocks": {
+        "dynamic_lunge_tracking_direction_correct": true,
+        "dynamic_lunge_no_nan": true,
+        "dynamic_lunge_no_termination_degradation": true,
+        "original_ability_regression_pass": true
+      },
+      "held_out_in_optimizer": false
+    },
+    "live_optimizer_executed": false
+  },
+  "decision": {
+    "status": "BRONZE_EXACT_S7_ZERO_PASSED_ONE_UPDATE_PREREGISTERED_NOT_RUN",
+    "result": "Three explicitly Bronze GMR references are isolated to the train sampler; the dynamic lunge and native-Gold held batch both reproduce source token/action/value at exact-S7 B=0.",
+    "conclusion": "The corrected Bronze-only numerical path is ready for a separately executed one-update sanity. This is not PPO performance evidence and does not unlock five updates.",
+    "next_step": "Run exactly one preregistered 20-minibatch update only after review; evaluate lunge direction/termination and Gold original-ability regression. Five-update remains locked unless every additional gate passes."
+  }
+}
