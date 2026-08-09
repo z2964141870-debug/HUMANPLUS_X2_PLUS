@@ -68,6 +68,11 @@ def _patch_actions_module(module) -> None:
         deterministic_split = (
             os.environ.get("CWI_UPPER_DETERMINISTIC_SPLIT", "0") == "1"
         )
+        split_mode = os.environ.get("CWI_UPPER_SPLIT_MODE", "contiguous")
+        if split_mode not in {"contiguous", "interleaved"}:
+            raise ValueError("CWI_UPPER_SPLIT_MODE must be contiguous or interleaved")
+        if split_mode != "contiguous" and not deterministic_split:
+            raise ValueError("non-contiguous upper split requires deterministic split")
         if scale < 0.0:
             raise ValueError("CWI_UPPER_SCALE must be non-negative")
         if not 0.0 <= zero_fraction <= 1.0:
@@ -113,6 +118,7 @@ def _patch_actions_module(module) -> None:
         self._cwi_upper_stop_with_command = stop_with_command
         self._cwi_upper_zero_fraction = zero_fraction
         self._cwi_upper_deterministic_split = deterministic_split
+        self._cwi_upper_split_mode = split_mode
         # Keep the default contract bit-exact: with the opt-in fraction left
         # at zero no environment is masked.  A deterministic initial split
         # also guarantees that a short curriculum batch contains both fixed
@@ -121,7 +127,12 @@ def _patch_actions_module(module) -> None:
         self._cwi_upper_zero_mask = torch.zeros(
             self._env.num_envs, device=self.device, dtype=torch.bool
         )
-        self._cwi_upper_zero_mask[:zero_count] = True
+        if split_mode == "interleaved":
+            if zero_count * 2 != self._env.num_envs:
+                raise ValueError("interleaved upper split currently requires an exact 50/50 batch")
+            self._cwi_upper_zero_mask[::2] = True
+        else:
+            self._cwi_upper_zero_mask[:zero_count] = True
         start_s = self._cwi_upper_start_by_clip[self._cwi_upper_clip_ids]
         self._cwi_upper_baseline = self._cwi_sample_upper(
             start_s

@@ -25,6 +25,7 @@ def test_phase55_launcher_is_zero_only_and_standard_93d():
     assert '"optimizer_steps": 0' in runner
     assert "CWI_UPPER_ZERO_FRACTION=0.50" in launcher
     assert "CWI_UPPER_DETERMINISTIC_SPLIT=1" in launcher
+    assert "CWI_UPPER_SPLIT_MODE=interleaved" in launcher
     hook = (REPO / "hooks/sitecustomize.py").read_text()
     assert "_cwi_upper_deterministic_split" in hook
     assert "x2_hybrid_phase44_upper_motion.npz" in launcher
@@ -39,6 +40,10 @@ def test_live_report_is_fail_closed_and_exact():
     assert result["runtime"]["sim_joint_count"] == 31
     assert result["runtime"]["fixed_upper_envs"] == 32
     assert result["runtime"]["active_upper_envs"] == 32
+    assert result["runtime"]["domain_upper_counts"] == {
+        "none_ideal": 24, "none_response": 8,
+        "bounded_ideal": 24, "bounded_response": 8,
+    }
     assert result["runtime"]["upper_target_in_action_residual"] is False
     assert result["parameters"]["frozen_names"] == ["std"]
     assert result["parameters"]["hash_before"] == result["parameters"]["hash_after"]

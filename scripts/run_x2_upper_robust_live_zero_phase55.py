@@ -129,6 +129,7 @@ def main() -> None:
     required_env = {
         "CWI_UPPER_MOTION": str(UPPER), "CWI_UPPER_ZERO_FRACTION": "0.50",
         "CWI_UPPER_DETERMINISTIC_SPLIT": "1",
+        "CWI_UPPER_SPLIT_MODE": "interleaved",
         "CWI_UPPER_SCALE": "0.25", "CWI_UPPER_TIME_SCALE": "1.0",
         "CWI_UPPER_LOOP": "1", "CWI_UPPER_MAX_EXCURSION_RAD": "0.12",
         "CWI_UPPER_MAX_VELOCITY_RADPS": "0.20",
@@ -176,6 +177,23 @@ def main() -> None:
         zero_mask = action_term._cwi_upper_zero_mask
         if (len(zero_mask), int(zero_mask.sum())) != (64, 32):
             raise RuntimeError("upper fixed/active sampler is not 32/32")
+        if not torch.equal(zero_mask, torch.arange(64, device=zero_mask.device) % 2 == 0):
+            raise RuntimeError("upper split is not the frozen even/odd interleave")
+        response_actuator = robot.actuators["legs"]
+        response_alpha = response_actuator._position_alpha.reshape(64, -1)[:, 0]
+        response_lag = response_actuator.positions_delay_buffer.time_lags.reshape(64)
+        ideal_mask = torch.isclose(response_alpha, torch.ones_like(response_alpha)) & (response_lag == 0)
+        domain_upper_counts = {
+            "none_ideal": int((zero_mask & ideal_mask).sum()),
+            "none_response": int((zero_mask & ~ideal_mask).sum()),
+            "bounded_ideal": int((~zero_mask & ideal_mask).sum()),
+            "bounded_response": int((~zero_mask & ~ideal_mask).sum()),
+        }
+        if domain_upper_counts != {
+            "none_ideal": 24, "none_response": 8,
+            "bounded_ideal": 24, "bounded_response": 8,
+        }:
+            raise RuntimeError(f"upper x actuator-domain split is not balanced: {domain_upper_counts}")
         now = action_term._cwi_reference_time()
         reset_delta = action_term._cwi_bounded_intent_delta(now)
         future_delta = action_term._cwi_bounded_intent_delta(now + 1.0)
@@ -234,7 +252,8 @@ def main() -> None:
                         "head_default": head_default.tolist(), "upper_artifact": str(UPPER),
                         "upper_artifact_sha256": sha256(UPPER), "fixed_upper_envs": int(zero_mask.sum()),
                         "active_upper_envs": int((~zero_mask).sum()),
-                        "upper_sampler": "deterministic exact 32/32 paired split",
+                        "upper_sampler": "deterministic even/odd exact 32/32 paired split",
+                        "domain_upper_counts": domain_upper_counts,
                         "reset_upper_delta_max": float(reset_delta.abs().max()),
                         "future_fixed_delta_max": float(future_delta[zero_mask].abs().max()),
                         "future_active_delta_max": float(future_delta[~zero_mask].abs().max()),

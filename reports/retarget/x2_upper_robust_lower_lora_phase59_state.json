@@ -1,0 +1,17 @@
+{
+  "phase": 59,
+  "completed_updates": [
+    {
+      "update": 1,
+      "passed": false,
+      "joint_score": 6.503156321886005,
+      "gate": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_upper_robust_lower_lora_phase59_update01_gate.json",
+      "candidate": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_upper_robust_lower_lora_phase59/candidate_update01.pt"
+    }
+  ],
+  "best_update": null,
+  "best_joint_score": null,
+  "best_candidate": null,
+  "rejected_update": 1,
+  "rejected_candidate": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_upper_robust_lower_lora_phase59/candidate_update01.pt"
+}

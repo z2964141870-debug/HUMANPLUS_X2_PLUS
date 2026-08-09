@@ -118,7 +118,13 @@
     "upper_artifact_sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
     "fixed_upper_envs": 32,
     "active_upper_envs": 32,
-    "upper_sampler": "deterministic exact 32/32 paired split",
+    "upper_sampler": "deterministic even/odd exact 32/32 paired split",
+    "domain_upper_counts": {
+      "none_ideal": 24,
+      "none_response": 8,
+      "bounded_ideal": 24,
+      "bounded_response": 8
+    },
     "reset_upper_delta_max": 0.0,
     "future_fixed_delta_max": 0.0,
     "future_active_delta_max": 0.06580312550067902,
