@@ -1,0 +1,11 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "backups/x2_phase42_dual_track_20260809.tar.gz",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-09/phase42/x2_phase42_dual_track_20260809.tar.gz",
+  "local_size": 20567491,
+  "remote_size": null,
+  "local_sha256": "3eb55e4da0ab91b81f141a05fead153e491287bb7e396c67c117b2d5c8159e33",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-09T20:19:25+08:00",
+  "upload_note": "This tenth-task archive includes the retained Stage219 checkpoint and ONNX, report videos, Phase24 official traces, and the Phase37 external WBT cache. No post-upload listing was performed by user preference."
+}
