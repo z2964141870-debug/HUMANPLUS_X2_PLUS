@@ -6,7 +6,7 @@
 
 | 路线 | 已证实的改善 | 当前硬阻塞 | 下一唯一高信息量动作 |
 |---|---|---|---|
-| 动态重定向 | reset 把 fall `.575→.683 s`；reset-aware SBTO 到 `.775 s` 并出现卸载尝试 | 只有 21 ms 离地/chatter；name-mapped smooth event 又退化为 stuck contact | 改成直接足端/载荷转移表示；不扩旧 joint-mode CEM |
+| 动态重定向 | reset 把 fall `.575→.683 s`；reset-aware SBTO 到 `.775 s` 并出现卸载尝试 | Phase12发现原足位下COM距右足0.402m，固定双足全载荷转移需4.943rad且越限 | 允许足位与接触时序共同重构；不再固定原双足位置做局部bridge |
 | BASE recovery | exact snapshot、stateful suffix、handoff continuity、低维 bridge 机制均已验证；Phase26 cost 降 33.8% | 没有进入任何带连续成功未来的联合物理盆地；Phase39复制真实suffix仍失败 | 只考虑 state-conditioned 足端/载荷/root 闭环 bridge；不再复读离线PD序列 |
 
 ## 本次 BASE Phase38 新结论
@@ -33,12 +33,13 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
 
 - 上一次百度完整归档：`dynamic_retargeting/x2_dynamic_retargeting_race_full_20260811.tar.gz`
 - SHA256：`219a1dc5739bfdd5078c656055f04df151d225202ee76ef6a2541ef788bde683`
-- 归档后实质任务计数：`4/10`
+- 归档后实质任务计数：`5/10`
   1. Phase10 actuator mapping correction；
   2. Phase11 name-mapped event SBTO；
   3. BASE Phase38 sequence-consistent target audit。
   4. BASE Phase39 single sequence-guided bridge。
-- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 6 个。
+  5. Dynamic Phase12 task-space/load pre-physics audit。
+- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 5 个。
 - Git：重要合同纠正和小型审计即时提交，不等待第 10 项。
 
 ## Phase38 证据
@@ -49,5 +50,7 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
 - [回归测试](../tests/test_phase38_sequence_consistent_bridge_target.py)
 - [BASE Phase39 报告](baseline/x2_recovery_phase39_sequence_guided_bridge.md)
 - [Phase39 JSON](official_x2/phase39_sequence_guided_bridge.json)
+- [Dynamic Phase12 报告](../research/dynamic_retargeting_20260811/phase12_taskspace_load_bridge/REPORT_phase12_taskspace_load_bridge.md)
+- [Phase12 preflight](../research/dynamic_retargeting_20260811/phase12_taskspace_load_bridge/phase12_preflight.json)
 
 当前总裁决：`BOTH_TRACKS_MECHANISM_POSITIVE / NO_TEACHER / NO_TRAINING_UNLOCK`。

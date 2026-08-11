@@ -46,6 +46,7 @@
 | Phase8 reset-aware corrected SBTO | 91 s，480 rollouts | 完整跌倒 `.683→.775 s`；出现26次卸载尝试，但最长单支撑仅21 ms，属于 chatter | **当前最强正信号，candidate仍拒绝** |
 | Phase9 reset + phase-aware DSMS | 1203 s，300 iter | max defect `.1667`；raw `.245 s` root-z倒地，早于 `.333 s` liftoff起点 | 当前长窗口 DSMS 配置失败 |
 | Phase11 name-mapped event SBTO | 41.7 s，216 rollouts | 正确body29/head2；右支撑稳定，但左脚100% stuck、0 switch，fall `.702 s` | 固定4-mode/8参数事件表示停止 |
+| Phase12 task-space/load preflight | 0 physics，1次FK/Jacobian | 8D任务Jacobian满秩；但固定双足把COM移至右足需最大4.943rad、2关节越限 | **物理前拒绝固定足位载荷转移表示** |
 
 ## 4. 当前最可信结论
 
@@ -56,6 +57,7 @@
 5. **目前没有合格 dynamics teacher，不得进入 RL。** 任何“7/8”“接近门”或短窗口存活都不能冒充 teacher。
 6. **Phase10 已纠正 actuator 合同。** Phase6/8核心信号在正确映射投影下保留；Phase4/5方法结论撤回为candidate级失败。
 7. **Phase11 证明“平滑”本身不等于有效liftoff。** 低维事件模式消除了Phase8 chatter，却退化为全程双脚接触；下一动态表示必须直接约束足端/载荷，而不是只扩同一关节模式预算。
+8. **Phase12 证明原足位与右单支撑之间存在幅度冲突。** 当前reset的COM距右足中心约0.402m；虽然lower15任务Jacobian满秩，但固定双足完成全载荷转移的线性化解需要最大4.943rad并越限。下一表示必须允许足位/接触时序共同重构，不能只在原地加task-space feedback。
 
 ## 5. 成本—收益判断
 
@@ -88,7 +90,7 @@
 4. 当前 DSMS 长窗口配置停止：除非采用新转录/多重打靶表示或更可靠求解器，不再加迭代。
 5. OmniTrack/特权物理生成器在拿到至少一条可执行 seed 前不启动，避免再次卡在 teacher 本身学不会。
 
-当前备份周期计数：本次百度完整归档之后已完成4个实质任务（Phase10合同纠正、Phase11 name-mapped event SBTO、BASE Phase38连续成功suffix目标审计、BASE Phase39单次sequence-guided bridge），距离下一次“10任务”百度大包归档还剩6个；Git小提交可随关键纠正即时推送。
+当前备份周期计数：本次百度完整归档之后已完成5个实质任务（Phase10合同纠正、Phase11 name-mapped event SBTO、BASE Phase38连续成功suffix目标审计、BASE Phase39单次sequence-guided bridge、动态Phase12 task-space/load物理前审计），距离下一次“10任务”百度大包归档还剩5个；Git小提交可随关键纠正即时推送。
 
 ## 8. 产物与恢复边界
 

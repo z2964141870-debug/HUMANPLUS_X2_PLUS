@@ -1,0 +1,17 @@
+{
+  "stage": "dynamic retargeting Phase12 task-space/load bridge preflight",
+  "hypothesis": "Phase6 reset state has enough lower15 local authority to keep both feet fixed, transfer COM over the right support foot, and then create a stable left swing",
+  "fixed_inputs": {
+    "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+    "phase6_reset_sha256": "141c6d7d9c006634eb00ddf25d2f593080abd0d8cfee8376767c14674d8cc2ea",
+    "controlled_space": "name-mapped lower12+waist3; head excluded",
+    "contact_geometry": "12 contype-enabled official sole spheres per foot"
+  },
+  "pre_physics_gates": {
+    "task_jacobian": "right foot xyz + left foot xyz + COM xy must have rank 8 with at least 7 lower15 null dimensions",
+    "linearized_full_transfer": "both feet fixed; least-norm lower15 delta max<=0.35rad; no joint-limit violation; task residual<=1e-6m"
+  },
+  "execution_if_passed": "one state-conditioned damped task-space raw-PD replay; no optimizer/search/retry",
+  "execution_if_failed": "stop before physics and require foot-placement/contact-schedule representation",
+  "training": false
+}
