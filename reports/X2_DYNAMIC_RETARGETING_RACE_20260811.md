@@ -86,3 +86,11 @@
 完整目录：`/home/humanplus/projects/ZHY/dsms_workspace/phase3b` 至 `phase9_reset_contact_dsms`。
 
 Git 保存：脚本、prereg、MD、小 JSON、候选 NPZ（当前总量较小）和本报告。百度网盘保存同一冻结快照压缩包；manifest 必须记录 Git commit、远端路径、字节数和 SHA-256。
+
+## 9. 归档状态
+
+- Git 内容 commit：`6af9e0ac50e2bc48f131698da10111d3d310d084`。
+- 百度文件：`HUMAN+/HUMANPLUS_X2_PLUS/2026-08-11/dynamic_retargeting/x2_dynamic_retargeting_race_full_20260811.tar.gz`。
+- 字节数：`22,786,040`。
+- SHA-256：`219a1dc5739bfdd5078c656055f04df151d225202ee76ef6a2541ef788bde683`。
+- 上传状态：`bdpan upload` 已返回成功；远端存在性/大小/下载回读 SHA 按项目约定留给每日人工检查。
