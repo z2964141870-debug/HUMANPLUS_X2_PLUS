@@ -6,7 +6,7 @@
 
 | 路线 | 已证实的改善 | 当前硬阻塞 | 下一唯一高信息量动作 |
 |---|---|---|---|
-| 动态重定向 | reset把fall `.575→.683s`；Phase15将足距p50 `.801→.464m`并修复DS覆盖 | Phase16放开摆脚仍左右0/175局部可达；支撑足必须重落位 | 进入多阶段foot-placement/contact/root联合生成，不再做局部residual bridge |
+| 动态重定向 | reset与形态审计明确了可保留初值；本机联合生成所需Jacobian/solver均ready | 局部bridge全部停止；需要从新可行初态联合生成足位/contact/root/q | Phase17 Stage-A离线联合生成器（physics仍锁） |
 | BASE recovery | exact snapshot、stateful suffix、handoff continuity、低维 bridge 机制均已验证；Phase26 cost 降 33.8% | 没有进入任何带连续成功未来的联合物理盆地；Phase39复制真实suffix仍失败 | 只考虑 state-conditioned 足端/载荷/root 闭环 bridge；不再复读离线PD序列 |
 
 ## 本次 BASE Phase38 新结论
@@ -33,7 +33,7 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
 
 - 上一次百度完整归档：`dynamic_retargeting/x2_dynamic_retargeting_race_full_20260811.tar.gz`
 - SHA256：`219a1dc5739bfdd5078c656055f04df151d225202ee76ef6a2541ef788bde683`
-- 归档后实质任务计数：`9/10`
+- 归档后实质任务计数：`10/10`，已触发新归档
   1. Phase10 actuator mapping correction；
   2. Phase11 name-mapped event SBTO；
   3. BASE Phase38 sequence-consistent target audit。
@@ -43,7 +43,8 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
   7. Dynamic Phase14 contact-label-only repair audit。
   8. Dynamic Phase15 deterministic morphology normalization。
   9. Dynamic Phase16 local support reachability audit。
-- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 1 个。
+  10. Dynamic Phase17 next-generator capability + frozen contract。
+- 本次Git/百度归档完成后，新周期从 `0/10` 开始。
 - Git：重要合同纠正和小型审计即时提交，不等待第 10 项。
 
 ## Phase38 证据
@@ -64,5 +65,7 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
 - [Phase15 result](../research/dynamic_retargeting_20260811/phase15_morphology_normalization/phase15_result.json)
 - [Dynamic Phase16 报告](../research/dynamic_retargeting_20260811/phase16_local_support_reachability/REPORT_phase16_local_support_reachability.md)
 - [Phase16 result](../research/dynamic_retargeting_20260811/phase16_local_support_reachability/phase16_result.json)
+- [Dynamic Phase17 合同](../research/dynamic_retargeting_20260811/phase17_next_generator_contract/REPORT_phase17_next_generator_contract.md)
+- [Phase17 capability](../research/dynamic_retargeting_20260811/phase17_next_generator_contract/phase17_capability.json)
 
 当前总裁决：`BOTH_TRACKS_MECHANISM_POSITIVE / NO_TEACHER / NO_TRAINING_UNLOCK`。

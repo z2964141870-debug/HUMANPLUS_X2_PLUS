@@ -1,0 +1,53 @@
+{
+  "stage": "dynamic retargeting Phase17 next-generator frozen contract",
+  "status": "IMPLEMENTATION_AUTHORIZED_OFFLINE_GEOMETRY_ONLY",
+  "method": "X2-specific staged contact/foot-placement/root/lower-q generator",
+  "input_semantics": {
+    "hard_assets": ["official X2 scene and limits", "official active12 sole geometry", "official per-joint PD for later replay"],
+    "soft_reference": ["human/PHUMA upper-body keypoints", "torso orientation", "motion duration and forward semantic"],
+    "initialization_only": ["Phase15 morphology-normalized lower pose", "Phase30 temporal alignment"],
+    "explicitly_not_truth": ["Phase30 lower q", "Phase30 root/COM path", "Phase30 source-height contact labels"]
+  },
+  "variables": {
+    "per_frame_30hz": ["root xyz and orientation", "lower12+waist3 q"],
+    "per_stance_segment": ["support-foot XY anchor"],
+    "discrete_schedule_templates": ["DS", "DS-L-DS", "DS-R-DS", "DS-L-DS-R-DS", "DS-R-DS-L-DS"],
+    "minimum_contact_dwell_s": 0.1
+  },
+  "stage_a_offline_geometry": {
+    "solver": "sparse sequential Gauss-Newton/LSQR with fixed configuration; enumerate templates in listed order",
+    "physics_steps": 0,
+    "hard_gates": {
+      "joint_limits": true,
+      "joint_step_p95_rad": 0.1,
+      "single_support_com_margin_min_m": 0.0,
+      "stance_speed_p95_mps": 0.1,
+      "stance_excursion_max_m": 0.03,
+      "swing_clearance_min_m": 0.012,
+      "flight_fraction_max": 0.02,
+      "root_horizontal_accel_p95_mps2": 4.0,
+      "upper_keypoint_p95_m": 0.1,
+      "head_lock_max_rad": 0.02
+    },
+    "stop": "first complete template passing all gates is frozen; if none pass, stop without physics"
+  },
+  "stage_b_raw_physics": {
+    "authorized": false,
+    "unlock": "only after one Stage-A template passes and hashes are frozen",
+    "contract": "official raw motor + per-joint PD, 1kHz physics/50Hz targets, one candidate/no retry",
+    "success": ["full duration survival", "contact agreement >=0.90", "stance speed/excursion and swing clearance gates pass", "root accel/safety pass", "upper semantic gate pass"]
+  },
+  "stage_c_training": {
+    "authorized": false,
+    "unlock": "only after Stage-B raw physics passes",
+    "four_domain_gate": "existing DC-PEFT frozen protocol; ideal >=2/4 and overshoot improves"
+  },
+  "resource_contract": {
+    "single_process": true,
+    "cpu_threads_max": 4,
+    "gpu": false,
+    "wall_time_per_template_max_minutes": 30,
+    "parallel_agents": false,
+    "no_weight_or_threshold_scan": true
+  }
+}
