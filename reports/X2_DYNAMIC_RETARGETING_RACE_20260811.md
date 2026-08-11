@@ -100,7 +100,7 @@
 4. 当前 DSMS 长窗口配置停止：除非采用新转录/多重打靶表示或更可靠求解器，不再加迭代。
 5. OmniTrack/特权物理生成器在拿到至少一条可执行 seed 前不启动，避免再次卡在 teacher 本身学不会。
 
-当前备份周期计数：本次百度完整归档之后已完成10个实质任务；Phase17 next-generator合同为第10项，现已触发新的Git与百度完整归档。归档完成后计数归零。
+当前备份周期计数：10个实质任务已完成并归档，新周期为`0/10`。Cycle10百度包SHA256为`154721bf18ee8f6aec717b9b120e2653a705c5238cf9c3d774b553e91f24ee1f`。
 
 ## 8. 产物与恢复边界
 
@@ -115,3 +115,12 @@ Git 保存：脚本、prereg、MD、小 JSON、候选 NPZ（当前总量较小�
 - 字节数：`22,786,040`。
 - SHA-256：`219a1dc5739bfdd5078c656055f04df151d225202ee76ef6a2541ef788bde683`。
 - 上传状态：`bdpan upload` 已返回成功；远端存在性/大小/下载回读 SHA 按项目约定留给每日人工检查。
+
+### Cycle10增量归档
+
+- Git内容commit：`8a29a8bf42d71e0b84c601a1080601e10956916f`。
+- 百度文件：`HUMAN+/HUMANPLUS_X2_PLUS/2026-08-11/cycle10/x2_cycle10_dynamic_base_20260811.tar.gz`。
+- 字节数：`22,153,950`。
+- SHA-256：`154721bf18ee8f6aec717b9b120e2653a705c5238cf9c3d774b553e91f24ee1f`。
+- 内容：完整Git bundle + Phase19-v2 r2-r5外部stateful sidecars + 内部SHA256SUMS。
+- 上传状态：`bdpan upload` 已返回成功；不做自动远端回读。
