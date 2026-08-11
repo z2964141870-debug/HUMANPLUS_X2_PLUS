@@ -1,0 +1,9 @@
+{
+  "stage": "dynamic retargeting Phase15 deterministic morphology normalization",
+  "only_joint_variables": ["left_hip_roll_joint", "right_hip_roll_joint"],
+  "scale_formula": "official X2 neutral foot separation / frozen Phase30 median foot separation",
+  "root_z": "Phase7-style MA9 canonical grounding to 5.05mm minimum active12 clearance",
+  "forbidden": ["parameter scan", "physics", "optimizer", "contact relabel during evaluation", "RL"],
+  "pass": ["single-support COM-outside <=5%", "double-support outside=0", "joint limits pass"],
+  "training": false
+}

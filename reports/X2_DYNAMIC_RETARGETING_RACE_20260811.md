@@ -49,6 +49,7 @@
 | Phase12 task-space/load preflight | 0 physics，1次FK/Jacobian | 8D任务Jacobian满秩；但固定双足把COM移至右足需最大4.943rad、2关节越限 | **物理前拒绝固定足位载荷转移表示** |
 | Phase13 full support-margin audit | 0 physics，175次FK | 137/137单支撑帧COM投影在意图支撑面外，gap p50/p95=.214/.392m；足距p50=.801m | **原stance标签不能作X2硬接触真值** |
 | Phase14 label-only contact repair | 0 physics，175次FK | 需改137/175帧，145帧仅能退为DS，仍有30帧连DS都不覆盖COM | **仅改contact标签失败，q/root/足位必须变** |
+| Phase15 morphology normalization | 0 physics，确定性公式 | hip-roll scale=.342使足距p50 .801→.464m并修复DS覆盖；SS仍137/137失败、需root-z改10.4cm | **可作联合优化初值，不能作teacher** |
 
 ## 4. 当前最可信结论
 
@@ -62,6 +63,7 @@
 8. **Phase12 证明原足位与右单支撑之间存在幅度冲突。** 当前reset的COM距右足中心约0.402m；虽然lower15任务Jacobian满秩，但固定双足完成全载荷转移的线性化解需要最大4.943rad并越限。下一表示必须允许足位/接触时序共同重构，不能只在原地加task-space feedback。
 9. **Phase13 证明该冲突贯穿全段。** 137个单支撑intent帧全部存在COM支撑面外差，且是20–40cm量级；结合足距中位0.801m，说明G1/人体足位、X2 COM路径和contact schedule必须联合重定向。source-height标签不再具备X2硬接触真值资格。
 10. **Phase14 排除只改标签的廉价修复。** 78.3%帧需要重标，所有可修单支撑都退化为DS，仍有30帧即使DS也存在最大24.8mm支撑面外差。下一生成器必须实质改变q/root/足位。
+11. **Phase15 证明髋外展/足宽是重要但非唯一根因。** 由X2 neutral比例直接缩放hip-roll可消除DS支撑矛盾，却仍不能支持任何原SS帧，并引入约10cm重落地修正；它只能作为联合生成器初值。
 
 ## 5. 成本—收益判断
 
@@ -94,7 +96,7 @@
 4. 当前 DSMS 长窗口配置停止：除非采用新转录/多重打靶表示或更可靠求解器，不再加迭代。
 5. OmniTrack/特权物理生成器在拿到至少一条可执行 seed 前不启动，避免再次卡在 teacher 本身学不会。
 
-当前备份周期计数：本次百度完整归档之后已完成7个实质任务（Phase10合同纠正、Phase11 name-mapped event SBTO、BASE Phase38连续成功suffix目标审计、BASE Phase39单次sequence-guided bridge、动态Phase12 task-space/load物理前审计、动态Phase13全段支撑裕量审计、动态Phase14 contact-label-only审计），距离下一次“10任务”百度大包归档还剩3个；Git小提交可随关键纠正即时推送。
+当前备份周期计数：本次百度完整归档之后已完成8个实质任务（Phase10合同纠正、Phase11 name-mapped event SBTO、BASE Phase38连续成功suffix目标审计、BASE Phase39单次sequence-guided bridge、动态Phase12 task-space/load物理前审计、动态Phase13全段支撑裕量审计、动态Phase14 contact-label-only审计、动态Phase15 morphology normalization），距离下一次“10任务”百度大包归档还剩2个；Git小提交可随关键纠正即时推送。
 
 ## 8. 产物与恢复边界
 

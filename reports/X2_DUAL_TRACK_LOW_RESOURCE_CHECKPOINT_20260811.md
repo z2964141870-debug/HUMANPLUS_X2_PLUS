@@ -6,7 +6,7 @@
 
 | 路线 | 已证实的改善 | 当前硬阻塞 | 下一唯一高信息量动作 |
 |---|---|---|---|
-| 动态重定向 | reset 把 fall `.575→.683 s`；reset-aware SBTO 到 `.775 s` 并出现卸载尝试 | Phase13/14确认137/137单支撑不成立，且仅改标签仍有30帧连DS都不覆盖COM | 联合重做X2足位、contact schedule、root/COM/q；旧Bronze只保留语义软目标 |
+| 动态重定向 | reset把fall `.575→.683s`；Phase15将足距p50 `.801→.464m`并修复DS覆盖 | 原SS仍137/137不成立；形态缩放需root-z改10.4cm且丢单支撑语义 | 以Phase15仅作初值，联合重做足位、contact、root/COM/q |
 | BASE recovery | exact snapshot、stateful suffix、handoff continuity、低维 bridge 机制均已验证；Phase26 cost 降 33.8% | 没有进入任何带连续成功未来的联合物理盆地；Phase39复制真实suffix仍失败 | 只考虑 state-conditioned 足端/载荷/root 闭环 bridge；不再复读离线PD序列 |
 
 ## 本次 BASE Phase38 新结论
@@ -33,7 +33,7 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
 
 - 上一次百度完整归档：`dynamic_retargeting/x2_dynamic_retargeting_race_full_20260811.tar.gz`
 - SHA256：`219a1dc5739bfdd5078c656055f04df151d225202ee76ef6a2541ef788bde683`
-- 归档后实质任务计数：`7/10`
+- 归档后实质任务计数：`8/10`
   1. Phase10 actuator mapping correction；
   2. Phase11 name-mapped event SBTO；
   3. BASE Phase38 sequence-consistent target audit。
@@ -41,7 +41,8 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
   5. Dynamic Phase12 task-space/load pre-physics audit。
   6. Dynamic Phase13 full support-margin audit。
   7. Dynamic Phase14 contact-label-only repair audit。
-- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 3 个。
+  8. Dynamic Phase15 deterministic morphology normalization。
+- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 2 个。
 - Git：重要合同纠正和小型审计即时提交，不等待第 10 项。
 
 ## Phase38 证据
@@ -58,5 +59,7 @@ Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 b
 - [Phase13 result](../research/dynamic_retargeting_20260811/phase13_support_margin_audit/phase13_result.json)
 - [Dynamic Phase14 报告](../research/dynamic_retargeting_20260811/phase14_contact_schedule_repair/REPORT_phase14_contact_schedule_repair.md)
 - [Phase14 result](../research/dynamic_retargeting_20260811/phase14_contact_schedule_repair/phase14_result.json)
+- [Dynamic Phase15 报告](../research/dynamic_retargeting_20260811/phase15_morphology_normalization/REPORT_phase15_morphology_normalization.md)
+- [Phase15 result](../research/dynamic_retargeting_20260811/phase15_morphology_normalization/phase15_result.json)
 
 当前总裁决：`BOTH_TRACKS_MECHANISM_POSITIVE / NO_TEACHER / NO_TRAINING_UNLOCK`。
