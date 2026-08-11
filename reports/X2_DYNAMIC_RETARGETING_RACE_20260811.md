@@ -30,14 +30,18 @@
 
 既有成功的 native closed AimDK trace 中，active-sole contact distance 最小约 `-4.487 mm`，p01 为左/右 `-2.116/-2.491 mm`。因此本轮保留旧预注册 `-0.5 mm` 判定作 provenance，但后续物理解释采用同 scene 的 native 分布校准，不能为追求零压入而调控制。
 
+### 2.4 Phase4/5/6/8 存在 actuator 尾部假设错误
+
+官方 head actuator 是索引 `15/16`，不是最后两个；最后两个是右腕 pitch/roll。历史代码部分使用 `[:-2]`/`[-2:]`，因此 Phase4/5 搜索空间不满足声明的 body29/head2，方法裁决降级。Phase6/8 经 Phase10 零搜索 name-based 投影重放后，核心结果仍分别为 `0.683/0.775 s`，Phase8 的26次切换和21 ms最长离地也逐值保留；所以 reset/SBTO 机制信号保留，但后续必须换成显式按名字构建的 runner。
+
 ## 3. 结果总表
 
 | 路线 | 计算成本 | 核心结果 | 裁决 |
 |---|---:|---|---|
 | Phase3b corrected DSMS | 443 s，300 IPOPT iter | max defect `.05422`；raw 同时失败于 contact/foot speed/flight/root accel | 拒绝当前原始 tracking-cost 短前缀 |
 | Phase3c contact-aware DSMS | 516 s，300 iter | max defect `.001154`，比3b改善97.9%；多项接触指标改善，但右足速、flight、root accel/head仍失败 | 机制有效，非 teacher |
-| Phase4 SBTO 初跑 | 40 s，480 rollouts | 搜索目标混入 visual mesh；正确重算 candidate 反而更差 | 实验污染，只拒绝 candidate，不裁决 SBTO |
-| Phase5 DDR rolling CEM | 32 s | 8门过7；语义 RMSE 34.9 mm，但 active penetration未改善、右侧恶化0.662 mm | 小预算 DDR 拒绝 |
+| Phase4 SBTO 初跑 | 40 s，480 rollouts | 搜索目标混入 visual mesh，且body29/head2映射错误 | 实验污染，只拒绝 candidate，不裁决 SBTO |
+| Phase5 DDR rolling CEM | 32 s | 8门过7，但body29/head2搜索映射错误；active penetration未改善 | candidate拒绝，不评价忠实DDR |
 | Phase6 reset projection + fixed bridge | SLSQP 30 iter + replay | t0 双脚真实接触；短窗除旧 penetration 门外全过；完整跌倒 `.575→.683 s` | **必要公共前置层，仍非充分解** |
 | Phase8 reset-aware corrected SBTO | 91 s，480 rollouts | 完整跌倒 `.683→.775 s`；出现26次卸载尝试，但最长单支撑仅21 ms，属于 chatter | **当前最强正信号，candidate仍拒绝** |
 | Phase9 reset + phase-aware DSMS | 1203 s，300 iter | max defect `.1667`；raw `.245 s` root-z倒地，早于 `.333 s` liftoff起点 | 当前长窗口 DSMS 配置失败 |
@@ -49,6 +53,7 @@
 3. **Phase8 sampling 是本轮唯一干净的方向性改善。** 它进一步延寿到 0.775 s，并使左脚开始卸载；但 26 次切换中最长离地只有 21 ms，尚未形成稳定单支撑。
 4. **继续扩大同类 DSMS NLP 的边际收益不成立。** Phase9 是本轮成本最高的单次实验，却因 shooting continuity 恶化在 intervention 前倒地。它只否定当前配置，不否定显式 liftoff 思路。
 5. **目前没有合格 dynamics teacher，不得进入 RL。** 任何“7/8”“接近门”或短窗口存活都不能冒充 teacher。
+6. **Phase10 已纠正 actuator 合同。** Phase6/8核心信号在正确映射投影下保留；Phase4/5方法结论撤回为candidate级失败。
 
 ## 5. 成本—收益判断
 
