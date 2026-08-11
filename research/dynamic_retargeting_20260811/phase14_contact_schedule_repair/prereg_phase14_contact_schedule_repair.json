@@ -1,0 +1,11 @@
+{
+  "stage": "dynamic retargeting Phase14 label-only contact repair",
+  "frozen": ["Phase30 q", "root pose", "foot placement", "official X2 model"],
+  "candidate_labels": ["left", "right", "left+right"],
+  "selection": "keep original if COM support margin is nonnegative; otherwise choose feasible label with minimum symmetric difference",
+  "pass": ["all frames have a feasible label", "changed-frame fraction <=20%"],
+  "truth_boundary": "quasi-static support diagnostic only, not realized contact/GRF/COP",
+  "physics_steps": 0,
+  "optimizer_steps": 0,
+  "training": false
+}
