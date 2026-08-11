@@ -1,0 +1,65 @@
+{
+  "schema": "phase9_preflight_v1",
+  "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+  "control_sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400",
+  "reset_sha256": "141c6d7d9c006634eb00ddf25d2f593080abd0d8cfee8376767c14674d8cc2ea",
+  "mujoco": "3.3.7",
+  "threads": 4,
+  "horizon_s": 0.7000000000000001,
+  "nodes": 35,
+  "reset_qpos_exact": true,
+  "reset_qvel_zero_exact": true,
+  "target": {
+    "active_spheres": {
+      "left": 12,
+      "right": 12
+    },
+    "clearance_samples": {
+      "time_s": [
+        0.0,
+        0.3333333333333333,
+        0.3833333333333333,
+        0.43333333333333335,
+        0.7
+      ],
+      "left_m": [
+        0.00025,
+        0.00025,
+        0.015124999999999993,
+        0.03,
+        0.03
+      ],
+      "right_m": [
+        0.00025,
+        0.00025,
+        0.00025,
+        0.00025,
+        0.00025
+      ]
+    },
+    "left_at_10over30_m": 0.00025131634567901234,
+    "left_terminal_m": 0.03,
+    "right_terminal_m": 0.00025,
+    "lift_start_s": 0.3333333333333333,
+    "lift_ramp_s": 0.1
+  },
+  "constraints_registered": 2700,
+  "constraints_returned": 2700,
+  "constraints_exact": true,
+  "head_actuator_indices": [
+    15,
+    16
+  ],
+  "head_bounds": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0
+    ]
+  ],
+  "head_bounds_zero": true,
+  "pass": true
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "x2_phase8_reset_sbto_prereg_v1",
+  "date": "2026-08-11",
+  "independent_route": true,
+  "method": "Phase6 projected reset plus active12 contact-aware progressive SBTO/CEM",
+  "clip": "PHUMA-LUNGE-R-001",
+  "reset_sha256": "141c6d7d9c006634eb00ddf25d2f593080abd0d8cfee8376767c14674d8cc2ea",
+  "search_horizon": {"frames_50hz": 36, "duration_s": 0.70, "reason": "left source intent ends at 10/30=0.333s; 0.34s provides only 7ms and cannot certify liftoff"},
+  "physics": {"mujoco": "3.3.7", "physics_hz": 1000, "integrator": "official Euler", "actuation": "official raw motor external per-joint PD"},
+  "representation": {"nominal": "Phase6 0.34s smooth bridge then Phase30 reference", "control_point_frames": [0, 8, 18, 27, 35], "optimized_actuators": 29, "head_target": [0.0, 0.0], "post_horizon": "last correction linearly decays to zero from 0.70s to 1.00s for full continuation"},
+  "search": {"seed": 20260811, "progressive_window_frames": [14, 25, 36], "candidates_per_iteration": 40, "elite_count": 8, "iterations_per_window": 4, "covariance": "diagonal", "single_process": true, "final_selection": "lowest corrected loss candidate from final iteration", "parameter_scan": false},
+  "objective": {"includes": ["source-intent support contact", "left nonintent stuck-contact", "left post-intent active12 clearance toward 5mm", "right-support conversion", "flight", "fall", "stance speed", "root acceleration", "joint tracking", "control correction", "torque saturation"], "penetration_in_ranking": false},
+  "penetration_reporting": {"active_spheres_per_foot": 12, "legacy_absolute_gate_mm": -0.5, "native_success_min_mm": -4.487, "native_p01_mm": {"left": -2.116, "right": -2.491}, "native_p05_mm": {"left": -0.683, "right": -0.827}},
+  "primary_questions": {"survive_0p70": true, "left_liftoff_min_contiguous_ms": 30, "right_support_during_left_nonintent_min": 0.95, "left_stuck_contact_fraction_max": 0.10, "full_continuation_fall_time_better_than_phase6_s": 0.683},
+  "stopping": "one frozen search only; no retry, objective/threshold adjustment, RL or PPO"
+}

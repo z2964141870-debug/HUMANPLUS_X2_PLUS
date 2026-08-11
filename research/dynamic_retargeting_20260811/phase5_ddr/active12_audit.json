@@ -1,0 +1,225 @@
+{
+  "schema": "x2_ddr_phase5_active12_audit_v1",
+  "new_searches": 0,
+  "baseline": {
+    "duration_s": 0.34,
+    "survive_full_prefix": true,
+    "root_z_min_m": 0.5164466207343219,
+    "tilt_max_rad": 0.6091827953663765,
+    "torque_saturation_fraction": 0.0,
+    "penetration_min_mm": {
+      "left": -1.775954858261551,
+      "right": -3.705266489665469
+    },
+    "contact": {
+      "left": {
+        "contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.02934489661625817,
+        "stance_excursion_max_m": 0.006937072735591666
+      },
+      "right": {
+        "contradiction_fraction": 0.12352941176470589,
+        "stance_speed_p95_mps": 0.03462923909618415,
+        "stance_excursion_max_m": 0.013770009718508586
+      }
+    },
+    "unintended_flight_fraction": 0.0,
+    "root_horiz_accel_p95_mps2": 3.6097902213407456,
+    "head_q_max_abs_rad": 0.001905209466435092,
+    "semantic_keypoint_rmse_m": 0.037830922131565414,
+    "gates": {
+      "survive": true,
+      "penetration": false,
+      "stance_speed": true,
+      "stance_excursion": true,
+      "flight": true,
+      "root_accel": true,
+      "head": true,
+      "semantic": true
+    },
+    "pass": false
+  },
+  "candidate": {
+    "duration_s": 0.34,
+    "survive_full_prefix": true,
+    "root_z_min_m": 0.5153602884947772,
+    "tilt_max_rad": 0.6004668883553207,
+    "torque_saturation_fraction": 0.007969639468690701,
+    "penetration_min_mm": {
+      "left": -1.775974609023785,
+      "right": -4.367366628923587
+    },
+    "contact": {
+      "left": {
+        "contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.045665780774156735,
+        "stance_excursion_max_m": 0.009282165766910868
+      },
+      "right": {
+        "contradiction_fraction": 0.10588235294117647,
+        "stance_speed_p95_mps": 0.03870249899297385,
+        "stance_excursion_max_m": 0.01512614878635779
+      }
+    },
+    "unintended_flight_fraction": 0.0,
+    "root_horiz_accel_p95_mps2": 3.7432734836473434,
+    "head_q_max_abs_rad": 0.004396763265088801,
+    "semantic_keypoint_rmse_m": 0.03487106565896304,
+    "gates": {
+      "survive": true,
+      "penetration": false,
+      "stance_speed": true,
+      "stance_excursion": true,
+      "flight": true,
+      "root_accel": true,
+      "head": true,
+      "semantic": true
+    },
+    "pass": false,
+    "seed": 5505,
+    "population": 24,
+    "elite": 6,
+    "iterations": 3,
+    "horizon_nodes": 4,
+    "runtime_s": 32.48261046409607,
+    "history": [
+      {
+        "node": 1,
+        "best_rollout_cost": 74.95987344666965,
+        "executed_cost": 40.02377445821018
+      },
+      {
+        "node": 2,
+        "best_rollout_cost": 35.72034628873999,
+        "executed_cost": 34.269927925064025
+      },
+      {
+        "node": 3,
+        "best_rollout_cost": 2.480339049212844,
+        "executed_cost": 0.2983402681503375
+      },
+      {
+        "node": 4,
+        "best_rollout_cost": 1.7474314413167507,
+        "executed_cost": 0.25847379881830024
+      },
+      {
+        "node": 5,
+        "best_rollout_cost": 2.8675944600007335,
+        "executed_cost": 0.3626174330821012
+      },
+      {
+        "node": 6,
+        "best_rollout_cost": 3.473089035538721,
+        "executed_cost": 0.45662317818683223
+      },
+      {
+        "node": 7,
+        "best_rollout_cost": 4.488263701695007,
+        "executed_cost": 0.7799089287448039
+      },
+      {
+        "node": 8,
+        "best_rollout_cost": 5.374992095901929,
+        "executed_cost": 0.8378327286568802
+      },
+      {
+        "node": 9,
+        "best_rollout_cost": 7.666696052006214,
+        "executed_cost": 1.1923860271589348
+      },
+      {
+        "node": 10,
+        "best_rollout_cost": 8.13023067443072,
+        "executed_cost": 1.6474354501721074
+      },
+      {
+        "node": 11,
+        "best_rollout_cost": 9.15364803873029,
+        "executed_cost": 1.6389819242353654
+      },
+      {
+        "node": 12,
+        "best_rollout_cost": 11.257596413262819,
+        "executed_cost": 2.0035192523166807
+      },
+      {
+        "node": 13,
+        "best_rollout_cost": 13.541025100592194,
+        "executed_cost": 2.948016416714928
+      },
+      {
+        "node": 14,
+        "best_rollout_cost": 16.328448536655507,
+        "executed_cost": 3.0797164451699026
+      },
+      {
+        "node": 15,
+        "best_rollout_cost": 13.102873934424128,
+        "executed_cost": 3.56031599123691
+      },
+      {
+        "node": 16,
+        "best_rollout_cost": 9.461190471788816,
+        "executed_cost": 4.316100624617419
+      },
+      {
+        "node": 17,
+        "best_rollout_cost": 5.1063587187032535,
+        "executed_cost": 5.119293534504066
+      }
+    ],
+    "schema": "x2_ddr_phase5_result_active12_v2",
+    "baseline": {
+      "duration_s": 0.34,
+      "survive_full_prefix": true,
+      "root_z_min_m": 0.5164466207343219,
+      "tilt_max_rad": 0.6091827953663765,
+      "torque_saturation_fraction": 0.0,
+      "penetration_min_mm": {
+        "left": -1.775954858261551,
+        "right": -3.705266489665469
+      },
+      "contact": {
+        "left": {
+          "contradiction_fraction": 0.0,
+          "stance_speed_p95_mps": 0.02934489661625817,
+          "stance_excursion_max_m": 0.006937072735591666
+        },
+        "right": {
+          "contradiction_fraction": 0.12352941176470589,
+          "stance_speed_p95_mps": 0.03462923909618415,
+          "stance_excursion_max_m": 0.013770009718508586
+        }
+      },
+      "unintended_flight_fraction": 0.0,
+      "root_horiz_accel_p95_mps2": 3.6097902213407456,
+      "head_q_max_abs_rad": 0.001905209466435092,
+      "semantic_keypoint_rmse_m": 0.037830922131565414,
+      "gates": {
+        "survive": true,
+        "penetration": false,
+        "stance_speed": true,
+        "stance_excursion": true,
+        "flight": true,
+        "root_accel": true,
+        "head": true,
+        "semantic": true
+      },
+      "pass": false
+    },
+    "audit_provenance": {
+      "kind": "zero-new-search deterministic replay of saved targets",
+      "candidate_artifact": "/home/humanplus/projects/ZHY/dsms_workspace/phase5_ddr/ddr_candidate.npz",
+      "excluded_visual_geoms": [
+        14,
+        37
+      ],
+      "sole_filter": "model.geom_contype[g] != 0",
+      "active_spheres_per_foot": 12,
+      "supersedes": "/home/humanplus/projects/ZHY/dsms_workspace/phase5_ddr/result_pre_active12_audit.json",
+      "reason": "old common penetration auditor treated contype=0 visual mesh size[0] as a sphere radius"
+    }
+  },
+  "candidate_targets_bit_equal_saved": true
+}

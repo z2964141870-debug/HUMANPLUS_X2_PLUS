@@ -1,0 +1,44 @@
+{
+  "status": -1,
+  "status_msg": "Maximum number of iterations exceeded (can be specified by an option).",
+  "status_ok": false,
+  "wall_s": 1203.2941019239952,
+  "objective": 9.780507584141157,
+  "max_defect": 0.16670194953108752,
+  "defect_p95": 0.006467766348341577,
+  "artifact": "/home/humanplus/projects/ZHY/dsms_workspace/phase9_reset_contact_dsms/x2_lunge_phase9_prefix.npz",
+  "target": {
+    "active_spheres": {
+      "left": 12,
+      "right": 12
+    },
+    "clearance_samples": {
+      "time_s": [
+        0.0,
+        0.3333333333333333,
+        0.3833333333333333,
+        0.43333333333333335,
+        0.7
+      ],
+      "left_m": [
+        0.00025,
+        0.00025,
+        0.015124999999999993,
+        0.03,
+        0.03
+      ],
+      "right_m": [
+        0.00025,
+        0.00025,
+        0.00025,
+        0.00025,
+        0.00025
+      ]
+    },
+    "left_at_10over30_m": 0.00025131634567901234,
+    "left_terminal_m": 0.03,
+    "right_terminal_m": 0.00025,
+    "lift_start_s": 0.3333333333333333,
+    "lift_ramp_s": 0.1
+  }
+}

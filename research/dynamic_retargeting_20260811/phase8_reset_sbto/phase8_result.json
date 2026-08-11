@@ -1,0 +1,305 @@
+{
+  "schema": "x2_phase8_reset_sbto_result_v1",
+  "wall_s": 90.76804488899506,
+  "configuration": {
+    "seed": 20260811,
+    "windows": [
+      14,
+      25,
+      36
+    ],
+    "candidates": 40,
+    "elites": 8,
+    "iterations": 4
+  },
+  "native_penetration_calibration": {
+    "minimum_mm": -4.487,
+    "p01_mm": {
+      "left": -2.116,
+      "right": -2.491
+    },
+    "p05_mm": {
+      "left": -0.683,
+      "right": -0.827
+    }
+  },
+  "nominal_0p70": {
+    "loss": 234.63709917478775,
+    "duration_s": 0.7,
+    "fall_time_s": 0.683,
+    "survive_requested": false,
+    "root_z_min_m": 0.5189932858290908,
+    "tilt_max_rad": 0.9149698731057639,
+    "torque_saturation_fraction": 0.0004608294930875576,
+    "head_q_max_abs_rad": 0.004487491005988491,
+    "root_horiz_accel_p95_max_mps2": [
+      4.4075427961754325,
+      4.436479927244383
+    ],
+    "penetration_min_mm": {
+      "left": -1.0632603709447253,
+      "right": -1.0378487879280318
+    },
+    "contact": {
+      "left": {
+        "intent_realized_fraction": 1.0,
+        "intent_contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.03436357239345403,
+        "stance_excursion_max_m": 0.008051123014226629,
+        "switches": 0
+      },
+      "right": {
+        "intent_realized_fraction": 1.0,
+        "intent_contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.03306224079341192,
+        "stance_excursion_max_m": 0.020063617300865817,
+        "switches": 0
+      }
+    },
+    "left_nonintent_contact_fraction": 1.0,
+    "right_support_during_left_nonintent_fraction": 1.0,
+    "left_off_right_on_longest_ms": 0,
+    "unintended_flight_fraction": 0.0,
+    "verdict": {
+      "primary": {
+        "survive": false,
+        "liftoff_30ms": false,
+        "left_stuck": false,
+        "right_support_conversion": true,
+        "stance_speed": true,
+        "stance_excursion": true,
+        "flight": true,
+        "root_accel": false,
+        "head": true,
+        "native_calibrated_penetration": true
+      },
+      "primary_pass": false,
+      "legacy_absolute_penetration_ge_minus_0p5mm": false,
+      "penetration_in_search_loss": false
+    }
+  },
+  "candidate_0p70": {
+    "loss": 27.13050820214749,
+    "duration_s": 0.7,
+    "fall_time_s": null,
+    "survive_requested": true,
+    "root_z_min_m": 0.5178668531173138,
+    "tilt_max_rad": 0.8051364905820525,
+    "torque_saturation_fraction": 0.0,
+    "head_q_max_abs_rad": 0.004456604606078715,
+    "root_horiz_accel_p95_max_mps2": [
+      4.473823931867382,
+      5.812792906166055
+    ],
+    "penetration_min_mm": {
+      "left": -1.6706770658764343,
+      "right": -0.975819606272142
+    },
+    "contact": {
+      "left": {
+        "intent_realized_fraction": 1.0,
+        "intent_contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.13106134357330165,
+        "stance_excursion_max_m": 0.009258072524859337,
+        "switches": 26
+      },
+      "right": {
+        "intent_realized_fraction": 1.0,
+        "intent_contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.058314777143292335,
+        "stance_excursion_max_m": 0.03886063063120992,
+        "switches": 0
+      }
+    },
+    "left_nonintent_contact_fraction": 0.7493188010899182,
+    "right_support_during_left_nonintent_fraction": 1.0,
+    "left_off_right_on_longest_ms": 21,
+    "unintended_flight_fraction": 0.0,
+    "verdict": {
+      "primary": {
+        "survive": true,
+        "liftoff_30ms": false,
+        "left_stuck": false,
+        "right_support_conversion": true,
+        "stance_speed": false,
+        "stance_excursion": false,
+        "flight": true,
+        "root_accel": false,
+        "head": true,
+        "native_calibrated_penetration": true
+      },
+      "primary_pass": false,
+      "legacy_absolute_penetration_ge_minus_0p5mm": false,
+      "penetration_in_search_loss": false
+    }
+  },
+  "candidate_full_continuation": {
+    "loss": 247.39315409208584,
+    "duration_s": 5.8,
+    "fall_time_s": 0.775,
+    "survive_requested": false,
+    "root_z_min_m": 0.12015235338282225,
+    "tilt_max_rad": 1.764135401437841,
+    "torque_saturation_fraction": 0.06031145717463849,
+    "head_q_max_abs_rad": 0.02178111985634907,
+    "root_horiz_accel_p95_max_mps2": [
+      3.791402410046463,
+      89.19709757213192
+    ],
+    "penetration_min_mm": {
+      "left": -1.6706770658764343,
+      "right": -1.494949245338768
+    },
+    "contact": {
+      "left": {
+        "intent_realized_fraction": 1.0,
+        "intent_contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.38296920141844015,
+        "stance_excursion_max_m": 0.009258072524859337,
+        "switches": 204
+      },
+      "right": {
+        "intent_realized_fraction": 0.9940047961630696,
+        "intent_contradiction_fraction": 0.005995203836930456,
+        "stance_speed_p95_mps": 0.2149586088955768,
+        "stance_excursion_max_m": 0.0984202462893059,
+        "switches": 147
+      }
+    },
+    "left_nonintent_contact_fraction": 0.3665630144503384,
+    "right_support_during_left_nonintent_fraction": 0.18437900128040974,
+    "left_off_right_on_longest_ms": 21,
+    "unintended_flight_fraction": 0.5576624719875883,
+    "fall_improvement_vs_phase6_s": 0.09199999999999997
+  },
+  "history": [
+    {
+      "window_frames": 14,
+      "iteration": 1,
+      "best_loss": 45.01727800710458,
+      "mean_loss": 46.13991129701819,
+      "active_control_points": 2
+    },
+    {
+      "window_frames": 14,
+      "iteration": 2,
+      "best_loss": 45.02193993897345,
+      "mean_loss": 45.201530336727174,
+      "active_control_points": 2
+    },
+    {
+      "window_frames": 14,
+      "iteration": 3,
+      "best_loss": 45.024854561191354,
+      "mean_loss": 45.14595026738584,
+      "active_control_points": 2
+    },
+    {
+      "window_frames": 14,
+      "iteration": 4,
+      "best_loss": 45.024389699818116,
+      "mean_loss": 45.07671709470971,
+      "active_control_points": 2
+    },
+    {
+      "window_frames": 25,
+      "iteration": 1,
+      "best_loss": 32.9896394278003,
+      "mean_loss": 34.7685489033669,
+      "active_control_points": 3
+    },
+    {
+      "window_frames": 25,
+      "iteration": 2,
+      "best_loss": 28.77245579821374,
+      "mean_loss": 34.33582070590536,
+      "active_control_points": 3
+    },
+    {
+      "window_frames": 25,
+      "iteration": 3,
+      "best_loss": 26.337142198023077,
+      "mean_loss": 32.61734572856536,
+      "active_control_points": 3
+    },
+    {
+      "window_frames": 25,
+      "iteration": 4,
+      "best_loss": 23.11967720188322,
+      "mean_loss": 28.144651823647735,
+      "active_control_points": 3
+    },
+    {
+      "window_frames": 36,
+      "iteration": 1,
+      "best_loss": 32.41766363761908,
+      "mean_loss": 217.9850209177661,
+      "active_control_points": 5
+    },
+    {
+      "window_frames": 36,
+      "iteration": 2,
+      "best_loss": 27.789217431744852,
+      "mean_loss": 182.38105333220307,
+      "active_control_points": 5
+    },
+    {
+      "window_frames": 36,
+      "iteration": 3,
+      "best_loss": 27.996587551905844,
+      "mean_loss": 96.17811767026708,
+      "active_control_points": 5
+    },
+    {
+      "window_frames": 36,
+      "iteration": 4,
+      "best_loss": 27.13050820214749,
+      "mean_loss": 30.12054658598023,
+      "active_control_points": 5
+    }
+  ],
+  "search_reruns": 0,
+  "rl_run": false,
+  "stopped": true,
+  "candidate_full_continuation_prefall_audit": {
+    "loss": 228.44026153414978,
+    "duration_s": 5.8,
+    "simulated_duration_s": 0.775,
+    "fall_time_s": 0.775,
+    "survive_requested": false,
+    "root_z_min_m": 0.4820376774165769,
+    "tilt_max_rad": 0.9002361840295854,
+    "torque_saturation_fraction": 0.0,
+    "head_q_max_abs_rad": 0.004490804885622296,
+    "root_horiz_accel_p95_max_mps2": [
+      4.4380011373454105,
+      5.812792906166055
+    ],
+    "penetration_min_mm": {
+      "left": -1.6706770658764343,
+      "right": -0.975819606272142
+    },
+    "contact": {
+      "left": {
+        "intent_realized_fraction": 1.0,
+        "intent_contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.10223557359310874,
+        "stance_excursion_max_m": 0.009258072524859337,
+        "switches": 26
+      },
+      "right": {
+        "intent_realized_fraction": 0.9974226804123711,
+        "intent_contradiction_fraction": 0.002577319587628866,
+        "stance_speed_p95_mps": 0.10140596639788395,
+        "stance_excursion_max_m": 0.0780755386168779,
+        "switches": 4
+      }
+    },
+    "left_nonintent_contact_fraction": 0.7918552036199095,
+    "right_support_during_left_nonintent_fraction": 0.995475113122172,
+    "left_off_right_on_longest_ms": 21,
+    "unintended_flight_fraction": 0.0,
+    "fall_improvement_vs_phase6_s": 0.09199999999999997
+  },
+  "postfall_full_metrics_truth_boundary": "candidate_full_continuation contact/slip fields include post-fall motion and are non-causal; use prefall audit"
+}

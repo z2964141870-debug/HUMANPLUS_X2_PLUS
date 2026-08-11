@@ -1,0 +1,26 @@
+{
+  "status": -1,
+  "status_msg": "Maximum number of iterations exceeded (can be specified by an option).",
+  "status_ok": false,
+  "wall_s": 515.7089048169946,
+  "obj": 0.2737609278088143,
+  "max_defect": 0.0011539325170522108,
+  "defect_p95": 3.187498385995297e-05,
+  "artifact": "/home/humanplus/projects/ZHY/dsms_workspace/phase3c/x2_lunge_phase3c_contact_prefix.npz",
+  "contact_target": {
+    "target_clearance_m": 0.00025,
+    "left_xy_anchor": [
+      -0.01125144730461805,
+      0.507363251160361
+    ],
+    "right_xy_anchor": [
+      -0.008319176563287052,
+      -0.39204816603988807
+    ],
+    "source_min_clearance_range_m": [
+      -0.024706112876403286,
+      0.005902104510777065
+    ],
+    "target_translation_max_m": 0.024956112876403286
+  }
+}

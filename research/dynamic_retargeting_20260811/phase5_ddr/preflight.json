@@ -1,0 +1,49 @@
+{
+  "schema": "x2_ddr_phase5_preflight_v1",
+  "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+  "control_sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400",
+  "motion_sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea",
+  "mujoco": "3.3.7",
+  "raw_motor": true,
+  "official_euler": true,
+  "baseline_1": {
+    "duration_s": 0.34,
+    "survive_full_prefix": true,
+    "root_z_min_m": 0.5164466207343219,
+    "tilt_max_rad": 0.6091827953663765,
+    "torque_saturation_fraction": 0.0,
+    "penetration_min_mm": {
+      "left": -30.765095936600968,
+      "right": -50.80556341942329
+    },
+    "contact": {
+      "left": {
+        "contradiction_fraction": 0.0,
+        "stance_speed_p95_mps": 0.02934489661625817,
+        "stance_excursion_max_m": 0.0071156755875143845
+      },
+      "right": {
+        "contradiction_fraction": 0.12352941176470589,
+        "stance_speed_p95_mps": 0.03462923909618415,
+        "stance_excursion_max_m": 0.014388273014387366
+      }
+    },
+    "unintended_flight_fraction": 0.0,
+    "root_horiz_accel_p95_mps2": 3.6097902213407456,
+    "head_q_max_abs_rad": 0.001905209466435092,
+    "semantic_keypoint_rmse_m": 0.037830922131565414,
+    "gates": {
+      "survive": true,
+      "penetration": false,
+      "stance_speed": true,
+      "stance_excursion": true,
+      "flight": true,
+      "root_accel": true,
+      "head": true,
+      "semantic": true
+    },
+    "pass": false
+  },
+  "zero_candidate_deterministic": true,
+  "pass": true
+}

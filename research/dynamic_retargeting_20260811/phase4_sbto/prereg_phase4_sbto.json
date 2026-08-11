@@ -1,0 +1,13 @@
+{
+  "schema": "x2_phase4_sbto_prereg_v1",
+  "date": "2026-08-11",
+  "method": "sampling_based_trajectory_optimization_diagonal_CEM_progressive_windows",
+  "clip": "PHUMA-LUNGE-R-001",
+  "prefix": {"frames_50hz": 18, "duration_s": 0.34},
+  "physics": {"mujoco": "3.3.7", "physics_hz": 1000, "control_hz": 50, "integrator": "official_Euler", "actuation": "raw_official_motor_external_per_joint_PD"},
+  "representation": {"control_point_frames": [0, 4, 9, 13, 17], "optimized_actuators": 29, "head_targets_rad": [0.0, 0.0], "interpolation": "linear_correction_plus_zero_order_hold_reference"},
+  "search": {"seed": 20260811, "progressive_window_frames": [7, 12, 18], "candidates_per_iteration": 40, "elite_count": 8, "iterations_per_window": 4, "covariance": "diagonal", "single_process": true, "parameter_scan": false},
+  "preflight": {"reference_roundtrip_max_abs": 1e-12, "zero_correction_max_abs": 0.0, "deterministic_score_max_abs": 1e-12, "baseline_fall_time_s": 0.575, "baseline_tolerance_s": 0.02},
+  "final_raw_replay_gates": {"survive_full_prefix": true, "penetration_min_mm": -0.5, "stance_speed_p95_mps": 0.10, "stance_excursion_max_m": 0.03, "unintended_flight_fraction": 0.02, "root_horizontal_accel_p95_mps2": 4.0, "head_q_max_abs_rad": 0.02},
+  "stopping": "one frozen search only; no retry, threshold scan, RL or PPO"
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "x2_phase3b_raw_motor_replay_v1",
+  "artifact": "/home/humanplus/projects/ZHY/dsms_workspace/phase3c/x2_lunge_phase3c_contact_prefix.npz",
+  "artifact_sha256": "85c6a3e84f497f6ce88a159033bc725af9dd8eaed6b3a850f76225cacecbae6e",
+  "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+  "control_sha256": "07fa8a0151d14c2b0b9f8659302f96dec21fe3b3921f9dbcaab1150dc1c2e400",
+  "mujoco": "3.3.7",
+  "duration_s": 0.34,
+  "fall_time_s": null,
+  "survive_full_prefix": true,
+  "root_z_min_m": 0.5376018518323932,
+  "tilt_max_rad": 0.44781302510305043,
+  "max_defect": 0.0011539325170522108,
+  "terminal_qpos_vs_stitched_max_abs": 1.5861496278413156e-05,
+  "torque_saturation_fraction": 0.013377609108159393,
+  "root_horiz_accel_p95_max_mps2": [
+    10.324539672107457,
+    14.569896719217985
+  ],
+  "head_q_max_abs_rad": 0.025850515556601367,
+  "contact": {
+    "left": {
+      "intended_fraction": 0.9794117647058823,
+      "realized_during_intent_fraction": 0.7327327327327328,
+      "contradiction_fraction": 0.2672672672672673,
+      "stance_speed_p95_mps": 0.0686287240169445,
+      "stance_excursion_max_m": 0.00784034634351364
+    },
+    "right": {
+      "intended_fraction": 1.0,
+      "realized_during_intent_fraction": 0.5882352941176471,
+      "contradiction_fraction": 0.4117647058823529,
+      "stance_speed_p95_mps": 0.15606875250082283,
+      "stance_excursion_max_m": 0.012729739592267482
+    }
+  },
+  "penetration_min_mm": {
+    "left": -1.8133571432236524,
+    "right": -4.755146095987576
+  },
+  "unintended_flight_fraction": 0.15294117647058825,
+  "gates": {
+    "ipopt_status": false,
+    "max_defect": true,
+    "survive_full_prefix": true,
+    "penetration": false,
+    "stance_speed": false,
+    "stance_excursion": true,
+    "flight": false,
+    "root_accel": false,
+    "head": false
+  },
+  "pass": false
+}

@@ -1,0 +1,50 @@
+{
+  "phase": "Phase3b_contract_correction",
+  "date": "2026-08-11",
+  "preregistered_before_run": true,
+  "reason": "Phase3 is invalidated by five contract bugs: zero reference velocities, wrong official PD gains, unregistered head constraints, stale IPOPT head bounds, and implicitfast replacing the official Euler integrator.",
+  "single_intervention": "replace the invalid open-loop-torque adapter with a mathematically equivalent in-model official-PD servo representation; preserve the official raw motor model for independent replay",
+  "input": {
+    "motion": "PHUMA-LUNGE-R-001 Phase30",
+    "source_frames": "0..10 plus control-grid quantization",
+    "control_prefix_frames_50hz": 18,
+    "duration_s": 0.34,
+    "scene_sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63",
+    "motion_sha256": "3f218aa8fc2f94414257206273533ee22de1bbb0fb582ae43a786fa5f7d013ea"
+  },
+  "fixed_contract": {
+    "mujoco": "3.3.7",
+    "physics_dt": 0.001,
+    "control_dt": 0.02,
+    "integrator": "official Euler, no override",
+    "joint_order": "official31 by name",
+    "pd": "motion_control.yaml rl_config seq/kps/kds for body29 and default 20/1 for head2",
+    "torque_limits": "original official motor ctrlrange, represented as servo forcerange",
+    "head": "position target fixed to nominal zero before IPOPT bounds are constructed",
+    "reference_velocity": "Phase33 quaternion-aware 50Hz derivative contract",
+    "cost": "unchanged upstream g1_gait weights: base pos/orientation 10, joint 0.1, velocity 0.1/0.01, Rtau 1e-6, Rrate 1e-2",
+    "solver": "IPOPT MUMPS, max_iter=300, tol=1e-2, one solve only"
+  },
+  "preflight_gates": {
+    "phase30_baseline_free_root_s": "0.575 +/- 0.02",
+    "raw_external_pd_vs_servo_qpos_max": "<=1e-10 over 0.10s",
+    "raw_external_pd_vs_servo_qvel_max": "<=1e-9 over 0.10s",
+    "constraints_returned_equals_registered": true,
+    "head_control_bounds_zero_before_problem_build": true,
+    "nonzero_reference_velocity": true,
+    "official_pd_exact": true,
+    "official_integrator_exact": true
+  },
+  "solve_gate": {
+    "ipopt_status": [0, 1],
+    "max_defect": "<=1e-2",
+    "survive_full_prefix": true,
+    "sole_penetration_mm": ">=-0.5",
+    "stance_speed_p95_mps": "<=0.10 each intended stance foot",
+    "stance_excursion_m": "<=0.03",
+    "unintended_flight_fraction": "<=0.02",
+    "root_horiz_accel_p95_mps2": "<=4",
+    "head_q_max_abs_rad": "<=0.02"
+  },
+  "stop": "Any preflight failure stops before NLP. One corrected solve only; no cost, threshold, solver, or prefix scan."
+}
