@@ -7,7 +7,7 @@
 | 路线 | 已证实的改善 | 当前硬阻塞 | 下一唯一高信息量动作 |
 |---|---|---|---|
 | 动态重定向 | reset 把 fall `.575→.683 s`；reset-aware SBTO 到 `.775 s` 并出现卸载尝试 | 只有 21 ms 离地/chatter；name-mapped smooth event 又退化为 stuck contact | 改成直接足端/载荷转移表示；不扩旧 joint-mode CEM |
-| BASE recovery | exact snapshot、stateful suffix、handoff continuity、低维 bridge 机制均已验证；Phase26 cost 降 33.8% | 没有进入任何带连续成功未来的 q/history 联合邻域 | 追踪冻结的真实 51-tick success suffix，同步 q + previous/issued action history |
+| BASE recovery | exact snapshot、stateful suffix、handoff continuity、低维 bridge 机制均已验证；Phase26 cost 降 33.8% | 没有进入任何带连续成功未来的联合物理盆地；Phase39复制真实suffix仍失败 | 只考虑 state-conditioned 足端/载荷/root 闭环 bridge；不再复读离线PD序列 |
 
 ## 本次 BASE Phase38 新结论
 
@@ -18,6 +18,8 @@ Phase19-v2 中存在 215 个“当前及未来 1 秒全部 success-safe”的候
 - 等权联合最优来自 Phase19 r4 tick354，但 composite 仍为 `3.632×`，没有入域。
 
 所以 Phase26 旧 cost 会把来自不同时间/episode 的最近邻拼在一起，形成物理上未必有连续未来的目标。下一步必须改变目标表示，不能只增加 population/iteration/seed。
+
+Phase39 已进一步执行唯一一次无搜索 sequence-guided bridge：1 秒 bridge 自身安全，previous-action 回到 `0.842×` 门内，但 projected gravity 达到 `13.744×`；f005 接管后 0.34 秒 tilt 越界、0.58 秒高度坍塌。由此排除“把成功 episode 的 PD target/history 平滑复制过来就能进入同一盆地”。BASE 下一表示必须依据当前 state/contact 闭环调整，不能换另一个 suffix 重跑。
 
 ## 资源合同
 
@@ -31,11 +33,12 @@ Phase19-v2 中存在 215 个“当前及未来 1 秒全部 success-safe”的候
 
 - 上一次百度完整归档：`dynamic_retargeting/x2_dynamic_retargeting_race_full_20260811.tar.gz`
 - SHA256：`219a1dc5739bfdd5078c656055f04df151d225202ee76ef6a2541ef788bde683`
-- 归档后实质任务计数：`3/10`
+- 归档后实质任务计数：`4/10`
   1. Phase10 actuator mapping correction；
   2. Phase11 name-mapped event SBTO；
   3. BASE Phase38 sequence-consistent target audit。
-- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 7 个。
+  4. BASE Phase39 single sequence-guided bridge。
+- 下一百度大包：完成第 10 个实质任务时触发；目前还剩 6 个。
 - Git：重要合同纠正和小型审计即时提交，不等待第 10 项。
 
 ## Phase38 证据
@@ -44,5 +47,7 @@ Phase19-v2 中存在 215 个“当前及未来 1 秒全部 success-safe”的候
 - [Phase38 JSON](official_x2/phase38_sequence_consistent_bridge_target.json)
 - [审计工具](../tools/official_x2/audit_phase38_sequence_consistent_bridge_target.py)
 - [回归测试](../tests/test_phase38_sequence_consistent_bridge_target.py)
+- [BASE Phase39 报告](baseline/x2_recovery_phase39_sequence_guided_bridge.md)
+- [Phase39 JSON](official_x2/phase39_sequence_guided_bridge.json)
 
 当前总裁决：`BOTH_TRACKS_MECHANISM_POSITIVE / NO_TEACHER / NO_TRAINING_UNLOCK`。
