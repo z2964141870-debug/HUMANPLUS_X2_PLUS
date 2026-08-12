@@ -1,0 +1,54 @@
+{
+  "schema": "x2_gpu_run_ledger_v1",
+  "label": "phase61_train",
+  "command": [
+    "conda",
+    "run",
+    "--no-capture-output",
+    "-n",
+    "x2-sonic-isaaclab",
+    "python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_upper_robust_one_update_phase56.py",
+    "--mode",
+    "train",
+    "--checkpoint",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--output",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_native_transition_posture_phase61_train.json",
+    "--source-output",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_native_transition_posture_phase61/source_stage219_zero_lora.pt",
+    "--final-output",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_native_transition_posture_phase61/candidate_joint_transition_one_update.pt",
+    "--num-envs",
+    "64",
+    "--seed",
+    "42",
+    "--eval-steps",
+    "512",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "exit_code": 0,
+  "start_wall_ns": 1786525152037306916,
+  "elapsed_s": 43.9948475709989,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 101378588672,
+    "free_bytes": 375418650624
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 101515784192,
+    "free_bytes": 375281455104
+  },
+  "disk_used_delta_bytes": 137195520,
+  "gpu_sample_count": 84,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 3335.0,
+    "utilization_peak_percent": 68.0,
+    "power_peak_w": 120.17
+  }
+}

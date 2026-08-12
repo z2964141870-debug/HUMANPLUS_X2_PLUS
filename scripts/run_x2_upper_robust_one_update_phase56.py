@@ -27,7 +27,15 @@ parser.add_argument("--update-index", type=int, default=1)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 _phase60_variant = os.environ.get("CWI_PHASE60_POSTURE_VARIANT")
-if _phase60_variant is not None:
+_phase61_transition = os.environ.get("CWI_PHASE61_TRANSITION_POSTURE", "0") == "1"
+if _phase60_variant is not None and _phase61_transition:
+    raise ValueError("Phase60 and Phase61 modes are mutually exclusive")
+if _phase61_transition:
+    if args.num_envs != 64 or args.seed != 42:
+        raise ValueError("Phase61 requires 64 envs and seed 42")
+    if args.mode == "eval" and args.eval_steps != 512:
+        raise ValueError("Phase61 evaluation requires exactly 512 steps")
+elif _phase60_variant is not None:
     if args.num_envs != 64 or args.seed not in ({40, 41, 42} if args.mode == "eval" else {42}):
         raise ValueError("Phase60 requires 64 envs, train seed 42, and eval seed 40/41/42")
 elif (args.num_envs, args.seed) != (64, 42):
@@ -40,6 +48,7 @@ simulation_app = app_launcher.app
 import torch  # noqa: E402
 from isaaclab.envs import ManagerBasedRLEnv  # noqa: E402
 from isaaclab.managers import RewardTermCfg as RewTerm  # noqa: E402
+from isaaclab.managers import SceneEntityCfg  # noqa: E402
 from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper  # noqa: E402
 from rsl_rl.modules import ActorCritic  # noqa: E402
 from rsl_rl.runners import OnPolicyRunner  # noqa: E402
@@ -59,6 +68,12 @@ from x2_native_locomotion_posture_phase60 import (  # noqa: E402
     signed_backward_pitch_penalty,
     signed_root_pitch_rad,
 )
+from cwi_x2.transition_command import (  # noqa: E402
+    stopped_base_speed_l2,
+    terminal_double_support_penalty,
+    transition_velocity_cfg,
+)
+from cwi_x2.transition_schedule import audit_phase_consistent_event  # noqa: E402
 
 PEFT_PHASE58 = os.environ.get("CWI_PHASE58_PEFT", "0") == "1"
 PEFT_PHASE59 = os.environ.get("CWI_PHASE59_PEFT", "0") == "1"
@@ -66,8 +81,11 @@ POSTURE_VARIANT = os.environ.get("CWI_PHASE60_POSTURE_VARIANT")
 if POSTURE_VARIANT is not None and POSTURE_VARIANT not in {"A", "B", "C"}:
     raise ValueError("CWI_PHASE60_POSTURE_VARIANT must be A, B, or C")
 PEFT_PHASE60 = POSTURE_VARIANT is not None
-PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_PHASE60
-PHASE = 60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))
+PEFT_PHASE61 = _phase61_transition
+PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
+PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
+PHASE = 61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))
+TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
     "B": (-0.5, 0.0),
@@ -141,12 +159,16 @@ def build_env_cfg(*, evaluation: bool):
     cfg.actions.joint_pos.scale = {
         pattern: 2.0 * scale for pattern, scale in cfg.actions.joint_pos.scale.items()
     }
-    cfg.commands.base_velocity.ranges.lin_vel_x = (0.35, 0.35) if evaluation else (0.25, 0.60)
+    cfg.commands.base_velocity.ranges.lin_vel_x = (
+        (0.30, 0.30)
+        if PEFT_PHASE61
+        else ((0.35, 0.35) if evaluation else (0.25, 0.60))
+    )
     cfg.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
     cfg.commands.base_velocity.ranges.ang_vel_z = (0.0, 0.0) if evaluation else (-0.20, 0.20)
     cfg.commands.base_velocity.ranges.heading = (0.0, 0.0)
-    cfg.commands.base_velocity.heading_command = not evaluation
-    cfg.commands.base_velocity.rel_heading_envs = 0.0 if evaluation else 0.75
+    cfg.commands.base_velocity.heading_command = not evaluation and not PEFT_PHASE61
+    cfg.commands.base_velocity.rel_heading_envs = 0.0 if (evaluation or PEFT_PHASE61) else 0.75
     cfg.commands.base_velocity.rel_standing_envs = 0.0
     cfg.commands.base_velocity = gain_scheduled_velocity_cfg(
         cfg.commands.base_velocity,
@@ -154,10 +176,35 @@ def build_env_cfg(*, evaluation: bool):
         ideal_heading_control_stiffness=1.0,
         response_heading_control_stiffness=0.05,
     )
+    if PEFT_PHASE61:
+        cfg.commands.base_velocity = transition_velocity_cfg(
+            cfg.commands.base_velocity,
+            ideal_env_fraction=0.75,
+            ideal_heading_control_stiffness=1.0,
+            response_heading_control_stiffness=0.05,
+            stand_s=0.0,
+            accelerate_s=1.0,
+            cruise_s=4.2,
+            decelerate_s=2.0,
+            maximum_phase_offset_s=0.0,
+        )
+        cfg.episode_length_s = 12.0
+        audit_phase_consistent_event(
+            stand_s=0.0,
+            accelerate_s=1.0,
+            cruise_s=4.2,
+            decelerate_s=2.0,
+            terminal_hold_s=2.0,
+            gait_cycle_s=0.8,
+            double_support_fraction=0.30,
+            rollout_s=512 * float(cfg.sim.dt) * int(cfg.decimation),
+            random_episode_phase=False,
+            maximum_phase_offset_s=0.0,
+        )
     cfg.events.reset_base.params["pose_range"] = {
         "x": (0.0, 0.0), "y": (0.0, 0.0), "yaw": (0.0, 0.0)
     }
-    if evaluation:
+    if evaluation or PEFT_PHASE61:
         cfg.events.base_external_force_torque = None
         cfg.events.push_robot = None
     cfg.rewards.track_lin_vel_xy_exp.weight = 4.0
@@ -170,8 +217,12 @@ def build_env_cfg(*, evaluation: bool):
     cfg.rewards.contact_dwell.weight = -1.0
     cfg.rewards.contact_phase.weight = -1.0
     cfg.rewards.heading_error_l2.weight = 0.0
-    if PEFT_PHASE60:
-        pitch_weight, support_weight = POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT]
+    if PEFT_POSTURE:
+        pitch_weight, support_weight = (
+            (-0.5, -0.5)
+            if PEFT_PHASE61
+            else POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT]
+        )
         # Candidate evaluation uses a common reward contract.  The posture and
         # support terms remain diagnostics there and influence training only.
         if evaluation:
@@ -195,6 +246,26 @@ def build_env_cfg(*, evaluation: bool):
                 "normalization_m": 0.10,
                 "force_threshold_n": 10.0,
                 "command_threshold_mps": 0.10,
+            },
+        )
+    if PEFT_PHASE61:
+        cfg.rewards.stand_lin_vel_xy_l2 = RewTerm(
+            func=stopped_base_speed_l2,
+            weight=-3.0,
+            params={
+                "command_name": "base_velocity",
+                "command_threshold": 0.05,
+                "asset_cfg": SceneEntityCfg("robot"),
+            },
+        )
+        cfg.rewards.transition_terminal_double_support = RewTerm(
+            func=terminal_double_support_penalty,
+            weight=-2.0,
+            params={
+                "command_name": "base_velocity",
+                "enter_force_n": 30.0,
+                "left_sensor_name": "left_foot_ground_contact",
+                "right_sensor_name": "right_foot_ground_contact",
             },
         )
     cfg.observations.policy.enable_corruption = False
@@ -249,7 +320,7 @@ def validate_live_contract(env, wrapped):
     zero_mask = term._cwi_upper_zero_mask
     expected_mask = (
         torch.ones(64, dtype=torch.bool, device=zero_mask.device)
-        if PEFT_PHASE60
+        if PEFT_POSTURE
         else torch.arange(64, device=zero_mask.device) % 2 == 0
     )
     if not torch.equal(zero_mask, expected_mask):
@@ -269,7 +340,7 @@ def validate_live_contract(env, wrapped):
     }
     expected_counts = (
         {"none_ideal": 48, "none_response": 16, "bounded_ideal": 0, "bounded_response": 0}
-        if PEFT_PHASE60
+        if PEFT_POSTURE
         else {"none_ideal": 24, "none_response": 8, "bounded_ideal": 24, "bounded_response": 8}
     )
     if counts != expected_counts:
@@ -323,6 +394,14 @@ def aggregate_phase60_group(
     result["com_support_outside_m"] = _sample_summary(samples["com_support_outside_m"], mask)
     result["stance_slip_mps"] = _sample_summary(samples["stance_slip_mps"], mask)
     result["swing_sole_clearance_m"] = _sample_summary(samples["swing_sole_clearance_m"], mask)
+    for name in (
+        "terminal_base_speed_mps",
+        "terminal_double_support",
+        "terminal_root_height_m",
+        "terminal_root_tilt_rad",
+    ):
+        if name in samples:
+            result[name] = _sample_summary(samples[name], mask)
     result["knee_excursion_rad_mean"] = float((knee_max[mask] - knee_min[mask]).mean())
     return result
 
@@ -350,7 +429,7 @@ def evaluate() -> None:
             "velocity_tracking_sq", "yaw_tracking_sq", "lateral_abs",
             "yaw_abs", "upper_tracking_sq", "action_abs", "action_delta_abs", "reward",
         )
-        if PEFT_PHASE60:
+        if PEFT_POSTURE:
             metric_names += ("flight_fraction", "single_support_fraction", "double_support_fraction")
         sums = {name: torch.zeros(64, device=env.device) for name in metric_names}
         counts = torch.zeros(64, device=env.device)
@@ -360,6 +439,13 @@ def evaluate() -> None:
             "stance_slip_mps": [],
             "swing_sole_clearance_m": [],
         }
+        if PEFT_PHASE61:
+            samples.update(
+                terminal_base_speed_mps=[],
+                terminal_double_support=[],
+                terminal_root_height_m=[],
+                terminal_root_tilt_rad=[],
+            )
         foot_ids = robot.find_bodies(
             ["left_ankle_roll_link", "right_ankle_roll_link"], preserve_order=True
         )[0]
@@ -392,7 +478,7 @@ def evaluate() -> None:
                     "action_delta_abs": (action - prev_action).abs().mean(-1),
                     "reward": reward.reshape(-1),
                 }
-                if PEFT_PHASE60:
+                if PEFT_POSTURE:
                     pitch = signed_root_pitch_rad(robot)
                     outside, contact_count = actual_support_com_outside_distance(
                         env, force_threshold_n=10.0
@@ -418,6 +504,7 @@ def evaluate() -> None:
                         sole_height,
                         torch.full_like(sole_height, torch.nan),
                     ).nanmean(dim=-1)
+                    moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.10
                     valid_bool = alive.clone()
                     for name, value in {
                         "signed_pitch_rad": pitch,
@@ -425,9 +512,40 @@ def evaluate() -> None:
                         "stance_slip_mps": stance_slip,
                         "swing_sole_clearance_m": swing_clearance,
                     }.items():
-                        samples[name].append(
-                            torch.where(valid_bool, value, torch.full_like(value, torch.nan)).detach().cpu()
+                        sample_valid = (
+                            valid_bool & moving
+                            if PEFT_PHASE61
+                            and name in {"signed_pitch_rad", "com_support_outside_m"}
+                            else valid_bool
                         )
+                        samples[name].append(
+                            torch.where(
+                                sample_valid,
+                                value,
+                                torch.full_like(value, torch.nan),
+                            ).detach().cpu()
+                        )
+                    if PEFT_PHASE61:
+                        terminal_mask = env.command_manager.get_term(
+                            "base_velocity"
+                        ).terminal_stop_mask()
+                        terminal_valid = valid_bool & terminal_mask
+                        terminal_values = {
+                            "terminal_base_speed_mps": torch.linalg.vector_norm(
+                                robot.data.root_lin_vel_b[:, :2], dim=-1
+                            ),
+                            "terminal_double_support": (contact_count == 2).to(torch.float32),
+                            "terminal_root_height_m": robot.data.root_pos_w[:, 2],
+                            "terminal_root_tilt_rad": tilt,
+                        }
+                        for name, value in terminal_values.items():
+                            samples[name].append(
+                                torch.where(
+                                    terminal_valid,
+                                    value,
+                                    torch.full_like(value, torch.nan),
+                                ).detach().cpu()
+                            )
                     values.update(
                         flight_fraction=(contact_count == 0).to(torch.float32),
                         single_support_fraction=(contact_count == 1).to(torch.float32),
@@ -447,7 +565,7 @@ def evaluate() -> None:
                 alive &= ~done
                 prev_action = action
                 obs = next_obs
-        if PEFT_PHASE60:
+        if PEFT_POSTURE:
             groups = {
                 "all": torch.ones_like(zero_mask),
                 "ideal": ideal_mask,
@@ -466,7 +584,7 @@ def evaluate() -> None:
             "phase": PHASE, "mode": "eval", "checkpoint": str(args.checkpoint),
             "checkpoint_sha256": sha256(args.checkpoint), "checkpoint_iter": int(payload.get("iter", -1)),
             "seed": args.seed, "num_envs": 64, "eval_steps": args.eval_steps,
-            "posture_variant": POSTURE_VARIANT,
+            "posture_variant": "joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT,
             "control_dt_s": float(env.step_dt), "horizon_s": float(args.eval_steps * env.step_dt),
             "domain_upper_counts": domain_counts,
             "groups": {
@@ -475,13 +593,23 @@ def evaluate() -> None:
                         mask, sums, counts, survival, terminal, root_min, tilt_max,
                         samples, knee_min, knee_max,
                     )
-                    if PEFT_PHASE60
+                    if PEFT_POSTURE
                     else aggregate_group(mask, sums, counts, survival, terminal, root_min, tilt_max)
                 )
                 for name, mask in groups.items()
             },
             "finite": bool(all(torch.isfinite(value).all() for value in sums.values())),
         }
+        if PEFT_PHASE61:
+            report["transition_event"] = {
+                "stand_s": 0.0,
+                "accelerate_s": 1.0,
+                "cruise_s": 4.2,
+                "decelerate_s": 2.0,
+                "event_end_s": 7.2,
+                "terminal_hold_observed_s": args.eval_steps * env.step_dt - 7.2,
+                "phase_offset_s": 0.0,
+            }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report, indent=2), flush=True)
@@ -507,14 +635,14 @@ def save_weight_only(
     torch.save(payload, path)
 
 
-def save_or_validate_phase60_source(
+def save_or_validate_posture_source(
     path: Path,
     model: torch.nn.Module,
     *,
     iteration: int,
     infos: dict,
 ) -> None:
-    """Keep one shared immutable Phase60 source instead of duplicating it."""
+    """Keep one shared immutable posture source instead of duplicating it."""
 
     if not path.exists():
         save_weight_only(path, model, iteration=iteration, infos=infos)
@@ -526,9 +654,9 @@ def save_or_validate_phase60_source(
         not torch.equal(existing[name].cpu(), value.detach().cpu())
         for name, value in current.items()
     ):
-        raise RuntimeError("Phase60 shared source exists with different tensor state")
+        raise RuntimeError("posture source exists with different tensor state")
     if int(payload.get("iter", -1)) != iteration:
-        raise RuntimeError("Phase60 shared source iteration differs")
+        raise RuntimeError("posture source iteration differs")
 
 
 def train() -> None:
@@ -540,7 +668,7 @@ def train() -> None:
         agent_cfg = X2LowerVelocityFlatPPORunnerCfg()
         agent_cfg.seed = args.seed
         agent_cfg.device = args.device
-        agent_cfg.num_steps_per_env = 24
+        agent_cfg.num_steps_per_env = TRAIN_STEPS
         agent_cfg.policy.init_noise_std = 0.4
         agent_cfg.algorithm.entropy_coef = 0.004
         agent_cfg.algorithm.num_learning_epochs = 5
@@ -606,8 +734,8 @@ def train() -> None:
             "role": "immutable fresh source",
             "original_sha256": sha256(ORIGINAL),
         }
-        if PEFT_PHASE60:
-            save_or_validate_phase60_source(
+        if PEFT_POSTURE:
+            save_or_validate_posture_source(
                 args.source_output,
                 source_model,
                 iteration=int(payload.get("iter", 2600)),
@@ -635,14 +763,29 @@ def train() -> None:
         runner.alg.optimizer.step = counted_step
         obs_train = wrapped.get_observations().to(args.device)
         runner.train_mode()
+        command_vx_trace = []
+        reset_events = 0
+
+        def collect_transition() -> None:
+            nonlocal obs_train, reset_events
+            command_vx_trace.append(
+                float(env.command_manager.get_command("base_velocity")[:, 0].mean())
+            )
+            action = runner.alg.act(obs_train)
+            obs_train, reward, done, extras = wrapped.step(action.to(wrapped.device))
+            obs_train, reward, done = (
+                obs_train.to(args.device), reward.to(args.device), done.to(args.device)
+            )
+            runner.alg.process_env_step(obs_train, reward, done, extras)
+            reset_events += int(done.reshape(-1).bool().sum())
+
         with torch.inference_mode():
-            for _ in range(24):
-                action = runner.alg.act(obs_train)
-                obs_train, reward, done, extras = wrapped.step(action.to(wrapped.device))
-                obs_train, reward, done = (
-                    obs_train.to(args.device), reward.to(args.device), done.to(args.device)
-                )
-                runner.alg.process_env_step(obs_train, reward, done, extras)
+            if PEFT_PHASE61:
+                for _ in range(512):
+                    collect_transition()
+            else:
+                for _ in range(24):
+                    collect_transition()
             runner.alg.compute_returns(obs_train)
         loss_dict = runner.alg.update()
         final_model = runner.alg.policy.eval()
@@ -674,16 +817,20 @@ def train() -> None:
         )
         report = {
             "phase": PHASE, "mode": "train", "decision": "UPDATE_FINITE" if finite else "UPDATE_NONFINITE",
-            "seed": args.seed, "num_envs": 64, "steps_per_env": 24,
-            "posture_variant": POSTURE_VARIANT,
+            "seed": args.seed, "num_envs": 64, "steps_per_env": TRAIN_STEPS,
+            "posture_variant": "joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT,
             "posture_reward_weights": (
                 {
-                    "signed_backward_pitch": POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT][0],
-                    "actual_support_com": POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT][1],
+                    "signed_backward_pitch": (
+                        -0.5 if PEFT_PHASE61 else POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT][0]
+                    ),
+                    "actual_support_com": (
+                        -0.5 if PEFT_PHASE61 else POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT][1]
+                    ),
                 }
-                if PEFT_PHASE60 else None
+                if PEFT_POSTURE else None
             ),
-            "transitions": 1536, "learning_epochs": 5, "mini_batches": 4,
+            "transitions": 64 * TRAIN_STEPS, "learning_epochs": 5, "mini_batches": 4,
             "optimizer_steps": step_counter["count"], "std_frozen": True,
             "source_checkpoint": str(args.source_output), "source_checkpoint_sha256": sha256(args.source_output),
             "final_checkpoint": str(args.final_output), "final_checkpoint_sha256": sha256(args.final_output),
@@ -707,9 +854,22 @@ def train() -> None:
                 "kl_mean": float(incremental_kl.mean()), "kl_max": float(incremental_kl.max()),
             },
             "finite": bool(finite), "checkpoint_count": 2,
-            "environment_control_steps": 24,
+            "environment_control_steps": TRAIN_STEPS,
             "update_index": args.update_index,
         }
+        if PEFT_PHASE61:
+            sample_steps = (0, 25, 50, 260, 310, 360, 460, 511)
+            report["transition_event_coverage"] = {
+                "command_vx_mean_by_step": {
+                    str(index): command_vx_trace[index] for index in sample_steps
+                },
+                "command_vx_max": max(command_vx_trace),
+                "terminal_zero_steps": sum(
+                    abs(value) <= 1.0e-6 for value in command_vx_trace
+                ),
+                "reset_events": reset_events,
+                "static_audit_pass": True,
+            }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report, indent=2), flush=True)
@@ -727,9 +887,9 @@ def main() -> None:
         raise RuntimeError(f"Phase{PHASE} immutable artifact hash guard failed")
     required = {
         "CWI_UPPER_MOTION": str(UPPER),
-        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 else "0.50",
-        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 else "1",
-        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 else "interleaved",
+        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 else "0.50",
+        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 else "1",
+        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 else "interleaved",
         "CWI_UPPER_SCALE": "0.25", "CWI_UPPER_TIME_SCALE": "1.0",
         "CWI_UPPER_LOOP": "1", "CWI_UPPER_MAX_EXCURSION_RAD": "0.12",
         "CWI_UPPER_MAX_VELOCITY_RADPS": "0.20",
