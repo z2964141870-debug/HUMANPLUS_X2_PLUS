@@ -1,0 +1,37 @@
+{
+  "schema": "x2_phase69_reward_attribution_attempt_failure_v1",
+  "attempt": 0,
+  "decision": "FAIL_IMPLEMENTATION_DEVICE_MISMATCH_NO_SCIENTIFIC_RESULT",
+  "prereg_sha256": "dcb1b2e2f2b4a681b42b4c6827f81308e2283f250b23c351ae01d94e155dc37d",
+  "preregistered_runner_sha256": "228de1bf9067cc75059da2a3ba06eb2f178e9f18f5ca114c7a3e218facb37ade",
+  "resource": {
+    "path": "reports/retarget/x2_phase69_reward_attribution_resource.json",
+    "sha256": "43802f09a5c4dc52bbf6cdf2422828450e648ca21ffa76fec9e2dbcf648ad766",
+    "elapsed_s": 26.982120544998907,
+    "disk_used_delta_bytes": 135843840,
+    "gpu_memory_used_peak_mib": 3252
+  },
+  "log": {
+    "path": "/tmp/x2_phase69_logs/attribution.log",
+    "sha256": "947f931c3617cf8313ae4f83f1b6b05f4ae7dd1cb5122d802f20d59eb43462cf"
+  },
+  "failure": {
+    "type": "RuntimeError",
+    "message": "Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!",
+    "runner_line": 2887,
+    "location": "diagnostic actual_update = candidate_state - source_state after the physical rollout",
+    "cause": "candidate residual tensors were loaded on CPU while the source residual payload was loaded on cuda:0",
+    "repair": "Move both diagnostic state tensors to CPU before subtraction.",
+    "repair_scope": "one expression split over two source lines; no environment, reward, action, optimizer, checkpoint, or gate semantics changed"
+  },
+  "evidence_boundary": {
+    "physics_rollout_completed": true,
+    "screen_written": false,
+    "rollout_bundle_written": false,
+    "formal_optimizer_steps": 0,
+    "checkpoint_count": 0,
+    "scientific_decision_available": false,
+    "resource_exit_code_warning": "The child traceback occurred before SimulationApp.close; the outer ledger observed exit code 0, so output existence remains a mandatory success gate."
+  },
+  "rerun_policy": "Do not overwrite attempt0. Freeze a new rerun1 preregistration with the repaired runner hash and new output paths."
+}

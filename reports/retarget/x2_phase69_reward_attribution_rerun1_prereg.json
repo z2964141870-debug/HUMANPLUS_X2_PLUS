@@ -1,0 +1,80 @@
+{
+  "schema": "x2_phase69_reward_attribution_rerun1_prereg_v1",
+  "date": "2026-08-12",
+  "objective": "Repeat the zero-optimizer Phase69 attribution after a post-rollout CPU/CUDA diagnostic subtraction bug prevented attempt0 from writing evidence. The physical MDP, RNG replay, reward accounting, gradient attribution, decision tree, and all thresholds are unchanged.",
+  "inherits": {
+    "original_prereg_path": "reports/retarget/x2_phase69_reward_attribution_prereg.json",
+    "original_prereg_sha256": "dcb1b2e2f2b4a681b42b4c6827f81308e2283f250b23c351ae01d94e155dc37d",
+    "unchanged_sections": [
+      "objective semantics",
+      "replay contract",
+      "reward contract",
+      "attribution contract",
+      "validity gates",
+      "decision tree",
+      "promotion boundary"
+    ]
+  },
+  "attempt0": {
+    "failure_path": "reports/retarget/x2_phase69_reward_attribution_attempt0_failure.json",
+    "failure_sha256": "5fe58315f85599a404d09e4f14b360b2f44ff1aae6ed8c3b0d7c13567d97cd2f",
+    "resource_path": "reports/retarget/x2_phase69_reward_attribution_resource.json",
+    "resource_sha256": "43802f09a5c4dc52bbf6cdf2422828450e648ca21ffa76fec9e2dbcf648ad766",
+    "scientific_result": null,
+    "formal_optimizer_steps": 0,
+    "checkpoint_count": 0
+  },
+  "repair": {
+    "old_runner_sha256": "228de1bf9067cc75059da2a3ba06eb2f178e9f18f5ca114c7a3e218facb37ade",
+    "new_runner_sha256": "ade20d3943ea3e0abddac4035ae75825cecb93f927963294c1f586eabbc1fe2b",
+    "change": "candidate_state and source_state diagnostic head tensors are both moved to CPU before subtraction",
+    "changed_source_lines": 2,
+    "physics_or_reward_semantics_changed": false,
+    "optimizer_or_checkpoint_semantics_changed": false
+  },
+  "immutable_code": {
+    "run_script_sha256": "a5473daf99706b38853728f4b5dad14de67e6001646b94c5477214bca4dd4698",
+    "attribution_module_sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295",
+    "finalizer_sha256": "a5746f86027121d45a1750bf5bafc5f5ef07f8fe3f19ecd5566ac431ff54dc70",
+    "test_sha256": "14345aeb8cbdb9dd2bbabcb6beab80a68a8773bd457322996e592a46f0c7c1fb"
+  },
+  "immutable_inputs": {
+    "base_checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "source_zero_residual_checkpoint_sha256": "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3",
+    "candidate_one_step_checkpoint_sha256": "81ed13e94bef8f7932ace86a22f8fbd9af82b5dbc649f9f7693e9fcdf5ec1347",
+    "residual_initial_state_hash": "4cd4f7d2dbd62db75ea5568525e7b0b95b7decc1ad8ccbb1693a91f3eae37018",
+    "cpu_rng_before_rollout_hash": "1e894074389fc8ef787fe772a9e8526ac637bfb567462a4b6251a82a25072bd5",
+    "cuda_rng_before_rollout_hash": "8083a7cbbe23976ee36097b0a3694140a46204ad4bad6458446bcaf8c86e271f",
+    "stored_latent_hash": "60a12d78cd0e6b18e5f3fc9406f98987ae48031645ae9e1576b04aa59d5ed7ee"
+  },
+  "rerun_outputs": {
+    "screen": "reports/retarget/x2_phase69_reward_attribution_rerun1_screen.json",
+    "resource": "reports/retarget/x2_phase69_reward_attribution_rerun1_resource.json",
+    "result": "reports/retarget/x2_phase69_reward_attribution_rerun1_result.json",
+    "markdown": "reports/retarget/x2_phase69_reward_attribution_rerun1.md",
+    "raw_evidence": "artifacts/retarget/x2_phase69_reward_attribution/rollout_evidence_rerun1.pt",
+    "overwrite_forbidden": true
+  },
+  "resource_limits": {
+    "isaac_launch_count_this_rerun": 1,
+    "isaac_launch_count_cumulative_including_failed_attempt": 2,
+    "disk_free_gib_min_before_run": 20,
+    "disk_delta_bytes_expected_max": 201326592,
+    "disk_delta_bytes_max": 268435456,
+    "cumulative_disk_delta_bytes_max": 536870912,
+    "gpu_peak_memory_mib_max": 22528,
+    "optimizer_steps": 0,
+    "virtual_counterfactual_adam_steps": 1,
+    "checkpoint_count": 0,
+    "raw_evidence_bundle_expected_bytes_max": 20971520
+  },
+  "decision_boundary": {
+    "rerun_failure": "FAIL_ATTRIBUTION_INVALID_STOP",
+    "success": "Apply the unchanged original Phase69 decision tree.",
+    "optimizer_unlocked": false,
+    "five_update_unlocked": false,
+    "long_training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false
+  }
+}

@@ -5,12 +5,14 @@ ROOT=/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim
 OLD=/home/yu/x2_teleop_final/x2_sonic
 ORIGINAL="$OLD/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt"
 PHASE68_ARTIFACT="$ROOT/artifacts/retarget/x2_phase_conditioned_residual_phase68"
-REPORT="$ROOT/reports/retarget/x2_phase69_reward_attribution"
-EVIDENCE="$ROOT/artifacts/retarget/x2_phase69_reward_attribution/rollout_evidence.pt"
+BASE_REPORT="$ROOT/reports/retarget/x2_phase69_reward_attribution"
+REPORT="${BASE_REPORT}_rerun1"
+PREREG="${BASE_REPORT}_rerun1_prereg.json"
+EVIDENCE="$ROOT/artifacts/retarget/x2_phase69_reward_attribution/rollout_evidence_rerun1.pt"
 RUNNER="$ROOT/scripts/run_x2_upper_robust_one_update_phase56.py"
 LEDGER="$ROOT/tools/retarget/run_with_gpu_ledger.py"
 FINALIZER="$ROOT/tools/retarget/finalize_x2_phase69_reward_attribution.py"
-LOG=/tmp/x2_phase69_logs/attribution.log
+LOG=/tmp/x2_phase69_logs/attribution_rerun1.log
 
 outputs=(
   "${REPORT}_screen.json"
@@ -57,7 +59,7 @@ CWI_PHASE69_REWARD_ATTRIBUTION=1 python3 "$LEDGER" \
   --num-envs 64 --seed 42 --device cuda:0 --headless
 
 python3 "$FINALIZER" \
-  --prereg "${REPORT}_prereg.json" \
+  --prereg "$PREREG" \
   --screen "${REPORT}_screen.json" \
   --resource "${REPORT}_resource.json" \
   --output "${REPORT}_result.json" \

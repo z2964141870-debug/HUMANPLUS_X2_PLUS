@@ -2884,8 +2884,8 @@ def attribute_phase69() -> None:
         candidate_state = candidate_payload["residual_state_dict"]
         source_state = source_residual_payload["residual_state_dict"]
         actual_update = _flat_head_vector(
-            candidate_state["head.weight"] - source_state["head.weight"],
-            candidate_state["head.bias"] - source_state["head.bias"],
+            candidate_state["head.weight"].cpu() - source_state["head.weight"].cpu(),
+            candidate_state["head.bias"].cpu() - source_state["head.bias"].cpu(),
         )
         update_direction = _cosine_and_relative_l2(actual_update, recovered_ascent)
 
