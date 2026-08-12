@@ -1,0 +1,97 @@
+{
+  "schema": "x2_phase71b_posthoc_prereg_v1",
+  "date": "2026-08-12",
+  "objective": "Perform one CPU-only repair analysis after Phase71 v1 stopped invalid. Correct only the independently identified anchor-credit metric semantics and fail-closed aggregation across every preregistered direction; preserve all no-promotion boundaries.",
+  "repair_provenance": {
+    "phase71_v1_decision": "POSTHOC_RECONSTRUCTION_INVALID_STOP",
+    "phase71_v1_result_preserved": true,
+    "review_requested_before_phase71_v1_execution": true,
+    "review_returned_after_execution": true,
+    "review_based_on_code_not_phase71_v1_metrics": true,
+    "allowed_repairs": [
+      "Use Phase70 anchor standalone credit: first-200 action scores with full-400 future returns, then center/normalize only the 200 anchor rows.",
+      "Require fixed-group stability for primary, reward-only, locomotion, pitch reward, and support reward against both metrics.",
+      "Treat stored bundle primary credit/ascent as authoritative and report CPU/GPU reduction-order reconstruction sensitivity."
+    ],
+    "scientific_threshold_selection_from_phase71_v1_result": false,
+    "maximum_evidence_level": "registered posthoc hypothesis only"
+  },
+  "immutable_inputs": {
+    "phase71_v1_registration": "9febbaeb944498bbf25a172693b1a61dc6d89d851945e01bb14ec352d527f34d",
+    "phase71_v1_result": "6dd70a608ee5199fbed4f5175745f4be4689897a046c90af99b3700464403c5f",
+    "phase70_screen": "92533777eb3fba781043995b18cae03e6eaea7440cdc2ad21cfdd52505bb24f2",
+    "phase70_bundle": "0b7f5f4026eb62ea474a2204b11b67e7c500024e1f3b814add0dffc482a07d81",
+    "phase70_failure": "f084540b7ee37bfb648a60c5d76be0354318b8399217266ee169c725cd745fbb"
+  },
+  "immutable_code": {
+    "audit_script_sha256": "be0c50be7634ffe60441a6e069f9d561748f38f2caca6ac99dae407babfbd475",
+    "audit_test_sha256": "0e231a5a9d3d2a0685e80ff263aef122c84337116948ccf6db0eb4bcd0255b0d",
+    "phase71_v1_audit_sha256": "678addf32823aa8d5d3c101249507e62bb10dbe9f672ddee704ba2f273c380ba",
+    "phase69_helper_sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295",
+    "phase70_helper_sha256": "9d36a8e6a37393374f740ed00b0292033d2a5d0148ba1cc9e1d626eb49f2331a",
+    "residual_module_sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b"
+  },
+  "runtime": {
+    "device": "cpu",
+    "CUDA_VISIBLE_DEVICES": "",
+    "cuda_initialization_forbidden": true,
+    "isaac_import_or_launch_forbidden": true,
+    "physics_steps": 0,
+    "backward_calls": 0,
+    "optimizer_objects_or_steps": 0,
+    "checkpoint_count": 0,
+    "overwrite_forbidden": true
+  },
+  "reconstruction_gates": {
+    "input_and_code_hashes_exact": true,
+    "CPU_rng_raw_and_prefixed_hashes_exact": true,
+    "CUDA_seed_offset_structure_only_no_CUDA_initialization": true,
+    "stored_primary_credit_CPU_recompute_max_abs": 1e-06,
+    "stored_ascent_cosine_min": 0.999999,
+    "stored_ascent_relative_l2_max": 1e-06,
+    "stored_ascent_max_abs": 2e-07,
+    "float64_common_scale_credit_relative_l2_max": 1e-12,
+    "float64_common_scale_credit_max_abs": 1e-12,
+    "float32_residual_credit_gradient_relative_l2_max": 1e-06,
+    "float32_residual_credit_gradient_max_abs": 1e-07,
+    "phase_gradient_relative_l2_max": 1e-06,
+    "all_finite": true,
+    "grad_disabled": true
+  },
+  "metric_and_group_contract": {
+    "score_anchor_steps": 200,
+    "observed_future_reward_steps": 400,
+    "metric_dt_seconds": 0.02,
+    "anchor_credit_center_and_std_rows": 200,
+    "fixed_groups": ["four contiguous 16-env blocks", "even/odd env ids", "first/second 32 envs", "four leave-one-block-out", "64 leave-one-env-out"],
+    "bootstrap_draws": 2048,
+    "bootstrap_unit": "environment trajectory",
+    "strict_stability": "all fixed block/even-odd/LOBO projections share full sign; >=90% LOEO share sign; both direction and metric first-half/second-half cosines >=0.90; bootstrap 95% interval excludes zero",
+    "required_directions": ["primary", "reward_only", "locomotion", "pitch_reward", "support_reward"],
+    "required_metrics": ["positive_pitch", "lower_support_outside"],
+    "time_or_phase_samples_are_not_independent": true,
+    "locomotion_terms_are_exploratory_only": true
+  },
+  "decision_tree": {
+    "reconstruction_failure": "POSTHOC_REPAIR_RECONSTRUCTION_INVALID_STOP",
+    "any_required_direction_unstable": "POSTHOC_VARIANCE_INSTABILITY_CONFIRMED_NO_PROMOTION",
+    "strict_pitch_conflict_only": "POSTHOC_PITCH_CONFLICT_HYPOTHESIS_ONLY",
+    "otherwise": "POSTHOC_NUMERICAL_AUDIT_NO_PROMOTION",
+    "all_routes_promotion": "none"
+  },
+  "outputs": {
+    "result": "reports/retarget/x2_phase71b_posthoc_audit.json",
+    "result_sidecar": "reports/retarget/x2_phase71b_posthoc_audit.json.sha256",
+    "markdown": "reports/retarget/x2_phase71b_posthoc_audit.md"
+  },
+  "promotion_boundary": {
+    "phase70_decision_changed": false,
+    "phase71_v1_decision_changed": false,
+    "physics_unlocked": false,
+    "optimizer_unlocked": false,
+    "long_training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false,
+    "new_confirmatory_evidence_requires_new_independent_preregistration_and_new_data": true
+  }
+}

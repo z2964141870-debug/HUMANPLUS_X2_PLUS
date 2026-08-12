@@ -156,36 +156,6 @@ def _phase70_early_code_guard() -> None:
     ]
     if mismatched:
         raise RuntimeError(f"Phase70 preregistered code drift: {mismatched}")
-    if prereg.get("schema") == "x2_phase70_long_lookahead_prereg_v4":
-        prior = prereg.get("prior_attempt", {})
-        evidence = {
-            "failure": prior.get("failure", {}),
-            "resource": prior.get("resource", {}),
-            "log": prior.get("log", {}),
-            "frozen_runner_snapshot": prior.get("frozen_runner_snapshot", {}),
-            "frozen_run_script_snapshot": prior.get(
-                "frozen_run_script_snapshot", {}
-            ),
-            "repair_patch": prior.get("repair_patch", {}),
-        }
-        evidence_mismatched = []
-        for name, record in evidence.items():
-            raw_path = record.get("path", "")
-            path = Path(raw_path)
-            if not path.is_absolute():
-                path = repo / path
-            if (
-                not raw_path
-                or not path.is_file()
-                or hashlib.sha256(path.read_bytes()).hexdigest()
-                != record.get("sha256")
-            ):
-                evidence_mismatched.append(name)
-        if evidence_mismatched:
-            raise RuntimeError(
-                "Phase70 attempt0 evidence drift: "
-                f"{evidence_mismatched}"
-            )
 
 
 _phase70_early_code_guard()
@@ -3585,7 +3555,7 @@ def qualify_phase70_long_lookahead() -> None:
             encoded, anchor_latent, full_old_critic_credit, latent_std=0.35
         )
 
-        flat_obs = {"policy": anchor_observation.flatten(0, 1)}
+        flat_obs = anchor_observation.flatten(0, 1)
         flat_actions = anchor_latent.flatten(0, 1)
         old_log_prob_anchor = algorithm.storage.actions_log_prob[:200].flatten(0, 1).squeeze(-1)
         policy.update_distribution(flat_obs)
@@ -3609,9 +3579,7 @@ def qualify_phase70_long_lookahead() -> None:
             primary_per_env.mean(dim=0), autograd_ascent
         )
 
-        all_observation = {
-            "policy": algorithm.storage.observations["policy"].flatten(0, 1)
-        }
+        all_observation = algorithm.storage.observations["policy"].flatten(0, 1)
         all_actions = stored_latent.flatten(0, 1)
         all_old_log_prob = algorithm.storage.actions_log_prob.flatten(0, 1).squeeze(-1)
         policy.update_distribution(all_observation)

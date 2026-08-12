@@ -1,0 +1,53 @@
+{
+  "schema": "x2_gpu_run_ledger_v1",
+  "label": "phase70_repair1_fresh_rng_zero_optimizer_long_lookahead",
+  "command": [
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_upper_robust_one_update_phase56.py",
+    "--mode",
+    "train",
+    "--checkpoint",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--residual-checkpoint",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase_conditioned_residual_phase68/source_stage219_zero_residual.pt",
+    "--reference-rollout-bundle",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase69_reward_attribution/rollout_evidence_rerun1.pt",
+    "--phase70-prereg",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_phase70_long_lookahead_prereg_v4.json",
+    "--rollout-bundle",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase70_long_lookahead/rollout_evidence_rerun1.pt",
+    "--output",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_phase70_long_lookahead_rerun1_screen.json",
+    "--num-envs",
+    "64",
+    "--seed",
+    "42",
+    "--eval-steps",
+    "400",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "exit_code": 0,
+  "start_wall_ns": 1786537731583683083,
+  "elapsed_s": 35.673663575998944,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 103787495424,
+    "free_bytes": 373009743872
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 103946366976,
+    "free_bytes": 372850872320
+  },
+  "disk_used_delta_bytes": 158871552,
+  "gpu_sample_count": 68,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 3269.0,
+    "utilization_peak_percent": 64.0,
+    "power_peak_w": 119.54
+  }
+}

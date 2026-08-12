@@ -1,0 +1,53 @@
+{
+  "schema": "x2_phase70_long_lookahead_attempt0_failure_v1",
+  "date": "2026-08-12",
+  "decision": "FAIL_POST_ROLLOUT_DIAGNOSTIC_STOP",
+  "scientific_result": null,
+  "attempt": "v3_attempt0",
+  "prereg": {
+    "path": "reports/retarget/x2_phase70_long_lookahead_prereg_v3.json",
+    "sha256": "aa662b0c7baac9d2214878f7fd8d88b9a82544ba2f70c8751f0d360426308b1d"
+  },
+  "frozen_code": {
+    "runner_sha256": "c62f8bdac7de750a41608e4a6bd38acb0c5366ca32fe7142f73dc13a0a1468dc",
+    "run_script_sha256": "aba512353a0d3070dad3e462fd47a613a0a8e4131e9a35d710d87990915e99cb"
+  },
+  "failure": {
+    "stage": "post-rollout policy-logprob reconstruction before any screen or raw bundle write",
+    "exception": "IndexError: too many indices for tensor of dimension 2",
+    "location": "scripts/run_x2_upper_robust_one_update_phase56.py:3561",
+    "cause": "ResidualActorCritic.update_distribution expects a TensorDict-like observation with a policy key, but Phase70 passed a flattened policy tensor directly.",
+    "physics_rollout_completed_before_failure": true,
+    "screen_written": false,
+    "raw_evidence_bundle_written": false,
+    "scientific_metrics_exposed": false,
+    "formal_optimizer_steps": 0,
+    "optimizer_state_entries": 0,
+    "model_checkpoint_count": 0
+  },
+  "resource": {
+    "path": "reports/retarget/x2_phase70_long_lookahead_resource.json",
+    "sha256": "161c7a833e2bb5d99028cd8e9e9e3daa24b56e95f0728ea79af19e67ee44dbb1",
+    "elapsed_s": 37.25180633399941,
+    "disk_used_delta_bytes": 135110656,
+    "gpu_memory_used_peak_mib": 3241,
+    "gpu_utilization_peak_percent": 64,
+    "ledger_exit_code": 0,
+    "ledger_exit_code_reliable": false,
+    "exit_mask_explanation": "The child traceback is authoritative. conda/ledger returned zero, and the shell then attempted to exit with runner_status=0 when the screen was absent."
+  },
+  "log": {
+    "path": "/tmp/x2_phase70_logs/long_lookahead.log",
+    "bytes": 11996,
+    "sha256": "fbd24db721e0876c4fafd8b6c2b916239cdf5cdb9721eed3608c55db4b31dc0c"
+  },
+  "boundary": {
+    "v3_launch_consumed": true,
+    "v3_rerun_forbidden": true,
+    "repair_rerun_authorized": false,
+    "optimizer_unlocked": false,
+    "long_training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false
+  }
+}

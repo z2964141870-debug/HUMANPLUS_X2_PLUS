@@ -1,0 +1,115 @@
+{
+  "schema": "x2_phase70_long_lookahead_failure_v1",
+  "date": "2026-08-12",
+  "recorded_at": "2026-08-12T20:31:01+08:00",
+  "decision": "FAIL_INVALID_STOP",
+  "terminal_governance_status": "FAIL_IMPLEMENTATION_STOP_NO_MORE_PHASE70_RERUN",
+  "authority": {
+    "source_prereg": "reports/retarget/x2_phase70_long_lookahead_prereg_v4.json",
+    "source_prereg_sha256": "430104815519552dc8ab4ce569f56ac6c76a4f2bd8f83ba0a6d3d2c108a266dc",
+    "v4_repair_launch_consumed": true,
+    "cumulative_phase70_physics_launches": 2,
+    "third_phase70_physics_launch_forbidden": true,
+    "optimizer_unlocked": false,
+    "long_training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false
+  },
+  "execution": {
+    "num_envs": 64,
+    "physics_steps": 400,
+    "active_transitions": 25600,
+    "elapsed_seconds": 35.673663575998944,
+    "gpu_memory_peak_mib": 3269,
+    "disk_used_delta_bytes": 158871552,
+    "formal_optimizer_steps": 0,
+    "optimizer_state_entries": 0,
+    "checkpoint_count": 0,
+    "done_or_timeout_count": 0,
+    "shell_exit_code": 1,
+    "ledger_child_exit_code": 0,
+    "ledger_child_exit_code_reliable": false,
+    "ledger_exit_mask_reason": "The runner emitted a terminal RuntimeError after writing the invalid screen and bundle, but SimulationApp shutdown returned child status 0; the shell screen-decision guard supplied the authoritative nonzero status."
+  },
+  "evidence": {
+    "screen": {
+      "path": "reports/retarget/x2_phase70_long_lookahead_rerun1_screen.json",
+      "bytes": 8419,
+      "sha256": "92533777eb3fba781043995b18cae03e6eaea7440cdc2ad21cfdd52505bb24f2"
+    },
+    "resource": {
+      "path": "reports/retarget/x2_phase70_long_lookahead_rerun1_resource.json",
+      "bytes": 1972,
+      "sha256": "e8972f21fc129b2aa475f565a169783c9937dd02dd4bf7042612457dacc844f5"
+    },
+    "raw_bundle": {
+      "path": "artifacts/retarget/x2_phase70_long_lookahead/rollout_evidence_rerun1.pt",
+      "bytes": 23217328,
+      "sha256": "0b7f5f4026eb62ea474a2204b11b67e7c500024e1f3b814add0dffc482a07d81",
+      "artifact_role": "raw rollout evidence; not a model checkpoint"
+    },
+    "log": {
+      "path": "/tmp/x2_phase70_logs/long_lookahead_rerun1.log",
+      "bytes": 26372,
+      "sha256": "7006499189a6266cee5836cf08818dd18b046857cd841f00972f8c8f65e52b3e"
+    }
+  },
+  "failed_technical_gates": {
+    "fresh_cpu_rng_hash": {
+      "expected": "0721c6550d700ede33ea154260c940ab9d4be05b1d54bf192df7d51a89c668a8",
+      "observed": "408382543c7b8165648ae6e434929c29dc7f97601d49a0135c1a9ec1a1d0130f",
+      "posthoc_root_cause": "The preregistered value is SHA-256 of the raw RNG-state bytes, while the runner used tensor_hash, which prefixes dtype and shape before the same bytes."
+    },
+    "fresh_cuda_rng_hash": {
+      "expected": "2b6852ce608b9c5209ace6e7e6ca7006f4c8de288cbc5cc843a2a0bc3002e9a2",
+      "observed": "27b790394093efd7178dd2fc462278b20f3c5a49c8ec46bbe56ebae37a0c0d4f",
+      "posthoc_root_cause": "The preregistered value is SHA-256 of the raw RNG-state bytes, while the runner used tensor_hash, which prefixes dtype and shape before the same bytes."
+    },
+    "additive_gradient_closure": {
+      "cosine": 0.9999999999140997,
+      "relative_l2": 1.3954803919087401e-05,
+      "relative_l2_limit": 1e-05,
+      "max_abs": 6.537884473800659e-07,
+      "posthoc_root_cause_hypothesis": "The primary return and four component returns were accumulated by separate float32 reverse recurrences, so non-associative rounding exceeded the preregistered relative-L2 limit. The historical gate remains failed."
+    }
+  },
+  "other_technical_contract": {
+    "passed_gate_count": 28,
+    "failed_gate_count": 3,
+    "source_and_residual_state_immutable": true,
+    "stored_latent_and_wrapper_action_exact": true,
+    "stored_reward_exact": true,
+    "reward_closure_max_abs": 3.725290298461914e-08,
+    "logprob_and_ratio_exact": true,
+    "analytical_autograd_cosine": 0.9999999999999601,
+    "all_finite": true,
+    "phase_coverage_complete": true,
+    "bundle_strict_reload_passed": true
+  },
+  "posthoc_only_observations": {
+    "promotion_eligible": false,
+    "pitch_reward_to_positive_pitch_projection": 0.7825164215288337,
+    "pitch_reward_projection_ci95": [0.6761692833972123, 1.066130526665237],
+    "primary_total_to_positive_pitch_projection": -0.7372769544624227,
+    "primary_total_pitch_projection_ci95": [-1.4318798971527336, -0.1021103251723424],
+    "primary_total_to_lower_support_projection": 0.005259488175578927,
+    "primary_total_support_projection_ci95": [-0.9791848637942026, 0.9093359219804289],
+    "cohort_direction_cosine": -0.3397292766943323,
+    "phase69_reference_cosine": 0.5888982158130917,
+    "interpretation_boundary": "These values may generate hypotheses only. The formal run is invalid, the two environment cohorts disagree, and support direction is inconclusive."
+  },
+  "next_action": {
+    "phase70_closed": true,
+    "additional_phase70_physics_forbidden": true,
+    "allowed": [
+      "Freeze and back up the immutable failure evidence.",
+      "Perform clearly labeled CPU-only posthoc numerical calibration on the existing bundle.",
+      "Write a new independently preregistered phase that does not claim Phase70 promotion."
+    ],
+    "forbidden": [
+      "A third Phase70 physics launch.",
+      "Any optimizer update based on this invalid screen.",
+      "Checkpoint export, deployment, or Task2 completion claims."
+    ]
+  }
+}

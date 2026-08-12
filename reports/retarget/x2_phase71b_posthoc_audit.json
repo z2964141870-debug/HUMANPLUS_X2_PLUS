@@ -1,0 +1,1636 @@
+{
+  "schema": "x2_phase71b_posthoc_audit_v1",
+  "decision": "POSTHOC_REPAIR_RECONSTRUCTION_INVALID_STOP",
+  "analysis_mode": "repair_only_registered_posthoc_on_previously_inspected_data",
+  "phase70_decision_unchanged": "FAIL_INVALID_STOP",
+  "phase71_v1_decision_unchanged": "POSTHOC_RECONSTRUCTION_INVALID_STOP",
+  "repair_provenance": {
+    "review_was_requested_before_phase71_v1_execution": true,
+    "review_identified_code_issues_without_using_phase71_v1_metrics": true,
+    "fixed_metric_semantics": "anchor-normalize first-200 scores against full-400 returns",
+    "fixed_stability_aggregation": "all preregistered primary/reward-only/locomotion/pitch/support directions"
+  },
+  "immutable_inputs": {
+    "phase71_v1_registration": "9febbaeb944498bbf25a172693b1a61dc6d89d851945e01bb14ec352d527f34d",
+    "phase71_v1_result": "6dd70a608ee5199fbed4f5175745f4be4689897a046c90af99b3700464403c5f",
+    "phase70_screen": "92533777eb3fba781043995b18cae03e6eaea7440cdc2ad21cfdd52505bb24f2",
+    "phase70_bundle": "0b7f5f4026eb62ea474a2204b11b67e7c500024e1f3b814add0dffc482a07d81",
+    "phase70_failure": "f084540b7ee37bfb648a60c5d76be0354318b8399217266ee169c725cd745fbb"
+  },
+  "immutable_code": {
+    "audit_script_sha256": "be0c50be7634ffe60441a6e069f9d561748f38f2caca6ac99dae407babfbd475",
+    "audit_test_sha256": "0e231a5a9d3d2a0685e80ff263aef122c84337116948ccf6db0eb4bcd0255b0d",
+    "phase71_v1_audit_sha256": "678addf32823aa8d5d3c101249507e62bb10dbe9f672ddee704ba2f273c380ba",
+    "phase69_helper_sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295",
+    "phase70_helper_sha256": "9d36a8e6a37393374f740ed00b0292033d2a5d0148ba1cc9e1d626eb49f2331a",
+    "residual_module_sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b"
+  },
+  "reconstruction_checks": {
+    "input_hashes": true,
+    "code_hashes": true,
+    "cpu_rng_raw_and_prefixed": true,
+    "cuda_seed_offset_convention_consistent_without_cuda": true,
+    "stored_credit_cpu_sensitivity_max_abs": true,
+    "stored_ascent_reconstructed": true,
+    "float64_common_scale_closure": true,
+    "float32_residual_credit_closure": false,
+    "phase_closure": true,
+    "all_finite": true,
+    "cpu_only": true,
+    "grad_disabled": true
+  },
+  "float32_common_scale_closure": {
+    "credit_relative_l2": 8.238830108760325e-06,
+    "credit_max_abs": 2.7120113372802734e-05
+  },
+  "float64_common_scale_closure": {
+    "credit_relative_l2": 1.05128110824176e-14,
+    "credit_max_abs": 3.58046925441613e-14
+  },
+  "float32_residual_credit_closure": {
+    "relative_l2": 1.8544780161595786e-07,
+    "max_abs": 1.4901161193847656e-07
+  },
+  "phase70_historical_gpu_float32_closure": {
+    "cosine": 0.9999999999140997,
+    "relative_l2": 1.3954803919087401e-05,
+    "max_abs": 6.537884473800659e-07
+  },
+  "stored_credit_cpu_sensitivity": {
+    "max_abs": 9.5367431640625e-07,
+    "role": "CPU/GPU reduction-order sensitivity; stored bundle credit remains authoritative"
+  },
+  "stored_ascent_reconstruction": {
+    "cosine": 0.9999999999999716,
+    "relative_l2": 2.5039742936963015e-07,
+    "max_abs": 1.1920928955078125e-07
+  },
+  "fixed_group_stability": {
+    "primary_vs_positive_pitch": {
+      "full_projection": -0.7372768909634125,
+      "bootstrap": {
+        "point": -0.7372769012237846,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -1.511771379304053,
+        "bootstrap_p50": -0.7176460853523978,
+        "bootstrap_p975": -0.05300763977609398,
+        "bootstrap_same_sign_fraction": 0.984375,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": -1.4029598568637005,
+        "contiguous_16_31": -0.8557776467686559,
+        "contiguous_32_47": -0.14150804911281883,
+        "contiguous_48_63": -0.5010115789005627,
+        "even_env_id": -1.2054486576290453,
+        "odd_env_id": -0.11014240565479072,
+        "first_half": -1.2911192796193773,
+        "second_half": -0.14595621554343735
+      },
+      "direction_first_second_half_cosine": -0.3397293385345733,
+      "metric_first_second_half_cosine": 0.4255782091622544,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": -0.26572184785159225,
+        "holdout_block_1": -0.7008550178122033,
+        "holdout_block_2": -1.184861374491091,
+        "holdout_block_3": -0.7449894137410195
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "primary_vs_lower_support_outside": {
+      "full_projection": 0.005259096441850153,
+      "bootstrap": {
+        "point": 0.0052591028403652694,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -0.9272224724459258,
+        "bootstrap_p50": 0.015196360593390761,
+        "bootstrap_p975": 0.9450765207594123,
+        "bootstrap_same_sign_fraction": 0.51708984375,
+        "leave_one_env_out_same_sign_fraction": 0.546875
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": 0.3164825074011187,
+        "contiguous_16_31": 0.47580043868130256,
+        "contiguous_32_47": -0.6264168125991151,
+        "contiguous_48_63": -0.046181133887944224,
+        "even_env_id": -0.12237234930904678,
+        "odd_env_id": 0.17625477613976626,
+        "first_half": -0.11679231821349731,
+        "second_half": -0.3260772991779211
+      },
+      "direction_first_second_half_cosine": -0.3397293385345733,
+      "metric_first_second_half_cosine": 0.266562337017164,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": 0.3478756828736767,
+        "holdout_block_1": -0.11727595088868681,
+        "holdout_block_2": -0.23883688486672422,
+        "holdout_block_3": 0.09225910434959556
+      },
+      "leave_one_env_out_same_sign_fraction": 0.546875,
+      "strict_stable": false
+    },
+    "reward_only_vs_positive_pitch": {
+      "full_projection": -0.6466652687555206,
+      "bootstrap": {
+        "point": -0.6466652726951925,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -1.059857069091829,
+        "bootstrap_p50": -0.601124635400104,
+        "bootstrap_p975": -0.17194555058097158,
+        "bootstrap_same_sign_fraction": 0.99462890625,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": -1.1020082800416966,
+        "contiguous_16_31": -0.5925215090282321,
+        "contiguous_32_47": 0.013258555994893994,
+        "contiguous_48_63": -0.6570146467748258,
+        "even_env_id": -0.9183751381505738,
+        "odd_env_id": -0.4248592487740827,
+        "first_half": -0.8745156396868801,
+        "second_half": -0.14791631245260656
+      },
+      "direction_first_second_half_cosine": 0.010649787340987201,
+      "metric_first_second_half_cosine": 0.4255782091622544,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": -0.32241058751581125,
+        "holdout_block_1": -0.6181801205865745,
+        "holdout_block_2": -0.9539362004876925,
+        "holdout_block_3": -0.5853313933639908
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "reward_only_vs_lower_support_outside": {
+      "full_projection": -0.1908218510252923,
+      "bootstrap": {
+        "point": -0.19082184800652874,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -0.8443078734585576,
+        "bootstrap_p50": -0.12624784916178705,
+        "bootstrap_p975": 0.5246534335090356,
+        "bootstrap_same_sign_fraction": 0.65478515625,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": -0.030962676990284793,
+        "contiguous_16_31": 0.3639262319327782,
+        "contiguous_32_47": -0.5165518235987422,
+        "contiguous_48_63": -0.2903920169883826,
+        "even_env_id": -0.05636827687730875,
+        "odd_env_id": -0.3247347138321375,
+        "first_half": -0.22616519249565356,
+        "second_half": -0.34753984786522363
+      },
+      "direction_first_second_half_cosine": 0.010649787340987201,
+      "metric_first_second_half_cosine": 0.266562337017164,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": 0.21185663168527244,
+        "holdout_block_1": -0.4636109563043402,
+        "holdout_block_2": -0.37911304826536435,
+        "holdout_block_3": -0.08495378210659883
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "locomotion_vs_positive_pitch": {
+      "full_projection": -0.8891877588982973,
+      "bootstrap": {
+        "point": -0.8891877725664894,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -1.2229147156500129,
+        "bootstrap_p50": -0.843362275946947,
+        "bootstrap_p975": -0.4717373195866811,
+        "bootstrap_same_sign_fraction": 1.0,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": -1.2229324754427136,
+        "contiguous_16_31": -0.6417924832603371,
+        "contiguous_32_47": -0.28942285840215487,
+        "contiguous_48_63": -0.9271038083190636,
+        "even_env_id": -1.0378075506086801,
+        "odd_env_id": -0.749206606186446,
+        "first_half": -1.1039974951333893,
+        "second_half": -0.41606498891566795
+      },
+      "direction_first_second_half_cosine": 0.24798980991761077,
+      "metric_first_second_half_cosine": 0.4255782091622544,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": -0.6626443649554769,
+        "holdout_block_1": -0.7998193235623668,
+        "holdout_block_2": -1.1592079668195723,
+        "holdout_block_3": -0.8610280905901901
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "locomotion_vs_lower_support_outside": {
+      "full_projection": -0.4640433626648585,
+      "bootstrap": {
+        "point": -0.4640433846769802,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -1.2013089831648556,
+        "bootstrap_p50": -0.3741430490240609,
+        "bootstrap_p975": 0.37816386345151676,
+        "bootstrap_same_sign_fraction": 0.83642578125,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": -0.3198249043631267,
+        "contiguous_16_31": 0.22400359877689707,
+        "contiguous_32_47": -0.7618952716680418,
+        "contiguous_48_63": -0.5504315821449173,
+        "even_env_id": -0.20889690734557934,
+        "odd_env_id": -0.787430581053013,
+        "first_half": -0.45814181203576454,
+        "second_half": -0.5882352207389204
+      },
+      "direction_first_second_half_cosine": 0.24798980991761077,
+      "metric_first_second_half_cosine": 0.266562337017164,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": -0.03822753771110284,
+        "holdout_block_1": -0.6658847270243531,
+        "holdout_block_2": -0.6013988751431034,
+        "holdout_block_3": -0.3737415846523093
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "pitch_reward_vs_positive_pitch": {
+      "full_projection": 0.7825164392601919,
+      "bootstrap": {
+        "point": 0.7825165134421932,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": 0.6866122882464748,
+        "bootstrap_p50": 0.8741938374427058,
+        "bootstrap_p975": 1.078116066295248,
+        "bootstrap_same_sign_fraction": 1.0,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": 0.6893104253809108,
+        "contiguous_16_31": 1.0240265748911987,
+        "contiguous_32_47": 1.1255047342688982,
+        "contiguous_48_63": 0.7793515142223207,
+        "even_env_id": 0.7667193868527625,
+        "odd_env_id": 0.9615565820882411,
+        "first_half": 0.6818578035059916,
+        "second_half": 1.0519648246617153
+      },
+      "direction_first_second_half_cosine": 0.003514604076509141,
+      "metric_first_second_half_cosine": 0.4255782091622544,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": 0.8718691836487331,
+        "holdout_block_1": 0.8718069724615161,
+        "holdout_block_2": 0.6122673747325517,
+        "holdout_block_3": 0.8265702363762176
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "pitch_reward_vs_lower_support_outside": {
+      "full_projection": 0.4396180540626135,
+      "bootstrap": {
+        "point": 0.4396180988440407,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -0.5090116832594862,
+        "bootstrap_p50": 0.3108513274091642,
+        "bootstrap_p975": 1.2668395880701004,
+        "bootstrap_same_sign_fraction": 0.77734375,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": 0.4238703741478127,
+        "contiguous_16_31": -0.2628754791692598,
+        "contiguous_32_47": 0.13555231957823205,
+        "contiguous_48_63": 0.36640201218610613,
+        "even_env_id": -0.08412029024372061,
+        "odd_env_id": 1.125516262762286,
+        "first_half": 0.2115065199275214,
+        "second_half": 0.2149144272154267
+      },
+      "direction_first_second_half_cosine": 0.003514604076509141,
+      "metric_first_second_half_cosine": 0.266562337017164,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": 0.27566401539394997,
+        "holdout_block_1": 0.14606858121511468,
+        "holdout_block_2": 0.2709815301216811,
+        "holdout_block_3": 0.41731376764964145
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    },
+    "support_reward_vs_positive_pitch": {
+      "full_projection": 0.08142227006433451,
+      "bootstrap": {
+        "point": 0.08142226522549423,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": -0.8621172392298926,
+        "bootstrap_p50": -0.04011357914734229,
+        "bootstrap_p975": 0.6595033162000218,
+        "bootstrap_same_sign_fraction": 0.46142578125,
+        "leave_one_env_out_same_sign_fraction": 0.828125
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": -0.3206567216132132,
+        "contiguous_16_31": -1.0281322112977274,
+        "contiguous_32_47": -0.07817623486862081,
+        "contiguous_48_63": 0.20191475852426813,
+        "even_env_id": -0.42045278195386315,
+        "odd_env_id": 0.2115114907061394,
+        "first_half": 0.14779069929606448,
+        "second_half": -0.135518171251018
+      },
+      "direction_first_second_half_cosine": 0.027211307575750014,
+      "metric_first_second_half_cosine": 0.4255782091622544,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": 0.3870579744519206,
+        "holdout_block_1": -0.28408427181528806,
+        "holdout_block_2": 0.1293676631660371,
+        "holdout_block_3": 0.1686235217459224
+      },
+      "leave_one_env_out_same_sign_fraction": 0.828125,
+      "strict_stable": false
+    },
+    "support_reward_vs_lower_support_outside": {
+      "full_projection": 0.6254490192268486,
+      "bootstrap": {
+        "point": 0.6254490225400403,
+        "bootstrap_draws": 2048,
+        "bootstrap_p025": 0.2509645333349181,
+        "bootstrap_p50": 0.7372562147839887,
+        "bootstrap_p975": 1.1584160924629414,
+        "bootstrap_same_sign_fraction": 0.99755859375,
+        "leave_one_env_out_same_sign_fraction": 1.0
+      },
+      "fixed_group_projection": {
+        "contiguous_00_15": 0.7106625301345328,
+        "contiguous_16_31": 0.9096531571792735,
+        "contiguous_32_47": 0.8746644028019167,
+        "contiguous_48_63": 0.6580784060018255,
+        "even_env_id": 0.7471323156183217,
+        "odd_env_id": 0.5990369569483646,
+        "first_half": 0.7263669085291867,
+        "second_half": 0.7591513119962048
+      },
+      "direction_first_second_half_cosine": 0.027211307575750014,
+      "metric_first_second_half_cosine": 0.266562337017164,
+      "leave_one_block_out_projection": {
+        "holdout_block_0": 0.7255233652085012,
+        "holdout_block_1": 0.6796816058341792,
+        "holdout_block_2": 0.6135281898132355,
+        "holdout_block_3": 0.7182656997675957
+      },
+      "leave_one_env_out_same_sign_fraction": 1.0,
+      "strict_stable": false
+    }
+  },
+  "pitch_conflict_strict": false,
+  "support_required_all_stable": false,
+  "phase_local_associations": {
+    "double_support_zero": {
+      "vs_primary": {
+        "cosine": 0.19841059857555665,
+        "relative_l2": 0.9843828894089993,
+        "projection_on_reference": 0.057525876142119806
+      },
+      "block_projection_to_positive_pitch": {
+        "contiguous_00_15": -0.3865311361345241,
+        "contiguous_16_31": -0.055425742980917826,
+        "contiguous_32_47": 0.011630379337608314,
+        "contiguous_48_63": -0.23849911402635787
+      }
+    },
+    "right_swing_left_support": {
+      "vs_primary": {
+        "cosine": 0.7493819318669654,
+        "relative_l2": 0.666939265081427,
+        "projection_on_reference": 0.5017105463479813
+      },
+      "block_projection_to_positive_pitch": {
+        "contiguous_00_15": -0.34484269541981943,
+        "contiguous_16_31": -0.7579142687207481,
+        "contiguous_32_47": 0.05701319293824324,
+        "contiguous_48_63": -0.06569991178598979
+      }
+    },
+    "double_support_half": {
+      "vs_primary": {
+        "cosine": 0.5032456489246497,
+        "relative_l2": 0.8704195660829118,
+        "projection_on_reference": 0.20074857255726755
+      },
+      "block_projection_to_positive_pitch": {
+        "contiguous_00_15": -0.16005164209138373,
+        "contiguous_16_31": -0.06502792842752048,
+        "contiguous_32_47": -0.26533295652278527,
+        "contiguous_48_63": -0.07158475473389588
+      }
+    },
+    "left_swing_right_support": {
+      "vs_primary": {
+        "cosine": 0.6373420658117009,
+        "relative_l2": 0.8135035370239749,
+        "projection_on_reference": 0.24001509185753944
+      },
+      "block_projection_to_positive_pitch": {
+        "contiguous_00_15": -0.5115344763572925,
+        "contiguous_16_31": 0.022590299414984735,
+        "contiguous_32_47": 0.055181355499900865,
+        "contiguous_48_63": -0.1252278292497668
+      }
+    }
+  },
+  "locomotion_term_exploration": {
+    "track_lin_vel_xy_exp": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": -1.0361654387623558,
+        "bootstrap": {
+          "point": -1.0361654121707988,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -1.3601390401707363,
+          "bootstrap_p50": -0.9683959868435384,
+          "bootstrap_p975": -0.6486714881634247,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -1.3134443790383825,
+          "contiguous_16_31": -0.8294942480673937,
+          "contiguous_32_47": -0.4861573562225203,
+          "contiguous_48_63": -0.9927153945323622,
+          "even_env_id": -1.3692111375885678,
+          "odd_env_id": -0.7977254485491407,
+          "first_half": -1.2761436266108124,
+          "second_half": -0.6250815701578138
+        },
+        "direction_first_second_half_cosine": 0.5128026940517083,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.7830706758322401,
+          "holdout_block_1": -0.9541024512486577,
+          "holdout_block_2": -1.3021804091733669,
+          "holdout_block_3": -0.9897946689868062
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": -0.5270038914299459,
+        "bootstrap": {
+          "point": -0.5270038888511828,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -1.3319742695169898,
+          "bootstrap_p50": -0.37141381550264013,
+          "bootstrap_p975": 0.5622457830592225,
+          "bootstrap_same_sign_fraction": 0.80810546875,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.3604582543027994,
+          "contiguous_16_31": 0.23890872091322204,
+          "contiguous_32_47": -0.5426270807056801,
+          "contiguous_48_63": -0.6167124175446369,
+          "even_env_id": -0.14482828897762856,
+          "odd_env_id": -0.9221694944017355,
+          "first_half": -0.46108312119839423,
+          "second_half": -0.4377776180477797
+        },
+        "direction_first_second_half_cosine": 0.5128026940517083,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.11867397870754058,
+          "holdout_block_1": -0.5342637127379211,
+          "holdout_block_2": -0.6766864438750118,
+          "holdout_block_3": -0.38720356139321765
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": 0.8493110608282368,
+        "relative_l2": 0.5947759427071293,
+        "projection_on_reference": 0.9540586412127248
+      }
+    },
+    "track_ang_vel_z_exp": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": -1.0703684290485709,
+        "bootstrap": {
+          "point": -1.0703684245776344,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -1.3331241628984605,
+          "bootstrap_p50": -0.9518827696604307,
+          "bootstrap_p975": -0.5461687386247444,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -1.3292493983777025,
+          "contiguous_16_31": -0.6510087402688297,
+          "contiguous_32_47": -0.5032937548389653,
+          "contiguous_48_63": -1.1351775973022455,
+          "even_env_id": -1.061453969967363,
+          "odd_env_id": -0.7850294756446005,
+          "first_half": -1.2293336825660177,
+          "second_half": -0.6077440303316508
+        },
+        "direction_first_second_half_cosine": 0.4740093884033061,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.8888780231465018,
+          "holdout_block_1": -0.9518125439927438,
+          "holdout_block_2": -1.369883409019639,
+          "holdout_block_3": -0.9975770417872908
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": -0.6801653002441915,
+        "bootstrap": {
+          "point": -0.6801652728600044,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -1.5272401907116622,
+          "bootstrap_p50": -0.5797337127043477,
+          "bootstrap_p975": 0.23241271926121196,
+          "bootstrap_same_sign_fraction": 0.9228515625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.3866852486155945,
+          "contiguous_16_31": 0.09725621608454733,
+          "contiguous_32_47": -0.8542460027572161,
+          "contiguous_48_63": -0.8472671804356529,
+          "even_env_id": -0.46630278928685354,
+          "odd_env_id": -0.8385073346046712,
+          "first_half": -0.7042749234877805,
+          "second_half": -0.5864378776145897
+        },
+        "direction_first_second_half_cosine": 0.4740093884033061,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.176974402135681,
+          "holdout_block_1": -0.7078689578493668,
+          "holdout_block_2": -0.8721155161539115,
+          "holdout_block_3": -0.6004293931344067
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": 0.7196188905146913,
+        "relative_l2": 0.849403742889225,
+        "projection_on_reference": 0.16579802773632293
+      }
+    },
+    "lin_vel_z_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": -0.3881919743672989,
+        "bootstrap": {
+          "point": -0.3881919763839069,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -1.1418333945941304,
+          "bootstrap_p50": -0.4614645265899624,
+          "bootstrap_p975": 0.2201711847493765,
+          "bootstrap_same_sign_fraction": 0.9248046875,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.4274981751380964,
+          "contiguous_16_31": -1.0119838440974442,
+          "contiguous_32_47": -0.6480543512158798,
+          "contiguous_48_63": 0.02296208725294508,
+          "even_env_id": -0.7150723533459572,
+          "odd_env_id": -0.36250804822493776,
+          "first_half": -0.3892262142765575,
+          "second_half": -0.7230161218756691
+        },
+        "direction_first_second_half_cosine": -0.2557138098073143,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.33286445814095744,
+          "holdout_block_1": -0.5753633420423683,
+          "holdout_block_2": -0.17868880607455362,
+          "holdout_block_3": -0.38902246743594543
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.1163029736013131,
+        "bootstrap": {
+          "point": 0.11630297297743752,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.5283080254024964,
+          "bootstrap_p50": 0.2235440129722364,
+          "bootstrap_p975": 0.9578021615553399,
+          "bootstrap_same_sign_fraction": 0.744140625,
+          "leave_one_env_out_same_sign_fraction": 0.96875
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.1398768979200604,
+          "contiguous_16_31": 0.5596849680178871,
+          "contiguous_32_47": 0.5530960587295495,
+          "contiguous_48_63": 0.48934777531207957,
+          "even_env_id": 0.37771398300540254,
+          "odd_env_id": -0.3239383755398762,
+          "first_half": 0.3158508475116965,
+          "second_half": 0.22940101039200228
+        },
+        "direction_first_second_half_cosine": -0.2557138098073143,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.1128688743799869,
+          "holdout_block_1": 0.3947437503583198,
+          "holdout_block_2": 0.20517259700086193,
+          "holdout_block_3": 0.2595320489034235
+        },
+        "leave_one_env_out_same_sign_fraction": 0.96875,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": 0.8488100720117985,
+        "relative_l2": 0.9990559304713823,
+        "projection_on_reference": 0.0009442426463570694
+      }
+    },
+    "ang_vel_xy_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.5609640013494988,
+        "bootstrap": {
+          "point": 0.5609639903326636,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.10358669228783177,
+          "bootstrap_p50": 0.5722963317238774,
+          "bootstrap_p975": 1.25530891839561,
+          "bootstrap_same_sign_fraction": 0.95556640625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.5944584544195772,
+          "contiguous_16_31": 0.8023763358122072,
+          "contiguous_32_47": 0.38437906754379086,
+          "contiguous_48_63": 0.6951721767160173,
+          "even_env_id": 0.49192708500568,
+          "odd_env_id": 0.3418765383378444,
+          "first_half": 0.8691218757168312,
+          "second_half": 0.3017638975323384
+        },
+        "direction_first_second_half_cosine": 0.3899620324149167,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.8366728871879476,
+          "holdout_block_1": 0.38005306119351495,
+          "holdout_block_2": 0.8387693196326209,
+          "holdout_block_3": 0.5877170785549055
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.48151404882958104,
+        "bootstrap": {
+          "point": 0.4815139828223791,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.4731043817866665,
+          "bootstrap_p50": 0.2799214452854135,
+          "bootstrap_p975": 1.081480765280926,
+          "bootstrap_same_sign_fraction": 0.78173828125,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.31834286826064867,
+          "contiguous_16_31": -0.16679044521365174,
+          "contiguous_32_47": 0.7532121267966071,
+          "contiguous_48_63": 0.5687532415190382,
+          "even_env_id": 0.3111457534907679,
+          "odd_env_id": 0.25323418306376677,
+          "first_half": 0.267766742086117,
+          "second_half": 0.7237817207054781
+        },
+        "direction_first_second_half_cosine": 0.3899620324149167,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.16896860090602328,
+          "holdout_block_1": 0.9486245402479678,
+          "holdout_block_2": 0.4106291097762866,
+          "holdout_block_3": 0.3924553797734753
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.41086057368289497,
+        "relative_l2": 1.002547443871024,
+        "projection_on_reference": -0.0025317037703882924
+      }
+    },
+    "dof_torques_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 1.3780572089077372,
+        "bootstrap": {
+          "point": 1.378057218312205,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.5967219461946386,
+          "bootstrap_p50": 1.0995755380445702,
+          "bootstrap_p975": 1.5711315415981488,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 1.246318056720801,
+          "contiguous_16_31": 0.7415016290961655,
+          "contiguous_32_47": 0.8944836309536078,
+          "contiguous_48_63": 1.4030458664244465,
+          "even_env_id": 1.0660261112545786,
+          "odd_env_id": 0.8163219889432348,
+          "first_half": 1.27178958271887,
+          "second_half": 1.0374781319326791
+        },
+        "direction_first_second_half_cosine": 0.7662629440441039,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 1.4783368174555445,
+          "holdout_block_1": 1.1811850271758737,
+          "holdout_block_2": 1.480916333119104,
+          "holdout_block_3": 1.2953573277841035
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.9523389899232475,
+        "bootstrap": {
+          "point": 0.9523389677768419,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.21342552483688626,
+          "bootstrap_p50": 0.6994201018067057,
+          "bootstrap_p975": 1.6215500991429137,
+          "bootstrap_same_sign_fraction": 0.9375,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.3828287673044632,
+          "contiguous_16_31": -0.013924756824184745,
+          "contiguous_32_47": 0.7153238872662445,
+          "contiguous_48_63": 1.0544745028647309,
+          "even_env_id": 0.6723213870585026,
+          "odd_env_id": 0.804929521297971,
+          "first_half": 0.7020565511940233,
+          "second_half": 0.7338694739030537
+        },
+        "direction_first_second_half_cosine": 0.7662629440441039,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.5086792412353667,
+          "holdout_block_1": 0.9484565433417494,
+          "holdout_block_2": 0.9646314616752496,
+          "holdout_block_3": 0.7898081059614882
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.6908699845050092,
+        "relative_l2": 1.0026612980449963,
+        "projection_on_reference": -0.0026574414614691996
+      }
+    },
+    "dof_acc_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": -0.17829178573310886,
+        "bootstrap": {
+          "point": -0.17829179082078733,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.6178874351478402,
+          "bootstrap_p50": 0.0017750547846557745,
+          "bootstrap_p975": 0.6189278427789038,
+          "bootstrap_same_sign_fraction": 0.498046875,
+          "leave_one_env_out_same_sign_fraction": 0.984375
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.10303140646675744,
+          "contiguous_16_31": 0.3938507528122432,
+          "contiguous_32_47": 0.7940696968294044,
+          "contiguous_48_63": -0.4912808770266764,
+          "even_env_id": -0.6465877620491187,
+          "odd_env_id": -0.09461872055144105,
+          "first_half": -0.45409312112344535,
+          "second_half": 0.03182060750286028
+        },
+        "direction_first_second_half_cosine": -0.38630338037562967,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.5105919810323749,
+          "holdout_block_1": 0.15728680078290821,
+          "holdout_block_2": -0.3734295434943484,
+          "holdout_block_3": -0.027860116638789706
+        },
+        "leave_one_env_out_same_sign_fraction": 0.984375,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.10320986900218344,
+        "bootstrap": {
+          "point": 0.10320985054208776,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.6027659364420795,
+          "bootstrap_p50": 0.030481506566422296,
+          "bootstrap_p975": 0.6993531087680931,
+          "bootstrap_same_sign_fraction": 0.54150390625,
+          "leave_one_env_out_same_sign_fraction": 0.953125
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.018668960930504058,
+          "contiguous_16_31": -0.4599130782264416,
+          "contiguous_32_47": 0.26767555692076994,
+          "contiguous_48_63": -0.15550142168310108,
+          "even_env_id": 0.2324700978766687,
+          "odd_env_id": -0.0948802809306659,
+          "first_half": -0.25907249907338864,
+          "second_half": 0.030917984880388005
+        },
+        "direction_first_second_half_cosine": -0.38630338037562967,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.061083200821783604,
+          "holdout_block_1": 0.4067380914851415,
+          "holdout_block_2": -0.3096337035427895,
+          "holdout_block_3": 0.21580079520000237
+        },
+        "leave_one_env_out_same_sign_fraction": 0.953125,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": 0.6960503968692743,
+        "relative_l2": 0.9955089992758138,
+        "projection_on_reference": 0.004501831626400684
+      }
+    },
+    "action_rate_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 1.3382298681908906,
+        "bootstrap": {
+          "point": 1.3382298917800912,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.5148715505647835,
+          "bootstrap_p50": 1.0883366671187686,
+          "bootstrap_p975": 1.6567127382105609,
+          "bootstrap_same_sign_fraction": 0.9990234375,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.7035269141871473,
+          "contiguous_16_31": 0.751056109047752,
+          "contiguous_32_47": 1.2154759758765763,
+          "contiguous_48_63": 1.1430647394678786,
+          "even_env_id": 1.1728733152067785,
+          "odd_env_id": 1.0143031101880433,
+          "first_half": 1.2451571669473638,
+          "second_half": 1.1994355902199627
+        },
+        "direction_first_second_half_cosine": 0.6198477968937007,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 1.876536766497204,
+          "holdout_block_1": 0.9816951947661565,
+          "holdout_block_2": 1.2593632780967952,
+          "holdout_block_3": 1.3741911037367378
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 1.0440305353415231,
+        "bootstrap": {
+          "point": 1.0440305273722934,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.19861164887607008,
+          "bootstrap_p50": 0.7077799382128829,
+          "bootstrap_p975": 1.6472735646027055,
+          "bootstrap_same_sign_fraction": 0.94140625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.8081284645367808,
+          "contiguous_16_31": 0.19038909760790668,
+          "contiguous_32_47": 0.4728809816787063,
+          "contiguous_48_63": 1.0077178635911852,
+          "even_env_id": 0.6178311076490267,
+          "odd_env_id": 1.1917387084612416,
+          "first_half": 0.6717055116033496,
+          "second_half": 0.7001092545360714
+        },
+        "direction_first_second_half_cosine": 0.6198477968937007,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.7428404883615531,
+          "holdout_block_1": 1.0784946577422014,
+          "holdout_block_2": 0.8619942828784041,
+          "holdout_block_3": 0.9209670050482134
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.6177278922996637,
+        "relative_l2": 1.0030999130851859,
+        "projection_on_reference": -0.003092189068093635
+      }
+    },
+    "feet_air_time": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": -0.43817094137726764,
+        "bootstrap": {
+          "point": -0.43817097744947636,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.9972179283116708,
+          "bootstrap_p50": -0.20121268987339508,
+          "bootstrap_p975": 0.6032909585638112,
+          "bootstrap_same_sign_fraction": 0.71826171875,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.07350698805026974,
+          "contiguous_16_31": 0.5290351433652811,
+          "contiguous_32_47": -0.12256589398001726,
+          "contiguous_48_63": -0.4200128338615489,
+          "even_env_id": -0.18047913833676119,
+          "odd_env_id": -0.18150335413761426,
+          "first_half": -0.6381714489640903,
+          "second_half": 0.012338307877493774
+        },
+        "direction_first_second_half_cosine": -0.029053169494463512,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.7146774907477847,
+          "holdout_block_1": 0.001784482785056748,
+          "holdout_block_2": -0.6435282946943064,
+          "holdout_block_3": -0.5201420548143737
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": -0.6045550925074864,
+        "bootstrap": {
+          "point": -0.6045550893564907,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -1.1389748817903083,
+          "bootstrap_p50": -0.6914942841060636,
+          "bootstrap_p975": -0.15033184333713193,
+          "bootstrap_same_sign_fraction": 0.9931640625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.4017044544790123,
+          "contiguous_16_31": -0.7137915786713919,
+          "contiguous_32_47": -1.137643811607145,
+          "contiguous_48_63": -0.7390983813078308,
+          "even_env_id": -0.8985605880033676,
+          "odd_env_id": -0.35739704675121564,
+          "first_half": -0.5677576673958524,
+          "second_half": -1.0466888640292065
+        },
+        "direction_first_second_half_cosine": -0.029053169494463512,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.6494482973503067,
+          "holdout_block_1": -0.9754234053057584,
+          "holdout_block_2": -0.5410740692475633,
+          "holdout_block_3": -0.6333897550532773
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": 0.21006298880493426,
+        "relative_l2": 0.9980877995053233,
+        "projection_on_reference": 0.0019536186958862283
+      }
+    },
+    "flat_orientation_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.8538067350811429,
+        "bootstrap": {
+          "point": 0.8538068083096365,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.784129028088431,
+          "bootstrap_p50": 0.9179210782080253,
+          "bootstrap_p975": 1.0513694461111256,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.8033715106222149,
+          "contiguous_16_31": 1.0120681801223692,
+          "contiguous_32_47": 1.0818778511418914,
+          "contiguous_48_63": 0.8518658398222227,
+          "even_env_id": 0.8233793784850036,
+          "odd_env_id": 0.9834608962477226,
+          "first_half": 0.7938236480597071,
+          "second_half": 1.0168357613546006
+        },
+        "direction_first_second_half_cosine": 0.1978883358480656,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.9057325907455749,
+          "holdout_block_1": 0.9108479602492633,
+          "holdout_block_2": 0.7431056760757808,
+          "holdout_block_3": 0.8935648787804157
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.51376553218118,
+        "bootstrap": {
+          "point": 0.513765567327566,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.4730563882992643,
+          "bootstrap_p50": 0.36249801161764394,
+          "bootstrap_p975": 1.2704606173742377,
+          "bootstrap_same_sign_fraction": 0.81640625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.43979467902409014,
+          "contiguous_16_31": -0.23886502149910882,
+          "contiguous_32_47": 0.2633255965087389,
+          "contiguous_48_63": 0.4434475196349384,
+          "even_env_id": -0.008285663597952901,
+          "odd_env_id": 1.156697123256715,
+          "first_half": 0.29954304505451607,
+          "second_half": 0.29196166355727055
+        },
+        "direction_first_second_half_cosine": 0.1978883358480656,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.2908794367520224,
+          "holdout_block_1": 0.26652689190948253,
+          "holdout_block_2": 0.3771942816943468,
+          "holdout_block_3": 0.4823754069511292
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.6880022582086711,
+        "relative_l2": 1.010414556694236,
+        "projection_on_reference": -0.010355513328045239
+      }
+    },
+    "dof_pos_limits": {
+      "zero_reward_term": true
+    },
+    "termination_penalty": {
+      "zero_reward_term": true
+    },
+    "feet_slide": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.14221633233568365,
+        "bootstrap": {
+          "point": 0.1422163435553472,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.4705987452483223,
+          "bootstrap_p50": 0.3067867364851019,
+          "bootstrap_p975": 1.0066750981292123,
+          "bootstrap_same_sign_fraction": 0.78662109375,
+          "leave_one_env_out_same_sign_fraction": 0.9375
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.8275173994708184,
+          "contiguous_16_31": 0.962018972723624,
+          "contiguous_32_47": -0.023662119753701145,
+          "contiguous_48_63": 0.3521040848691621,
+          "even_env_id": 0.20101448459580787,
+          "odd_env_id": 0.3349637399918373,
+          "first_half": 0.5363118585428406,
+          "second_half": 0.08247790857573248
+        },
+        "direction_first_second_half_cosine": 0.014132897754550884,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.37906839321067537,
+          "holdout_block_1": 0.39532955686064497,
+          "holdout_block_2": 0.4308182863573798,
+          "holdout_block_3": 0.10192250179756608
+        },
+        "leave_one_env_out_same_sign_fraction": 0.9375,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.2680828425886274,
+        "bootstrap": {
+          "point": 0.26808285656098557,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.6326278947423782,
+          "bootstrap_p50": 0.10667879028502819,
+          "bootstrap_p975": 0.8594259830677586,
+          "bootstrap_same_sign_fraction": 0.615234375,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.1585013241320585,
+          "contiguous_16_31": -0.40864712944497966,
+          "contiguous_32_47": 0.1331611414254161,
+          "contiguous_48_63": 0.4399681731995352,
+          "even_env_id": -0.29054670246779735,
+          "odd_env_id": 0.6728125592542623,
+          "first_half": 0.27153635854350583,
+          "second_half": 0.12984499518659887
+        },
+        "direction_first_second_half_cosine": 0.014132897754550884,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": -0.15589092333777343,
+          "holdout_block_1": 0.29106642059761917,
+          "holdout_block_2": 0.43380344614856425,
+          "holdout_block_3": 0.1572733197411247
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": 0.1258231747627101,
+        "relative_l2": 0.9985274545795565,
+        "projection_on_reference": 0.0015470500234926509
+      }
+    },
+    "joint_deviation_hip": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.9659438104522359,
+        "bootstrap": {
+          "point": 0.9659438444126007,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.48720016289095813,
+          "bootstrap_p50": 0.9001241675141125,
+          "bootstrap_p975": 1.2601116086816293,
+          "bootstrap_same_sign_fraction": 0.99951171875,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 1.270674487220817,
+          "contiguous_16_31": 0.6665527416744518,
+          "contiguous_32_47": 0.6319834534239912,
+          "contiguous_48_63": 1.041489323535044,
+          "even_env_id": 1.1813070769537355,
+          "odd_env_id": 0.8396429653958499,
+          "first_half": 0.9029235203233812,
+          "second_half": 0.7035031761296541
+        },
+        "direction_first_second_half_cosine": 0.5555127496860877,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.6960995478258953,
+          "holdout_block_1": 1.0074415377166563,
+          "holdout_block_2": 1.0908052330639073,
+          "holdout_block_3": 0.8921445732328862
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.6133680326090833,
+        "bootstrap": {
+          "point": 0.6133680662406098,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.26444136570803367,
+          "bootstrap_p50": 0.5341332341086584,
+          "bootstrap_p975": 1.4569819896060983,
+          "bootstrap_same_sign_fraction": 0.90478515625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.2303726403061531,
+          "contiguous_16_31": -0.272387444814919,
+          "contiguous_32_47": 0.7318306407837536,
+          "contiguous_48_63": 0.7362937829514624,
+          "even_env_id": 0.30946774473177374,
+          "odd_env_id": 1.022558262998429,
+          "first_half": 0.47471780882159365,
+          "second_half": 0.6511376778287342
+        },
+        "direction_first_second_half_cosine": 0.5555127496860877,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.1742780172812592,
+          "holdout_block_1": 0.7071724558308611,
+          "holdout_block_2": 0.6585672982621263,
+          "holdout_block_3": 0.5026444875489335
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.6934164713334928,
+        "relative_l2": 1.0061269679361349,
+        "projection_on_reference": -0.0061069557116685295
+      }
+    },
+    "joint_deviation_arms": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 1.2120085376060756,
+        "bootstrap": {
+          "point": 1.212008514966377,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.8123191878496734,
+          "bootstrap_p50": 1.084129138363959,
+          "bootstrap_p975": 1.3368417540013393,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 1.2860916822463457,
+          "contiguous_16_31": 0.8768489095682821,
+          "contiguous_32_47": 0.8774065406806554,
+          "contiguous_48_63": 1.237488496692711,
+          "even_env_id": 1.1826959542503221,
+          "odd_env_id": 0.9396014956284964,
+          "first_half": 1.2849664117262558,
+          "second_half": 0.9321324782106221
+        },
+        "direction_first_second_half_cosine": 0.5765777544682164,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 1.1503815924907668,
+          "holdout_block_1": 1.1062381451716714,
+          "holdout_block_2": 1.3661626304138457,
+          "holdout_block_3": 1.1804415230076624
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.8403114712098565,
+        "bootstrap": {
+          "point": 0.8403114297301669,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.24647882258106732,
+          "bootstrap_p50": 0.6350215656664372,
+          "bootstrap_p975": 1.601204153681876,
+          "bootstrap_same_sign_fraction": 0.927734375,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.42601712030410116,
+          "contiguous_16_31": -0.14936305157425792,
+          "contiguous_32_47": 0.779318693880867,
+          "contiguous_48_63": 0.8781988403790331,
+          "even_env_id": 0.41913449812830283,
+          "odd_env_id": 1.0973285323455053,
+          "first_half": 0.6405194370914923,
+          "second_half": 0.700237971872892
+        },
+        "direction_first_second_half_cosine": 0.5765777544682164,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.3648527672695487,
+          "holdout_block_1": 0.8776340712912428,
+          "holdout_block_2": 0.8519583237600122,
+          "holdout_block_3": 0.7176891205414307
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.6793201826456976,
+        "relative_l2": 1.0066940505957946,
+        "projection_on_reference": -0.006668277800175349
+      }
+    },
+    "joint_deviation_torso": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.9324323273639196,
+        "bootstrap": {
+          "point": 0.9324323242788071,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.5100384714007505,
+          "bootstrap_p50": 0.8979004084444957,
+          "bootstrap_p975": 1.2581214685315811,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 1.3483474409971248,
+          "contiguous_16_31": 1.0229752218893085,
+          "contiguous_32_47": 0.5832323156166597,
+          "contiguous_48_63": 1.0058721091265355,
+          "even_env_id": 1.1877465073074167,
+          "odd_env_id": 0.7603833593689463,
+          "first_half": 1.0098102513112537,
+          "second_half": 0.6636296105039174
+        },
+        "direction_first_second_half_cosine": 0.2765508715795191,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.70002189977211,
+          "holdout_block_1": 0.9975786797444561,
+          "holdout_block_2": 1.1772412630032918,
+          "holdout_block_3": 0.8216363353847395
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.41432996130378147,
+        "bootstrap": {
+          "point": 0.4143299777972731,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.4967746130237045,
+          "bootstrap_p50": 0.35165081774984297,
+          "bootstrap_p975": 1.3322152106192797,
+          "bootstrap_same_sign_fraction": 0.796875,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": -0.02091306031077793,
+          "contiguous_16_31": -0.4447791411696316,
+          "contiguous_32_47": 0.7428769888244584,
+          "contiguous_48_63": 0.5779635655220264,
+          "even_env_id": 0.13733862925951543,
+          "odd_env_id": 0.7561992874559165,
+          "first_half": 0.3257025101471775,
+          "second_half": 0.5753206632230872
+        },
+        "direction_first_second_half_cosine": 0.2765508715795191,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.0030185195758096533,
+          "holdout_block_1": 0.4318623497046674,
+          "holdout_block_2": 0.5458073336360056,
+          "holdout_block_3": 0.2763276967518296
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.8454911821324612,
+        "relative_l2": 1.0074637399822042,
+        "projection_on_reference": -0.0074527442926318405
+      }
+    },
+    "yaw_rate_l2": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.5363186815248592,
+        "bootstrap": {
+          "point": 0.5363187192708185,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.10564597628215489,
+          "bootstrap_p50": 0.5039327784510783,
+          "bootstrap_p975": 1.1981534190306744,
+          "bootstrap_same_sign_fraction": 0.94482421875,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.5315723397710237,
+          "contiguous_16_31": 0.6481803623950597,
+          "contiguous_32_47": 0.5423973483093749,
+          "contiguous_48_63": 0.37043422976484974,
+          "even_env_id": 0.7974558732170041,
+          "odd_env_id": 0.2920349452949863,
+          "first_half": 0.9150587475942832,
+          "second_half": 0.4404235508032166
+        },
+        "direction_first_second_half_cosine": -0.0596918368685378,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.39297854810222854,
+          "holdout_block_1": 0.45055073939329965,
+          "holdout_block_2": 0.6949981930644805,
+          "holdout_block_3": 0.6126022446044617
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.3330871744120606,
+        "bootstrap": {
+          "point": 0.3330872360550242,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.6341094133272005,
+          "bootstrap_p50": 0.14779186472873818,
+          "bootstrap_p975": 0.8809452889748007,
+          "bootstrap_same_sign_fraction": 0.64990234375,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.14610617432655582,
+          "contiguous_16_31": -0.03692460650797158,
+          "contiguous_32_47": 0.13352961910282363,
+          "contiguous_48_63": 0.20637196288183374,
+          "even_env_id": -0.00930941182191154,
+          "odd_env_id": 0.5339586240088696,
+          "first_half": 0.11444054659988626,
+          "second_half": 0.2543096136998291
+        },
+        "direction_first_second_half_cosine": -0.0596918368685378,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.258482363707772,
+          "holdout_block_1": 0.3371545183113545,
+          "holdout_block_2": 0.2907346941872097,
+          "holdout_block_3": 0.19156819993633753
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.6495805140203293,
+        "relative_l2": 1.0404105844876625,
+        "projection_on_reference": -0.03938866452171427
+      }
+    },
+    "stand_lin_vel_xy_l2": {
+      "zero_reward_term": true
+    },
+    "action_magnitude_l2": {
+      "zero_reward_term": true
+    },
+    "heading_error_l2": {
+      "zero_reward_term": true
+    },
+    "contact_dwell": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 0.5396913394749674,
+        "bootstrap": {
+          "point": 0.5396912998543997,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.36756867982717567,
+          "bootstrap_p50": 0.39236045278145026,
+          "bootstrap_p975": 1.2259179827422098,
+          "bootstrap_same_sign_fraction": 0.853515625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.7615007953858607,
+          "contiguous_16_31": 0.21339347014566212,
+          "contiguous_32_47": -0.042178686690601624,
+          "contiguous_48_63": -0.1601985417090392,
+          "even_env_id": 0.8386659080928003,
+          "odd_env_id": 0.15808843691117053,
+          "first_half": 0.5887364968122656,
+          "second_half": 0.22445085805364715
+        },
+        "direction_first_second_half_cosine": 0.6462618999541723,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.03187097144723874,
+          "holdout_block_1": 0.5615054203135537,
+          "holdout_block_2": 0.585836911414855,
+          "holdout_block_3": 0.4231988761545816
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.30536554865489984,
+        "bootstrap": {
+          "point": 0.3053655291389859,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.7892232897725854,
+          "bootstrap_p50": 0.06817133396495662,
+          "bootstrap_p975": 0.9449866171825261,
+          "bootstrap_same_sign_fraction": 0.56640625,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.09045113774158707,
+          "contiguous_16_31": -0.13551196002792862,
+          "contiguous_32_47": -0.7572429998634574,
+          "contiguous_48_63": -0.0005495834629294784,
+          "even_env_id": -0.07472092794852651,
+          "odd_env_id": 0.4698915506761822,
+          "first_half": 0.21874327720266895,
+          "second_half": -0.38148524282935503
+        },
+        "direction_first_second_half_cosine": 0.6462618999541723,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.08009867157748507,
+          "holdout_block_1": -0.08230618460111896,
+          "holdout_block_2": 0.5598655315852258,
+          "holdout_block_3": -0.014767095427370897
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.5661408622981621,
+        "relative_l2": 1.0730269905920424,
+        "projection_on_reference": -0.06839585308767825
+      }
+    },
+    "contact_phase": {
+      "zero_reward_term": false,
+      "independent_vs_positive_pitch": {
+        "full_projection": 1.1468366545103112,
+        "bootstrap": {
+          "point": 1.1468366396306096,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": 0.5833119929225367,
+          "bootstrap_p50": 1.0317974005868211,
+          "bootstrap_p975": 1.511375667067798,
+          "bootstrap_same_sign_fraction": 1.0,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 1.0052135574395198,
+          "contiguous_16_31": 0.898724868330112,
+          "contiguous_32_47": 0.9860171403442521,
+          "contiguous_48_63": 1.3042652132051413,
+          "even_env_id": 1.714690841550084,
+          "odd_env_id": 0.7282574792108888,
+          "first_half": 1.295241789005933,
+          "second_half": 1.0729003562399875
+        },
+        "direction_first_second_half_cosine": 0.37144665667738996,
+        "metric_first_second_half_cosine": 0.4255782091622544,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 1.2151668132778262,
+          "holdout_block_1": 1.0097595889598383,
+          "holdout_block_2": 1.3714155896366986,
+          "holdout_block_3": 1.044584387656405
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "independent_vs_lower_support_outside": {
+        "full_projection": 0.5780195917514969,
+        "bootstrap": {
+          "point": 0.5780196188806612,
+          "bootstrap_draws": 2048,
+          "bootstrap_p025": -0.5158294631227576,
+          "bootstrap_p50": 0.4495156352424172,
+          "bootstrap_p975": 1.4258741550025027,
+          "bootstrap_same_sign_fraction": 0.82958984375,
+          "leave_one_env_out_same_sign_fraction": 1.0
+        },
+        "fixed_group_projection": {
+          "contiguous_00_15": 0.43472074553337353,
+          "contiguous_16_31": 0.012408128123910001,
+          "contiguous_32_47": 0.3265492855563539,
+          "contiguous_48_63": 0.9667481033163074,
+          "even_env_id": 0.2414745441778514,
+          "odd_env_id": 0.852449945925544,
+          "first_half": 0.5213221618781304,
+          "second_half": 0.10052153515329959
+        },
+        "direction_first_second_half_cosine": 0.37144665667738996,
+        "metric_first_second_half_cosine": 0.266562337017164,
+        "leave_one_block_out_projection": {
+          "holdout_block_0": 0.36406026397692653,
+          "holdout_block_1": 0.06094989171832846,
+          "holdout_block_2": 0.7190379191696037,
+          "holdout_block_3": 0.5225511878878101
+        },
+        "leave_one_env_out_same_sign_fraction": 1.0,
+        "strict_stable": false
+      },
+      "common_denominator_additive_vs_primary": {
+        "cosine": -0.8532856030209289,
+        "relative_l2": 1.2688270692789376,
+        "projection_on_reference": -0.258922580948739
+      }
+    }
+  },
+  "isaac_launches": 0,
+  "physics_steps": 0,
+  "backward_calls": 0,
+  "optimizer_steps": 0,
+  "checkpoint_count": 0,
+  "resource": {
+    "elapsed_seconds": 1.1406368160023703,
+    "disk_free_before_bytes": 372846411776,
+    "disk_free_after_bytes_before_outputs": 372846358528,
+    "device": "cpu",
+    "cuda_initialized": false
+  },
+  "boundaries": {
+    "confirmatory_claim": false,
+    "promotion": "none",
+    "optimizer_unlocked": false,
+    "long_training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false,
+    "future_confirmation_requires_new_independent_prereg_and_data": true
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "schema": "x2_phase70_attempt0_backup_manifest_v1",
+  "date": "2026-08-12",
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0",
+  "attempt": "v3_attempt0",
+  "decision": "FAIL_POST_ROLLOUT_DIAGNOSTIC_STOP",
+  "scientific_result": null,
+  "formal_optimizer_steps": 0,
+  "optimizer_state_entries": 0,
+  "model_checkpoint_count": 0,
+  "v3_launch_consumed": true,
+  "ledger_exit_code_reliable": false,
+  "failure_stage": "post-rollout policy-logprob reconstruction before screen or raw bundle write",
+  "frozen_code_matches_v3_prereg": true,
+  "frozen_code_sha256": {
+    "runner_sha256": "c62f8bdac7de750a41608e4a6bd38acb0c5366ca32fe7142f73dc13a0a1468dc",
+    "run_script_sha256": "aba512353a0d3070dad3e462fd47a613a0a8e4131e9a35d710d87990915e99cb",
+    "lookahead_module_sha256": "9d36a8e6a37393374f740ed00b0292033d2a5d0148ba1cc9e1d626eb49f2331a",
+    "finalizer_sha256": "6dd4bdc7bcc8312256f23c3053599604a93904f4da627f0fde48d95c6962b4f4",
+    "lookahead_test_sha256": "7a0bf0299041a225c3d2da8050cd14d1027c5c3cd052b1a8ddb085a64f05b94c",
+    "finalizer_test_sha256": "8a0433a341f9ea0d888f8ddbb58ff2c2dbfa51e43aad6a1c6c81b53b6f64da6c",
+    "phase69_module_sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295",
+    "phase68_interface_sha256": "c67dd5f8bb8387ef9b1ec616cf0d885846944f19ed3e16155b4b607363f85157",
+    "residual_module_sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b"
+  },
+  "attempt_outputs_absent": [
+    "reports/retarget/x2_phase70_long_lookahead_screen.json",
+    "reports/retarget/x2_phase70_long_lookahead_result.json",
+    "reports/retarget/x2_phase70_long_lookahead_result.json.sha256",
+    "reports/retarget/x2_phase70_long_lookahead.md",
+    "artifacts/retarget/x2_phase70_long_lookahead/rollout_evidence.pt",
+    "artifacts/retarget/x2_phase70_long_lookahead/.rollout_evidence.pt.tmp"
+  ],
+  "input_references": [
+    {
+      "role": "base_checkpoint",
+      "bytes": 1809013,
+      "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+      "backed_up_in_prior_phase": true
+    },
+    {
+      "role": "source_zero_residual_checkpoint",
+      "bytes": 20949,
+      "sha256": "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3",
+      "backed_up_in_prior_phase": true
+    },
+    {
+      "role": "phase69_reference_bundle",
+      "bytes": 11749092,
+      "sha256": "db249ea619739c3128e2311039c65d26f19c61e7aa0f0451e9c8fc580c2c2f18",
+      "backed_up_in_prior_phase": true
+    }
+  ],
+  "attempt_evidence_payload_count": 20,
+  "files": [
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_prereg.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_prereg.json",
+      "role": "prereg_v1_no_launch",
+      "bytes": 7419,
+      "sha256": "fa89f7f75a4a8d1e3317c00ae63d22348ba1f295bf2d6566f30ecfcc755d8e00"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_prereg.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_prereg.json.sha256",
+      "role": "prereg_v1_sidecar",
+      "bytes": 104,
+      "sha256": "a3444ad42a4d93d5f7edaecc8b21d548b681676726d36fd49c19a5e92db9d840"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_prereg_v2.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_prereg_v2.json",
+      "role": "prereg_v2_no_launch",
+      "bytes": 8994,
+      "sha256": "4b067acbdc622ee3e9cc223e99b983698faac75ad5f7797dc2acd5fe0b5605e2"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_prereg_v2.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_prereg_v2.json.sha256",
+      "role": "prereg_v2_sidecar",
+      "bytes": 107,
+      "sha256": "df1c2f18cdca03ce08d9750e8ee1610bd05cd5c7e07e1076e041f1491462f41e"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_prereg_v3.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_prereg_v3.json",
+      "role": "prereg_v3_attempt0",
+      "bytes": 8338,
+      "sha256": "aa662b0c7baac9d2214878f7fd8d88b9a82544ba2f70c8751f0d360426308b1d"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_prereg_v3.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_prereg_v3.json.sha256",
+      "role": "prereg_v3_sidecar",
+      "bytes": 107,
+      "sha256": "ca9dfdb917b2fdc3ac92461394a8dc92487f8d1146ecb306ddd037090205d9da"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_attempt0_failure.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_attempt0_failure.json",
+      "role": "authoritative_failure",
+      "bytes": 2279,
+      "sha256": "3f8e550307a2c380c1f54fc14652f026fc3e999d5419b429f306d669d111c29e"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_attempt0_failure.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_attempt0_failure.json.sha256",
+      "role": "failure_sidecar",
+      "bytes": 114,
+      "sha256": "85cfe45a1f3d652d9a1a5ca78b170861e7f36244c60af3944e6f631e0d55f51b"
+    },
+    {
+      "path": "reports/retarget/x2_phase70_long_lookahead_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_attempt0_resource.json",
+      "role": "attempt0_resource_ledger",
+      "bytes": 1988,
+      "sha256": "161c7a833e2bb5d99028cd8e9e9e3daa24b56e95f0728ea79af19e67ee44dbb1"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/x2_phase70_long_lookahead_attempt0.log",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/x2_phase70_long_lookahead_attempt0.log",
+      "role": "authoritative_traceback_log",
+      "bytes": 11996,
+      "sha256": "fbd24db721e0876c4fafd8b6c2b916239cdf5cdb9721eed3608c55db4b31dc0c"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/runner_attempt0.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/runner_attempt0.py",
+      "role": "frozen_runner",
+      "bytes": 188599,
+      "sha256": "c62f8bdac7de750a41608e4a6bd38acb0c5366ca32fe7142f73dc13a0a1468dc"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/run_phase70_attempt0.sh",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/run_phase70_attempt0.sh",
+      "role": "frozen_run_script",
+      "bytes": 3186,
+      "sha256": "aba512353a0d3070dad3e462fd47a613a0a8e4131e9a35d710d87990915e99cb"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/phase70_long_lookahead_attempt0.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/phase70_long_lookahead_attempt0.py",
+      "role": "frozen_lookahead_module",
+      "bytes": 4111,
+      "sha256": "9d36a8e6a37393374f740ed00b0292033d2a5d0148ba1cc9e1d626eb49f2331a"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/finalize_phase70_long_lookahead_attempt0.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/finalize_phase70_long_lookahead_attempt0.py",
+      "role": "frozen_finalizer",
+      "bytes": 10848,
+      "sha256": "6dd4bdc7bcc8312256f23c3053599604a93904f4da627f0fde48d95c6962b4f4"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/test_phase70_long_lookahead_attempt0.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/test_phase70_long_lookahead_attempt0.py",
+      "role": "frozen_lookahead_test",
+      "bytes": 2040,
+      "sha256": "7a0bf0299041a225c3d2da8050cd14d1027c5c3cd052b1a8ddb085a64f05b94c"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/test_phase70_long_lookahead_finalizer_attempt0.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/test_phase70_long_lookahead_finalizer_attempt0.py",
+      "role": "frozen_finalizer_test",
+      "bytes": 1932,
+      "sha256": "8a0433a341f9ea0d888f8ddbb58ff2c2dbfa51e43aad6a1c6c81b53b6f64da6c"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/phase69_reward_attribution_attempt0_dependency.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/phase69_reward_attribution_attempt0_dependency.py",
+      "role": "frozen_phase69_dependency",
+      "bytes": 9468,
+      "sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/phase68_residual_ppo_attempt0_dependency.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/phase68_residual_ppo_attempt0_dependency.py",
+      "role": "frozen_phase68_dependency",
+      "bytes": 11268,
+      "sha256": "c67dd5f8bb8387ef9b1ec616cf0d885846944f19ed3e16155b4b607363f85157"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/phase_conditioned_knee_residual_attempt0_dependency.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/phase_conditioned_knee_residual_attempt0_dependency.py",
+      "role": "frozen_residual_dependency",
+      "bytes": 4174,
+      "sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b"
+    },
+    {
+      "path": "artifacts/retarget/x2_phase70_attempt0/run_with_gpu_ledger_attempt0.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/run_with_gpu_ledger_attempt0.py",
+      "role": "frozen_resource_ledger_tool",
+      "bytes": 4219,
+      "sha256": "d5a4f1a6b15cb827b5cba1bc7ff49cd7b794247259d23768686a7507bc45383e"
+    },
+    {
+      "path": "tools/retarget/build_x2_phase70_attempt0_backup_manifest.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase70_attempt0/build_x2_phase70_attempt0_backup_manifest.py",
+      "role": "backup_manifest_builder",
+      "bytes": 15582,
+      "sha256": "73990d4fe3ea7394e21ce0b3ac87459b85e4d50c37cd60c2aa64cb01fdbe235f"
+    }
+  ],
+  "payload_count_including_builder": 21,
+  "payload_total_bytes_including_builder": 296873,
+  "remote_expected_unique_file_count_including_controls": 23,
+  "remote_listing_file_count": 23,
+  "remote_listing_byte_sizes_match": true,
+  "remote_listing_checked_at": "2026-08-12T20:29:11+08:00",
+  "verification": "All 23 unique remote basenames were listed with exact byte-size equality; SHA256 is preserved locally because bdpan does not expose remote content SHA256."
+}
