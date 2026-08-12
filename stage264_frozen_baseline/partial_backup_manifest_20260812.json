@@ -1,0 +1,47 @@
+{
+  "manifest_version": "x2-backup-v1",
+  "date": "2026-08-12",
+  "stage": "stage264_new_machine_partial_15of16",
+  "git": {
+    "commit": "64f04012cce80d875c70f7ecc03dd94a884211de",
+    "remote": "git@github.com:z2964141870-debug/HUMANPLUS_X2_PLUS.git",
+    "branch": "main",
+    "origin_matches_head": true
+  },
+  "baidu_remote_dir": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/stage264_new_machine_partial_15of16",
+  "files": [
+    {
+      "remote": "stage264_new_machine_partial_15of16_20260812.tar.gz",
+      "remote_bytes": 14938228,
+      "sha256": "2f0bb8313ce7a24ea1a672def75c5f1b00efc32c606f6c51cc564b1957d6e62c",
+      "local_source": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/stage264_new_machine_freeze_20260812",
+      "local_archive_removed_after_upload": true
+    },
+    {
+      "remote": "x2_official_forward_gait_phase_template_15dof.npz",
+      "remote_bytes": 8595,
+      "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"
+    },
+    {
+      "remote": "manifest.json",
+      "remote_bytes": 2819,
+      "sha256": "798b41002128f5aba470aca274e5a3842b7ac9d94be337932af64de5ee3e9fbb"
+    },
+    {
+      "remote": "new_machine_replay_partial.json",
+      "remote_bytes": 14354,
+      "sha256": "dc46b4909ad35aa6715499a6456a3fde915410bb7b606ec8817f6b2b82b58fa6"
+    },
+    {
+      "remote": "gait_template_recovery_report.json",
+      "remote_bytes": 5115,
+      "sha256": "5c5d62e5bf9705b50379f5e31fb2f6b4d550f8432f889698fae01f497186eb52"
+    }
+  ],
+  "result": {
+    "physics_episodes": 16,
+    "full_gate_passes": 15,
+    "failure": "stage264_low_straight_r4 passed startup/move and fell during stop",
+    "full_24_case_gate_reproduced": false
+  }
+}
