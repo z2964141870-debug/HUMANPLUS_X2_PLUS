@@ -58,6 +58,11 @@
     "nominal_start_walk_turn_stop": "24/24",
     "nominal_upper_straight": "9/9",
     "pd_x_fixed_fast_upper_straight": "14/18",
-    "new_machine_replay_status": "partial_15_of_16_passes; low_straight_r4_stop_fall; 24_case_gate_not_yet_reproduced"
+    "new_machine_replay_status": "complete_no_retry_22_of_24; low_straight_r4_and_low_turn_right_r3_pass_move_then_fall_in_stop; historical_24_of_24_not_reproduced",
+    "new_machine_replay_report": "stage264_frozen_baseline/new_machine_replay.json",
+    "new_machine_replay_raw_root": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/stage264_new_machine_freeze_20260812",
+    "new_machine_replay_raw_bytes": 84715464,
+    "new_machine_replay_policy": "one physical attempt per case; failures preserved and never overwritten",
+    "replay_orchestration_note": "The final eight cases used AimRT HTTP port 31822 because host Edge occupied vendor-default 51822. This changes only the unused host-network HTTP listener; ROS domain, model, physics, policy, PD, timing, and gates are unchanged."
   }
 }

@@ -20,7 +20,15 @@ hash-verified Session04 canonical dataset and the original generator. The
 recovery candidate matched the frozen SHA-256 before installation; see
 `gait_template_recovery_report.json`.
 
-The first new-machine matrix stopped at 15/16 after low-speed straight repeat 4
-passed walking but fell during stopping. `new_machine_replay_partial.json`
-hash-binds all completed traces. Do not claim the historical 24/24 gate has been
-reproduced until the full no-failure matrix passes.
+The strict no-retry new-machine matrix is complete at **22/24**, not 24/24.
+Low-speed straight repeat 4 and low-speed right-turn repeat 3 both passed their
+move gates and then fell during the direct locomotion-to-stand policy handoff.
+`new_machine_replay.json` hash-binds all 24 external traces; the earlier
+`new_machine_replay_partial.json` remains as the independently backed-up 16-case
+checkpoint. Do not describe the historical 24/24 result as reproduced, and do
+not rerun or overwrite either failed trace to select a passing outcome.
+
+The final eight episodes used an isolated AimRT HTTP listener on port 31822
+because the host browser occupied the vendor default 51822. This listener is
+not on the ROS/control/physics path; all policy, MuJoCo, PD, timing, gate and ROS
+domain settings remained frozen.

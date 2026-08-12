@@ -11,6 +11,8 @@ RESULT_ROOT="${RESULT_ROOT:-$OFFICIAL_ROOT/results/official_native_strict_202608
 MODEL_ROOT="${MODEL_ROOT:-$OFFICIAL_ROOT/models}"
 TEMPLATE_PATH="${TEMPLATE_PATH:-/home/humanplus/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz}"
 OFFICIAL_DEFAULT_YAML="${OFFICIAL_DEFAULT_YAML:-$OFFICIAL_ROOT/vendor/aimdk-aarch64-a424add7-artifacts/extra/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/default.yaml}"
+SIMULATOR_DEFAULT_YAML="${SIMULATOR_DEFAULT_YAML:-$OFFICIAL_WORKSPACE/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/simulator/default.yaml}"
+SIMULATOR_HTTP_PORT="${SIMULATOR_HTTP_PORT:-}"
 DOCKER_IMAGE="${DOCKER_IMAGE:-x2-aimdk-humble:1.0}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-180}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-2}"
@@ -18,6 +20,41 @@ RETRY_COOLDOWN_SECONDS="${RETRY_COOLDOWN_SECONDS:-3}"
 REPORT_SCENE_XML="${REPORT_SCENE_XML:-}"
 
 mkdir -p "$RESULT_ROOT"
+
+SIMULATOR_CONFIG_OVERRIDE=""
+cleanup_host() {
+  [[ -z "$SIMULATOR_CONFIG_OVERRIDE" ]] || rm -f -- "$SIMULATOR_CONFIG_OVERRIDE"
+}
+trap cleanup_host EXIT INT TERM
+
+if [[ -n "$SIMULATOR_HTTP_PORT" ]]; then
+  [[ "$SIMULATOR_HTTP_PORT" =~ ^[0-9]+$ ]] || {
+    echo "SIMULATOR_HTTP_PORT must be numeric" >&2
+    exit 2
+  }
+  (( SIMULATOR_HTTP_PORT >= 1024 && SIMULATOR_HTTP_PORT < 32768 )) || {
+    echo "SIMULATOR_HTTP_PORT must be in the non-ephemeral range [1024,32767]" >&2
+    exit 2
+  }
+  [[ -f "$SIMULATOR_DEFAULT_YAML" ]] || {
+    echo "missing simulator config: $SIMULATOR_DEFAULT_YAML" >&2
+    exit 2
+  }
+  SIMULATOR_CONFIG_OVERRIDE="$(mktemp /tmp/x2-simulator-default.XXXXXX.yaml)"
+  python3 - "$SIMULATOR_DEFAULT_YAML" "$SIMULATOR_CONFIG_OVERRIDE" "$SIMULATOR_HTTP_PORT" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+source, output, port = Path(sys.argv[1]), Path(sys.argv[2]), int(sys.argv[3])
+text = source.read_text(encoding="utf-8")
+pattern = r"(?m)^(\s*listen_port:\s*)51822(\s*)$"
+patched, count = re.subn(pattern, rf"\g<1>{port}\g<2>", text)
+if count != 1:
+    raise RuntimeError(f"expected exactly one AimRT HTTP port 51822, found {count}")
+output.write_text(patched, encoding="utf-8")
+PY
+fi
 
 # Fail before starting a multi-process official simulation when migration left a
 # same-named directory or omitted an immutable baseline input.
@@ -62,14 +99,19 @@ done
 
 run_container() {
   local scene_mount=""
+  local simulator_config_mount=""
   if [[ -n "$REPORT_SCENE_XML" ]]; then
     [[ -f "$REPORT_SCENE_XML" ]] || { echo "missing REPORT_SCENE_XML: $REPORT_SCENE_XML" >&2; return 2; }
     scene_mount="-v $REPORT_SCENE_XML:/workspace/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml:ro"
+  fi
+  if [[ -n "$SIMULATOR_CONFIG_OVERRIDE" ]]; then
+    simulator_config_mount="-v $SIMULATOR_CONFIG_OVERRIDE:/workspace/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/simulator/default.yaml:ro"
   fi
   timeout "${TIMEOUT_SECONDS}s" sg docker -c "docker run --rm --init --name x2-${CASE_NAME} --network host --ipc host \
     ${DOCKER_ENV[*]} \
     -v $SCRIPT_DIR/run_official_gate_inner.sh:/run_official_gate_inner.sh:ro \
     -v $OFFICIAL_WORKSPACE:/workspace \
+    $simulator_config_mount \
     -v $REPO_ROOT:/repo:ro \
     -v $MODEL_ROOT:/models:ro \
     -v $TEMPLATE_PATH:/template.npz:ro \
