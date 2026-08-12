@@ -2,6 +2,7 @@
 
 | ID | 状态 | 初始化 | Actor | Critic | Reward | 预算 | 结果 |
 |---|---|---|---|---|---|---:|---|
+| NATIVE-S0-PREFLIGHT | complete/blocked-assets | Stage219/Stage250 freeze contract | frozen | n/a | reporting only | 0 physics / 0 optimizer | Stage219 source 已由 Phase42 归档恢复且 SHA exact；仅缺 exact gait template，deploy/training 尚未解锁；13/13 static tests passed |
 | P0-AUDIT | complete | Stage152-B | frozen | original | scalar | 0 | 旧训练为 single critic；trainer 多头路径未被实际使用 |
 | P1-STATIC | complete | n/a | n/a | n/a | scalar ↔ dual | unit | 3/3 tests passed |
 | P1-RUNTIME | complete | Stage152-B | merged/frozen | 2-head plumbing | scalar ↔ dual | 1 env × 8 steps | max abs error 1.49e-08; shape/GAE/PPO path passed |

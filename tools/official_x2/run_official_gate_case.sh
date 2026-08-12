@@ -19,6 +19,17 @@ REPORT_SCENE_XML="${REPORT_SCENE_XML:-}"
 
 mkdir -p "$RESULT_ROOT"
 
+# Fail before starting a multi-process official simulation when migration left a
+# same-named directory or omitted an immutable baseline input.
+[[ -f "$MODEL_ROOT/stage219_s2600_actor.onnx" ]] || {
+  echo "missing Stage219 baseline ONNX: $MODEL_ROOT/stage219_s2600_actor.onnx" >&2
+  exit 2
+}
+[[ -f "$TEMPLATE_PATH" ]] || {
+  echo "missing gait-template file (directories are invalid): $TEMPLATE_PATH" >&2
+  exit 2
+}
+
 PASS_ENV=(
   COMMAND_VX POLICY_VX_FLOOR PHASE_OFFSET CONTROL_MODE CLOCK_MODE MIRROR_POLICY ACTOR_SYMMETRY_PROJECTION_ALPHA ACTOR_SYMMETRY_PROJECTION_MASK PD_PROFILE PD_KP_MULTIPLIER PD_KD_MULTIPLIER DEFAULT_POSE_PROFILE
   PREPARE_SECONDS STAND_SECONDS MOVE_SECONDS MOVE_ACCELERATE_SECONDS MOVE_TEMPLATE_MULTIPLIER STOP_SECONDS HEADING_GAIN
