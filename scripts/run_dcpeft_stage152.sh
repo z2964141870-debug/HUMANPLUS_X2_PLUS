@@ -329,6 +329,8 @@ ACTOR_LORA_PREFIXES="${ACTOR_LORA_PREFIXES:-[actor_module.decoders.g1_dyn]}"
 CRITIC_LORA_PREFIXES="${CRITIC_LORA_PREFIXES:-[critic_module]}"
 FAITHFUL_WBT29="${FAITHFUL_WBT29:-false}"
 FAITHFUL_WBT29_TRAINER_TARGET="${FAITHFUL_WBT29_TRAINER_TARGET:-x2_faithful_live_phase46.Phase46LiveZeroTrainer}"
+FAITHFUL_WBT29_ENV_TARGET="${FAITHFUL_WBT29_ENV_TARGET:-x2_faithful_live_actions_phase46.FaithfulWBT29TrackingEnvCfg}"
+TRAIN_AGENT_ENTRYPOINT="${TRAIN_AGENT_ENTRYPOINT:-train_agent_trl.py}"
 ACTOR_INPUT_MASK_ENABLED="${ACTOR_INPUT_MASK_ENABLED:-false}"
 ACTOR_INPUT_MASK_LAYERS="${ACTOR_INPUT_MASK_LAYERS:-[actor_module.decoders.g1_dyn.module.0]}"
 ACTOR_INPUT_MASK_DECODER="${ACTOR_INPUT_MASK_DECODER:-g1_dyn}"
@@ -642,7 +644,7 @@ case "${FAITHFUL_WBT29}" in
     REWARD_POINT_MODE=source3
     REWARD_WRIST_LINK=yaw
     FAITHFUL_WBT29_OVERRIDES=(
-      'manager_env._target_=x2_faithful_live_actions_phase46.FaithfulWBT29TrackingEnvCfg'
+      "manager_env._target_=${FAITHFUL_WBT29_ENV_TARGET}"
       'manager_env.actions.joint_pos._target_=x2_faithful_live_actions_phase46.WBT29JointPositionActionCfg'
       "manager_env.actions.joint_pos.joint_names=${WBT29_SOURCE_JOINTS}"
       '+manager_env.actions.joint_pos.preserve_order=true'
@@ -810,7 +812,7 @@ timeout "${TIMEOUT_SECONDS:-600}s" env \
   DCPEFT_REWARD_CONTRACT="${DCPEFT_REWARD_CONTRACT}" \
   DCPEFT_REWARD_AUDIT_JSONL="${DCPEFT_REWARD_AUDIT_JSONL}" \
   conda run --no-capture-output -n x2-sonic-isaaclab \
-  python train_agent_trl.py \
+  python "${TRAIN_AGENT_ENTRYPOINT}" \
   "+exp=${EXP_CONFIG}" \
   "+checkpoint=${CHECKPOINT}" \
   +allow_tf32="${ALLOW_TF32}" \
