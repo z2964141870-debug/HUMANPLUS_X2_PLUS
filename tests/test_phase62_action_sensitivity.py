@@ -15,7 +15,7 @@ def test_phase62_screen_is_one_batched_run_without_weights():
         '("ankle_pitch_pos", (4, 10), epsilon)',
         '("waist_pitch_neg", (13,), -epsilon)',
         '"checkpoint_modified": False',
-        'ideal_env_fraction=1.0 if ACTION_SCREEN or RESIDUAL_PHASE68 else 0.75',
+        'ideal_env_fraction=1.0 if ACTION_SCREEN or RESIDUAL_DIAGNOSTIC else 0.75',
         '"phase": PHASE, "mode": args.mode',
     ):
         assert token in source
