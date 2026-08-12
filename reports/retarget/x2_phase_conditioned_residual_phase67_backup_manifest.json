@@ -1,0 +1,92 @@
+{
+  "schema": "x2_phase_conditioned_residual_phase67_backup_manifest_v1",
+  "date": "2026-08-12",
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67",
+  "decision": "PASS_LIVE_ZERO_ONLY",
+  "promotion": "none",
+  "files": [
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67_prereg.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67_prereg.json",
+      "bytes": 2658,
+      "sha256": "9ac239616bc4e2fb00d4219293f649baa39e6f0ccc6312248c89ce214b1af5c6"
+    },
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67_prereg.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67_prereg.json.sha256",
+      "bytes": 116,
+      "sha256": "581270c78694f094289fb6ad31f63f4b1721bbb9bc5cc95ae16c68dc2b80992a"
+    },
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67_screen.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67_screen.json",
+      "bytes": 7572,
+      "sha256": "5a3353dfc7cd9b47f53098ce01856d63b9378265439019bf6b83f99ee22584ca"
+    },
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67_resource.json",
+      "bytes": 1387,
+      "sha256": "19ecef0057d7062a06a82d1775310e6e250dfc12bfd66adc2372b7d5dc3948db"
+    },
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67_result.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67_result.json",
+      "bytes": 3498,
+      "sha256": "e64624758ecaa73dac325f0cd07a359f8063fedf0f2fbd0e18772db3b053f842"
+    },
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67_result.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67_result.json.sha256",
+      "bytes": 116,
+      "sha256": "2006cb386387a1fa3089beda01f69b7a8bcf27d563f6e58c55ac6cd2e2b6dc08"
+    },
+    {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase67.md",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/x2_phase_conditioned_residual_phase67.md",
+      "bytes": 495,
+      "sha256": "45fc5fecd692600ca5b83eb188e3cf4d61c536f22d3afaed328bdc6d425b699b"
+    },
+    {
+      "path": "EXPERIMENTS.md",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/EXPERIMENTS.md",
+      "bytes": 20142,
+      "sha256": "0502e77360c400dc72f0137a71c475d92e61c73e8f1160b028afb0df0dadfdc4"
+    },
+    {
+      "path": "src/cwi_x2/phase_conditioned_knee_residual.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/phase_conditioned_knee_residual.py",
+      "bytes": 3173,
+      "sha256": "ece5f8db1d104045ee75e6eee0e2e2e950efe1127000e63ef18acc6d0f3b02fb"
+    },
+    {
+      "path": "scripts/run_x2_upper_robust_one_update_phase56.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/run_x2_upper_robust_one_update_phase56.py",
+      "bytes": 94889,
+      "sha256": "a9ec63e2e559456eda01598834775158e5a1fa1712bfb71c24c8cf81f85d03cc"
+    },
+    {
+      "path": "scripts/run_x2_phase_conditioned_residual_phase67.sh",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/run_x2_phase_conditioned_residual_phase67.sh",
+      "bytes": 2521,
+      "sha256": "4883b024b1b2c16f9a7527273e801655704e4fad25300d0fcb0848b130ae7b6e"
+    },
+    {
+      "path": "tools/retarget/finalize_x2_phase_conditioned_residual_phase67.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/finalize_x2_phase_conditioned_residual_phase67.py",
+      "bytes": 4795,
+      "sha256": "7028e8eb0d87468f496a1eea0f0eb8d41a59f60d531235dc6c7cafd981b8f099"
+    },
+    {
+      "path": "tests/test_phase67_phase_conditioned_residual.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase67/test_phase67_phase_conditioned_residual.py",
+      "bytes": 2487,
+      "sha256": "99e07aa93ea90dc67ab8e801d28394e1ae11dbbb6c9edf66f3f91e64340f5510"
+    }
+  ],
+  "total_bytes": 143849,
+  "remote_listing_file_count": 13,
+  "remote_listing_byte_sizes_match": true,
+  "remote_listing_checked_at": "2026-08-12T18:34:00+08:00",
+  "verification": "All 13 payloads were listed remotely with exact byte-size equality; SHA256 is preserved here because bdpan does not expose remote content hashes."
+}

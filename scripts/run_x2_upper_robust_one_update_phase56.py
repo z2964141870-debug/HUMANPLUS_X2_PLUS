@@ -37,6 +37,7 @@ _phase65_pass = int(_phase65_pass_raw) if _phase65_screen else None
 _phase66_pass_raw = os.environ.get("CWI_PHASE66_SIDE_PHASE_PASS")
 _phase66_screen = _phase66_pass_raw is not None
 _phase66_pass = int(_phase66_pass_raw) if _phase66_screen else None
+_phase67_live_zero = os.environ.get("CWI_PHASE67_RESIDUAL_LIVE_ZERO", "0") == "1"
 if sum(
     (
         _phase60_variant is not None,
@@ -46,18 +47,19 @@ if sum(
         _phase64_screen,
         _phase65_screen,
         _phase66_screen,
+        _phase67_live_zero,
     )
 ) > 1:
-    raise ValueError("Phase60 through Phase65 modes are mutually exclusive")
-if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen or _phase66_screen:
+    raise ValueError("Phase60 through Phase67 modes are mutually exclusive")
+if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen or _phase66_screen or _phase67_live_zero:
     if args.mode != "screen" or args.num_envs != 64 or args.seed != 42 or args.eval_steps != 200:
-        raise ValueError("Phase62/63/64/65/66 require screen mode, 64 envs, seed 42, and 200 steps")
+        raise ValueError("Phase62 through Phase67 screens require screen mode, 64 envs, seed 42, and 200 steps")
     if _phase65_screen and _phase65_pass not in (0, 1):
         raise ValueError("Phase65 crossover pass must be 0 or 1")
     if _phase66_screen and _phase66_pass not in (0, 1):
         raise ValueError("Phase66 side/phase pass must be 0 or 1")
 elif args.mode == "screen":
-    raise ValueError("screen mode requires a Phase62/63/64/65/66 screen flag")
+    raise ValueError("screen mode requires a Phase62 through Phase67 screen flag")
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -102,6 +104,9 @@ from cwi_x2.transition_command import (  # noqa: E402
     transition_velocity_cfg,
 )
 from cwi_x2.transition_schedule import audit_phase_consistent_event  # noqa: E402
+from cwi_x2.phase_conditioned_knee_residual import (  # noqa: E402
+    PhaseConditionedKneeTargetResidual,
+)
 
 PEFT_PHASE58 = os.environ.get("CWI_PHASE58_PEFT", "0") == "1"
 PEFT_PHASE59 = os.environ.get("CWI_PHASE59_PEFT", "0") == "1"
@@ -115,17 +120,19 @@ ACTION_SCREEN_PHASE63 = _phase63_screen
 ACTION_SCREEN_PHASE64 = _phase64_screen
 ACTION_SCREEN_PHASE65 = _phase65_screen
 ACTION_SCREEN_PHASE66 = _phase66_screen
+ACTION_SCREEN_PHASE67 = _phase67_live_zero
 ACTION_SCREEN = (
     ACTION_SCREEN_PHASE62
     or ACTION_SCREEN_PHASE63
     or ACTION_SCREEN_PHASE64
     or ACTION_SCREEN_PHASE65
     or ACTION_SCREEN_PHASE66
+    or ACTION_SCREEN_PHASE67
 )
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
 POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))))))
+PHASE = 67 if ACTION_SCREEN_PHASE67 else (66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))))))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -745,6 +752,11 @@ def evaluate() -> None:
         model = build_model(obs, env.device).eval()
         payload = load_state(model, args.checkpoint)
         model.std.requires_grad_(False)
+        phase67_residual = (
+            PhaseConditionedKneeTargetResidual().to(env.device).eval()
+            if ACTION_SCREEN_PHASE67
+            else None
+        )
         robot = env.scene["robot"]
         upper_ids = [robot.joint_names.index(name) for name in UPPER14]
         initial_pos = robot.data.root_pos_w.clone()
@@ -770,6 +782,9 @@ def evaluate() -> None:
             phase66_condition_slot, screen_groups, phase66_condition_names = (
                 phase66_side_phase_partition(env.device)
             )
+            action_bias = torch.zeros((64, 15), device=env.device)
+        elif ACTION_SCREEN_PHASE67:
+            screen_groups = {"all": torch.ones(64, dtype=torch.bool, device=env.device)}
             action_bias = torch.zeros((64, 15), device=env.device)
         else:
             action_bias, screen_groups = torch.zeros((64, 15), device=env.device), {}
@@ -887,6 +902,25 @@ def evaluate() -> None:
             if ACTION_SCREEN_PHASE66
             else {}
         )
+        phase67_contract = {
+            "residual_output_max_abs_rad": 0.0,
+            "standing_shadow_output_max_abs_rad": 0.0,
+            "processed_target_delta_max_abs_rad": 0.0,
+            "non_knee_output_max_abs_rad": 0.0,
+            "finite": True,
+        } if ACTION_SCREEN_PHASE67 else {}
+        phase67_step_hashes = []
+        phase67_initial_fingerprints = (
+            {
+                "policy_observation": tensor_hash(obs["policy"]),
+                "root_state": tensor_hash(robot.data.root_state_w),
+                "joint_position": tensor_hash(robot.data.joint_pos),
+                "command": tensor_hash(env.command_manager.get_command("base_velocity")),
+                "residual_state": state_hash(phase67_residual),
+            }
+            if ACTION_SCREEN_PHASE67
+            else {}
+        )
         if PEFT_PHASE61:
             samples.update(
                 terminal_base_speed_mps=[],
@@ -924,6 +958,21 @@ def evaluate() -> None:
                 term._processed_actions[:] = proposed
 
             term.process_actions = phase66_process_actions
+        phase67_requested_target = torch.zeros((64, 15), device=env.device)
+        phase67_source_target = torch.zeros((64, 15), device=env.device)
+        phase67_intervention_target = torch.zeros((64, 15), device=env.device)
+        if ACTION_SCREEN_PHASE67:
+            phase67_original_process_actions = term.process_actions
+
+            def phase67_process_actions(actions: torch.Tensor) -> None:
+                nonlocal phase67_source_target
+                nonlocal phase67_intervention_target
+                phase67_original_process_actions(actions)
+                phase67_source_target = term._processed_actions.clone()
+                phase67_intervention_target = phase67_source_target + phase67_requested_target
+                term._processed_actions[:] = phase67_intervention_target
+
+            term.process_actions = phase67_process_actions
         with torch.inference_mode():
             for step in range(args.eval_steps):
                 phase65_pre_policy = obs["policy"] if ACTION_SCREEN_PHASE65 else None
@@ -983,6 +1032,29 @@ def evaluate() -> None:
                     )
                     phase66_contract["active_sample_count"] += int(
                         phase66_semantics["active"].sum()
+                    )
+                if ACTION_SCREEN_PHASE67:
+                    phase67_requested_target = phase67_residual.target_offset_15d(obs["policy"])
+                    standing_shadow = obs["policy"].clone()
+                    standing_shadow[:, -4:] = standing_shadow.new_tensor([0.0, 0.0, 1.0, 1.0])
+                    shadow_output = phase67_residual.target_offset_15d(standing_shadow)
+                    phase67_contract["residual_output_max_abs_rad"] = max(
+                        phase67_contract["residual_output_max_abs_rad"],
+                        float(phase67_requested_target.abs().max()),
+                    )
+                    phase67_contract["standing_shadow_output_max_abs_rad"] = max(
+                        phase67_contract["standing_shadow_output_max_abs_rad"],
+                        float(shadow_output.abs().max()),
+                    )
+                    non_knee = phase67_requested_target.clone()
+                    non_knee[:, [3, 9]] = 0.0
+                    phase67_contract["non_knee_output_max_abs_rad"] = max(
+                        phase67_contract["non_knee_output_max_abs_rad"],
+                        float(non_knee.abs().max()),
+                    )
+                    phase67_contract["finite"] &= bool(
+                        torch.isfinite(phase67_requested_target).all()
+                        and torch.isfinite(shadow_output).all()
                     )
                 raw_action = model.act_inference(obs)
                 action = raw_action
@@ -1268,6 +1340,28 @@ def evaluate() -> None:
                             },
                         }
                     )
+                if ACTION_SCREEN_PHASE67:
+                    processed_delta = phase67_intervention_target - phase67_source_target
+                    phase67_contract["processed_target_delta_max_abs_rad"] = max(
+                        phase67_contract["processed_target_delta_max_abs_rad"],
+                        float(processed_delta.abs().max()),
+                    )
+                    phase67_contract["finite"] &= bool(
+                        torch.isfinite(phase67_source_target).all()
+                        and torch.isfinite(phase67_intervention_target).all()
+                    )
+                    if step in (0, 1, 2, 29, 30, 99, 199):
+                        phase67_step_hashes.append(
+                            {
+                                "step": step,
+                                "residual": tensor_hash(phase67_requested_target),
+                                "source_processed_target": tensor_hash(phase67_source_target),
+                                "intervention_processed_target": tensor_hash(
+                                    phase67_intervention_target
+                                ),
+                                "root_state": tensor_hash(robot.data.root_state_w),
+                            }
+                        )
                 for name, value in values.items():
                     sums[name] += value * valid
                 counts += valid
@@ -1307,7 +1401,9 @@ def evaluate() -> None:
                     "hip_pitch_dose"
                     if ACTION_SCREEN_PHASE63
                     else (
-                        "side_phase_physical_knee_target"
+                        "phase_conditioned_residual_live_zero"
+                        if ACTION_SCREEN_PHASE67
+                        else "side_phase_physical_knee_target"
                         if ACTION_SCREEN_PHASE66
                         else "single_support_knee_crossover"
                         if ACTION_SCREEN_PHASE65
@@ -1521,6 +1617,22 @@ def evaluate() -> None:
                     for name, values in phase66_raw_samples.items()
                 },
                 "actuator_domain": "ideal only",
+                "checkpoint_modified": False,
+            }
+        if ACTION_SCREEN_PHASE67:
+            report["phase_conditioned_residual_live_zero"] = {
+                "runner_sha256": sha256(Path(__file__)),
+                "module_path": "src/cwi_x2/phase_conditioned_knee_residual.py",
+                "module_sha256": sha256(
+                    REPO / "src/cwi_x2/phase_conditioned_knee_residual.py"
+                ),
+                "trainable_manifest": phase67_residual.trainable_manifest(),
+                "initial_fingerprints": phase67_initial_fingerprints,
+                "contract": phase67_contract,
+                "sampled_step_hashes": phase67_step_hashes,
+                "environment_control_steps": args.eval_steps,
+                "optimizer_steps": 0,
+                "checkpoint_count": 0,
                 "checkpoint_modified": False,
             }
         args.output.parent.mkdir(parents=True, exist_ok=True)

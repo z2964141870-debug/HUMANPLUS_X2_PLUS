@@ -1,0 +1,176 @@
+{
+  "phase": 67,
+  "mode": "screen",
+  "checkpoint": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+  "checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+  "checkpoint_iter": 2600,
+  "seed": 42,
+  "num_envs": 64,
+  "eval_steps": 200,
+  "posture_variant": "phase_conditioned_residual_live_zero",
+  "control_dt_s": 0.02,
+  "horizon_s": 4.0,
+  "domain_upper_counts": {
+    "none_ideal": 64,
+    "none_response": 0,
+    "bounded_ideal": 0,
+    "bounded_response": 0
+  },
+  "groups": {
+    "all": {
+      "lateral_abs": 0.09317544847726822,
+      "yaw_abs": 0.09366956353187561,
+      "action_abs": 0.5323196649551392,
+      "action_delta_abs": 0.1934197098016739,
+      "reward": 0.07062271237373352,
+      "flight_fraction": 0.0022656249348074198,
+      "single_support_fraction": 0.6110937595367432,
+      "double_support_fraction": 0.38664063811302185,
+      "velocity_tracking_rmse": 0.09515111208576281,
+      "yaw_tracking_rmse": 0.3629484190154809,
+      "upper_tracking_rmse": 0.036724738637076614,
+      "survival_s_mean": 4.0,
+      "termination_rate": 0.0,
+      "root_height_min_mean": 0.6497229933738708,
+      "root_tilt_max_mean": 0.24956001341342926,
+      "env_count": 64,
+      "signed_pitch_rad": {
+        "mean": -0.1901661455631256,
+        "p05": -0.22661438584327698,
+        "p50": -0.19459028542041779,
+        "p95": -0.11373476684093475,
+        "max": -0.0149793466553092
+      },
+      "com_support_outside_m": {
+        "mean": 0.06795189529657364,
+        "p05": 0.0,
+        "p50": 0.046877387911081314,
+        "p95": 0.1870923638343811,
+        "max": 0.19618993997573853
+      },
+      "stance_slip_mps": {
+        "mean": 0.09493347257375717,
+        "p05": 0.016647707670927048,
+        "p50": 0.06367314606904984,
+        "p95": 0.26468825340270996,
+        "max": 1.718261480331421
+      },
+      "swing_sole_clearance_m": {
+        "mean": 0.02171340584754944,
+        "p05": 0.01273108646273613,
+        "p50": 0.02138950675725937,
+        "p95": 0.03173837810754776,
+        "max": 0.03945659101009369
+      },
+      "knee_excursion_rad_mean": 0.36783796548843384,
+      "knee_joint_range": {
+        "left": {
+          "minimum_rad_mean": 0.22902534902095795,
+          "minimum_rad_min": 0.22117505967617035,
+          "maximum_rad_mean": 0.5303056240081787,
+          "maximum_rad_max": 0.5306603312492371,
+          "excursion_rad_mean": 0.30128031969070435,
+          "excursion_rad_max": 0.3091249465942383
+        },
+        "right": {
+          "minimum_rad_mean": 0.314973920583725,
+          "minimum_rad_min": 0.311644047498703,
+          "maximum_rad_mean": 0.7493695616722107,
+          "maximum_rad_max": 0.7758151888847351,
+          "excursion_rad_mean": 0.4343956410884857,
+          "excursion_rad_max": 0.4605739414691925
+        }
+      },
+      "knee_excursion_left_right_abs_diff_rad_mean": 0.13311532139778137
+    }
+  },
+  "finite": true,
+  "phase_conditioned_residual_live_zero": {
+    "runner_sha256": "a9ec63e2e559456eda01598834775158e5a1fa1712bfb71c24c8cf81f85d03cc",
+    "module_path": "src/cwi_x2/phase_conditioned_knee_residual.py",
+    "module_sha256": "ece5f8db1d104045ee75e6eee0e2e2e950efe1127000e63ef18acc6d0f3b02fb",
+    "trainable_manifest": {
+      "observation_dim": 93,
+      "hidden_dim": 32,
+      "maximum_target_offset_rad": 0.003,
+      "trainable_names": [
+        "encoder.0.bias",
+        "encoder.0.weight",
+        "encoder.2.bias",
+        "encoder.2.weight",
+        "head.bias",
+        "head.weight"
+      ],
+      "trainable_parameters": 4130
+    },
+    "initial_fingerprints": {
+      "policy_observation": "8af855bbe7ef719f503e6fa9e346dd774882228a1496495e5200a2eb57bf4489",
+      "root_state": "8a8d57441948c28564397986af823e34710f929d93e2a500f58f579468025175",
+      "joint_position": "48c89b8ddb9e7e95ff5d38aeb4f8458cd71b181bec178f8fca5dd8cd31829dca",
+      "command": "ac62dde523cf0ac84e8d65699cd8a0f6d17cb9dd881bfe1263a96e43ea31d5a3",
+      "residual_state": "1bceb6a032608cef9ce738eba206d9b810243483b4f0d402f509300dd8347c80"
+    },
+    "contract": {
+      "residual_output_max_abs_rad": 0.0,
+      "standing_shadow_output_max_abs_rad": 0.0,
+      "processed_target_delta_max_abs_rad": 0.0,
+      "non_knee_output_max_abs_rad": 0.0,
+      "finite": true
+    },
+    "sampled_step_hashes": [
+      {
+        "step": 0,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "dcee68cec81b51e38ff7a85a2ec8c9eb0dd39e505dae13b623f20a1359e206bb",
+        "intervention_processed_target": "dcee68cec81b51e38ff7a85a2ec8c9eb0dd39e505dae13b623f20a1359e206bb",
+        "root_state": "9b26ac5fde94f388fb57735cda9f72375c774c7de9f4c7522cc2e0877a5af30c"
+      },
+      {
+        "step": 1,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "fbe5ad64e20cf38e899a9b4edbf1553df246e06d92b369ad5f7a013737426f4e",
+        "intervention_processed_target": "fbe5ad64e20cf38e899a9b4edbf1553df246e06d92b369ad5f7a013737426f4e",
+        "root_state": "76513232509bb3655025007c66dcbab48fe3e1377f7999153ab9d55b1f69bf4b"
+      },
+      {
+        "step": 2,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "538397ceff8ec2c80caa4bb1aef37ebbc120f41aa94c4d3945c040199a316a74",
+        "intervention_processed_target": "538397ceff8ec2c80caa4bb1aef37ebbc120f41aa94c4d3945c040199a316a74",
+        "root_state": "02052f676014d07623906fd8058544e92df2232d3c55b7a97699a7ecb1d0ffd3"
+      },
+      {
+        "step": 29,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "a45e04b2d388fc94fdd933bac0784563e9c726ebfb1de345a6356cad8dbc3925",
+        "intervention_processed_target": "a45e04b2d388fc94fdd933bac0784563e9c726ebfb1de345a6356cad8dbc3925",
+        "root_state": "2427b8485e939ca313c7e08c28497d431cfe664f9dc464bba37e08f5f26cffad"
+      },
+      {
+        "step": 30,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "eade0ef5b1a6d0ab845829fd1605e63f4af89047f2c3732d8b3dff8ff00b38ca",
+        "intervention_processed_target": "eade0ef5b1a6d0ab845829fd1605e63f4af89047f2c3732d8b3dff8ff00b38ca",
+        "root_state": "9bdc74e209f884fdba78a07340482a152e5f7f8c173c15434726337244eee8c0"
+      },
+      {
+        "step": 99,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "34d641839b71f71c6f7f5e974472ee7288cbb7a3d3ee492967362d578d8c14c6",
+        "intervention_processed_target": "34d641839b71f71c6f7f5e974472ee7288cbb7a3d3ee492967362d578d8c14c6",
+        "root_state": "c49d5b21c32abaae9b7d423ca1444128a98e21ebf02067bf5e73df562764b4e1"
+      },
+      {
+        "step": 199,
+        "residual": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+        "source_processed_target": "8e0656d8ac09f3bcf69b056254a463e27f20bd6d038c25e348fb671658d811e0",
+        "intervention_processed_target": "8e0656d8ac09f3bcf69b056254a463e27f20bd6d038c25e348fb671658d811e0",
+        "root_state": "5db616ec6bb9623c3299fd276775df70d187584edcb2f8fbb3418ff52fe43f2b"
+      }
+    ],
+    "environment_control_steps": 200,
+    "optimizer_steps": 0,
+    "checkpoint_count": 0,
+    "checkpoint_modified": false
+  }
+}
