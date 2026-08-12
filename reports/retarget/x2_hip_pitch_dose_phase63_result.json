@@ -1,0 +1,677 @@
+{
+  "schema": "x2_hip_pitch_dose_phase63_result_v1",
+  "decision": "FAIL_LOCAL_DOSE_WINDOW_STOP",
+  "input": {
+    "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_hip_pitch_dose_phase63_screen.json",
+    "sha256": "f2ef714fd4c923304e722b743834de3769d830c7dbb533a719c20cc4a88bb53a"
+  },
+  "resource": {
+    "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_hip_pitch_dose_phase63_resource.json",
+    "sha256": "8b66226a8559d567bfdad2379883c7c12dd0bae6a42f43b05c2f8529613f275f",
+    "report": {
+      "schema": "x2_gpu_run_ledger_v1",
+      "label": "phase63_hip_pitch_dose_screen",
+      "command": [
+        "conda",
+        "run",
+        "--no-capture-output",
+        "-n",
+        "x2-sonic-isaaclab",
+        "python",
+        "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_upper_robust_one_update_phase56.py",
+        "--mode",
+        "screen",
+        "--checkpoint",
+        "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+        "--output",
+        "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_hip_pitch_dose_phase63_screen.json",
+        "--num-envs",
+        "64",
+        "--seed",
+        "42",
+        "--eval-steps",
+        "200",
+        "--device",
+        "cuda:0",
+        "--headless"
+      ],
+      "exit_code": 0,
+      "start_wall_ns": 1786526641685142144,
+      "elapsed_s": 25.68222890099969,
+      "disk_before": {
+        "total_bytes": 502392610816,
+        "used_bytes": 101787852800,
+        "free_bytes": 375009386496
+      },
+      "disk_after": {
+        "total_bytes": 502392610816,
+        "used_bytes": 101923880960,
+        "free_bytes": 374873358336
+      },
+      "disk_used_delta_bytes": 136028160,
+      "gpu_sample_count": 49,
+      "gpu_sample_errors": 0,
+      "gpu": {
+        "memory_total_mib": 24576.0,
+        "memory_used_peak_mib": 3385.0,
+        "utilization_peak_percent": 66.0,
+        "power_peak_w": 148.52
+      }
+    }
+  },
+  "preregistration": {
+    "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_hip_pitch_dose_phase63_prereg.json",
+    "sha256": "dc9cff82362e1507bd1677f947da6c20ad1e85bac4b40b66ec3194844420304b"
+  },
+  "checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+  "base": {
+    "lateral_abs": 0.08106809854507446,
+    "yaw_abs": 0.09055011719465256,
+    "action_abs": 0.5327979922294617,
+    "action_delta_abs": 0.1932089626789093,
+    "reward": 0.07085542380809784,
+    "flight_fraction": 0.0037499999161809683,
+    "single_support_fraction": 0.6087499856948853,
+    "double_support_fraction": 0.38749998807907104,
+    "velocity_tracking_rmse": 0.09417804215812337,
+    "yaw_tracking_rmse": 0.36383348965186413,
+    "upper_tracking_rmse": 0.0367807642657302,
+    "survival_s_mean": 4.0,
+    "termination_rate": 0.0,
+    "root_height_min_mean": 0.6499744653701782,
+    "root_tilt_max_mean": 0.24954257905483246,
+    "env_count": 8,
+    "signed_pitch_rad": {
+      "mean": -0.19025763869285583,
+      "p05": -0.22652018070220947,
+      "p50": -0.195143461227417,
+      "p95": -0.113806813955307,
+      "max": -0.0149793466553092
+    },
+    "com_support_outside_m": {
+      "mean": 0.06746851652860641,
+      "p05": 0.0,
+      "p50": 0.04633959010243416,
+      "p95": 0.18702754378318787,
+      "max": 0.19512611627578735
+    },
+    "stance_slip_mps": {
+      "mean": 0.09081729501485825,
+      "p05": 0.016690218821167946,
+      "p50": 0.06307977437973022,
+      "p95": 0.2650265097618103,
+      "max": 0.9306971430778503
+    },
+    "swing_sole_clearance_m": {
+      "mean": 0.02158498391509056,
+      "p05": 0.012911324389278889,
+      "p50": 0.02124936133623123,
+      "p95": 0.03149472549557686,
+      "max": 0.036975547671318054
+    },
+    "knee_excursion_rad_mean": 0.5216137170791626
+  },
+  "dose_rows": [
+    {
+      "group": "hip_pitch_m004",
+      "normalized_action_dose": -0.004,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 6.784498691558838e-05,
+        "signed_pitch_p05_rad": 0.00011928379535675049,
+        "lateral_abs_m": 0.011544719338417053,
+        "yaw_abs_rad": 0.002316407859325409,
+        "velocity_tracking_rmse_mps": 6.172147552804819e-05,
+        "com_support_outside_mean_m": -0.00020548701286315918,
+        "stance_slip_p95_mps": -0.04261970520019531,
+        "root_height_min_mean_m": -0.00011515617370605469,
+        "root_tilt_max_mean_rad": -0.0038231760263442993,
+        "action_delta_abs": -0.0004886984825134277
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": false,
+        "pitch_p05": true,
+        "lateral": true,
+        "yaw": true,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.09261281788349152,
+        "yaw_abs": 0.09286652505397797,
+        "action_abs": 0.5327940583229065,
+        "action_delta_abs": 0.19272026419639587,
+        "reward": 0.07098937034606934,
+        "flight_fraction": 0.0024999999441206455,
+        "single_support_fraction": 0.6087499856948853,
+        "double_support_fraction": 0.38874998688697815,
+        "velocity_tracking_rmse": 0.09423976363365141,
+        "yaw_tracking_rmse": 0.3622817368962729,
+        "upper_tracking_rmse": 0.0367729440195651,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.6498593091964722,
+        "root_tilt_max_mean": 0.24571940302848816,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.19018979370594025,
+          "p05": -0.22640089690685272,
+          "p50": -0.19541886448860168,
+          "p95": -0.11314498633146286,
+          "max": -0.01475598569959402
+        },
+        "com_support_outside_m": {
+          "mean": 0.06726302951574326,
+          "p05": 0.0,
+          "p50": 0.04551274701952934,
+          "p95": 0.1866600513458252,
+          "max": 0.1964632272720337
+        },
+        "stance_slip_mps": {
+          "mean": 0.09188699722290039,
+          "p05": 0.017885278910398483,
+          "p50": 0.06454020738601685,
+          "p95": 0.222406804561615,
+          "max": 1.5926717519760132
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.02160928025841713,
+          "p05": 0.012120516039431095,
+          "p50": 0.021189957857131958,
+          "p95": 0.03165287896990776,
+          "max": 0.038023442029953
+        },
+        "knee_excursion_rad_mean": 0.5262519121170044
+      }
+    },
+    {
+      "group": "hip_pitch_m006",
+      "normalized_action_dose": -0.006,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 0.00021645426750183105,
+        "signed_pitch_p05_rad": 0.0014235824346542358,
+        "lateral_abs_m": 0.026892274618148804,
+        "yaw_abs_rad": 0.02237459272146225,
+        "velocity_tracking_rmse_mps": -0.0010876378316362206,
+        "com_support_outside_mean_m": -0.00016392767429351807,
+        "stance_slip_p95_mps": 0.005988895893096924,
+        "root_height_min_mean_m": -0.00025260448455810547,
+        "root_tilt_max_mean_rad": -0.00150279700756073,
+        "action_delta_abs": -0.0007663518190383911
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": false,
+        "pitch_p05": true,
+        "lateral": false,
+        "yaw": false,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.10796037316322327,
+        "yaw_abs": 0.11292470991611481,
+        "action_abs": 0.5327711701393127,
+        "action_delta_abs": 0.1924426108598709,
+        "reward": 0.07158496230840683,
+        "flight_fraction": 0.0043750000186264515,
+        "single_support_fraction": 0.6068750023841858,
+        "double_support_fraction": 0.38874998688697815,
+        "velocity_tracking_rmse": 0.09309040432648714,
+        "yaw_tracking_rmse": 0.35666304953395794,
+        "upper_tracking_rmse": 0.0367981350585808,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.6497218608856201,
+        "root_tilt_max_mean": 0.24803978204727173,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.190041184425354,
+          "p05": -0.22509659826755524,
+          "p50": -0.1948440968990326,
+          "p95": -0.11261386424303055,
+          "max": -0.014641756191849709
+        },
+        "com_support_outside_m": {
+          "mean": 0.0673045888543129,
+          "p05": 0.0,
+          "p50": 0.045986566692590714,
+          "p95": 0.1865556389093399,
+          "max": 0.19542932510375977
+        },
+        "stance_slip_mps": {
+          "mean": 0.09584975242614746,
+          "p05": 0.019083604216575623,
+          "p50": 0.0633300244808197,
+          "p95": 0.2710154056549072,
+          "max": 1.6024702787399292
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.02177956886589527,
+          "p05": 0.013218376785516739,
+          "p50": 0.021345656365156174,
+          "p95": 0.031617190688848495,
+          "max": 0.03832261264324188
+        },
+        "knee_excursion_rad_mean": 0.517676830291748
+      }
+    },
+    {
+      "group": "hip_pitch_m008",
+      "normalized_action_dose": -0.008,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 0.0011819452047348022,
+        "signed_pitch_p05_rad": 0.0005070120096206665,
+        "lateral_abs_m": 0.019014276564121246,
+        "yaw_abs_rad": 0.01041683554649353,
+        "velocity_tracking_rmse_mps": -0.0008960887341141893,
+        "com_support_outside_mean_m": 0.00012636184692382812,
+        "stance_slip_p95_mps": -0.003505498170852661,
+        "root_height_min_mean_m": -0.00022286176681518555,
+        "root_tilt_max_mean_rad": 0.0007698684930801392,
+        "action_delta_abs": -0.0003875046968460083
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": false,
+        "pitch_p05": true,
+        "lateral": false,
+        "yaw": true,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.10008237510919571,
+        "yaw_abs": 0.10096695274114609,
+        "action_abs": 0.5323992967605591,
+        "action_delta_abs": 0.1928214579820633,
+        "reward": 0.07137822359800339,
+        "flight_fraction": 0.0031250000465661287,
+        "single_support_fraction": 0.6056249737739563,
+        "double_support_fraction": 0.39125001430511475,
+        "velocity_tracking_rmse": 0.09328195342400918,
+        "yaw_tracking_rmse": 0.36270111687390705,
+        "upper_tracking_rmse": 0.03670775015405998,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.649751603603363,
+        "root_tilt_max_mean": 0.2503124475479126,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.18907569348812103,
+          "p05": -0.2260131686925888,
+          "p50": -0.19381427764892578,
+          "p95": -0.11218234896659851,
+          "max": -0.014528308063745499
+        },
+        "com_support_outside_m": {
+          "mean": 0.06759487837553024,
+          "p05": 0.0,
+          "p50": 0.046334825456142426,
+          "p95": 0.18668724596500397,
+          "max": 0.19460579752922058
+        },
+        "stance_slip_mps": {
+          "mean": 0.09460421651601791,
+          "p05": 0.017207665368914604,
+          "p50": 0.06330191344022751,
+          "p95": 0.26152101159095764,
+          "max": 1.458581805229187
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.02167939394712448,
+          "p05": 0.013259340077638626,
+          "p50": 0.02126609906554222,
+          "p95": 0.03140440583229065,
+          "max": 0.03768502175807953
+        },
+        "knee_excursion_rad_mean": 0.5214968323707581
+      }
+    },
+    {
+      "group": "hip_pitch_m010",
+      "normalized_action_dose": -0.01,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 0.0016248226165771484,
+        "signed_pitch_p05_rad": 0.0019129067659378052,
+        "lateral_abs_m": 0.02441772073507309,
+        "yaw_abs_rad": 0.021948210895061493,
+        "velocity_tracking_rmse_mps": -0.002022944694485773,
+        "com_support_outside_mean_m": 0.00014079362154006958,
+        "stance_slip_p95_mps": -0.05432888865470886,
+        "root_height_min_mean_m": -0.0001989603042602539,
+        "root_tilt_max_mean_rad": -0.0018253177404403687,
+        "action_delta_abs": -0.0009662061929702759
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "lateral": false,
+        "yaw": false,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.10548581928014755,
+        "yaw_abs": 0.11249832808971405,
+        "action_abs": 0.532490074634552,
+        "action_delta_abs": 0.19224275648593903,
+        "reward": 0.07176917046308517,
+        "flight_fraction": 0.0024999999441206455,
+        "single_support_fraction": 0.6156250238418579,
+        "double_support_fraction": 0.38187500834465027,
+        "velocity_tracking_rmse": 0.09215509746363759,
+        "yaw_tracking_rmse": 0.35424827822803223,
+        "upper_tracking_rmse": 0.03671007313830043,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.649775505065918,
+        "root_tilt_max_mean": 0.2477172613143921,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.1886328160762787,
+          "p05": -0.22460727393627167,
+          "p50": -0.19298389554023743,
+          "p95": -0.11179005354642868,
+          "max": -0.014414872042834759
+        },
+        "com_support_outside_m": {
+          "mean": 0.06760931015014648,
+          "p05": 0.0,
+          "p50": 0.0450609065592289,
+          "p95": 0.18687354028224945,
+          "max": 0.19539612531661987
+        },
+        "stance_slip_mps": {
+          "mean": 0.09232817590236664,
+          "p05": 0.018413707613945007,
+          "p50": 0.06275896728038788,
+          "p95": 0.21069762110710144,
+          "max": 1.5903648138046265
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.021617719903588295,
+          "p05": 0.013043202459812164,
+          "p50": 0.02132105827331543,
+          "p95": 0.031310029327869415,
+          "max": 0.03860492259263992
+        },
+        "knee_excursion_rad_mean": 0.5276961326599121
+      }
+    },
+    {
+      "group": "hip_pitch_m012",
+      "normalized_action_dose": -0.012,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 0.0027897655963897705,
+        "signed_pitch_p05_rad": 0.0015234053134918213,
+        "lateral_abs_m": 0.033749938011169434,
+        "yaw_abs_rad": 0.03154710680246353,
+        "velocity_tracking_rmse_mps": -0.0002494281752123406,
+        "com_support_outside_mean_m": -0.00028433650732040405,
+        "stance_slip_p95_mps": -0.047241389751434326,
+        "root_height_min_mean_m": -0.0005282163619995117,
+        "root_tilt_max_mean_rad": -0.00023943185806274414,
+        "action_delta_abs": -0.0007252097129821777
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "lateral": false,
+        "yaw": false,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.1148180365562439,
+        "yaw_abs": 0.12209722399711609,
+        "action_abs": 0.5309749245643616,
+        "action_delta_abs": 0.19248375296592712,
+        "reward": 0.07119300961494446,
+        "flight_fraction": 0.0043750000186264515,
+        "single_support_fraction": 0.6056249737739563,
+        "double_support_fraction": 0.38999998569488525,
+        "velocity_tracking_rmse": 0.09392861398291102,
+        "yaw_tracking_rmse": 0.35347721249447583,
+        "upper_tracking_rmse": 0.03657099794194886,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.6494462490081787,
+        "root_tilt_max_mean": 0.24930314719676971,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.18746787309646606,
+          "p05": -0.22499677538871765,
+          "p50": -0.19203722476959229,
+          "p95": -0.11141249537467957,
+          "max": -0.014302240684628487
+        },
+        "com_support_outside_m": {
+          "mean": 0.06718418002128601,
+          "p05": 0.0,
+          "p50": 0.045287203043699265,
+          "p95": 0.18785205483436584,
+          "max": 0.19536679983139038
+        },
+        "stance_slip_mps": {
+          "mean": 0.08758708089590073,
+          "p05": 0.018042122945189476,
+          "p50": 0.062127720564603806,
+          "p95": 0.21778512001037598,
+          "max": 0.9659240245819092
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.02177397347986698,
+          "p05": 0.012979906052350998,
+          "p50": 0.021455321460962296,
+          "p95": 0.031575947999954224,
+          "max": 0.03822840750217438
+        },
+        "knee_excursion_rad_mean": 0.5269298553466797
+      }
+    },
+    {
+      "group": "hip_pitch_m016",
+      "normalized_action_dose": -0.016,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 0.002744510769844055,
+        "signed_pitch_p05_rad": 0.003319844603538513,
+        "lateral_abs_m": 0.03515343368053436,
+        "yaw_abs_rad": 0.034177206456661224,
+        "velocity_tracking_rmse_mps": -0.0022621922231460118,
+        "com_support_outside_mean_m": 0.00026135891675949097,
+        "stance_slip_p95_mps": -0.04975183308124542,
+        "root_height_min_mean_m": -0.00015169382095336914,
+        "root_tilt_max_mean_rad": -0.0012656152248382568,
+        "action_delta_abs": -0.0012561976909637451
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "lateral": false,
+        "yaw": false,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.11622153222560883,
+        "yaw_abs": 0.12472732365131378,
+        "action_abs": 0.530328631401062,
+        "action_delta_abs": 0.19195276498794556,
+        "reward": 0.07183599472045898,
+        "flight_fraction": 0.0018749999580904841,
+        "single_support_fraction": 0.612500011920929,
+        "double_support_fraction": 0.3856250047683716,
+        "velocity_tracking_rmse": 0.09191584993497735,
+        "yaw_tracking_rmse": 0.35873941525518555,
+        "upper_tracking_rmse": 0.03655570391160915,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.6498227715492249,
+        "root_tilt_max_mean": 0.2482769638299942,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.18751312792301178,
+          "p05": -0.22320033609867096,
+          "p50": -0.19164815545082092,
+          "p95": -0.11064251512289047,
+          "max": -0.014072238467633724
+        },
+        "com_support_outside_m": {
+          "mean": 0.0677298754453659,
+          "p05": 0.0,
+          "p50": 0.04549514874815941,
+          "p95": 0.18703597784042358,
+          "max": 0.19441261887550354
+        },
+        "stance_slip_mps": {
+          "mean": 0.09032224118709564,
+          "p05": 0.018312687054276466,
+          "p50": 0.06404444575309753,
+          "p95": 0.21527467668056488,
+          "max": 1.711811900138855
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.021578652784228325,
+          "p05": 0.012620850466191769,
+          "p50": 0.021181754767894745,
+          "p95": 0.03151896223425865,
+          "max": 0.038126006722450256
+        },
+        "knee_excursion_rad_mean": 0.514675498008728
+      }
+    },
+    {
+      "group": "hip_pitch_m020",
+      "normalized_action_dose": -0.02,
+      "delta_vs_base": {
+        "signed_pitch_mean_rad": 0.005197614431381226,
+        "signed_pitch_p05_rad": 0.0037351399660110474,
+        "lateral_abs_m": 0.04993508756160736,
+        "yaw_abs_rad": 0.06461288779973984,
+        "velocity_tracking_rmse_mps": -0.0019358314284389222,
+        "com_support_outside_mean_m": 0.00014062970876693726,
+        "stance_slip_p95_mps": -0.05889177322387695,
+        "root_height_min_mean_m": -0.0011323094367980957,
+        "root_tilt_max_mean_rad": -0.0024681538343429565,
+        "action_delta_abs": -0.001322716474533081
+      },
+      "checks": {
+        "finite": true,
+        "survival": true,
+        "termination": true,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "lateral": false,
+        "yaw": false,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true
+      },
+      "passed": false,
+      "metrics": {
+        "lateral_abs": 0.13100318610668182,
+        "yaw_abs": 0.1551630049943924,
+        "action_abs": 0.5299214720726013,
+        "action_delta_abs": 0.19188624620437622,
+        "reward": 0.07206649333238602,
+        "flight_fraction": 0.0024999999441206455,
+        "single_support_fraction": 0.6118749976158142,
+        "double_support_fraction": 0.3856250047683716,
+        "velocity_tracking_rmse": 0.09224221072968444,
+        "yaw_tracking_rmse": 0.3536423724664815,
+        "upper_tracking_rmse": 0.03648088316983785,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0,
+        "root_height_min_mean": 0.6488421559333801,
+        "root_tilt_max_mean": 0.2470744252204895,
+        "env_count": 8,
+        "signed_pitch_rad": {
+          "mean": -0.1850600242614746,
+          "p05": -0.22278504073619843,
+          "p50": -0.18941833078861237,
+          "p95": -0.1097070649266243,
+          "max": -0.013844164088368416
+        },
+        "com_support_outside_m": {
+          "mean": 0.06760914623737335,
+          "p05": 0.0,
+          "p50": 0.04403482750058174,
+          "p95": 0.18764877319335938,
+          "max": 0.19657683372497559
+        },
+        "stance_slip_mps": {
+          "mean": 0.08782529830932617,
+          "p05": 0.017655735835433006,
+          "p50": 0.06180482730269432,
+          "p95": 0.20613473653793335,
+          "max": 1.1540743112564087
+        },
+        "swing_sole_clearance_m": {
+          "mean": 0.02184484712779522,
+          "p05": 0.013307291083037853,
+          "p50": 0.021404877305030823,
+          "p95": 0.03157477453351021,
+          "max": 0.038986846804618835
+        },
+        "knee_excursion_rad_mean": 0.5226929187774658
+      }
+    }
+  ],
+  "selected_group": null,
+  "selected_normalized_action_dose": null,
+  "selection_rule": "Among doses passing every local gate, select the smallest absolute nonzero dose. Do not select a failing dose for a larger pitch gain.",
+  "targeted_residual_experiment_unlocked": false,
+  "training_unlocked": false,
+  "deployment_unlocked": false,
+  "task2_complete": false,
+  "boundary": "A passing constant-dose screen is local causal evidence only; it does not alter the checkpoint or prove official MuJoCo gates."
+}
