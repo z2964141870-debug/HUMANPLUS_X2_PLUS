@@ -27,8 +27,10 @@
     },
     "gait_template": {
       "path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+      "bytes": 8595,
       "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
-      "status": "missing_on_new_machine"
+      "status": "exactly_rebuilt_from_hash_verified_session04_canonical_data",
+      "recovery_report": "stage264_frozen_baseline/gait_template_recovery_report.json"
     },
     "official_bundle": {
       "path": "/home/yu/x2_migration_20260812/downloads/official/aimdk-x2-v1.0.0-official.zip",
@@ -56,6 +58,6 @@
     "nominal_start_walk_turn_stop": "24/24",
     "nominal_upper_straight": "9/9",
     "pd_x_fixed_fast_upper_straight": "14/18",
-    "new_machine_replay_status": "blocked_by_missing_exact_gait_template"
+    "new_machine_replay_status": "partial_15_of_16_passes; low_straight_r4_stop_fall; 24_case_gate_not_yet_reproduced"
   }
 }

@@ -24,11 +24,11 @@
     },
     "gait_template": {
       "path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
-      "regular_file": false,
+      "regular_file": true,
       "expected_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
-      "actual_sha256": null,
-      "sha256_matches": false,
-      "bytes": null
+      "actual_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+      "sha256_matches": true,
+      "bytes": 8595
     },
     "official_bundle": {
       "path": "/home/yu/x2_migration_20260812/downloads/official/aimdk-x2-v1.0.0-official.zip",
@@ -64,13 +64,11 @@
     }
   },
   "decision": {
-    "deploy_ready": false,
-    "training_ready": false,
-    "missing_or_mismatched": [
-      "gait_template"
-    ],
-    "allow_gate_replay": false,
-    "allow_continued_training": false
+    "deploy_ready": true,
+    "training_ready": true,
+    "missing_or_mismatched": [],
+    "allow_gate_replay": true,
+    "allow_continued_training": true
   },
   "disk_policy": {
     "do_not_download_amass_before_task4": true,
