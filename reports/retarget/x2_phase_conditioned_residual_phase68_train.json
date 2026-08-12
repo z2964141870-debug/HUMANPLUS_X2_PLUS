@@ -1,0 +1,141 @@
+{
+  "schema": "x2_phase68_residual_train_v1",
+  "phase": 68,
+  "mode": "train",
+  "decision": "UPDATE_TECHNICAL_PASS_PENDING_EVENT_EVAL",
+  "base_checkpoint": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+  "base_checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+  "source_residual_checkpoint": "artifacts/retarget/x2_phase_conditioned_residual_phase68/source_stage219_zero_residual.pt",
+  "source_residual_checkpoint_sha256": "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3",
+  "candidate_residual_checkpoint": "artifacts/retarget/x2_phase_conditioned_residual_phase68/candidate_phase_conditioned_residual_one_step.pt",
+  "candidate_residual_checkpoint_sha256": "81ed13e94bef8f7932ace86a22f8fbd9af82b5dbc649f9f7693e9fcdf5ec1347",
+  "seed": 42,
+  "residual_initialization_seed": 680042,
+  "cpu_rng_before_rollout_hash": "1e894074389fc8ef787fe772a9e8526ac637bfb567462a4b6251a82a25072bd5",
+  "cuda_rng_before_rollout_hash": "8083a7cbbe23976ee36097b0a3694140a46204ad4bad6458446bcaf8c86e271f",
+  "num_envs": 64,
+  "steps_per_env": 200,
+  "transitions": 12800,
+  "optimizer_steps": 1,
+  "learning_epochs": 1,
+  "mini_batches": 1,
+  "learning_rate": 0.001,
+  "latent_std": [
+    0.35,
+    0.35
+  ],
+  "domain_upper_counts": {
+    "none_ideal": 64,
+    "none_response": 0,
+    "bounded_ideal": 0,
+    "bounded_response": 0
+  },
+  "trainable_names": [
+    "residual.encoder.0.bias",
+    "residual.encoder.0.weight",
+    "residual.encoder.2.bias",
+    "residual.encoder.2.weight",
+    "residual.head.bias",
+    "residual.head.weight"
+  ],
+  "trainable_parameters": 4130,
+  "source_model_hash": "c8727a088cd98415bd5705cce74ad57c6c51f63c9f0f36b8e88c1ed176934830",
+  "source_std_hash": "2d49dce85d503d6ec9cc69351cb1285f54e600bbdaed1afacf6d69d69f711c51",
+  "initial_residual_state_hash": "4cd4f7d2dbd62db75ea5568525e7b0b95b7decc1ad8ccbb1693a91f3eae37018",
+  "final_residual_state_hash": "40efe09b10015bf3040d91637ff7da04d13a5b973d7e1dfcda8157b61a23ddb8",
+  "changed_parameter_names": [
+    "head.bias",
+    "head.weight"
+  ],
+  "parameter_update_l2": 0.008123960322135425,
+  "probe_gradient_norms": {
+    "encoder.0.weight": 0.0,
+    "encoder.0.bias": 0.0,
+    "encoder.2.weight": 0.0,
+    "encoder.2.bias": 0.0,
+    "head.weight": 0.02883644960820675,
+    "head.bias": 0.03184466063976288
+  },
+  "pre_update_log_prob_max_abs": 0.0,
+  "pre_update_ratio_max_abs_from_one": 0.0,
+  "losses": {
+    "value_function": 12.766777038574219,
+    "surrogate": 1.7821788844685216e-07,
+    "entropy": 0.7382328510284424
+  },
+  "storage": {
+    "observation_policy_shape": [
+      200,
+      64,
+      93
+    ],
+    "observation_critic_shape": [
+      200,
+      64,
+      93
+    ],
+    "latent_action_shape": [
+      200,
+      64,
+      2
+    ],
+    "old_mu_shape": [
+      200,
+      64,
+      2
+    ],
+    "old_sigma_shape": [
+      200,
+      64,
+      2
+    ],
+    "reward_shape": [
+      200,
+      64,
+      1
+    ],
+    "stored_latent_hash": "60a12d78cd0e6b18e5f3fc9406f98987ae48031645ae9e1576b04aa59d5ed7ee",
+    "wrapper_received_latent_hash": "60a12d78cd0e6b18e5f3fc9406f98987ae48031645ae9e1576b04aa59d5ed7ee"
+  },
+  "physical_rollout": {
+    "requested_max_abs_rad": 0.002750260988250375,
+    "requested_rms_rad": 0.0009475364349782467,
+    "effective_requested_abs_ratio": 1.0000000957470134,
+    "final_clip_count": 3375,
+    "non_knee_max_abs_rad": 0.0,
+    "active_sample_count": 12800,
+    "candidate_mean_max_abs_rad": 6.579548880836228e-06,
+    "candidate_mean_rms_rad": 5.881979177502217e-06
+  },
+  "technical_checks": {
+    "initial_state_hash": true,
+    "trainable_parameter_count": true,
+    "source_hash_exact": true,
+    "source_std_exact": true,
+    "source_grad_none": true,
+    "storage_latent_exact": true,
+    "storage_reward_exact": true,
+    "storage_shapes": true,
+    "pre_log_prob_exact": true,
+    "pre_ratio_exact": true,
+    "head_probe_gradient_nonzero": true,
+    "encoder_probe_gradient_exact_zero": true,
+    "optimizer_step_exact_one": true,
+    "only_head_changed": true,
+    "encoder_hash_exact": true,
+    "head_hash_changed": true,
+    "losses_finite": true,
+    "parameters_finite": true,
+    "rollout_no_done": true,
+    "rollout_all_active": true,
+    "non_knee_exact_zero": true,
+    "physical_bound": true,
+    "effective_ratio": true,
+    "candidate_mean_nonzero": true,
+    "candidate_mean_bounded": true,
+    "update_l2_bounded": true
+  },
+  "long_training_unlocked": false,
+  "deployment_unlocked": false,
+  "task2_complete": false
+}

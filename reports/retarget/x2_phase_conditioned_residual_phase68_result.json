@@ -1,0 +1,141 @@
+{
+  "schema": "x2_phase_conditioned_residual_phase68_result_v1",
+  "decision": "FAIL_NO_LOCAL_SIGNAL_STOP",
+  "inputs": {
+    "prereg": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_prereg.json",
+      "sha256": "fedc6bc83a270444c0c2004313a2bae0457266e8fff281d4adfa42543b453e12"
+    },
+    "train": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_train.json",
+      "sha256": "58b2f397a704a23459d4a0cfcac680e2d3f725d5c1e7458a43b46e57c0445702"
+    },
+    "train_resource": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_train_resource.json",
+      "sha256": "9e1b6ef50957166743c7e2ee3cfb68e1f893e6021d633c8ff2c28fba9ce420a7"
+    },
+    "source": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_source_eval.json",
+      "sha256": "0f1a3fff93b473461db83684654ab5738cb772d84b81818d4ec9ae1f152261c7"
+    },
+    "source_resource": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_source_resource.json",
+      "sha256": "1edea3ed066469aa2ebc6257e2cdd87dc7c9f126a248e5d569bb2c4f139e64ac"
+    },
+    "candidate": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_candidate_eval.json",
+      "sha256": "c253725d0c16d258bd954deb9cf8ad217882c7e5abfd929258dd0b436ee78b6f"
+    },
+    "candidate_resource": {
+      "path": "reports/retarget/x2_phase_conditioned_residual_phase68_candidate_resource.json",
+      "sha256": "175518da8aa7fee13578b1faab09492c19add36b6731ec5216d36a4661262684"
+    }
+  },
+  "technical_checks": {
+    "prereg_sidecar": true,
+    "base_checkpoint": true,
+    "runner_hash": true,
+    "module_hash": true,
+    "interface_hash": true,
+    "train_decision": true,
+    "all_train_gates": true,
+    "optimizer_step_exact_one": true,
+    "checkpoint_count_exact_two": true,
+    "resource_exit_codes": true,
+    "resource_launch_count": true,
+    "resource_disk_delta": true,
+    "resource_gpu_peak": true,
+    "all_finite": true
+  },
+  "source_checks": {
+    "finite": true,
+    "role": true,
+    "survival": true,
+    "termination": true,
+    "zero_residual": true,
+    "zero_processed_delta": true
+  },
+  "candidate_absolute_checks": {
+    "finite": true,
+    "role": true,
+    "survival": true,
+    "termination": true,
+    "terminal_speed_mean": true,
+    "terminal_speed_p95": true,
+    "terminal_double_support": true,
+    "standing_zero": true,
+    "invalid_zero": true,
+    "non_knee_zero": true,
+    "residual_bound": true,
+    "residual_nonempty": true,
+    "effective_ratio": true
+  },
+  "candidate_relative_safety_checks": {
+    "velocity": true,
+    "lateral": true,
+    "yaw": true,
+    "support": true,
+    "slip": true,
+    "flight": true,
+    "root_height": true,
+    "root_tilt": true,
+    "action_delta": true,
+    "clearance": true,
+    "knee_left": true,
+    "knee_right": true,
+    "knee_asymmetry": true
+  },
+  "scientific_checks": {
+    "pitch_mean": false,
+    "pitch_p05": false,
+    "terminal_speed": true,
+    "terminal_double_support": true,
+    "terminal_root_height": true,
+    "terminal_root_tilt": true
+  },
+  "candidate_minus_source": {
+    "safety": {
+      "velocity_tracking_rmse_mps": -0.00032418077525973865,
+      "lateral_abs_mean_m": -0.00481046736240387,
+      "yaw_abs_mean_rad": -0.002086043357849121,
+      "com_support_outside_mean_m": -0.00020014122128486633,
+      "stance_slip_p95_mps": -0.00018685311079025269,
+      "flight_fraction": 3.0517578125e-05,
+      "root_height_min_mean_m": 0.0002594590187072754,
+      "root_tilt_max_mean_rad": -0.0008283257484436035,
+      "action_delta_abs_mean": 0.0004426538944244385,
+      "swing_clearance_p05_m": -1.7257407307624817e-06,
+      "knee_left_excursion_rad": 0.002345472574234009,
+      "knee_right_excursion_rad": 0.007820844650268555,
+      "knee_excursion_asymmetry_rad": 0.005475372076034546
+    },
+    "pitch": {
+      "mean": -0.001026943325996399,
+      "p05": -0.002094358205795288,
+      "p50": -0.0005534142255783081,
+      "p95": -0.00035694241523742676
+    },
+    "terminal": {
+      "base_speed_mean_mps": 9.549222886562347e-05,
+      "double_support_mean": 0.0,
+      "root_height_mean_m": 0.0003578662872314453,
+      "root_tilt_mean_rad": 0.0009183958172798157
+    }
+  },
+  "resources": {
+    "launch_count": 3,
+    "total_disk_delta_bytes": 414330880,
+    "peak_gpu_memory_mib": 3300.0,
+    "elapsed_s": {
+      "train": 26.186692528001004,
+      "source": 42.90691687800063,
+      "candidate": 42.836816248000105
+    }
+  },
+  "diagnostic_note": "The final_target_clip_sample_count field is a subtraction-tolerance diagnostic, not a clipping gate; the preregistered effective/requested absolute ratio is authoritative.",
+  "five_update_unlocked": false,
+  "long_training_unlocked": false,
+  "deployment_unlocked": false,
+  "task2_complete": false,
+  "boundary": "Even a pass would only authorize a separate bounded pilot preregistration. This result does not authorize long training, export, deployment, or Task2 completion."
+}
