@@ -20,6 +20,7 @@ parser.add_argument("--checkpoint", type=Path, required=True)
 parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--source-output", type=Path)
 parser.add_argument("--final-output", type=Path)
+parser.add_argument("--residual-checkpoint", type=Path)
 parser.add_argument("--num-envs", type=int, default=64)
 parser.add_argument("--seed", type=int, default=42)
 parser.add_argument("--eval-steps", type=int, default=200)
@@ -38,6 +39,9 @@ _phase66_pass_raw = os.environ.get("CWI_PHASE66_SIDE_PHASE_PASS")
 _phase66_screen = _phase66_pass_raw is not None
 _phase66_pass = int(_phase66_pass_raw) if _phase66_screen else None
 _phase67_live_zero = os.environ.get("CWI_PHASE67_RESIDUAL_LIVE_ZERO", "0") == "1"
+_phase68_train = os.environ.get("CWI_PHASE68_RESIDUAL_TRAIN", "0") == "1"
+_phase68_eval_role = os.environ.get("CWI_PHASE68_RESIDUAL_EVAL_ROLE")
+_phase68_eval = _phase68_eval_role is not None
 if sum(
     (
         _phase60_variant is not None,
@@ -48,9 +52,11 @@ if sum(
         _phase65_screen,
         _phase66_screen,
         _phase67_live_zero,
+        _phase68_train,
+        _phase68_eval,
     )
 ) > 1:
-    raise ValueError("Phase60 through Phase67 modes are mutually exclusive")
+    raise ValueError("Phase60 through Phase68 modes are mutually exclusive")
 if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen or _phase66_screen or _phase67_live_zero:
     if args.mode != "screen" or args.num_envs != 64 or args.seed != 42 or args.eval_steps != 200:
         raise ValueError("Phase62 through Phase67 screens require screen mode, 64 envs, seed 42, and 200 steps")
@@ -60,6 +66,22 @@ if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen or _
         raise ValueError("Phase66 side/phase pass must be 0 or 1")
 elif args.mode == "screen":
     raise ValueError("screen mode requires a Phase62 through Phase67 screen flag")
+if _phase68_train:
+    if args.mode != "train" or args.num_envs != 64 or args.seed != 42:
+        raise ValueError("Phase68 train requires train mode, 64 envs, and seed 42")
+if _phase68_eval:
+    if (
+        args.mode != "eval"
+        or args.num_envs != 64
+        or args.seed != 42
+        or args.eval_steps != 512
+        or _phase68_eval_role not in {"source", "candidate"}
+        or args.residual_checkpoint is None
+    ):
+        raise ValueError(
+            "Phase68 event eval requires source/candidate role, residual checkpoint, "
+            "64 envs, seed 42, and 512 steps"
+        )
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -82,6 +104,7 @@ from isaaclab.managers import SceneEntityCfg  # noqa: E402
 from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper  # noqa: E402
 from rsl_rl.modules import ActorCritic  # noqa: E402
 from rsl_rl.runners import OnPolicyRunner  # noqa: E402
+from rsl_rl.algorithms import PPO  # noqa: E402
 from gear_sonic.envs.x2_velocity import X2LowerVelocityTeacherPhaseTemplateFlatEnvCfg  # noqa: E402
 from gear_sonic.envs.x2_velocity.rsl_rl_ppo_cfg import X2LowerVelocityFlatPPORunnerCfg  # noqa: E402
 from gear_sonic.envs.x2_velocity.heading_command import gain_scheduled_velocity_cfg  # noqa: E402
@@ -107,6 +130,13 @@ from cwi_x2.transition_schedule import audit_phase_consistent_event  # noqa: E40
 from cwi_x2.phase_conditioned_knee_residual import (  # noqa: E402
     PhaseConditionedKneeTargetResidual,
 )
+from cwi_x2.phase68_residual_ppo import (  # noqa: E402
+    KNEE_ACTION_INDICES,
+    PhysicalKneeResidualVecEnv,
+    ResidualActorCritic,
+    build_seeded_residual,
+    deployable_moving_mask,
+)
 
 PEFT_PHASE58 = os.environ.get("CWI_PHASE58_PEFT", "0") == "1"
 PEFT_PHASE59 = os.environ.get("CWI_PHASE59_PEFT", "0") == "1"
@@ -121,6 +151,10 @@ ACTION_SCREEN_PHASE64 = _phase64_screen
 ACTION_SCREEN_PHASE65 = _phase65_screen
 ACTION_SCREEN_PHASE66 = _phase66_screen
 ACTION_SCREEN_PHASE67 = _phase67_live_zero
+RESIDUAL_PHASE68_TRAIN = _phase68_train
+RESIDUAL_PHASE68_EVAL = _phase68_eval
+RESIDUAL_PHASE68 = RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE68_EVAL
+TRANSITION_EVENT = PEFT_PHASE61 or RESIDUAL_PHASE68_EVAL
 ACTION_SCREEN = (
     ACTION_SCREEN_PHASE62
     or ACTION_SCREEN_PHASE63
@@ -130,9 +164,9 @@ ACTION_SCREEN = (
     or ACTION_SCREEN_PHASE67
 )
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
-POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN
+POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN or RESIDUAL_PHASE68
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 67 if ACTION_SCREEN_PHASE67 else (66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))))))))
+PHASE = 68 if RESIDUAL_PHASE68 else (67 if ACTION_SCREEN_PHASE67 else (66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))))))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -209,22 +243,24 @@ def build_env_cfg(*, evaluation: bool):
     }
     cfg.commands.base_velocity.ranges.lin_vel_x = (
         (0.30, 0.30)
-        if PEFT_PHASE61
-        else ((0.35, 0.35) if evaluation else (0.25, 0.60))
+        if TRANSITION_EVENT
+        else ((0.35, 0.35) if evaluation or RESIDUAL_PHASE68_TRAIN else (0.25, 0.60))
     )
     cfg.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
-    cfg.commands.base_velocity.ranges.ang_vel_z = (0.0, 0.0) if evaluation else (-0.20, 0.20)
+    cfg.commands.base_velocity.ranges.ang_vel_z = (
+        (0.0, 0.0) if evaluation or RESIDUAL_PHASE68_TRAIN else (-0.20, 0.20)
+    )
     cfg.commands.base_velocity.ranges.heading = (0.0, 0.0)
-    cfg.commands.base_velocity.heading_command = not evaluation and not PEFT_PHASE61
-    cfg.commands.base_velocity.rel_heading_envs = 0.0 if (evaluation or PEFT_PHASE61) else 0.75
+    cfg.commands.base_velocity.heading_command = not evaluation and not TRANSITION_EVENT and not RESIDUAL_PHASE68_TRAIN
+    cfg.commands.base_velocity.rel_heading_envs = 0.0 if (evaluation or TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN) else 0.75
     cfg.commands.base_velocity.rel_standing_envs = 0.0
     cfg.commands.base_velocity = gain_scheduled_velocity_cfg(
         cfg.commands.base_velocity,
-        ideal_env_fraction=1.0 if ACTION_SCREEN else 0.75,
+        ideal_env_fraction=1.0 if ACTION_SCREEN or RESIDUAL_PHASE68 else 0.75,
         ideal_heading_control_stiffness=1.0,
         response_heading_control_stiffness=0.05,
     )
-    if PEFT_PHASE61:
+    if TRANSITION_EVENT:
         cfg.commands.base_velocity = transition_velocity_cfg(
             cfg.commands.base_velocity,
             ideal_env_fraction=0.75,
@@ -252,7 +288,7 @@ def build_env_cfg(*, evaluation: bool):
     cfg.events.reset_base.params["pose_range"] = {
         "x": (0.0, 0.0), "y": (0.0, 0.0), "yaw": (0.0, 0.0)
     }
-    if evaluation or PEFT_PHASE61:
+    if evaluation or TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN:
         cfg.events.base_external_force_torque = None
         cfg.events.push_robot = None
     cfg.rewards.track_lin_vel_xy_exp.weight = 4.0
@@ -265,10 +301,10 @@ def build_env_cfg(*, evaluation: bool):
     cfg.rewards.contact_dwell.weight = -1.0
     cfg.rewards.contact_phase.weight = -1.0
     cfg.rewards.heading_error_l2.weight = 0.0
-    if PEFT_POSTURE:
+    if PEFT_POSTURE or RESIDUAL_PHASE68:
         pitch_weight, support_weight = (
             (-0.5, -0.5)
-            if PEFT_PHASE61
+            if TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN
             else POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT]
         )
         # Candidate evaluation uses a common reward contract.  The posture and
@@ -322,7 +358,7 @@ def build_env_cfg(*, evaluation: bool):
         {"enabled": True, "profile": "session03_session04_group", "randomize": False,
          "strength": 1.0, "filter_strength": 1.0, "delay_strength": 1.0,
          "include_ideal_endpoint": False,
-         "ideal_env_fraction": 1.0 if ACTION_SCREEN else 0.75,
+         "ideal_env_fraction": 1.0 if ACTION_SCREEN or RESIDUAL_PHASE68 else 0.75,
          "filter_only_env_fraction": 0.0},
         physics_dt_sec=cfg.sim.dt,
     )
@@ -389,7 +425,7 @@ def validate_live_contract(env, wrapped):
     }
     expected_counts = (
         {"none_ideal": 64, "none_response": 0, "bounded_ideal": 0, "bounded_response": 0}
-        if ACTION_SCREEN
+        if ACTION_SCREEN or RESIDUAL_PHASE68
         else
         {"none_ideal": 48, "none_response": 16, "bounded_ideal": 0, "bounded_response": 0}
         if PEFT_POSTURE
@@ -757,6 +793,20 @@ def evaluate() -> None:
             if ACTION_SCREEN_PHASE67
             else None
         )
+        phase68_residual = None
+        phase68_checkpoint = None
+        if RESIDUAL_PHASE68_EVAL:
+            phase68_residual = build_seeded_residual().to(env.device).eval()
+            phase68_checkpoint = torch.load(
+                args.residual_checkpoint, map_location=env.device, weights_only=False
+            )
+            if phase68_checkpoint.get("schema") != "x2_phase68_residual_checkpoint_v1":
+                raise RuntimeError("Phase68 residual checkpoint schema changed")
+            if phase68_checkpoint.get("base_checkpoint_sha256") != EXPECTED[ORIGINAL]:
+                raise RuntimeError("Phase68 residual checkpoint base changed")
+            phase68_residual.load_state_dict(
+                phase68_checkpoint["residual_state_dict"], strict=True
+            )
         robot = env.scene["robot"]
         upper_ids = [robot.joint_names.index(name) for name in UPPER14]
         initial_pos = robot.data.root_pos_w.clone()
@@ -922,7 +972,21 @@ def evaluate() -> None:
             if ACTION_SCREEN_PHASE67
             else {}
         )
-        if PEFT_PHASE61:
+        phase68_contract = {
+            "role": _phase68_eval_role,
+            "residual_output_max_abs_rad": 0.0,
+            "residual_output_rms_rad": 0.0,
+            "standing_shadow_output_max_abs_rad": 0.0,
+            "invalid_contact_shadow_output_max_abs_rad": 0.0,
+            "processed_target_delta_max_abs_rad": 0.0,
+            "non_knee_output_max_abs_rad": 0.0,
+            "requested_abs_sum_rad": 0.0,
+            "effective_abs_sum_rad": 0.0,
+            "final_target_clip_sample_count": 0,
+            "active_sample_count": 0,
+            "finite": True,
+        } if RESIDUAL_PHASE68_EVAL else {}
+        if TRANSITION_EVENT:
             samples.update(
                 terminal_base_speed_mps=[],
                 terminal_double_support=[],
@@ -974,6 +1038,29 @@ def evaluate() -> None:
                 term._processed_actions[:] = phase67_intervention_target
 
             term.process_actions = phase67_process_actions
+        phase68_requested_target = torch.zeros((64, 15), device=env.device)
+        phase68_source_target = torch.zeros((64, 15), device=env.device)
+        phase68_intervention_target = torch.zeros((64, 15), device=env.device)
+        phase68_effective_target = torch.zeros((64, 15), device=env.device)
+        if RESIDUAL_PHASE68_EVAL:
+            phase68_original_process_actions = term.process_actions
+
+            def phase68_process_actions(actions: torch.Tensor) -> None:
+                nonlocal phase68_source_target
+                nonlocal phase68_intervention_target
+                nonlocal phase68_effective_target
+                phase68_original_process_actions(actions)
+                phase68_source_target = term._processed_actions.clone()
+                proposed = phase68_source_target + phase68_requested_target
+                if term.cfg.clip is not None:
+                    proposed = torch.clamp(
+                        proposed, min=term._clip[:, :, 0], max=term._clip[:, :, 1]
+                    )
+                phase68_intervention_target = proposed
+                phase68_effective_target = proposed - phase68_source_target
+                term._processed_actions[:] = proposed
+
+            term.process_actions = phase68_process_actions
         with torch.inference_mode():
             for step in range(args.eval_steps):
                 phase65_pre_policy = obs["policy"] if ACTION_SCREEN_PHASE65 else None
@@ -1068,6 +1155,48 @@ def evaluate() -> None:
                         torch.isfinite(phase67_requested_target).all()
                         and torch.isfinite(shadow_output).all()
                         and torch.isfinite(invalid_contact_output).all()
+                    )
+                if RESIDUAL_PHASE68_EVAL:
+                    phase68_requested_target = phase68_residual.target_offset_15d(
+                        obs["policy"]
+                    )
+                    standing_shadow = obs["policy"].clone()
+                    standing_shadow[:, -4:] = standing_shadow.new_tensor(
+                        [0.0, 0.0, 1.0, 1.0]
+                    )
+                    invalid_shadow = obs["policy"].clone()
+                    invalid_shadow[:, -2:] = invalid_shadow.new_tensor([0.6, 0.6])
+                    standing_output = phase68_residual.target_offset_15d(standing_shadow)
+                    invalid_output = phase68_residual.target_offset_15d(invalid_shadow)
+                    non_knee_requested = phase68_requested_target.clone()
+                    non_knee_requested[:, list(KNEE_ACTION_INDICES)] = 0.0
+                    active_phase68 = deployable_moving_mask(obs["policy"])
+                    phase68_contract["active_sample_count"] += int(active_phase68.sum())
+                    phase68_contract["residual_output_max_abs_rad"] = max(
+                        phase68_contract["residual_output_max_abs_rad"],
+                        float(phase68_requested_target.abs().max()),
+                    )
+                    phase68_contract["residual_output_rms_rad"] += float(
+                        phase68_requested_target[:, list(KNEE_ACTION_INDICES)]
+                        .square()
+                        .sum()
+                    )
+                    phase68_contract["standing_shadow_output_max_abs_rad"] = max(
+                        phase68_contract["standing_shadow_output_max_abs_rad"],
+                        float(standing_output.abs().max()),
+                    )
+                    phase68_contract["invalid_contact_shadow_output_max_abs_rad"] = max(
+                        phase68_contract["invalid_contact_shadow_output_max_abs_rad"],
+                        float(invalid_output.abs().max()),
+                    )
+                    phase68_contract["non_knee_output_max_abs_rad"] = max(
+                        phase68_contract["non_knee_output_max_abs_rad"],
+                        float(non_knee_requested.abs().max()),
+                    )
+                    phase68_contract["finite"] &= bool(
+                        torch.isfinite(phase68_requested_target).all()
+                        and torch.isfinite(standing_output).all()
+                        and torch.isfinite(invalid_output).all()
                     )
                 raw_action = model.act_inference(obs)
                 action = raw_action
@@ -1280,7 +1409,7 @@ def evaluate() -> None:
                     }.items():
                         sample_valid = (
                             valid_bool & moving
-                            if PEFT_PHASE61
+                            if TRANSITION_EVENT
                             and name in {"signed_pitch_rad", "com_support_outside_m"}
                             else valid_bool
                         )
@@ -1291,7 +1420,7 @@ def evaluate() -> None:
                                 torch.full_like(value, torch.nan),
                             ).detach().cpu()
                         )
-                    if PEFT_PHASE61:
+                    if TRANSITION_EVENT:
                         terminal_mask = env.command_manager.get_term(
                             "base_velocity"
                         ).terminal_stop_mask()
@@ -1375,6 +1504,35 @@ def evaluate() -> None:
                                 "root_state": tensor_hash(robot.data.root_state_w),
                             }
                         )
+                if RESIDUAL_PHASE68_EVAL:
+                    phase68_processed_delta = (
+                        phase68_intervention_target - phase68_source_target
+                    )
+                    phase68_non_knee = phase68_processed_delta.clone()
+                    phase68_non_knee[:, list(KNEE_ACTION_INDICES)] = 0.0
+                    requested_abs = phase68_requested_target[:, list(KNEE_ACTION_INDICES)].abs()
+                    effective_abs = phase68_effective_target[:, list(KNEE_ACTION_INDICES)].abs()
+                    phase68_contract["requested_abs_sum_rad"] += float(requested_abs.sum())
+                    phase68_contract["effective_abs_sum_rad"] += float(effective_abs.sum())
+                    phase68_contract["final_target_clip_sample_count"] += int(
+                        (
+                            phase68_effective_target[:, list(KNEE_ACTION_INDICES)].abs()
+                            + 1.0e-8
+                            < phase68_requested_target[:, list(KNEE_ACTION_INDICES)].abs()
+                        ).sum()
+                    )
+                    phase68_contract["processed_target_delta_max_abs_rad"] = max(
+                        phase68_contract["processed_target_delta_max_abs_rad"],
+                        float(phase68_processed_delta.abs().max()),
+                    )
+                    phase68_contract["non_knee_output_max_abs_rad"] = max(
+                        phase68_contract["non_knee_output_max_abs_rad"],
+                        float(phase68_non_knee.abs().max()),
+                    )
+                    phase68_contract["finite"] &= bool(
+                        torch.isfinite(phase68_source_target).all()
+                        and torch.isfinite(phase68_intervention_target).all()
+                    )
                 for name, value in values.items():
                     sums[name] += value * valid
                 counts += valid
@@ -1388,6 +1546,11 @@ def evaluate() -> None:
                 obs = next_obs
         if ACTION_SCREEN:
             groups = screen_groups
+        elif RESIDUAL_PHASE68_EVAL:
+            groups = {
+                "all": torch.ones_like(zero_mask),
+                "ideal": ideal_mask,
+            }
         elif PEFT_POSTURE:
             groups = {
                 "all": torch.ones_like(zero_mask),
@@ -1408,7 +1571,9 @@ def evaluate() -> None:
             "checkpoint_sha256": sha256(args.checkpoint), "checkpoint_iter": int(payload.get("iter", -1)),
             "seed": args.seed, "num_envs": 64, "eval_steps": args.eval_steps,
             "posture_variant": (
-                "action_sensitivity"
+                f"phase68_residual_event_{_phase68_eval_role}"
+                if RESIDUAL_PHASE68_EVAL
+                else "action_sensitivity"
                 if ACTION_SCREEN_PHASE62
                 else (
                     "hip_pitch_dose"
@@ -1441,7 +1606,7 @@ def evaluate() -> None:
             },
             "finite": bool(all(torch.isfinite(value).all() for value in sums.values())),
         }
-        if PEFT_PHASE61:
+        if TRANSITION_EVENT:
             report["transition_event"] = {
                 "stand_s": 0.0,
                 "accelerate_s": 1.0,
@@ -1647,6 +1812,35 @@ def evaluate() -> None:
                 "optimizer_steps": 0,
                 "checkpoint_count": 0,
                 "checkpoint_modified": False,
+            }
+        if RESIDUAL_PHASE68_EVAL:
+            rms_denominator = max(1, 2 * phase68_contract["active_sample_count"])
+            phase68_contract["residual_output_rms_rad"] = math.sqrt(
+                phase68_contract["residual_output_rms_rad"] / rms_denominator
+            )
+            phase68_contract["effective_requested_abs_ratio"] = (
+                phase68_contract["effective_abs_sum_rad"]
+                / phase68_contract["requested_abs_sum_rad"]
+                if phase68_contract["requested_abs_sum_rad"] > 0.0
+                else 1.0
+            )
+            report["phase68_residual_event"] = {
+                "role": _phase68_eval_role,
+                "runner_sha256": sha256(Path(__file__)),
+                "module_sha256": sha256(
+                    REPO / "src/cwi_x2/phase_conditioned_knee_residual.py"
+                ),
+                "interface_sha256": sha256(
+                    REPO / "src/cwi_x2/phase68_residual_ppo.py"
+                ),
+                "residual_checkpoint": str(args.residual_checkpoint),
+                "residual_checkpoint_sha256": sha256(args.residual_checkpoint),
+                "residual_state_hash": state_hash(phase68_residual),
+                "contract": phase68_contract,
+                "optimizer_steps": 0,
+                "checkpoint_count": 0,
+                "actuator_domain": "ideal only",
+                "evaluation_action": "deterministic transformed Gaussian location",
             }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
@@ -1920,14 +2114,428 @@ def train() -> None:
             env.close()
 
 
+def _cpu_state_dict(module: torch.nn.Module) -> dict[str, torch.Tensor]:
+    return {
+        name: value.detach().cpu().clone()
+        for name, value in module.state_dict().items()
+    }
+
+
+def _phase68_checkpoint_payload(
+    residual: PhaseConditionedKneeTargetResidual,
+    optimizer: torch.optim.Optimizer,
+    *,
+    role: str,
+    initial_state_hash: str,
+) -> dict[str, object]:
+    return {
+        "schema": "x2_phase68_residual_checkpoint_v1",
+        "role": role,
+        "base_checkpoint": str(ORIGINAL),
+        "base_checkpoint_sha256": EXPECTED[ORIGINAL],
+        "base_iter": 2600,
+        "residual_update_index": 0 if role == "source_zero" else 1,
+        "residual_initialization_seed": 680042,
+        "residual_initial_state_hash": initial_state_hash,
+        "residual_state_hash": state_hash(residual),
+        "residual_state_dict": _cpu_state_dict(residual),
+        "latent_std": [0.35, 0.35],
+        "optimizer_state_dict": optimizer.state_dict(),
+        "optimizer_parameter_names": sorted(
+            name for name, parameter in residual.named_parameters() if parameter.requires_grad
+        ),
+        "action_transform": {
+            "latent_distribution": "Normal(mean, fixed_std_0.35)",
+            "physical_transform": "0.003_rad_times_tanh_latent",
+            "physical_indices": list(KNEE_ACTION_INDICES),
+            "standing_and_invalid_suffix": "exact_zero",
+        },
+        "reward": {
+            "source_locomotion_reward": "frozen Phase56 contract",
+            "signed_backward_pitch_weight": -0.5,
+            "actual_support_com_weight": -0.5,
+        },
+        "rollout": {
+            "seed": 42,
+            "num_envs": 64,
+            "steps_per_env": 200,
+            "optimizer_steps": 0 if role == "source_zero" else 1,
+        },
+        "versions": {
+            "torch": torch.__version__,
+            "rsl_rl": "3.0.1",
+        },
+    }
+
+
+def _atomic_save_phase68_checkpoint(
+    path: Path,
+    residual: PhaseConditionedKneeTargetResidual,
+    optimizer: torch.optim.Optimizer,
+    *,
+    role: str,
+    initial_state_hash: str,
+) -> str:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        raise RuntimeError(f"refusing to overwrite Phase68 checkpoint: {path}")
+    temporary = path.with_name(f".{path.name}.tmp")
+    if temporary.exists():
+        raise RuntimeError(f"stale Phase68 checkpoint temporary exists: {temporary}")
+    payload = _phase68_checkpoint_payload(
+        residual, optimizer, role=role, initial_state_hash=initial_state_hash
+    )
+    with temporary.open("wb") as stream:
+        torch.save(payload, stream)
+        stream.flush()
+        os.fsync(stream.fileno())
+    restored_payload = torch.load(temporary, map_location="cpu", weights_only=False)
+    restored = build_seeded_residual()
+    restored.load_state_dict(restored_payload["residual_state_dict"], strict=True)
+    if state_hash(restored) != payload["residual_state_hash"]:
+        temporary.unlink()
+        raise RuntimeError("Phase68 checkpoint strict reload hash mismatch")
+    os.replace(temporary, path)
+    return sha256(path)
+
+
+def train_phase68() -> None:
+    """Run one real PPO optimizer step over the two-dimensional residual MDP."""
+
+    env = wrapped = residual_env = None
+    try:
+        env = ManagerBasedRLEnv(cfg=build_env_cfg(evaluation=False))
+        wrapped = RslRlVecEnvWrapper(env, clip_actions=None)
+        obs, _, _, _, domain_counts = validate_live_contract(env, wrapped)
+        source_model = build_model(obs, env.device).eval()
+        source_payload = torch.load(
+            args.checkpoint, map_location=env.device, weights_only=False
+        )
+        source_model.load_state_dict(source_payload["model_state_dict"], strict=True)
+        for parameter in source_model.parameters():
+            parameter.requires_grad_(False)
+        residual = build_seeded_residual().to(env.device)
+        initial_state_hash = state_hash(residual)
+        expected_initial_hash = "4cd4f7d2dbd62db75ea5568525e7b0b95b7decc1ad8ccbb1693a91f3eae37018"
+        if initial_state_hash != expected_initial_hash:
+            raise RuntimeError("Phase68 seeded residual initial state hash changed")
+        policy = ResidualActorCritic(source_model, residual).to(env.device)
+        trainable_names = sorted(
+            name for name, parameter in policy.named_parameters() if parameter.requires_grad
+        )
+        expected_trainable_names = sorted(
+            f"residual.{name}"
+            for name, parameter in residual.named_parameters()
+            if parameter.requires_grad
+        )
+        if trainable_names != expected_trainable_names:
+            raise RuntimeError("Phase68 trainable parameter whitelist changed")
+        records: dict[str, list[torch.Tensor] | float | int] = {
+            "latent": [],
+            "requested": [],
+            "effective": [],
+            "reward": [],
+            "non_knee_max_abs": 0.0,
+            "done_count": 0,
+            "active_count": 0,
+            "final_clip_count": 0,
+        }
+
+        def record_step(row: dict[str, torch.Tensor]) -> None:
+            records["latent"].append(row["latent"].cpu())
+            records["requested"].append(row["requested_knee_offset"].cpu())
+            records["effective"].append(row["effective_knee_offset"].cpu())
+            records["reward"].append(row["reward"].cpu())
+            records["non_knee_max_abs"] = max(
+                float(records["non_knee_max_abs"]),
+                float(row["non_knee_effective"].abs().max()),
+            )
+            records["done_count"] = int(records["done_count"]) + int(
+                row["done"].bool().sum()
+            )
+            records["active_count"] = int(records["active_count"]) + int(
+                row["active_mask"].sum()
+            )
+            records["final_clip_count"] = int(records["final_clip_count"]) + int(
+                (
+                    row["effective_knee_offset"].abs() + 1.0e-8
+                    < row["requested_knee_offset"].abs()
+                ).sum()
+            )
+
+        residual_env = PhysicalKneeResidualVecEnv(
+            wrapped, policy, step_callback=record_step
+        )
+        algorithm = PPO(
+            policy,
+            num_learning_epochs=1,
+            num_mini_batches=1,
+            clip_param=0.2,
+            gamma=0.99,
+            lam=1.0,
+            value_loss_coef=0.0,
+            entropy_coef=0.0,
+            learning_rate=1.0e-3,
+            max_grad_norm=1.0,
+            schedule="fixed",
+            desired_kl=None,
+            device=args.device,
+        )
+        algorithm.optimizer = torch.optim.Adam(residual.parameters(), lr=1.0e-3)
+        algorithm.init_storage("rl", 64, 200, obs, [2])
+        source_checkpoint_sha = _atomic_save_phase68_checkpoint(
+            args.source_output,
+            residual,
+            algorithm.optimizer,
+            role="source_zero",
+            initial_state_hash=initial_state_hash,
+        )
+        source_hash_before = state_hash(source_model)
+        source_std_before = tensor_hash(source_model.std)
+        encoder_hash_before = state_hash(residual.encoder)
+        head_hash_before = state_hash(residual.head)
+        parameter_before = {
+            name: parameter.detach().clone()
+            for name, parameter in residual.named_parameters()
+        }
+        fixed_obs = obs.clone()
+        cpu_rng_before = tensor_hash(torch.random.get_rng_state())
+        cuda_rng_before = tensor_hash(torch.cuda.get_rng_state(env.device))
+        obs_train = residual_env.get_observations()
+        for _ in range(200):
+            latent_action = algorithm.act(obs_train)
+            next_obs, reward, done, extras = residual_env.step(latent_action)
+            algorithm.process_env_step(next_obs, reward, done, extras)
+            obs_train = next_obs
+        if int(records["done_count"]) != 0:
+            raise RuntimeError("Phase68 rollout terminated before the update")
+        if int(records["active_count"]) != 64 * 200:
+            raise RuntimeError("Phase68 training rollout contains standing or invalid suffix")
+        algorithm.storage.compute_returns(
+            torch.zeros((64, 1), device=env.device), gamma=0.99, lam=1.0
+        )
+        stored_latent = algorithm.storage.actions.detach().cpu()
+        received_latent = torch.stack(records["latent"], dim=0)
+        stored_reward = algorithm.storage.rewards.detach().cpu().squeeze(-1)
+        received_reward = torch.stack(records["reward"], dim=0)
+        if not torch.equal(stored_latent, received_latent):
+            raise RuntimeError("Phase68 stored latent differs from wrapper-received latent")
+        if not torch.equal(stored_reward, received_reward):
+            raise RuntimeError("Phase68 stored reward differs from environment reward")
+        flat_obs = algorithm.storage.observations.flatten(0, 1)
+        flat_actions = algorithm.storage.actions.flatten(0, 1)
+        old_log_prob = algorithm.storage.actions_log_prob.flatten(0, 1).squeeze(-1)
+        policy.update_distribution(flat_obs)
+        recomputed_log_prob = policy.get_actions_log_prob(flat_actions)
+        pre_log_prob_max_abs = float(
+            (recomputed_log_prob - old_log_prob).abs().max()
+        )
+        pre_ratio_max_abs_from_one = float(
+            (torch.exp(recomputed_log_prob - old_log_prob) - 1.0).abs().max()
+        )
+        advantages = algorithm.storage.advantages.flatten(0, 1).squeeze(-1)
+        probe_surrogate = -(
+            advantages * torch.exp(recomputed_log_prob - old_log_prob)
+        ).mean()
+        named_parameters = list(residual.named_parameters())
+        probe_gradients = torch.autograd.grad(
+            probe_surrogate,
+            [parameter for _, parameter in named_parameters],
+            allow_unused=True,
+        )
+        probe_gradient_norms = {
+            name: (
+                float(gradient.norm()) if gradient is not None else None
+            )
+            for (name, _), gradient in zip(named_parameters, probe_gradients, strict=True)
+        }
+        head_probe_nonzero = any(
+            value is not None and value > 0.0
+            for name, value in probe_gradient_norms.items()
+            if name.startswith("head.")
+        )
+        encoder_probe_exact_zero = all(
+            value == 0.0
+            for name, value in probe_gradient_norms.items()
+            if name.startswith("encoder.")
+        )
+        optimizer_steps = {"count": 0}
+        original_step = algorithm.optimizer.step
+
+        def counted_step(*step_args, **step_kwargs):
+            optimizer_steps["count"] += 1
+            return original_step(*step_args, **step_kwargs)
+
+        algorithm.optimizer.step = counted_step
+        losses = algorithm.update()
+        parameter_after = dict(residual.named_parameters())
+        changed_names = sorted(
+            name
+            for name, before in parameter_before.items()
+            if not torch.equal(before, parameter_after[name].detach())
+        )
+        update_l2 = math.sqrt(
+            sum(
+                float((parameter_after[name].detach() - before).square().sum())
+                for name, before in parameter_before.items()
+            )
+        )
+        requested = torch.stack(records["requested"], dim=0)
+        effective = torch.stack(records["effective"], dim=0)
+        requested_abs_sum = float(requested.abs().sum())
+        effective_abs_sum = float(effective.abs().sum())
+        with torch.no_grad():
+            candidate_latent_mean = policy.act_inference(fixed_obs)
+            candidate_physical_mean = policy.physical_target_offset_from_latent(
+                candidate_latent_mean, fixed_obs
+            )
+        technical_checks = {
+            "initial_state_hash": initial_state_hash == expected_initial_hash,
+            "trainable_parameter_count": sum(
+                parameter.numel() for parameter in residual.parameters()
+            ) == 4130,
+            "source_hash_exact": state_hash(source_model) == source_hash_before,
+            "source_std_exact": tensor_hash(source_model.std) == source_std_before,
+            "source_grad_none": all(
+                parameter.grad is None for parameter in source_model.parameters()
+            ),
+            "storage_latent_exact": torch.equal(stored_latent, received_latent),
+            "storage_reward_exact": torch.equal(stored_reward, received_reward),
+            "storage_shapes": (
+                list(algorithm.storage.actions.shape) == [200, 64, 2]
+                and list(algorithm.storage.mu.shape) == [200, 64, 2]
+                and list(algorithm.storage.sigma.shape) == [200, 64, 2]
+                and list(algorithm.storage.rewards.shape) == [200, 64, 1]
+            ),
+            "pre_log_prob_exact": pre_log_prob_max_abs <= 1.0e-6,
+            "pre_ratio_exact": pre_ratio_max_abs_from_one <= 1.0e-6,
+            "head_probe_gradient_nonzero": head_probe_nonzero,
+            "encoder_probe_gradient_exact_zero": encoder_probe_exact_zero,
+            "optimizer_step_exact_one": optimizer_steps["count"] == 1,
+            "only_head_changed": changed_names
+            and set(changed_names).issubset({"head.weight", "head.bias"}),
+            "encoder_hash_exact": state_hash(residual.encoder) == encoder_hash_before,
+            "head_hash_changed": state_hash(residual.head) != head_hash_before,
+            "losses_finite": all(math.isfinite(float(value)) for value in losses.values()),
+            "parameters_finite": all(
+                torch.isfinite(value).all() for value in residual.state_dict().values()
+            ),
+            "rollout_no_done": int(records["done_count"]) == 0,
+            "rollout_all_active": int(records["active_count"]) == 64 * 200,
+            "non_knee_exact_zero": float(records["non_knee_max_abs"]) == 0.0,
+            "physical_bound": float(requested.abs().max()) <= 0.003 + 1.0e-8,
+            "effective_ratio": (
+                effective_abs_sum / requested_abs_sum >= 0.95
+                if requested_abs_sum > 0.0
+                else False
+            ),
+            "candidate_mean_nonzero": float(candidate_physical_mean.abs().max()) > 0.0,
+            "candidate_mean_bounded": float(candidate_physical_mean.abs().max()) <= 0.003 + 1.0e-8,
+            "update_l2_bounded": 0.0 < update_l2 <= 0.10,
+        }
+        technical_pass = all(technical_checks.values())
+        candidate_checkpoint_sha = None
+        if technical_pass:
+            candidate_checkpoint_sha = _atomic_save_phase68_checkpoint(
+                args.final_output,
+                residual,
+                algorithm.optimizer,
+                role="candidate_one_optimizer_step",
+                initial_state_hash=initial_state_hash,
+            )
+        report = {
+            "schema": "x2_phase68_residual_train_v1",
+            "phase": 68,
+            "mode": "train",
+            "decision": (
+                "UPDATE_TECHNICAL_PASS_PENDING_EVENT_EVAL"
+                if technical_pass
+                else "FAIL_INVALID_UPDATE_STOP"
+            ),
+            "base_checkpoint": str(args.checkpoint),
+            "base_checkpoint_sha256": sha256(args.checkpoint),
+            "source_residual_checkpoint": str(args.source_output),
+            "source_residual_checkpoint_sha256": source_checkpoint_sha,
+            "candidate_residual_checkpoint": (
+                str(args.final_output) if technical_pass else None
+            ),
+            "candidate_residual_checkpoint_sha256": candidate_checkpoint_sha,
+            "seed": 42,
+            "residual_initialization_seed": 680042,
+            "cpu_rng_before_rollout_hash": cpu_rng_before,
+            "cuda_rng_before_rollout_hash": cuda_rng_before,
+            "num_envs": 64,
+            "steps_per_env": 200,
+            "transitions": 12800,
+            "optimizer_steps": optimizer_steps["count"],
+            "learning_epochs": 1,
+            "mini_batches": 1,
+            "learning_rate": 1.0e-3,
+            "latent_std": [0.35, 0.35],
+            "domain_upper_counts": domain_counts,
+            "trainable_names": trainable_names,
+            "trainable_parameters": 4130,
+            "source_model_hash": source_hash_before,
+            "source_std_hash": source_std_before,
+            "initial_residual_state_hash": initial_state_hash,
+            "final_residual_state_hash": state_hash(residual),
+            "changed_parameter_names": changed_names,
+            "parameter_update_l2": update_l2,
+            "probe_gradient_norms": probe_gradient_norms,
+            "pre_update_log_prob_max_abs": pre_log_prob_max_abs,
+            "pre_update_ratio_max_abs_from_one": pre_ratio_max_abs_from_one,
+            "losses": {name: float(value) for name, value in losses.items()},
+            "storage": {
+                "observation_policy_shape": list(algorithm.storage.observations["policy"].shape),
+                "observation_critic_shape": list(algorithm.storage.observations["critic"].shape),
+                "latent_action_shape": list(stored_latent.shape),
+                "old_mu_shape": list(algorithm.storage.mu.shape),
+                "old_sigma_shape": list(algorithm.storage.sigma.shape),
+                "reward_shape": list(algorithm.storage.rewards.shape),
+                "stored_latent_hash": tensor_hash(stored_latent),
+                "wrapper_received_latent_hash": tensor_hash(received_latent),
+            },
+            "physical_rollout": {
+                "requested_max_abs_rad": float(requested.abs().max()),
+                "requested_rms_rad": float(requested.square().mean().sqrt()),
+                "effective_requested_abs_ratio": (
+                    effective_abs_sum / requested_abs_sum
+                    if requested_abs_sum > 0.0
+                    else None
+                ),
+                "final_clip_count": int(records["final_clip_count"]),
+                "non_knee_max_abs_rad": float(records["non_knee_max_abs"]),
+                "active_sample_count": int(records["active_count"]),
+                "candidate_mean_max_abs_rad": float(candidate_physical_mean.abs().max()),
+                "candidate_mean_rms_rad": float(candidate_physical_mean.square().mean().sqrt()),
+            },
+            "technical_checks": technical_checks,
+            "long_training_unlocked": False,
+            "deployment_unlocked": False,
+            "task2_complete": False,
+        }
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report, indent=2), flush=True)
+        if not technical_pass:
+            raise RuntimeError("Phase68 technical update gates failed")
+    finally:
+        if residual_env is not None:
+            residual_env.close()
+        elif wrapped is not None:
+            wrapped.close()
+        elif env is not None:
+            env.close()
+
+
 def main() -> None:
     if any(not path.is_file() or sha256(path) != expected for path, expected in EXPECTED.items()):
         raise RuntimeError(f"Phase{PHASE} immutable artifact hash guard failed")
     required = {
         "CWI_UPPER_MOTION": str(UPPER),
-        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN else "0.50",
-        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN else "1",
-        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN else "interleaved",
+        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_PHASE68 else "0.50",
+        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_PHASE68 else "1",
+        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_PHASE68 else "interleaved",
         "CWI_UPPER_SCALE": "0.25", "CWI_UPPER_TIME_SCALE": "1.0",
         "CWI_UPPER_LOOP": "1", "CWI_UPPER_MAX_EXCURSION_RAD": "0.12",
         "CWI_UPPER_MAX_VELOCITY_RADPS": "0.20",
@@ -1942,7 +2550,7 @@ def main() -> None:
             raise RuntimeError("Phase60 group A is frozen evaluation-only")
         if args.checkpoint.resolve() != ORIGINAL.resolve() and not PEFT_PHASE59:
             raise RuntimeError("Phase56 train must fresh-start from original Stage219 PT")
-        train()
+        train_phase68() if RESIDUAL_PHASE68_TRAIN else train()
 
 
 if __name__ == "__main__":
