@@ -26,7 +26,11 @@ parser.add_argument("--eval-steps", type=int, default=200)
 parser.add_argument("--update-index", type=int, default=1)
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
-if (args.num_envs, args.seed) != (64, 42):
+_phase60_variant = os.environ.get("CWI_PHASE60_POSTURE_VARIANT")
+if _phase60_variant is not None:
+    if args.num_envs != 64 or args.seed not in ({40, 41, 42} if args.mode == "eval" else {42}):
+        raise ValueError("Phase60 requires 64 envs, train seed 42, and eval seed 40/41/42")
+elif (args.num_envs, args.seed) != (64, 42):
     raise ValueError("Phase56 is frozen to 64 envs and seed 42")
 if args.mode == "train" and (args.source_output is None or args.final_output is None):
     raise ValueError("train mode requires --source-output and --final-output")
@@ -35,6 +39,7 @@ simulation_app = app_launcher.app
 
 import torch  # noqa: E402
 from isaaclab.envs import ManagerBasedRLEnv  # noqa: E402
+from isaaclab.managers import RewardTermCfg as RewTerm  # noqa: E402
 from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper  # noqa: E402
 from rsl_rl.modules import ActorCritic  # noqa: E402
 from rsl_rl.runners import OnPolicyRunner  # noqa: E402
@@ -48,11 +53,26 @@ from x2_upper_robust_lora_phase57 import (  # noqa: E402
     inject_standard93d_lora,
     tensor_map_hash,
 )
+from x2_native_locomotion_posture_phase60 import (  # noqa: E402
+    actual_support_com_outside_distance,
+    actual_support_com_penalty,
+    signed_backward_pitch_penalty,
+    signed_root_pitch_rad,
+)
 
 PEFT_PHASE58 = os.environ.get("CWI_PHASE58_PEFT", "0") == "1"
 PEFT_PHASE59 = os.environ.get("CWI_PHASE59_PEFT", "0") == "1"
-PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59
-PHASE = 59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)
+POSTURE_VARIANT = os.environ.get("CWI_PHASE60_POSTURE_VARIANT")
+if POSTURE_VARIANT is not None and POSTURE_VARIANT not in {"A", "B", "C"}:
+    raise ValueError("CWI_PHASE60_POSTURE_VARIANT must be A, B, or C")
+PEFT_PHASE60 = POSTURE_VARIANT is not None
+PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_PHASE60
+PHASE = 60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))
+POSTURE_REWARD_WEIGHTS = {
+    "A": (0.0, 0.0),
+    "B": (-0.5, 0.0),
+    "C": (-0.5, -0.5),
+}
 
 REPO = Path(__file__).resolve().parents[1]
 OLD = Path("/home/humanplus/x2_teleop_final/x2_sonic")
@@ -112,7 +132,7 @@ def state_hash(module: torch.nn.Module) -> str:
 def build_env_cfg(*, evaluation: bool):
     cfg = X2LowerVelocityTeacherPhaseTemplateFlatEnvCfg()
     cfg.scene.num_envs = 64
-    cfg.seed = 42
+    cfg.seed = args.seed
     cfg.sim.device = args.device
     cfg.scene.robot.spawn.asset_path = X2_URDF_BY_COLLISION_PROFILE["sole12"]
     cfg.scene.robot.spawn.articulation_props.enabled_self_collisions = False
@@ -150,6 +170,33 @@ def build_env_cfg(*, evaluation: bool):
     cfg.rewards.contact_dwell.weight = -1.0
     cfg.rewards.contact_phase.weight = -1.0
     cfg.rewards.heading_error_l2.weight = 0.0
+    if PEFT_PHASE60:
+        pitch_weight, support_weight = POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT]
+        # Candidate evaluation uses a common reward contract.  The posture and
+        # support terms remain diagnostics there and influence training only.
+        if evaluation:
+            pitch_weight = support_weight = 0.0
+        cfg.rewards.signed_backward_pitch = RewTerm(
+            func=signed_backward_pitch_penalty,
+            weight=pitch_weight,
+            params={
+                "command_name": "base_velocity",
+                "tolerance_rad": 0.05,
+                "normalization_rad": 0.15,
+                "command_threshold_mps": 0.10,
+                "asset_name": "robot",
+            },
+        )
+        cfg.rewards.actual_support_com = RewTerm(
+            func=actual_support_com_penalty,
+            weight=support_weight,
+            params={
+                "command_name": "base_velocity",
+                "normalization_m": 0.10,
+                "force_threshold_n": 10.0,
+                "command_threshold_mps": 0.10,
+            },
+        )
     cfg.observations.policy.enable_corruption = False
     _apply_x2_actuator_response(
         cfg.scene.robot,
@@ -200,9 +247,13 @@ def validate_live_contract(env, wrapped):
     if tuple(term._joint_names) != LOWER15:
         raise RuntimeError("Phase56 lower12+waist3 order changed")
     zero_mask = term._cwi_upper_zero_mask
-    expected_mask = torch.arange(64, device=zero_mask.device) % 2 == 0
+    expected_mask = (
+        torch.ones(64, dtype=torch.bool, device=zero_mask.device)
+        if PEFT_PHASE60
+        else torch.arange(64, device=zero_mask.device) % 2 == 0
+    )
     if not torch.equal(zero_mask, expected_mask):
-        raise RuntimeError("Phase56 upper split is not frozen even/odd 32/32")
+        raise RuntimeError(f"Phase{PHASE} upper split differs from its frozen contract")
     robot = env.scene["robot"]
     if len(robot.joint_names) != 31:
         raise RuntimeError("Phase56 articulation is not 31DoF")
@@ -216,7 +267,11 @@ def validate_live_contract(env, wrapped):
         "bounded_ideal": int((~zero_mask & ideal).sum()),
         "bounded_response": int((~zero_mask & ~ideal).sum()),
     }
-    expected_counts = {"none_ideal": 24, "none_response": 8, "bounded_ideal": 24, "bounded_response": 8}
+    expected_counts = (
+        {"none_ideal": 48, "none_response": 16, "bounded_ideal": 0, "bounded_response": 0}
+        if PEFT_PHASE60
+        else {"none_ideal": 24, "none_response": 8, "bounded_ideal": 24, "bounded_response": 8}
+    )
     if counts != expected_counts:
         raise RuntimeError(f"Phase56 upper/domain split changed: {counts}")
     return obs, term, zero_mask, ideal, counts
@@ -245,6 +300,33 @@ def aggregate_group(mask, sums, counts, survival, terminal_rate, root_min, tilt_
     return result
 
 
+def _sample_summary(samples: list[torch.Tensor], mask: torch.Tensor) -> dict[str, float | None]:
+    values = torch.stack(samples, dim=0)[:, mask.detach().cpu()].reshape(-1)
+    values = values[torch.isfinite(values)]
+    if values.numel() == 0:
+        return {"mean": None, "p05": None, "p50": None, "p95": None, "max": None}
+    return {
+        "mean": float(values.mean()),
+        "p05": float(torch.quantile(values, 0.05)),
+        "p50": float(torch.quantile(values, 0.50)),
+        "p95": float(torch.quantile(values, 0.95)),
+        "max": float(values.max()),
+    }
+
+
+def aggregate_phase60_group(
+    mask, sums, counts, survival, terminal_rate, root_min, tilt_max,
+    samples, knee_min, knee_max,
+):
+    result = aggregate_group(mask, sums, counts, survival, terminal_rate, root_min, tilt_max)
+    result["signed_pitch_rad"] = _sample_summary(samples["signed_pitch_rad"], mask)
+    result["com_support_outside_m"] = _sample_summary(samples["com_support_outside_m"], mask)
+    result["stance_slip_mps"] = _sample_summary(samples["stance_slip_mps"], mask)
+    result["swing_sole_clearance_m"] = _sample_summary(samples["swing_sole_clearance_m"], mask)
+    result["knee_excursion_rad_mean"] = float((knee_max[mask] - knee_min[mask]).mean())
+    return result
+
+
 def evaluate() -> None:
     env = wrapped = None
     try:
@@ -268,8 +350,22 @@ def evaluate() -> None:
             "velocity_tracking_sq", "yaw_tracking_sq", "lateral_abs",
             "yaw_abs", "upper_tracking_sq", "action_abs", "action_delta_abs", "reward",
         )
+        if PEFT_PHASE60:
+            metric_names += ("flight_fraction", "single_support_fraction", "double_support_fraction")
         sums = {name: torch.zeros(64, device=env.device) for name in metric_names}
         counts = torch.zeros(64, device=env.device)
+        samples = {
+            "signed_pitch_rad": [],
+            "com_support_outside_m": [],
+            "stance_slip_mps": [],
+            "swing_sole_clearance_m": [],
+        }
+        foot_ids = robot.find_bodies(
+            ["left_ankle_roll_link", "right_ankle_roll_link"], preserve_order=True
+        )[0]
+        knee_ids = [robot.joint_names.index("left_knee_joint"), robot.joint_names.index("right_knee_joint")]
+        knee_min = robot.data.joint_pos[:, knee_ids].amin(dim=-1).clone()
+        knee_max = robot.data.joint_pos[:, knee_ids].amax(dim=-1).clone()
         with torch.inference_mode():
             for step in range(args.eval_steps):
                 action = model.act_inference(obs)
@@ -296,6 +392,50 @@ def evaluate() -> None:
                     "action_delta_abs": (action - prev_action).abs().mean(-1),
                     "reward": reward.reshape(-1),
                 }
+                if PEFT_PHASE60:
+                    pitch = signed_root_pitch_rad(robot)
+                    outside, contact_count = actual_support_com_outside_distance(
+                        env, force_threshold_n=10.0
+                    )
+                    forces = torch.stack(
+                        tuple(
+                            env.scene[name].data.force_matrix_w[..., 2]
+                            .abs().reshape(64, -1).amax(dim=-1)
+                            for name in ("left_foot_ground_contact", "right_foot_ground_contact")
+                        ),
+                        dim=-1,
+                    )
+                    contact = forces > 10.0
+                    foot_speed = robot.data.body_lin_vel_w[:, foot_ids, :2].norm(dim=-1)
+                    stance_slip = (foot_speed * contact).sum(dim=-1) / contact_count.clamp_min(1)
+                    stance_slip = torch.where(
+                        contact_count > 0, stance_slip, torch.full_like(stance_slip, torch.nan)
+                    )
+                    sole_height = robot.data.body_pos_w[:, foot_ids, 2] - 0.068
+                    swing = ~contact
+                    swing_clearance = torch.where(
+                        swing,
+                        sole_height,
+                        torch.full_like(sole_height, torch.nan),
+                    ).nanmean(dim=-1)
+                    valid_bool = alive.clone()
+                    for name, value in {
+                        "signed_pitch_rad": pitch,
+                        "com_support_outside_m": outside,
+                        "stance_slip_mps": stance_slip,
+                        "swing_sole_clearance_m": swing_clearance,
+                    }.items():
+                        samples[name].append(
+                            torch.where(valid_bool, value, torch.full_like(value, torch.nan)).detach().cpu()
+                        )
+                    values.update(
+                        flight_fraction=(contact_count == 0).to(torch.float32),
+                        single_support_fraction=(contact_count == 1).to(torch.float32),
+                        double_support_fraction=(contact_count == 2).to(torch.float32),
+                    )
+                    knee = robot.data.joint_pos[:, knee_ids]
+                    knee_min = torch.where(alive, torch.minimum(knee_min, knee.amin(dim=-1)), knee_min)
+                    knee_max = torch.where(alive, torch.maximum(knee_max, knee.amax(dim=-1)), knee_max)
                 for name, value in values.items():
                     sums[name] += value * valid
                 counts += valid
@@ -307,22 +447,37 @@ def evaluate() -> None:
                 alive &= ~done
                 prev_action = action
                 obs = next_obs
-        groups = {
-            "A_none": zero_mask,
-            "B_bounded": ~zero_mask,
-            "A_none_ideal": zero_mask & ideal_mask,
-            "A_none_response": zero_mask & ~ideal_mask,
-            "B_bounded_ideal": ~zero_mask & ideal_mask,
-            "B_bounded_response": ~zero_mask & ~ideal_mask,
-        }
+        if PEFT_PHASE60:
+            groups = {
+                "all": torch.ones_like(zero_mask),
+                "ideal": ideal_mask,
+                "response": ~ideal_mask,
+            }
+        else:
+            groups = {
+                "A_none": zero_mask,
+                "B_bounded": ~zero_mask,
+                "A_none_ideal": zero_mask & ideal_mask,
+                "A_none_response": zero_mask & ~ideal_mask,
+                "B_bounded_ideal": ~zero_mask & ideal_mask,
+                "B_bounded_response": ~zero_mask & ~ideal_mask,
+            }
         report = {
             "phase": PHASE, "mode": "eval", "checkpoint": str(args.checkpoint),
             "checkpoint_sha256": sha256(args.checkpoint), "checkpoint_iter": int(payload.get("iter", -1)),
-            "seed": 42, "num_envs": 64, "eval_steps": args.eval_steps,
+            "seed": args.seed, "num_envs": 64, "eval_steps": args.eval_steps,
+            "posture_variant": POSTURE_VARIANT,
             "control_dt_s": float(env.step_dt), "horizon_s": float(args.eval_steps * env.step_dt),
             "domain_upper_counts": domain_counts,
             "groups": {
-                name: aggregate_group(mask, sums, counts, survival, terminal, root_min, tilt_max)
+                name: (
+                    aggregate_phase60_group(
+                        mask, sums, counts, survival, terminal, root_min, tilt_max,
+                        samples, knee_min, knee_max,
+                    )
+                    if PEFT_PHASE60
+                    else aggregate_group(mask, sums, counts, survival, terminal, root_min, tilt_max)
+                )
                 for name, mask in groups.items()
             },
             "finite": bool(all(torch.isfinite(value).all() for value in sums.values())),
@@ -352,6 +507,30 @@ def save_weight_only(
     torch.save(payload, path)
 
 
+def save_or_validate_phase60_source(
+    path: Path,
+    model: torch.nn.Module,
+    *,
+    iteration: int,
+    infos: dict,
+) -> None:
+    """Keep one shared immutable Phase60 source instead of duplicating it."""
+
+    if not path.exists():
+        save_weight_only(path, model, iteration=iteration, infos=infos)
+        return
+    payload = torch.load(path, map_location="cpu", weights_only=False)
+    existing = payload.get("model_state_dict", {})
+    current = model.state_dict()
+    if existing.keys() != current.keys() or any(
+        not torch.equal(existing[name].cpu(), value.detach().cpu())
+        for name, value in current.items()
+    ):
+        raise RuntimeError("Phase60 shared source exists with different tensor state")
+    if int(payload.get("iter", -1)) != iteration:
+        raise RuntimeError("Phase60 shared source iteration differs")
+
+
 def train() -> None:
     env = wrapped = None
     try:
@@ -359,7 +538,7 @@ def train() -> None:
         wrapped = RslRlVecEnvWrapper(env, clip_actions=1.0)
         obs, _, _, _, domain_counts = validate_live_contract(env, wrapped)
         agent_cfg = X2LowerVelocityFlatPPORunnerCfg()
-        agent_cfg.seed = 42
+        agent_cfg.seed = args.seed
         agent_cfg.device = args.device
         agent_cfg.num_steps_per_env = 24
         agent_cfg.policy.init_noise_std = 0.4
@@ -422,11 +601,24 @@ def train() -> None:
         std_before = tensor_hash(runner.alg.policy.std)
         trainable_names = sorted(name for name, p in runner.alg.policy.named_parameters() if p.requires_grad)
         frozen_names = sorted(name for name, p in runner.alg.policy.named_parameters() if not p.requires_grad)
-        save_weight_only(
-            args.source_output, source_model, iteration=int(payload.get("iter", 2600)),
-            infos={"phase": PHASE, "role": "immutable fresh source", "original_sha256": sha256(ORIGINAL)},
-            optimizer=runner.alg.optimizer if PEFT_PHASE59 else None,
-        )
+        source_infos = {
+            "phase": PHASE,
+            "role": "immutable fresh source",
+            "original_sha256": sha256(ORIGINAL),
+        }
+        if PEFT_PHASE60:
+            save_or_validate_phase60_source(
+                args.source_output,
+                source_model,
+                iteration=int(payload.get("iter", 2600)),
+                infos=source_infos,
+            )
+        else:
+            save_weight_only(
+                args.source_output, source_model, iteration=int(payload.get("iter", 2600)),
+                infos=source_infos,
+                optimizer=runner.alg.optimizer if PEFT_PHASE59 else None,
+            )
         fixed_obs = {"policy": obs["policy"].clone(), "critic": obs["critic"].clone()}
         with torch.no_grad():
             source_action = source_model.act_inference(fixed_obs).clone()
@@ -482,7 +674,15 @@ def train() -> None:
         )
         report = {
             "phase": PHASE, "mode": "train", "decision": "UPDATE_FINITE" if finite else "UPDATE_NONFINITE",
-            "seed": 42, "num_envs": 64, "steps_per_env": 24,
+            "seed": args.seed, "num_envs": 64, "steps_per_env": 24,
+            "posture_variant": POSTURE_VARIANT,
+            "posture_reward_weights": (
+                {
+                    "signed_backward_pitch": POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT][0],
+                    "actual_support_com": POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT][1],
+                }
+                if PEFT_PHASE60 else None
+            ),
             "transitions": 1536, "learning_epochs": 5, "mini_batches": 4,
             "optimizer_steps": step_counter["count"], "std_frozen": True,
             "source_checkpoint": str(args.source_output), "source_checkpoint_sha256": sha256(args.source_output),
@@ -526,8 +726,10 @@ def main() -> None:
     if any(not path.is_file() or sha256(path) != expected for path, expected in EXPECTED.items()):
         raise RuntimeError(f"Phase{PHASE} immutable artifact hash guard failed")
     required = {
-        "CWI_UPPER_MOTION": str(UPPER), "CWI_UPPER_ZERO_FRACTION": "0.50",
-        "CWI_UPPER_DETERMINISTIC_SPLIT": "1", "CWI_UPPER_SPLIT_MODE": "interleaved",
+        "CWI_UPPER_MOTION": str(UPPER),
+        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 else "0.50",
+        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 else "1",
+        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 else "interleaved",
         "CWI_UPPER_SCALE": "0.25", "CWI_UPPER_TIME_SCALE": "1.0",
         "CWI_UPPER_LOOP": "1", "CWI_UPPER_MAX_EXCURSION_RAD": "0.12",
         "CWI_UPPER_MAX_VELOCITY_RADPS": "0.20",
@@ -538,6 +740,8 @@ def main() -> None:
     if args.mode == "eval":
         evaluate()
     else:
+        if PEFT_PHASE60 and POSTURE_VARIANT == "A":
+            raise RuntimeError("Phase60 group A is frozen evaluation-only")
         if args.checkpoint.resolve() != ORIGINAL.resolve() and not PEFT_PHASE59:
             raise RuntimeError("Phase56 train must fresh-start from original Stage219 PT")
         train()

@@ -1,0 +1,93 @@
+{
+  "schema": "x2_native_posture_phase60_prereg_v1",
+  "date": "2026-08-12",
+  "objective": "Task2 A/B/C local trend pilot from frozen Stage264 identity (Stage219 model_2600.pt)",
+  "source": {
+    "checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "env_yaml_sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+    "agent_yaml_sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+    "policy_contract": "93D observation -> lower12+waist3 15D action; 31DoF articulation",
+    "resume": "fresh weights only for each trained arm"
+  },
+  "groups": {
+    "A": {
+      "role": "frozen source evaluation; no optimizer",
+      "signed_backward_pitch_weight": 0.0,
+      "actual_support_com_weight": 0.0
+    },
+    "B": {
+      "role": "signed backward-pitch intervention only",
+      "signed_backward_pitch_weight": -0.5,
+      "actual_support_com_weight": 0.0
+    },
+    "C": {
+      "role": "signed backward-pitch plus actual-contact support intervention",
+      "signed_backward_pitch_weight": -0.5,
+      "actual_support_com_weight": -0.5
+    }
+  },
+  "reward_contract": {
+    "signed_pitch": "asin(projected_gravity_b.x); negative is backward; penalize only pitch < -0.05 rad while commanded to move",
+    "pitch_tolerance_rad": 0.05,
+    "pitch_normalization_rad": 0.15,
+    "support": "live-mass whole-body COM horizontal overshoot beyond ground-contact sole support; no reference labels",
+    "support_normalization_m": 0.1,
+    "ground_contact_force_threshold_n": 10.0,
+    "waist_pitch_direct_constraint": false,
+    "upright_at_all_times_constraint": false
+  },
+  "training": {
+    "trained_groups": ["B", "C"],
+    "upper_motion": "fixed for all environments",
+    "seed": 42,
+    "num_envs": 64,
+    "steps_per_env": 24,
+    "transitions_per_group": 1536,
+    "learning_epochs": 5,
+    "mini_batches": 4,
+    "optimizer_steps_per_group": 20,
+    "adapter": "zero-output rank-4 alpha-4 LoRA on actor/critic dense paths",
+    "trainable_parameters": 9000,
+    "learning_rate": 5e-05,
+    "learning_rate_schedule": "fixed",
+    "checkpoint_policy": "source plus one final candidate per group; no intermediate checkpoints"
+  },
+  "evaluation": {
+    "seeds": [40, 41, 42],
+    "num_envs_per_seed": 64,
+    "horizon_s": 4.0,
+    "command_mps": [0.35, 0.0, 0.0],
+    "upper_motion": "fixed",
+    "metrics": [
+      "signed pitch mean/p05/p95",
+      "velocity and yaw tracking",
+      "survival and termination",
+      "actual COM-support overshoot",
+      "ground-contact mode and stance slip",
+      "action magnitude/rate, knee excursion, swing sole clearance"
+    ]
+  },
+  "local_trend_gates": {
+    "finite": true,
+    "optimizer_steps_exact": 20,
+    "dense_and_std_unchanged": true,
+    "fixed_batch_kl_mean_max": 0.02,
+    "fixed_batch_kl_peak_max": 0.2,
+    "fixed_batch_action_drift_max": 0.05,
+    "survival_s_min": 4.0,
+    "termination_rate_max": 0.0,
+    "velocity_rmse_regression_max": 0.01,
+    "signed_pitch_mean_improvement_min_rad": 0.002,
+    "signed_pitch_p05_must_not_regress": true,
+    "C_support_overshoot_must_not_regress": true,
+    "flight_fraction_regression_max": 0.01,
+    "stance_slip_p95_regression_max_mps": 0.05,
+    "action_delta_abs_regression_max": 0.05,
+    "root_height_regression_max_m": 0.02,
+    "root_tilt_regression_max_rad": 0.05,
+    "knee_excursion_abs_change_max_rad": 0.15,
+    "swing_clearance_p05_regression_max_m": 0.005
+  },
+  "selection": "Among candidates passing every local trend gate, maximize signed_pitch_mean_improvement_rad + 0.5 * support_overshoot_mean_improvement_m; ties prefer B (the simpler intervention).",
+  "stop": "Evaluate A/B/C only. Reject a failing arm and do not continue it. A one-update pass is only a local trend gate and does not satisfy Task2 or unlock long training."
+}

@@ -55,3 +55,9 @@
 | R7D-MATCHED | complete/diagnostic | Stage208 vs NEUTRAL05 | frozen eval | n/a | n/a | 36 paired traces | matched lateral max略好、时间均值略差；删失偏差仅部分成立，停止当前 objective |
 | R7-LONG | locked/stopped | n/a | n/a | n/a | n/a | 0 | 不解锁同目标25/200/1000；Stage208 retained，NEUTRAL05仅研究候选 |
 | STAGE8-CONTRACT | complete | Stage208-s2550 | frozen | BASE/FUTURE/FUTURE-PHASE | event-gate | 0 | 冻结最小原生后端门禁；既有证据覆盖0/6核心事件，待BASE事件矩阵 |
+| PHASE40-NEW-MACHINE-LIVE-ZERO | complete/pass-zero-only | native generator seed + SONIC `last.pt` | frozen | frozen | observation/reset contract only | 1 env × 1 reset; 0 control/optimizer | `PASS_LIVE_ZERO_ONLY`；WBT29 与 10×58 future observation live 接线通过；未解锁训练 |
+| NATIVE-P60-A | complete/baseline | Stage219-s2600 SHA `abcd49a8…` | frozen 93→15D | frozen | original | 64 env × 200 steps × 3 deterministic seeds | signed pitch `-0.193130 rad`；speed RMSE `0.105676 m/s`；4 s survival；seed 输出相同（只证明复现，不是独立样本） |
+| NATIVE-P60-B-U1 | complete/rejected | fresh Stage219 + zero LoRA | rank4 LoRA only | rank4 LoRA only | + one-sided backward-pitch | 64 env × 24 steps; 1 update = 20 optimizer steps; 3 deterministic eval seeds | pitch `+0.001840 rad` 未达 `+0.002` 门，p05 `-0.000138 rad` 退化；KL mean `5.26e-5`；不续训 |
+| NATIVE-P60-C-U1 | complete/rejected | fresh Stage219 + zero LoRA | rank4 LoRA only | rank4 LoRA only | + one-sided pitch + actual-contact COM/support | 64 env × 24 steps; 1 update = 20 optimizer steps; 3 deterministic eval seeds | pitch `+0.002053 rad`，但 p05 `-0.000495 rad`、support outside `+0.000201 m`，严格淘汰；KL mean `5.17e-5`；不续训 |
+
+Phase60 的两次训练均为 64 env、1536 transitions、9,000 个可训练 LoRA 参数、fixed LR `5e-5`，单进程墙钟包含 Isaac 启动约几十秒，未生成中间 checkpoint。此次未对 peak VRAM 单独采样（64 env 无 OOM）；这是后续训练入口必须补齐的资源账本缺口，不能据此推算 1024/2048/4096 env 的容量。

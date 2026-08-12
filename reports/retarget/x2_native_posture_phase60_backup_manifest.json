@@ -1,0 +1,74 @@
+{
+  "schema": "x2_native_posture_phase60_backup_manifest_v1",
+  "date": "2026-08-12",
+  "decision": "FAIL_BOTH_LOCAL_TREND_STOP",
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase60",
+  "verification": {
+    "local_sha256_recomputed": true,
+    "remote_listing_byte_sizes_match": true,
+    "remote_sha256_api_available": false,
+    "sha256_sidecars_uploaded_for_checkpoints_and_prereg": true,
+    "note": "bdpan list exposes byte size but not SHA256; uploaded sidecars preserve the authoritative local digest."
+  },
+  "files": [
+    {
+      "name": "source_stage219_zero_lora.pt",
+      "role": "shared immutable fresh source",
+      "bytes": 644670,
+      "sha256": "c066e33dcb9f8dc7011596329b8f35efdcc287ea33bcd37a85d3141342bf2364",
+      "remote_bytes": 644670
+    },
+    {
+      "name": "candidate_B_one_update.pt",
+      "role": "rejected pitch-only evidence; never deploy",
+      "bytes": 644425,
+      "sha256": "10b32cecd91b5fba5dec163e44fdf4f28861559319a1dc9e4a46a5eafa230600",
+      "remote_bytes": 644425
+    },
+    {
+      "name": "candidate_C_one_update.pt",
+      "role": "rejected pitch-plus-support evidence; never deploy",
+      "bytes": 644425,
+      "sha256": "05474b06d303da00e070911a9f51642ff2cf554cb8737baebad1003ae044ce3e",
+      "remote_bytes": 644425
+    },
+    {
+      "name": "x2_native_posture_phase60_prereg.json",
+      "role": "pre-optimizer frozen experiment contract",
+      "bytes": 3844,
+      "sha256": "5a9806d0c658ed6e2aedb6085c90dd4a4554d9dba0ddf4fe200a9383a7811035",
+      "remote_bytes": 3844
+    },
+    {
+      "name": "x2_native_posture_phase60_result.json",
+      "role": "authoritative embedded training and gate result",
+      "bytes": 19707,
+      "sha256": "d9c286c6c220233165f86ae8fe48e91fcd61b552ca569d4f2725de979710c8e1",
+      "remote_bytes": 19707
+    },
+    {
+      "name": "x2_native_posture_phase60.md",
+      "role": "human-readable decision report",
+      "bytes": 3103,
+      "sha256": "a61d4953bc7c08f584cd167f193d9610dce0bff68ad96d77998197eb3debe61a",
+      "remote_bytes": 3103
+    },
+    {
+      "name": "EXPERIMENTS.md",
+      "role": "experiment ledger snapshot",
+      "bytes": 10895,
+      "sha256": "9ae21cf554ca0d8e33254a90f49a746067fa6c0f9bd47579b09f8ece3169ebea",
+      "remote_bytes": 10895
+    }
+  ],
+  "code_sha256_for_git": {
+    "scripts/run_x2_native_posture_phase60.sh": "2eefe76e869fb2c9e75a5bd7f1396dbed3142d766281df8fda2a0e043cf185a5",
+    "src/x2_native_locomotion_posture_phase60.py": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb",
+    "tools/retarget/finalize_x2_native_posture_phase60.py": "f09987495f910685e8da48897ef85c946ef1d7b108d9fecb440688983f1d7a96"
+  },
+  "disk": {
+    "checkpoint_count": 3,
+    "checkpoint_bytes_total": 1933520,
+    "intermediate_checkpoints": 0
+  }
+}

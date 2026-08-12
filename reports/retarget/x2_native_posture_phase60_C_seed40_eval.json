@@ -1,0 +1,163 @@
+{
+  "phase": 60,
+  "mode": "eval",
+  "checkpoint": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_native_posture_phase60/candidate_C_one_update.pt",
+  "checkpoint_sha256": "05474b06d303da00e070911a9f51642ff2cf554cb8737baebad1003ae044ce3e",
+  "checkpoint_iter": 2601,
+  "seed": 40,
+  "num_envs": 64,
+  "eval_steps": 200,
+  "posture_variant": "C",
+  "control_dt_s": 0.02,
+  "horizon_s": 4.0,
+  "domain_upper_counts": {
+    "none_ideal": 48,
+    "none_response": 16,
+    "bounded_ideal": 0,
+    "bounded_response": 0
+  },
+  "groups": {
+    "all": {
+      "lateral_abs": 0.07555541396141052,
+      "yaw_abs": 0.13915836811065674,
+      "action_abs": 0.694793164730072,
+      "action_delta_abs": 0.263418585062027,
+      "reward": 0.06783389300107956,
+      "flight_fraction": 0.0018749999580904841,
+      "single_support_fraction": 0.589062511920929,
+      "double_support_fraction": 0.4090625047683716,
+      "velocity_tracking_rmse": 0.107602872952288,
+      "yaw_tracking_rmse": 0.3633600990289837,
+      "upper_tracking_rmse": 0.03605640716470954,
+      "survival_s_mean": 4.0,
+      "termination_rate": 0.0,
+      "root_height_min_mean": 0.6495463848114014,
+      "root_tilt_max_mean": 0.2556593716144562,
+      "env_count": 64,
+      "signed_pitch_rad": {
+        "mean": -0.19107696413993835,
+        "p05": -0.24733604490756989,
+        "p50": -0.19465652108192444,
+        "p95": -0.09873681515455246,
+        "max": -0.004326700232923031
+      },
+      "com_support_outside_m": {
+        "mean": 0.061585329473018646,
+        "p05": 0.0,
+        "p50": 0.0479738712310791,
+        "p95": 0.18648761510849,
+        "max": 0.19764959812164307
+      },
+      "stance_slip_mps": {
+        "mean": 0.08009274303913116,
+        "p05": 0.004989419132471085,
+        "p50": 0.0539582222700119,
+        "p95": 0.25242146849632263,
+        "max": 1.1576151847839355
+      },
+      "swing_sole_clearance_m": {
+        "mean": 0.020988762378692627,
+        "p05": 0.010049732401967049,
+        "p50": 0.020574435591697693,
+        "p95": 0.032120589166879654,
+        "max": 0.038625478744506836
+      },
+      "knee_excursion_rad_mean": 0.5203722715377808
+    },
+    "ideal": {
+      "lateral_abs": 0.08080296963453293,
+      "yaw_abs": 0.08409050107002258,
+      "action_abs": 0.6869674921035767,
+      "action_delta_abs": 0.29298830032348633,
+      "reward": 0.07058902829885483,
+      "flight_fraction": 0.0024999999441206455,
+      "single_support_fraction": 0.6103125214576721,
+      "double_support_fraction": 0.38718751072883606,
+      "velocity_tracking_rmse": 0.09713700534383876,
+      "yaw_tracking_rmse": 0.35227414266170515,
+      "upper_tracking_rmse": 0.036454276976122094,
+      "survival_s_mean": 4.0,
+      "termination_rate": 0.0,
+      "root_height_min_mean": 0.649395227432251,
+      "root_tilt_max_mean": 0.24908480048179626,
+      "env_count": 48,
+      "signed_pitch_rad": {
+        "mean": -0.1873333901166916,
+        "p05": -0.22426411509513855,
+        "p50": -0.1918860375881195,
+        "p95": -0.1138267070055008,
+        "max": -0.01498853974044323
+      },
+      "com_support_outside_m": {
+        "mean": 0.06866930425167084,
+        "p05": 0.0,
+        "p50": 0.0475250706076622,
+        "p95": 0.18812620639801025,
+        "max": 0.19764959812164307
+      },
+      "stance_slip_mps": {
+        "mean": 0.08595042675733566,
+        "p05": 0.01765400916337967,
+        "p50": 0.0612880103290081,
+        "p95": 0.21723148226737976,
+        "max": 1.1576151847839355
+      },
+      "swing_sole_clearance_m": {
+        "mean": 0.021983802318572998,
+        "p05": 0.013339683413505554,
+        "p50": 0.021495774388313293,
+        "p95": 0.03203318640589714,
+        "max": 0.038229286670684814
+      },
+      "knee_excursion_rad_mean": 0.5274003148078918
+    },
+    "response": {
+      "lateral_abs": 0.05981273576617241,
+      "yaw_abs": 0.3043619394302368,
+      "action_abs": 0.7182701230049133,
+      "action_delta_abs": 0.17470936477184296,
+      "reward": 0.059568487107753754,
+      "flight_fraction": 0.0,
+      "single_support_fraction": 0.5253124833106995,
+      "double_support_fraction": 0.47468748688697815,
+      "velocity_tracking_rmse": 0.13418912590624918,
+      "yaw_tracking_rmse": 0.3947543844604042,
+      "upper_tracking_rmse": 0.03483554306959769,
+      "survival_s_mean": 4.0,
+      "termination_rate": 0.0,
+      "root_height_min_mean": 0.6499999761581421,
+      "root_tilt_max_mean": 0.27538323402404785,
+      "env_count": 16,
+      "signed_pitch_rad": {
+        "mean": -0.20230776071548462,
+        "p05": -0.26334452629089355,
+        "p50": -0.22209173440933228,
+        "p95": -0.06492879986763,
+        "max": -0.004326700232923031
+      },
+      "com_support_outside_m": {
+        "mean": 0.04033336788415909,
+        "p05": 0.0,
+        "p50": 0.05206489935517311,
+        "p95": 0.09607277065515518,
+        "max": 0.11055630445480347
+      },
+      "stance_slip_mps": {
+        "mean": 0.06256362050771713,
+        "p05": 0.0021118116565048695,
+        "p50": 0.0266311913728714,
+        "p95": 0.31708118319511414,
+        "max": 0.8002651333808899
+      },
+      "swing_sole_clearance_m": {
+        "mean": 0.017506418749690056,
+        "p05": 0.007769845426082611,
+        "p50": 0.01626485586166382,
+        "p95": 0.03317118436098099,
+        "max": 0.038625478744506836
+      },
+      "knee_excursion_rad_mean": 0.49928826093673706
+    }
+  },
+  "finite": true
+}
