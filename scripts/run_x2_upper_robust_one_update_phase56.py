@@ -15,7 +15,7 @@ from pathlib import Path
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--mode", choices=("train", "eval"), required=True)
+parser.add_argument("--mode", choices=("train", "eval", "screen"), required=True)
 parser.add_argument("--checkpoint", type=Path, required=True)
 parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--source-output", type=Path)
@@ -28,8 +28,14 @@ AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 _phase60_variant = os.environ.get("CWI_PHASE60_POSTURE_VARIANT")
 _phase61_transition = os.environ.get("CWI_PHASE61_TRANSITION_POSTURE", "0") == "1"
-if _phase60_variant is not None and _phase61_transition:
-    raise ValueError("Phase60 and Phase61 modes are mutually exclusive")
+_phase62_screen = os.environ.get("CWI_PHASE62_ACTION_SENSITIVITY", "0") == "1"
+if sum((_phase60_variant is not None, _phase61_transition, _phase62_screen)) > 1:
+    raise ValueError("Phase60, Phase61, and Phase62 modes are mutually exclusive")
+if _phase62_screen:
+    if args.mode != "screen" or args.num_envs != 64 or args.seed != 42 or args.eval_steps != 200:
+        raise ValueError("Phase62 requires screen mode, 64 envs, seed 42, and 200 steps")
+elif args.mode == "screen":
+    raise ValueError("screen mode requires CWI_PHASE62_ACTION_SENSITIVITY=1")
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -82,9 +88,11 @@ if POSTURE_VARIANT is not None and POSTURE_VARIANT not in {"A", "B", "C"}:
     raise ValueError("CWI_PHASE60_POSTURE_VARIANT must be A, B, or C")
 PEFT_PHASE60 = POSTURE_VARIANT is not None
 PEFT_PHASE61 = _phase61_transition
+ACTION_SCREEN_PHASE62 = _phase62_screen
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
+POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN_PHASE62
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))
+PHASE = 62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -172,7 +180,7 @@ def build_env_cfg(*, evaluation: bool):
     cfg.commands.base_velocity.rel_standing_envs = 0.0
     cfg.commands.base_velocity = gain_scheduled_velocity_cfg(
         cfg.commands.base_velocity,
-        ideal_env_fraction=0.75,
+        ideal_env_fraction=1.0 if ACTION_SCREEN_PHASE62 else 0.75,
         ideal_heading_control_stiffness=1.0,
         response_heading_control_stiffness=0.05,
     )
@@ -273,7 +281,8 @@ def build_env_cfg(*, evaluation: bool):
         cfg.scene.robot,
         {"enabled": True, "profile": "session03_session04_group", "randomize": False,
          "strength": 1.0, "filter_strength": 1.0, "delay_strength": 1.0,
-         "include_ideal_endpoint": False, "ideal_env_fraction": 0.75,
+         "include_ideal_endpoint": False,
+         "ideal_env_fraction": 1.0 if ACTION_SCREEN_PHASE62 else 0.75,
          "filter_only_env_fraction": 0.0},
         physics_dt_sec=cfg.sim.dt,
     )
@@ -320,7 +329,7 @@ def validate_live_contract(env, wrapped):
     zero_mask = term._cwi_upper_zero_mask
     expected_mask = (
         torch.ones(64, dtype=torch.bool, device=zero_mask.device)
-        if PEFT_POSTURE
+        if POSTURE_METRICS
         else torch.arange(64, device=zero_mask.device) % 2 == 0
     )
     if not torch.equal(zero_mask, expected_mask):
@@ -339,6 +348,9 @@ def validate_live_contract(env, wrapped):
         "bounded_response": int((~zero_mask & ~ideal).sum()),
     }
     expected_counts = (
+        {"none_ideal": 64, "none_response": 0, "bounded_ideal": 0, "bounded_response": 0}
+        if ACTION_SCREEN_PHASE62
+        else
         {"none_ideal": 48, "none_response": 16, "bounded_ideal": 0, "bounded_response": 0}
         if PEFT_POSTURE
         else {"none_ideal": 24, "none_response": 8, "bounded_ideal": 24, "bounded_response": 8}
@@ -406,6 +418,38 @@ def aggregate_phase60_group(
     return result
 
 
+def phase62_action_biases(device: torch.device) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    """Assign one small sagittal finite-difference intervention per env group."""
+
+    epsilon = 0.02
+    specifications = (
+        ("base", (), 0.0),
+        ("hip_pitch_neg", (0, 6), -epsilon),
+        ("hip_pitch_pos", (0, 6), epsilon),
+        ("knee_neg", (3, 9), -epsilon),
+        ("knee_pos", (3, 9), epsilon),
+        ("ankle_pitch_neg", (4, 10), -epsilon),
+        ("ankle_pitch_pos", (4, 10), epsilon),
+        ("waist_pitch_neg", (13,), -epsilon),
+        ("waist_pitch_pos", (13,), epsilon),
+    )
+    sizes = (8,) + (7,) * 8
+    biases = torch.zeros((64, 15), device=device)
+    groups: dict[str, torch.Tensor] = {}
+    start = 0
+    for (name, indices, value), size in zip(specifications, sizes, strict=True):
+        stop = start + size
+        mask = torch.zeros(64, dtype=torch.bool, device=device)
+        mask[start:stop] = True
+        groups[name] = mask
+        if indices:
+            biases[start:stop, list(indices)] = value
+        start = stop
+    if start != 64 or not torch.allclose(biases[groups["base"]], torch.zeros_like(biases[groups["base"]])):
+        raise RuntimeError("Phase62 action-bias partition is invalid")
+    return biases, groups
+
+
 def evaluate() -> None:
     env = wrapped = None
     try:
@@ -425,11 +469,16 @@ def evaluate() -> None:
         root_min = robot.data.root_pos_w[:, 2].clone()
         tilt_max = torch.zeros(64, device=env.device)
         prev_action = torch.zeros((64, 15), device=env.device)
+        action_bias, sensitivity_groups = (
+            phase62_action_biases(env.device)
+            if ACTION_SCREEN_PHASE62
+            else (torch.zeros((64, 15), device=env.device), {})
+        )
         metric_names = (
             "velocity_tracking_sq", "yaw_tracking_sq", "lateral_abs",
             "yaw_abs", "upper_tracking_sq", "action_abs", "action_delta_abs", "reward",
         )
-        if PEFT_POSTURE:
+        if POSTURE_METRICS:
             metric_names += ("flight_fraction", "single_support_fraction", "double_support_fraction")
         sums = {name: torch.zeros(64, device=env.device) for name in metric_names}
         counts = torch.zeros(64, device=env.device)
@@ -455,6 +504,8 @@ def evaluate() -> None:
         with torch.inference_mode():
             for step in range(args.eval_steps):
                 action = model.act_inference(obs)
+                if ACTION_SCREEN_PHASE62:
+                    action = torch.clamp(action + action_bias, -1.0, 1.0)
                 next_obs, reward, done, _ = wrapped.step(action)
                 done = done.reshape(-1).bool()
                 root_quat = robot.data.root_quat_w
@@ -478,7 +529,7 @@ def evaluate() -> None:
                     "action_delta_abs": (action - prev_action).abs().mean(-1),
                     "reward": reward.reshape(-1),
                 }
-                if PEFT_POSTURE:
+                if POSTURE_METRICS:
                     pitch = signed_root_pitch_rad(robot)
                     outside, contact_count = actual_support_com_outside_distance(
                         env, force_threshold_n=10.0
@@ -565,7 +616,9 @@ def evaluate() -> None:
                 alive &= ~done
                 prev_action = action
                 obs = next_obs
-        if PEFT_POSTURE:
+        if ACTION_SCREEN_PHASE62:
+            groups = sensitivity_groups
+        elif PEFT_POSTURE:
             groups = {
                 "all": torch.ones_like(zero_mask),
                 "ideal": ideal_mask,
@@ -581,10 +634,14 @@ def evaluate() -> None:
                 "B_bounded_response": ~zero_mask & ~ideal_mask,
             }
         report = {
-            "phase": PHASE, "mode": "eval", "checkpoint": str(args.checkpoint),
+            "phase": PHASE, "mode": args.mode, "checkpoint": str(args.checkpoint),
             "checkpoint_sha256": sha256(args.checkpoint), "checkpoint_iter": int(payload.get("iter", -1)),
             "seed": args.seed, "num_envs": 64, "eval_steps": args.eval_steps,
-            "posture_variant": "joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT,
+            "posture_variant": (
+                "action_sensitivity"
+                if ACTION_SCREEN_PHASE62
+                else ("joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT)
+            ),
             "control_dt_s": float(env.step_dt), "horizon_s": float(args.eval_steps * env.step_dt),
             "domain_upper_counts": domain_counts,
             "groups": {
@@ -593,7 +650,7 @@ def evaluate() -> None:
                         mask, sums, counts, survival, terminal, root_min, tilt_max,
                         samples, knee_min, knee_max,
                     )
-                    if PEFT_POSTURE
+                    if POSTURE_METRICS
                     else aggregate_group(mask, sums, counts, survival, terminal, root_min, tilt_max)
                 )
                 for name, mask in groups.items()
@@ -609,6 +666,19 @@ def evaluate() -> None:
                 "event_end_s": 7.2,
                 "terminal_hold_observed_s": args.eval_steps * env.step_dt - 7.2,
                 "phase_offset_s": 0.0,
+            }
+        if ACTION_SCREEN_PHASE62:
+            report["action_sensitivity"] = {
+                "epsilon_normalized_action": 0.02,
+                "partition": {name: int(mask.sum()) for name, mask in sensitivity_groups.items()},
+                "dimensions": {
+                    "hip_pitch": [0, 6],
+                    "knee": [3, 9],
+                    "ankle_pitch": [4, 10],
+                    "waist_pitch": [13],
+                },
+                "actuator_domain": "ideal only",
+                "checkpoint_modified": False,
             }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
@@ -887,9 +957,9 @@ def main() -> None:
         raise RuntimeError(f"Phase{PHASE} immutable artifact hash guard failed")
     required = {
         "CWI_UPPER_MOTION": str(UPPER),
-        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 else "0.50",
-        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 else "1",
-        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 else "interleaved",
+        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN_PHASE62 else "0.50",
+        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN_PHASE62 else "1",
+        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN_PHASE62 else "interleaved",
         "CWI_UPPER_SCALE": "0.25", "CWI_UPPER_TIME_SCALE": "1.0",
         "CWI_UPPER_LOOP": "1", "CWI_UPPER_MAX_EXCURSION_RAD": "0.12",
         "CWI_UPPER_MAX_VELOCITY_RADPS": "0.20",
@@ -897,7 +967,7 @@ def main() -> None:
     for name, value in required.items():
         if os.environ.get(name) != value:
             raise RuntimeError(f"Phase{PHASE} environment mismatch: {name}")
-    if args.mode == "eval":
+    if args.mode in {"eval", "screen"}:
         evaluate()
     else:
         if PEFT_PHASE60 and POSTURE_VARIANT == "A":
