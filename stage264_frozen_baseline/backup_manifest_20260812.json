@@ -1,0 +1,42 @@
+{
+  "manifest_version": "x2-backup-v1",
+  "date": "2026-08-12",
+  "stage": "stage264_frozen_baseline",
+  "git": {
+    "commit": "8b4cdf5",
+    "remote": "git@github.com:z2964141870-debug/HUMANPLUS_X2_PLUS.git",
+    "branch": "main",
+    "pushed": true
+  },
+  "baidu_remote_dir": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/stage264_frozen_baseline",
+  "files": [
+    {
+      "local": "stage264_frozen_baseline/manifest.json",
+      "remote": "manifest.json",
+      "bytes": 2628,
+      "remote_bytes": 2628,
+      "sha256": "e691074c4db3cc6e88cf0580702c284051534a3f33dc3e14830687136e344198"
+    },
+    {
+      "local": "reports/official_x2/x2_native_locomotion_baseline_preflight_20260812.json",
+      "remote": "x2_native_locomotion_baseline_preflight_20260812.json",
+      "bytes": 3670,
+      "remote_bytes": 3670,
+      "sha256": "4c42820ab0256393cd0d168bc9a6dbecc86f4133fe55b58242db67c9b8d60a5b"
+    },
+    {
+      "local": "reports/official_x2/X2_NATIVE_LOCOMOTION_STAGE0_PREFLIGHT_20260812.md",
+      "remote": "X2_NATIVE_LOCOMOTION_STAGE0_PREFLIGHT_20260812.md",
+      "bytes": 3181,
+      "remote_bytes": 3181,
+      "sha256": "2abf7f6e9203219c0ac218130a9c42d99121bf45292e5103177552f426d9e37a"
+    }
+  ],
+  "large_asset_provenance": {
+    "stage219_checkpoint": {
+      "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+      "restored_from": "/home/yu/x2_migration_20260812/downloads/phase_archives/x2_phase42_dual_track_20260809.tar.gz",
+      "duplicate_upload_skipped": true
+    }
+  }
+}
