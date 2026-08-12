@@ -34,6 +34,9 @@ _phase64_screen = os.environ.get("CWI_PHASE64_KNEE_DOSE_SCREEN", "0") == "1"
 _phase65_pass_raw = os.environ.get("CWI_PHASE65_CROSSOVER_PASS")
 _phase65_screen = _phase65_pass_raw is not None
 _phase65_pass = int(_phase65_pass_raw) if _phase65_screen else None
+_phase66_pass_raw = os.environ.get("CWI_PHASE66_SIDE_PHASE_PASS")
+_phase66_screen = _phase66_pass_raw is not None
+_phase66_pass = int(_phase66_pass_raw) if _phase66_screen else None
 if sum(
     (
         _phase60_variant is not None,
@@ -42,16 +45,19 @@ if sum(
         _phase63_screen,
         _phase64_screen,
         _phase65_screen,
+        _phase66_screen,
     )
 ) > 1:
     raise ValueError("Phase60 through Phase65 modes are mutually exclusive")
-if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen:
+if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen or _phase66_screen:
     if args.mode != "screen" or args.num_envs != 64 or args.seed != 42 or args.eval_steps != 200:
-        raise ValueError("Phase62/63/64/65 require screen mode, 64 envs, seed 42, and 200 steps")
+        raise ValueError("Phase62/63/64/65/66 require screen mode, 64 envs, seed 42, and 200 steps")
     if _phase65_screen and _phase65_pass not in (0, 1):
         raise ValueError("Phase65 crossover pass must be 0 or 1")
+    if _phase66_screen and _phase66_pass not in (0, 1):
+        raise ValueError("Phase66 side/phase pass must be 0 or 1")
 elif args.mode == "screen":
-    raise ValueError("screen mode requires a Phase62/63/64/65 screen flag")
+    raise ValueError("screen mode requires a Phase62/63/64/65/66 screen flag")
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -108,16 +114,18 @@ ACTION_SCREEN_PHASE62 = _phase62_screen
 ACTION_SCREEN_PHASE63 = _phase63_screen
 ACTION_SCREEN_PHASE64 = _phase64_screen
 ACTION_SCREEN_PHASE65 = _phase65_screen
+ACTION_SCREEN_PHASE66 = _phase66_screen
 ACTION_SCREEN = (
     ACTION_SCREEN_PHASE62
     or ACTION_SCREEN_PHASE63
     or ACTION_SCREEN_PHASE64
     or ACTION_SCREEN_PHASE65
+    or ACTION_SCREEN_PHASE66
 )
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
 POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))))))
+PHASE = 66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -660,6 +668,74 @@ def phase65_single_support_knee_bias(
     return bias, semantics
 
 
+def phase66_side_phase_partition(
+    device: torch.device,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor], tuple[str, ...]]:
+    """Assign every scene row/column once to each side-by-phase cell."""
+
+    names = (
+        "DS0_left", "DS0_right",
+        "right_swing_left_support_left", "right_swing_left_support_right",
+        "DS_half_left", "DS_half_right",
+        "left_swing_right_support_left", "left_swing_right_support_right",
+    )
+    env_ids = torch.arange(64, device=device)
+    row = torch.div(env_ids, 8, rounding_mode="floor")
+    column = env_ids.remainder(8)
+    slots = (row + column).remainder(8)
+    groups = {name: slots == index for index, name in enumerate(names)}
+    if any(int(mask.sum()) != 8 for mask in groups.values()):
+        raise RuntimeError("Phase66 side/phase Latin-square partition is invalid")
+    return slots, groups, names
+
+
+def phase66_physical_knee_target_offset(
+    policy_observation: torch.Tensor,
+    command: torch.Tensor,
+    condition_slot: torch.Tensor,
+    *,
+    candidate_enabled: bool,
+    target_offset_rad: float = -0.003,
+) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
+    """Return a final-target knee offset and its deployable pre-step phase."""
+
+    gait = policy_observation[:, -4:]
+    _, cosine, desired_left, desired_right = gait.unbind(dim=-1)
+    left = desired_left > 0.5
+    right = desired_right > 0.5
+    moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.10
+    regions = {
+        "double_support_zero": moving & left & right & (cosine >= 0.0),
+        "right_swing_left_support": moving & left & ~right,
+        "double_support_half": moving & left & right & (cosine < 0.0),
+        "left_swing_right_support": moving & ~left & right,
+        "standing": ~moving,
+        "invalid_contact_suffix": moving & ~(left | right),
+    }
+    region_index = torch.full(
+        (policy_observation.shape[0],), -1, dtype=torch.int64, device=policy_observation.device
+    )
+    for index, name in enumerate(
+        (
+            "double_support_zero",
+            "right_swing_left_support",
+            "double_support_half",
+            "left_swing_right_support",
+            "standing",
+        )
+    ):
+        region_index[regions[name]] = index
+    requested = torch.zeros((policy_observation.shape[0], 15), device=policy_observation.device)
+    if candidate_enabled:
+        target_region = torch.div(condition_slot, 2, rounding_mode="floor")
+        target_side = condition_slot.remainder(2)
+        active = region_index == target_region
+        requested[active & (target_side == 0), 3] = target_offset_rad
+        requested[active & (target_side == 1), 9] = target_offset_rad
+    regions["active"] = requested.abs().sum(dim=-1) > 0.0
+    return requested, region_index, regions
+
+
 def evaluate() -> None:
     env = wrapped = None
     try:
@@ -688,6 +764,11 @@ def evaluate() -> None:
         elif ACTION_SCREEN_PHASE65:
             phase65_treatment_mask, screen_groups = phase65_crossover_partition(
                 env.device, _phase65_pass
+            )
+            action_bias = torch.zeros((64, 15), device=env.device)
+        elif ACTION_SCREEN_PHASE66:
+            phase66_condition_slot, screen_groups, phase66_condition_names = (
+                phase66_side_phase_partition(env.device)
             )
             action_bias = torch.zeros((64, 15), device=env.device)
         else:
@@ -775,6 +856,37 @@ def evaluate() -> None:
             if ACTION_SCREEN_PHASE65
             else {}
         )
+        phase66_raw_samples = {
+            name: []
+            for name in (
+                "signed_pitch_rad", "com_support_outside_m", "stance_slip_mps",
+                "swing_sole_clearance_m", "velocity_tracking_sq", "flight_fraction",
+                "requested_target_left_rad", "requested_target_right_rad",
+                "effective_target_left_rad", "effective_target_right_rad",
+                "source_target_left_rad", "source_target_right_rad",
+                "intervention_target_left_rad", "intervention_target_right_rad",
+            )
+        } if ACTION_SCREEN_PHASE66 else {}
+        phase66_pre_step_regions = []
+        phase66_replay_hashes = []
+        phase66_contract = {
+            "invalid_contact_suffix_count": 0,
+            "inactive_requested_max_abs": 0.0,
+            "inactive_effective_max_abs": 0.0,
+            "active_sample_count": 0,
+        } if ACTION_SCREEN_PHASE66 else {}
+        phase66_initial_fingerprints = (
+            {
+                "policy_observation": tensor_hash(obs["policy"]),
+                "critic_observation": tensor_hash(obs["critic"]),
+                "root_state": tensor_hash(robot.data.root_state_w),
+                "joint_position": tensor_hash(robot.data.joint_pos),
+                "joint_velocity": tensor_hash(robot.data.joint_vel),
+                "command": tensor_hash(env.command_manager.get_command("base_velocity")),
+            }
+            if ACTION_SCREEN_PHASE66
+            else {}
+        )
         if PEFT_PHASE61:
             samples.update(
                 terminal_base_speed_mps=[],
@@ -788,6 +900,30 @@ def evaluate() -> None:
         knee_ids = [robot.joint_names.index("left_knee_joint"), robot.joint_names.index("right_knee_joint")]
         knee_min = robot.data.joint_pos[:, knee_ids].clone()
         knee_max = robot.data.joint_pos[:, knee_ids].clone()
+        phase66_requested_target = torch.zeros((64, 15), device=env.device)
+        phase66_effective_target = torch.zeros((64, 15), device=env.device)
+        phase66_source_target = torch.zeros((64, 15), device=env.device)
+        phase66_intervention_target = torch.zeros((64, 15), device=env.device)
+        phase66_original_process_actions = None
+        if ACTION_SCREEN_PHASE66:
+            phase66_original_process_actions = term.process_actions
+
+            def phase66_process_actions(actions: torch.Tensor) -> None:
+                nonlocal phase66_effective_target
+                nonlocal phase66_source_target
+                nonlocal phase66_intervention_target
+                phase66_original_process_actions(actions)
+                phase66_source_target = term._processed_actions.clone()
+                proposed = phase66_source_target + phase66_requested_target
+                if term.cfg.clip is not None:
+                    proposed = torch.clamp(
+                        proposed, min=term._clip[:, :, 0], max=term._clip[:, :, 1]
+                    )
+                phase66_intervention_target = proposed
+                phase66_effective_target = proposed - phase66_source_target
+                term._processed_actions[:] = proposed
+
+            term.process_actions = phase66_process_actions
         with torch.inference_mode():
             for step in range(args.eval_steps):
                 phase65_pre_policy = obs["policy"] if ACTION_SCREEN_PHASE65 else None
@@ -831,6 +967,23 @@ def evaluate() -> None:
                     ):
                         region_index[phase65_semantics[name]] = index
                     phase65_pre_step_regions.append(region_index.detach().cpu())
+                phase66_pre_policy = obs["policy"] if ACTION_SCREEN_PHASE66 else None
+                if ACTION_SCREEN_PHASE66:
+                    phase66_requested_target, phase66_region_index, phase66_semantics = (
+                        phase66_physical_knee_target_offset(
+                            phase66_pre_policy,
+                            env.command_manager.get_command("base_velocity"),
+                            phase66_condition_slot,
+                            candidate_enabled=_phase66_pass == 0,
+                        )
+                    )
+                    phase66_pre_step_regions.append(phase66_region_index.detach().cpu())
+                    phase66_contract["invalid_contact_suffix_count"] += int(
+                        phase66_semantics["invalid_contact_suffix"].sum()
+                    )
+                    phase66_contract["active_sample_count"] += int(
+                        phase66_semantics["active"].sum()
+                    )
                 raw_action = model.act_inference(obs)
                 action = raw_action
                 if ACTION_SCREEN:
@@ -968,6 +1121,42 @@ def evaluate() -> None:
                                     torch.full_like(value, torch.nan),
                                 ).detach().cpu()
                             )
+                    if ACTION_SCREEN_PHASE66:
+                        phase66_sample_valid = alive.clone()
+                        phase66_active = phase66_semantics["active"]
+                        phase66_inactive = ~phase66_active
+                        phase66_contract["inactive_requested_max_abs"] = max(
+                            phase66_contract["inactive_requested_max_abs"],
+                            float(phase66_requested_target[phase66_inactive].abs().max()),
+                        )
+                        phase66_contract["inactive_effective_max_abs"] = max(
+                            phase66_contract["inactive_effective_max_abs"],
+                            float(phase66_effective_target[phase66_inactive].abs().max()),
+                        )
+                        phase66_values = {
+                            "signed_pitch_rad": pitch,
+                            "com_support_outside_m": outside,
+                            "stance_slip_mps": stance_slip,
+                            "swing_sole_clearance_m": swing_clearance,
+                            "velocity_tracking_sq": velocity_error.square().sum(-1),
+                            "flight_fraction": (contact_count == 0).to(torch.float32),
+                            "requested_target_left_rad": phase66_requested_target[:, 3],
+                            "requested_target_right_rad": phase66_requested_target[:, 9],
+                            "effective_target_left_rad": phase66_effective_target[:, 3],
+                            "effective_target_right_rad": phase66_effective_target[:, 9],
+                            "source_target_left_rad": phase66_source_target[:, 3],
+                            "source_target_right_rad": phase66_source_target[:, 9],
+                            "intervention_target_left_rad": phase66_intervention_target[:, 3],
+                            "intervention_target_right_rad": phase66_intervention_target[:, 9],
+                        }
+                        for name, value in phase66_values.items():
+                            phase66_raw_samples[name].append(
+                                torch.where(
+                                    phase66_sample_valid,
+                                    value,
+                                    torch.full_like(value, torch.nan),
+                                ).detach().cpu()
+                            )
                     moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.10
                     valid_bool = alive.clone()
                     if ACTION_SCREEN_PHASE64:
@@ -1062,6 +1251,23 @@ def evaluate() -> None:
                             "post_joint_velocity": tensor_hash(robot.data.joint_vel),
                         }
                     )
+                if ACTION_SCREEN_PHASE66 and step < 3:
+                    phase66_replay_hashes.append(
+                        {
+                            "step": step,
+                            "per_env": {
+                                name: [tensor_hash(value[index]) for index in range(64)]
+                                for name, value in {
+                                    "pre_policy_observation": phase66_pre_policy,
+                                    "raw_actor_action": raw_action,
+                                    "applied_outer_action": action,
+                                    "post_root_state": robot.data.root_state_w,
+                                    "post_joint_position": robot.data.joint_pos,
+                                    "post_joint_velocity": robot.data.joint_vel,
+                                }.items()
+                            },
+                        }
+                    )
                 for name, value in values.items():
                     sums[name] += value * valid
                 counts += valid
@@ -1101,7 +1307,9 @@ def evaluate() -> None:
                     "hip_pitch_dose"
                     if ACTION_SCREEN_PHASE63
                     else (
-                        "single_support_knee_crossover"
+                        "side_phase_physical_knee_target"
+                        if ACTION_SCREEN_PHASE66
+                        else "single_support_knee_crossover"
                         if ACTION_SCREEN_PHASE65
                         else ("joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT)
                         if not ACTION_SCREEN_PHASE64
@@ -1249,6 +1457,68 @@ def evaluate() -> None:
                 "raw_samples": {
                     name: torch.stack(values, dim=0).tolist()
                     for name, values in phase65_raw_samples.items()
+                },
+                "actuator_domain": "ideal only",
+                "checkpoint_modified": False,
+            }
+        if ACTION_SCREEN_PHASE66:
+            region_names = (
+                "double_support_zero",
+                "right_swing_left_support",
+                "double_support_half",
+                "left_swing_right_support",
+                "standing",
+            )
+            region_tensor = torch.stack(phase66_pre_step_regions, dim=0)
+            knee_excursion_per_env = knee_max - knee_min
+            per_env_records = []
+            for env_id in range(64):
+                count = max(float(counts[env_id]), 1.0)
+                per_env_records.append(
+                    {
+                        "env_id": env_id,
+                        "row": env_id // 8,
+                        "column": env_id % 8,
+                        "condition": phase66_condition_names[int(phase66_condition_slot[env_id])],
+                        "survival_s": float(survival[env_id]),
+                        "terminated": bool(terminal[env_id]),
+                        "lateral_abs_mean_m": float(sums["lateral_abs"][env_id] / count),
+                        "yaw_abs_mean_rad": float(sums["yaw_abs"][env_id] / count),
+                        "velocity_tracking_rmse_mps": math.sqrt(
+                            max(0.0, float(sums["velocity_tracking_sq"][env_id] / count))
+                        ),
+                        "action_delta_abs_mean": float(sums["action_delta_abs"][env_id] / count),
+                        "root_height_min_m": float(root_min[env_id]),
+                        "root_tilt_max_rad": float(tilt_max[env_id]),
+                        "knee_left_excursion_rad": float(knee_excursion_per_env[env_id, 0]),
+                        "knee_right_excursion_rad": float(knee_excursion_per_env[env_id, 1]),
+                        "knee_left_right_excursion_abs_diff_rad": float(
+                            abs(knee_excursion_per_env[env_id, 0] - knee_excursion_per_env[env_id, 1])
+                        ),
+                    }
+                )
+            report["side_phase_physical_knee_target"] = {
+                "pass_index": _phase66_pass,
+                "runner_sha256": sha256(Path(__file__)),
+                "candidate_enabled": _phase66_pass == 0,
+                "requested_target_offset_rad": -0.003,
+                "allocation": "8x8_latin_square_condition_equals_row_plus_column_modulo_8",
+                "condition_names": list(phase66_condition_names),
+                "condition_slot_by_env": phase66_condition_slot.tolist(),
+                "phase_source": "pre-step deployable actor observation suffix and command",
+                "measurement_alignment": "post-step physical outcome labeled by the pre-step semantic region that produced its target",
+                "pre_step_region_index": region_tensor.tolist(),
+                "pre_step_region_counts_per_env": {
+                    name: (region_tensor == index).sum(dim=0).tolist()
+                    for index, name in enumerate(region_names)
+                },
+                "initial_fingerprints": phase66_initial_fingerprints,
+                "first_three_ds0_per_env_replay_hashes": phase66_replay_hashes,
+                "contract": phase66_contract,
+                "per_env_records": per_env_records,
+                "raw_samples": {
+                    name: torch.stack(values, dim=0).tolist()
+                    for name, values in phase66_raw_samples.items()
                 },
                 "actuator_domain": "ideal only",
                 "checkpoint_modified": False,

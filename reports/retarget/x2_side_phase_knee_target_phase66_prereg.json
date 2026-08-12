@@ -1,0 +1,114 @@
+{
+  "schema": "x2_side_phase_knee_target_phase66_prereg_v1",
+  "date": "2026-08-12",
+  "objective": "Decompose the Phase65 bilateral asymmetry and carryover into physical knee side and deployable gait phase while applying an equal realized final target offset.",
+  "source": {
+    "checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "phase65_result_sha256": "3b866abff1a4241e63a492e8b8d82d2c91a6699ae282389a89434187992b04e7",
+    "phase65_findings": {
+      "pooled_pitch_mean_improvement_rad": 0.001243,
+      "double_support_zero_support_regression_m": 0.01033,
+      "left_realized_ratio": 0.475,
+      "right_realized_ratio": 0.965
+    }
+  },
+  "screen": {
+    "sequential_batched_runs": 2,
+    "pass0": "eight side-by-phase candidates",
+    "pass1": "same-index zero-offset controls",
+    "seed": 42,
+    "num_envs_per_pass": 64,
+    "steps_per_pass": 200,
+    "horizon_s_per_pass": 4.0,
+    "optimizer_steps": 0,
+    "checkpoint_modified": false,
+    "requested_final_joint_target_offset_rad": -0.003,
+    "target_layer": "After actor, gait template, plant bias and normalized clipping; before the existing physical joint target clip and PD control.",
+    "upper_motion": "fixed",
+    "actuator_domain": "ideal only",
+    "allocation": {
+      "scene_shape": [8, 8],
+      "latin_slot": "(row + column) modulo 8",
+      "condition_order": [
+        "DS0_left", "DS0_right",
+        "right_swing_left_support_left", "right_swing_left_support_right",
+        "DS_half_left", "DS_half_right",
+        "left_swing_right_support_left", "left_swing_right_support_right"
+      ],
+      "envs_per_condition": 8,
+      "reason": "Every condition occupies every scene row and column once, and every environment index has its own pass1 control."
+    }
+  },
+  "pairing_gates": {
+    "source_checkpoint_equal": true,
+    "runner_and_configuration_equal_except_pass": true,
+    "initial_fingerprints_exact": true,
+    "non_DS0_first_three_step_per_env_replay_exact": true,
+    "pre_step_regions_exact_between_passes": true,
+    "expected_live_region_counts_per_env": {
+      "double_support_zero": 29,
+      "right_swing_left_support": 70,
+      "double_support_half": 30,
+      "left_swing_right_support": 71,
+      "standing": 0
+    },
+    "invalid_contact_suffix_count_max": 0
+  },
+  "target_contract_gates": {
+    "active_requested_target_mean_rad": -0.003,
+    "active_effective_to_requested_mean_ratio_min": 0.95,
+    "active_wrong_sign_fraction_max": 0.0,
+    "inactive_requested_max_abs_rad": 1e-08,
+    "inactive_effective_max_abs_rad": 1e-08,
+    "control_requested_max_abs_rad": 1e-08,
+    "control_effective_max_abs_rad": 1e-08,
+    "source_target_limit_abs_max_rad": 1.0,
+    "intervention_target_limit_abs_max_rad": 1.0
+  },
+  "condition_gates": {
+    "finite": true,
+    "survival_s_min": 4.0,
+    "termination_rate_max": 0.0,
+    "global_signed_pitch_mean_improvement_min_rad": 0.0002,
+    "global_signed_pitch_p05_improvement_min_rad": -0.001,
+    "active_phase_signed_pitch_mean_improvement_min_rad": 0.0003,
+    "active_phase_signed_pitch_p05_improvement_min_rad": 0.0,
+    "global_lateral_abs_regression_max_m": 0.015,
+    "global_yaw_abs_regression_max_rad": 0.015,
+    "global_velocity_rmse_regression_max_mps": 0.005,
+    "global_com_support_mean_regression_max_m": 0.001,
+    "global_stance_slip_p95_regression_max_mps": 0.03,
+    "global_flight_fraction_regression_max": 0.01,
+    "active_phase_velocity_rmse_regression_max_mps": 0.02,
+    "active_phase_com_support_mean_regression_max_m": 0.003,
+    "active_phase_stance_slip_p95_regression_max_mps": 0.08,
+    "active_phase_flight_fraction_regression_max": 0.03,
+    "next_phase_com_support_mean_regression_max_m": 0.003,
+    "next_phase_stance_slip_p95_regression_max_mps": 0.08,
+    "root_height_min_regression_max_m": 0.005,
+    "root_tilt_max_regression_max_rad": 0.01,
+    "action_delta_abs_regression_max": 0.01,
+    "swing_clearance_p05_regression_max_m": 0.003,
+    "knee_excursion_abs_change_max_rad": 0.03,
+    "knee_left_right_asymmetry_regression_max_rad": 0.02
+  },
+  "role_rule": {
+    "stance_pair": ["right_swing_left_support_left", "left_swing_right_support_right"],
+    "swing_pair": ["right_swing_left_support_right", "left_swing_right_support_left"],
+    "double_support_pairs": [["DS0_left", "DS0_right"], ["DS_half_left", "DS_half_right"]],
+    "selection": "A deployable phase-role rule is identified only when both physical-side mirror cells in that role pass. A single-side pass is morphology/controller-side evidence only."
+  },
+  "decision_boundary": {
+    "diagnostic_pass": "Identifies one mirrored role for a later paired composition diagnostic only.",
+    "diagnostic_fail": "Stops knee target-shim composition and returns Task2 to learned state/phase-conditioned residual design without unlocking training.",
+    "training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false
+  },
+  "resource_limits": {
+    "disk_free_gib_min_before_each_run": 20,
+    "gpu_peak_memory_mib_max_each_run": 22528,
+    "expected_generated_checkpoint_count": 0,
+    "expected_temporary_disk_delta_bytes_max_total": 536870912
+  }
+}
