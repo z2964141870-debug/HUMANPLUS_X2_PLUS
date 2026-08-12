@@ -21,6 +21,8 @@ parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--source-output", type=Path)
 parser.add_argument("--final-output", type=Path)
 parser.add_argument("--residual-checkpoint", type=Path)
+parser.add_argument("--attribution-candidate-checkpoint", type=Path)
+parser.add_argument("--rollout-bundle", type=Path)
 parser.add_argument("--num-envs", type=int, default=64)
 parser.add_argument("--seed", type=int, default=42)
 parser.add_argument("--eval-steps", type=int, default=200)
@@ -42,6 +44,7 @@ _phase67_live_zero = os.environ.get("CWI_PHASE67_RESIDUAL_LIVE_ZERO", "0") == "1
 _phase68_train = os.environ.get("CWI_PHASE68_RESIDUAL_TRAIN", "0") == "1"
 _phase68_eval_role = os.environ.get("CWI_PHASE68_RESIDUAL_EVAL_ROLE")
 _phase68_eval = _phase68_eval_role is not None
+_phase69_attribution = os.environ.get("CWI_PHASE69_REWARD_ATTRIBUTION", "0") == "1"
 if sum(
     (
         _phase60_variant is not None,
@@ -54,6 +57,7 @@ if sum(
         _phase67_live_zero,
         _phase68_train,
         _phase68_eval,
+        _phase69_attribution,
     )
 ) > 1:
     raise ValueError("Phase60 through Phase68 modes are mutually exclusive")
@@ -82,6 +86,21 @@ if _phase68_eval:
             "Phase68 event eval requires source/candidate role, residual checkpoint, "
             "64 envs, seed 42, and 512 steps"
         )
+if _phase69_attribution:
+    if (
+        args.mode != "train"
+        or args.num_envs != 64
+        or args.seed != 42
+        or args.residual_checkpoint is None
+        or args.attribution_candidate_checkpoint is None
+        or args.rollout_bundle is None
+        or args.source_output is not None
+        or args.final_output is not None
+    ):
+        raise ValueError(
+            "Phase69 attribution requires train mode, source/candidate residual "
+            "checkpoints, a rollout bundle, 64 envs, seed 42, and no output checkpoint"
+        )
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -92,7 +111,11 @@ elif _phase60_variant is not None:
         raise ValueError("Phase60 requires 64 envs, train seed 42, and eval seed 40/41/42")
 elif (args.num_envs, args.seed) != (64, 42):
     raise ValueError("Phase56 is frozen to 64 envs and seed 42")
-if args.mode == "train" and (args.source_output is None or args.final_output is None):
+if (
+    args.mode == "train"
+    and not _phase69_attribution
+    and (args.source_output is None or args.final_output is None)
+):
     raise ValueError("train mode requires --source-output and --final-output")
 app_launcher = AppLauncher(args)
 simulation_app = app_launcher.app
@@ -137,6 +160,15 @@ from cwi_x2.phase68_residual_ppo import (  # noqa: E402
     build_seeded_residual,
     deployable_moving_mask,
 )
+from cwi_x2.phase69_reward_attribution import (  # noqa: E402
+    PHASE_NAMES,
+    additive_normalized_credits,
+    analytical_head_ascent_per_env,
+    bootstrap_projection,
+    semantic_phase_ids,
+    standalone_credit,
+    vector_summary,
+)
 
 PEFT_PHASE58 = os.environ.get("CWI_PHASE58_PEFT", "0") == "1"
 PEFT_PHASE59 = os.environ.get("CWI_PHASE59_PEFT", "0") == "1"
@@ -154,6 +186,8 @@ ACTION_SCREEN_PHASE67 = _phase67_live_zero
 RESIDUAL_PHASE68_TRAIN = _phase68_train
 RESIDUAL_PHASE68_EVAL = _phase68_eval
 RESIDUAL_PHASE68 = RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE68_EVAL
+RESIDUAL_PHASE69_ATTRIBUTION = _phase69_attribution
+RESIDUAL_DIAGNOSTIC = RESIDUAL_PHASE68 or RESIDUAL_PHASE69_ATTRIBUTION
 TRANSITION_EVENT = PEFT_PHASE61 or RESIDUAL_PHASE68_EVAL
 ACTION_SCREEN = (
     ACTION_SCREEN_PHASE62
@@ -164,9 +198,9 @@ ACTION_SCREEN = (
     or ACTION_SCREEN_PHASE67
 )
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
-POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN or RESIDUAL_PHASE68
+POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN or RESIDUAL_DIAGNOSTIC
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 68 if RESIDUAL_PHASE68 else (67 if ACTION_SCREEN_PHASE67 else (66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))))))))
+PHASE = 69 if RESIDUAL_PHASE69_ATTRIBUTION else (68 if RESIDUAL_PHASE68 else (67 if ACTION_SCREEN_PHASE67 else (66 if ACTION_SCREEN_PHASE66 else (65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))))))))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -244,19 +278,19 @@ def build_env_cfg(*, evaluation: bool):
     cfg.commands.base_velocity.ranges.lin_vel_x = (
         (0.30, 0.30)
         if TRANSITION_EVENT
-        else ((0.35, 0.35) if evaluation or RESIDUAL_PHASE68_TRAIN else (0.25, 0.60))
+        else ((0.35, 0.35) if evaluation or RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE69_ATTRIBUTION else (0.25, 0.60))
     )
     cfg.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
     cfg.commands.base_velocity.ranges.ang_vel_z = (
-        (0.0, 0.0) if evaluation or RESIDUAL_PHASE68_TRAIN else (-0.20, 0.20)
+        (0.0, 0.0) if evaluation or RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE69_ATTRIBUTION else (-0.20, 0.20)
     )
     cfg.commands.base_velocity.ranges.heading = (0.0, 0.0)
-    cfg.commands.base_velocity.heading_command = not evaluation and not TRANSITION_EVENT and not RESIDUAL_PHASE68_TRAIN
-    cfg.commands.base_velocity.rel_heading_envs = 0.0 if (evaluation or TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN) else 0.75
+    cfg.commands.base_velocity.heading_command = not evaluation and not TRANSITION_EVENT and not RESIDUAL_PHASE68_TRAIN and not RESIDUAL_PHASE69_ATTRIBUTION
+    cfg.commands.base_velocity.rel_heading_envs = 0.0 if (evaluation or TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE69_ATTRIBUTION) else 0.75
     cfg.commands.base_velocity.rel_standing_envs = 0.0
     cfg.commands.base_velocity = gain_scheduled_velocity_cfg(
         cfg.commands.base_velocity,
-        ideal_env_fraction=1.0 if ACTION_SCREEN or RESIDUAL_PHASE68 else 0.75,
+        ideal_env_fraction=1.0 if ACTION_SCREEN or RESIDUAL_DIAGNOSTIC else 0.75,
         ideal_heading_control_stiffness=1.0,
         response_heading_control_stiffness=0.05,
     )
@@ -288,7 +322,7 @@ def build_env_cfg(*, evaluation: bool):
     cfg.events.reset_base.params["pose_range"] = {
         "x": (0.0, 0.0), "y": (0.0, 0.0), "yaw": (0.0, 0.0)
     }
-    if evaluation or TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN:
+    if evaluation or TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE69_ATTRIBUTION:
         cfg.events.base_external_force_torque = None
         cfg.events.push_robot = None
     cfg.rewards.track_lin_vel_xy_exp.weight = 4.0
@@ -301,10 +335,10 @@ def build_env_cfg(*, evaluation: bool):
     cfg.rewards.contact_dwell.weight = -1.0
     cfg.rewards.contact_phase.weight = -1.0
     cfg.rewards.heading_error_l2.weight = 0.0
-    if PEFT_POSTURE or RESIDUAL_PHASE68:
+    if PEFT_POSTURE or RESIDUAL_DIAGNOSTIC:
         pitch_weight, support_weight = (
             (-0.5, -0.5)
-            if TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN
+            if TRANSITION_EVENT or RESIDUAL_PHASE68_TRAIN or RESIDUAL_PHASE69_ATTRIBUTION
             else POSTURE_REWARD_WEIGHTS[POSTURE_VARIANT]
         )
         # Candidate evaluation uses a common reward contract.  The posture and
@@ -358,7 +392,7 @@ def build_env_cfg(*, evaluation: bool):
         {"enabled": True, "profile": "session03_session04_group", "randomize": False,
          "strength": 1.0, "filter_strength": 1.0, "delay_strength": 1.0,
          "include_ideal_endpoint": False,
-         "ideal_env_fraction": 1.0 if ACTION_SCREEN or RESIDUAL_PHASE68 else 0.75,
+         "ideal_env_fraction": 1.0 if ACTION_SCREEN or RESIDUAL_DIAGNOSTIC else 0.75,
          "filter_only_env_fraction": 0.0},
         physics_dt_sec=cfg.sim.dt,
     )
@@ -425,7 +459,7 @@ def validate_live_contract(env, wrapped):
     }
     expected_counts = (
         {"none_ideal": 64, "none_response": 0, "bounded_ideal": 0, "bounded_response": 0}
-        if ACTION_SCREEN or RESIDUAL_PHASE68
+        if ACTION_SCREEN or RESIDUAL_DIAGNOSTIC
         else
         {"none_ideal": 48, "none_response": 16, "bounded_ideal": 0, "bounded_response": 0}
         if PEFT_POSTURE
@@ -2528,14 +2562,654 @@ def train_phase68() -> None:
             env.close()
 
 
+PHASE69_REWARD_TERMS = (
+    ("track_lin_vel_xy_exp", 4.0),
+    ("track_ang_vel_z_exp", 1.0),
+    ("lin_vel_z_l2", -0.2),
+    ("ang_vel_xy_l2", -0.05),
+    ("dof_torques_l2", -2.0e-6),
+    ("dof_acc_l2", -1.0e-7),
+    ("action_rate_l2", -0.005),
+    ("feet_air_time", 1.0),
+    ("flat_orientation_l2", -1.0),
+    ("dof_pos_limits", -1.0),
+    ("termination_penalty", -200.0),
+    ("feet_slide", -0.2),
+    ("joint_deviation_hip", -0.1),
+    ("joint_deviation_arms", -0.1),
+    ("joint_deviation_torso", -0.1),
+    ("yaw_rate_l2", -0.5),
+    ("stand_lin_vel_xy_l2", 0.0),
+    ("action_magnitude_l2", 0.0),
+    ("heading_error_l2", 0.0),
+    ("contact_dwell", -1.0),
+    ("contact_phase", -1.0),
+    ("signed_backward_pitch", -0.5),
+    ("actual_support_com", -0.5),
+)
+
+
+def _flat_head_vector(weight: torch.Tensor, bias: torch.Tensor) -> torch.Tensor:
+    return torch.cat((weight.reshape(-1), bias.reshape(-1)))
+
+
+def _cosine_and_relative_l2(
+    value: torch.Tensor, reference: torch.Tensor
+) -> tuple[float, float, float]:
+    value = value.detach().cpu().to(torch.float64).flatten()
+    reference = reference.detach().cpu().to(torch.float64).flatten()
+    value_norm = torch.linalg.vector_norm(value)
+    reference_norm = torch.linalg.vector_norm(reference)
+    cosine = torch.dot(value, reference) / (value_norm * reference_norm)
+    relative_l2 = torch.linalg.vector_norm(value - reference) / reference_norm
+    max_abs = torch.max(torch.abs(value - reference))
+    return float(cosine), float(relative_l2), float(max_abs)
+
+
+def _atomic_save_phase69_bundle(path: Path, payload: dict[str, object]) -> str:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        raise RuntimeError(f"refusing to overwrite Phase69 evidence bundle: {path}")
+    temporary = path.with_name(f".{path.name}.tmp")
+    if temporary.exists():
+        raise RuntimeError(f"stale Phase69 evidence temporary exists: {temporary}")
+    with temporary.open("wb") as stream:
+        torch.save(payload, stream)
+        stream.flush()
+        os.fsync(stream.fileno())
+    restored = torch.load(temporary, map_location="cpu", weights_only=False)
+    if restored.get("schema") != "x2_phase69_reward_attribution_evidence_v1":
+        temporary.unlink()
+        raise RuntimeError("Phase69 evidence strict reload schema mismatch")
+    os.replace(temporary, path)
+    return sha256(path)
+
+
+def attribute_phase69() -> None:
+    """Replay Phase68 once and attribute its first-step policy gradient."""
+
+    expected_source_sha = "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3"
+    expected_candidate_sha = "81ed13e94bef8f7932ace86a22f8fbd9af82b5dbc649f9f7693e9fcdf5ec1347"
+    expected_initial_hash = "4cd4f7d2dbd62db75ea5568525e7b0b95b7decc1ad8ccbb1693a91f3eae37018"
+    expected_latent_hash = "60a12d78cd0e6b18e5f3fc9406f98987ae48031645ae9e1576b04aa59d5ed7ee"
+    expected_cpu_rng_hash = "1e894074389fc8ef787fe772a9e8526ac637bfb567462a4b6251a82a25072bd5"
+    expected_cuda_rng_hash = "8083a7cbbe23976ee36097b0a3694140a46204ad4bad6458446bcaf8c86e271f"
+    if args.output.exists():
+        raise RuntimeError(f"refusing to overwrite Phase69 report: {args.output}")
+    if sha256(args.residual_checkpoint) != expected_source_sha:
+        raise RuntimeError("Phase69 source residual checkpoint hash changed")
+    if sha256(args.attribution_candidate_checkpoint) != expected_candidate_sha:
+        raise RuntimeError("Phase69 candidate residual checkpoint hash changed")
+
+    env = wrapped = residual_env = None
+    try:
+        env = ManagerBasedRLEnv(cfg=build_env_cfg(evaluation=False))
+        wrapped = RslRlVecEnvWrapper(env, clip_actions=None)
+        obs, _, _, _, domain_counts = validate_live_contract(env, wrapped)
+        source_model = build_model(obs, env.device).eval()
+        source_payload = torch.load(
+            args.checkpoint, map_location=env.device, weights_only=False
+        )
+        source_model.load_state_dict(source_payload["model_state_dict"], strict=True)
+        for parameter in source_model.parameters():
+            parameter.requires_grad_(False)
+        residual = build_seeded_residual().to(env.device)
+        source_residual_payload = torch.load(
+            args.residual_checkpoint, map_location=env.device, weights_only=False
+        )
+        candidate_payload = torch.load(
+            args.attribution_candidate_checkpoint,
+            map_location="cpu",
+            weights_only=False,
+        )
+        if source_residual_payload.get("schema") != "x2_phase68_residual_checkpoint_v1":
+            raise RuntimeError("Phase69 source residual schema changed")
+        residual.load_state_dict(source_residual_payload["residual_state_dict"], strict=True)
+        if state_hash(residual) != expected_initial_hash:
+            raise RuntimeError("Phase69 source residual is not the seeded zero policy")
+        policy = ResidualActorCritic(source_model, residual).to(env.device)
+        records: dict[str, object] = {
+            "latent": [],
+            "requested": [],
+            "effective": [],
+            "reward": [],
+            "term_reward": [],
+            "signed_pitch": [],
+            "support_outside": [],
+            "phase_id": [],
+            "non_knee_max_abs": 0.0,
+            "done_count": 0,
+            "active_count": 0,
+        }
+        step_dt = float(env.step_dt)
+        reward_term_names = tuple(env.reward_manager._term_names)
+        reward_term_weights = tuple(
+            float(env.reward_manager.get_term_cfg(name).weight)
+            for name in reward_term_names
+        )
+        expected_names = tuple(name for name, _ in PHASE69_REWARD_TERMS)
+        expected_weights = tuple(weight for _, weight in PHASE69_REWARD_TERMS)
+        if reward_term_names != expected_names or reward_term_weights != expected_weights:
+            raise RuntimeError("Phase69 reward term names/order/weights changed")
+
+        def record_step(row: dict[str, torch.Tensor]) -> None:
+            records["latent"].append(row["latent"].clone())
+            records["requested"].append(row["requested_knee_offset"].clone())
+            records["effective"].append(row["effective_knee_offset"].clone())
+            records["reward"].append(row["reward"].clone())
+            records["term_reward"].append(
+                env.reward_manager._step_reward.detach().clone() * step_dt
+            )
+            robot = env.scene["robot"]
+            records["signed_pitch"].append(signed_root_pitch_rad(robot).detach().clone())
+            outside, _ = actual_support_com_outside_distance(
+                env, force_threshold_n=10.0
+            )
+            records["support_outside"].append(outside.detach().clone())
+            records["non_knee_max_abs"] = max(
+                float(records["non_knee_max_abs"]),
+                float(row["non_knee_effective"].abs().max()),
+            )
+            records["done_count"] = int(records["done_count"]) + int(
+                row["done"].bool().sum()
+            )
+            records["active_count"] = int(records["active_count"]) + int(
+                row["active_mask"].sum()
+            )
+
+        residual_env = PhysicalKneeResidualVecEnv(
+            wrapped, policy, step_callback=record_step
+        )
+        algorithm = PPO(
+            policy,
+            num_learning_epochs=1,
+            num_mini_batches=1,
+            clip_param=0.2,
+            gamma=0.99,
+            lam=1.0,
+            value_loss_coef=0.0,
+            entropy_coef=0.0,
+            learning_rate=1.0e-3,
+            max_grad_norm=1.0,
+            schedule="fixed",
+            desired_kl=None,
+            device=args.device,
+        )
+        algorithm.optimizer = torch.optim.Adam(residual.parameters(), lr=1.0e-3)
+        algorithm.init_storage("rl", 64, 200, obs, [2])
+        source_model_hash_before = state_hash(source_model)
+        source_std_hash_before = tensor_hash(source_model.std)
+        residual_hash_before = state_hash(residual)
+        cpu_rng_before = tensor_hash(torch.random.get_rng_state())
+        cuda_rng_before = tensor_hash(torch.cuda.get_rng_state(env.device))
+        obs_train = residual_env.get_observations()
+        for _ in range(200):
+            records["phase_id"].append(
+                semantic_phase_ids(obs_train["policy"]).detach().clone()
+            )
+            latent_action = algorithm.act(obs_train)
+            next_obs, reward, done, extras = residual_env.step(latent_action)
+            algorithm.process_env_step(next_obs, reward, done, extras)
+            obs_train = next_obs
+
+        algorithm.storage.compute_returns(
+            torch.zeros((64, 1), device=env.device), gamma=0.99, lam=1.0
+        )
+        stored_latent = algorithm.storage.actions.detach()
+        received_latent = torch.stack(records["latent"], dim=0)
+        stored_reward = algorithm.storage.rewards.detach().squeeze(-1)
+        received_reward = torch.stack(records["reward"], dim=0)
+        term_reward = torch.stack(records["term_reward"], dim=0)
+        signed_pitch = torch.stack(records["signed_pitch"], dim=0)
+        support_outside = torch.stack(records["support_outside"], dim=0)
+        phase_id = torch.stack(records["phase_id"], dim=0)
+        requested = torch.stack(records["requested"], dim=0)
+        effective = torch.stack(records["effective"], dim=0)
+        values = algorithm.storage.values.detach().squeeze(-1)
+        terminal_values = policy.evaluate(obs_train).detach().squeeze(-1)
+        pitch_index = reward_term_names.index("signed_backward_pitch")
+        support_index = reward_term_names.index("actual_support_com")
+        pitch_reward = term_reward[..., pitch_index]
+        support_reward = term_reward[..., support_index]
+        locomotion_reward = term_reward.sum(dim=-1) - pitch_reward - support_reward
+        decomposed_reward = locomotion_reward + pitch_reward + support_reward
+        reward_components = {
+            "locomotion": locomotion_reward,
+            "pitch": pitch_reward,
+            "support": support_reward,
+        }
+        credits, raw_advantage, normalized_total = additive_normalized_credits(
+            reward_components, values, gamma=0.99
+        )
+        terminal_credits, terminal_raw_advantage, terminal_normalized_total = (
+            additive_normalized_credits(
+                reward_components,
+                values,
+                gamma=0.99,
+                terminal_bootstrap=terminal_values,
+            )
+        )
+        storage_advantage = algorithm.storage.advantages.detach().squeeze(-1)
+        flat_obs = algorithm.storage.observations.flatten(0, 1)
+        flat_actions = algorithm.storage.actions.flatten(0, 1)
+        old_log_prob = algorithm.storage.actions_log_prob.flatten(0, 1).squeeze(-1)
+        policy.update_distribution(flat_obs)
+        new_log_prob = policy.get_actions_log_prob(flat_actions)
+        ratio = torch.exp(new_log_prob - old_log_prob)
+        total_loss = -(normalized_total.flatten() * ratio).mean()
+        named_residual_parameters = list(residual.named_parameters())
+        autograd_all = torch.autograd.grad(
+            total_loss,
+            [parameter for _, parameter in named_residual_parameters],
+            allow_unused=True,
+        )
+        autograd_by_name = {
+            name: gradient
+            for (name, _), gradient in zip(
+                named_residual_parameters, autograd_all, strict=True
+            )
+        }
+        autograd_head = (
+            autograd_by_name["head.weight"],
+            autograd_by_name["head.bias"],
+        )
+        autograd_ascent = -_flat_head_vector(*autograd_head).detach()
+        with torch.no_grad():
+            encoded = residual.encoder(
+                algorithm.storage.observations["policy"].flatten(0, 1)
+            ).reshape(200, 64, -1)
+        component_per_env = {
+            name: analytical_head_ascent_per_env(
+                encoded, stored_latent, credit, latent_std=0.35
+            )
+            for name, credit in credits.items()
+        }
+        total_per_env = sum(component_per_env.values())
+        analytical_total = total_per_env.mean(dim=0)
+        terminal_component_per_env = {
+            name: analytical_head_ascent_per_env(
+                encoded, stored_latent, credit, latent_std=0.35
+            )
+            for name, credit in terminal_credits.items()
+        }
+        terminal_total_per_env = sum(terminal_component_per_env.values())
+        terminal_total = terminal_total_per_env.mean(dim=0)
+        analytical_autograd = _cosine_and_relative_l2(
+            analytical_total, autograd_ascent
+        )
+
+        standalone_rewards = {
+            "locomotion": locomotion_reward,
+            "pitch": pitch_reward,
+            "support": support_reward,
+            "pitch_plus_support": pitch_reward + support_reward,
+            "signed_pitch_metric": signed_pitch * step_dt,
+            "negative_support_metric": -support_outside * step_dt,
+        }
+        standalone_per_env = {
+            name: analytical_head_ascent_per_env(
+                encoded,
+                stored_latent,
+                standalone_credit(reward, gamma=0.99),
+                latent_std=0.35,
+            )
+            for name, reward in standalone_rewards.items()
+        }
+        phase_per_env = {
+            phase_name: analytical_head_ascent_per_env(
+                encoded,
+                stored_latent,
+                normalized_total,
+                latent_std=0.35,
+                sample_mask=phase_id == phase_index,
+            )
+            for phase_index, phase_name in enumerate(PHASE_NAMES)
+        }
+
+        optimizer_state = candidate_payload["optimizer_state_dict"]
+        param_ids = optimizer_state["param_groups"][0]["params"]
+        live_names = [name for name, _ in residual.named_parameters()]
+        state_by_name = {
+            name: optimizer_state["state"][param_id]
+            for name, param_id in zip(live_names, param_ids, strict=True)
+        }
+        recovered_gradient = _flat_head_vector(
+            state_by_name["head.weight"]["exp_avg"] / 0.1,
+            state_by_name["head.bias"]["exp_avg"] / 0.1,
+        )
+        recovered_ascent = -recovered_gradient
+        replay_recovered = _cosine_and_relative_l2(
+            analytical_total, recovered_ascent
+        )
+        candidate_state = candidate_payload["residual_state_dict"]
+        source_state = source_residual_payload["residual_state_dict"]
+        actual_update = _flat_head_vector(
+            candidate_state["head.weight"] - source_state["head.weight"],
+            candidate_state["head.bias"] - source_state["head.bias"],
+        )
+        update_direction = _cosine_and_relative_l2(actual_update, recovered_ascent)
+
+        virtual_residual = build_seeded_residual().to(env.device)
+        virtual_optimizer = torch.optim.Adam(virtual_residual.parameters(), lr=1.0e-3)
+        virtual_steps = {"count": 0}
+        virtual_original_step = virtual_optimizer.step
+
+        def counted_virtual_step(*step_args, **step_kwargs):
+            virtual_steps["count"] += 1
+            return virtual_original_step(*step_args, **step_kwargs)
+
+        virtual_optimizer.step = counted_virtual_step
+        for (virtual_name, virtual_parameter), (gradient_name, gradient) in zip(
+            virtual_residual.named_parameters(),
+            autograd_by_name.items(),
+            strict=True,
+        ):
+            if virtual_name != gradient_name:
+                raise RuntimeError("Phase69 virtual Adam parameter order changed")
+            virtual_parameter.grad = gradient.detach().clone()
+        virtual_optimizer.step()
+        virtual_candidate_hash = state_hash(virtual_residual)
+        virtual_candidate_exact = (
+            virtual_candidate_hash == candidate_payload["residual_state_hash"]
+        )
+
+        component_summary = {
+            name: {
+                **vector_summary(vector.mean(dim=0), analytical_total),
+                "bootstrap": bootstrap_projection(vector, total_per_env),
+                "left_head_row_norm": float(torch.linalg.vector_norm(vector.mean(dim=0)[:32])),
+                "right_head_row_norm": float(torch.linalg.vector_norm(vector.mean(dim=0)[32:64])),
+            }
+            for name, vector in component_per_env.items()
+        }
+        phase_summary = {
+            name: vector_summary(vector.mean(dim=0), analytical_total)
+            for name, vector in phase_per_env.items()
+        }
+        pitch_metric_alignment = bootstrap_projection(
+            standalone_per_env["pitch"],
+            standalone_per_env["signed_pitch_metric"],
+            seed=690043,
+        )
+        total_metric_alignment = bootstrap_projection(
+            total_per_env,
+            standalone_per_env["signed_pitch_metric"],
+            seed=690044,
+        )
+        terminal_total_metric_alignment = bootstrap_projection(
+            terminal_total_per_env,
+            standalone_per_env["signed_pitch_metric"],
+            seed=690045,
+        )
+        zero_terminal_direction = _cosine_and_relative_l2(
+            terminal_total, analytical_total
+        )
+        full_total = total_per_env.mean(dim=0)
+        env_scalar = torch.einsum("nc,c->n", total_per_env, full_total)
+        absolute_env_scalar = env_scalar.abs()
+        env_abs_sum = absolute_env_scalar.sum()
+        kish_ess = float(
+            env_abs_sum.square()
+            / absolute_env_scalar.square().sum().clamp_min(1.0e-30)
+        )
+        max_env_abs_fraction = float(
+            absolute_env_scalar.max() / env_abs_sum.clamp_min(1.0e-30)
+        )
+        phase_counts = {
+            name: int((phase_id == index).sum())
+            for index, name in enumerate(PHASE_NAMES)
+        }
+        expected_phase_counts = {
+            "double_support_zero": 1920,
+            "right_swing_left_support": 4480,
+            "double_support_half": 1920,
+            "left_swing_right_support": 4480,
+        }
+        requested_abs_sum = float(requested.abs().sum())
+        effective_abs_sum = float(effective.abs().sum())
+        additive_gradient = sum(component_per_env.values()).mean(dim=0)
+        additive_autograd = _cosine_and_relative_l2(
+            additive_gradient, autograd_ascent
+        )
+        phase_closure = _cosine_and_relative_l2(
+            sum(phase_per_env.values()).mean(dim=0), analytical_total
+        )
+        technical_checks = {
+            "base_checkpoint_hash": sha256(args.checkpoint) == EXPECTED[ORIGINAL],
+            "source_checkpoint_hash": sha256(args.residual_checkpoint) == expected_source_sha,
+            "candidate_checkpoint_hash": sha256(args.attribution_candidate_checkpoint) == expected_candidate_sha,
+            "initial_residual_hash": residual_hash_before == expected_initial_hash,
+            "cpu_rng_exact_replay": cpu_rng_before == expected_cpu_rng_hash,
+            "cuda_rng_exact_replay": cuda_rng_before == expected_cuda_rng_hash,
+            "stored_latent_exact": torch.equal(stored_latent, received_latent),
+            "stored_latent_hash_exact_replay": tensor_hash(stored_latent) == expected_latent_hash,
+            "stored_reward_exact": torch.equal(stored_reward, received_reward),
+            "no_done": int(records["done_count"]) == 0,
+            "all_active": int(records["active_count"]) == 64 * 200,
+            "latent_variance_nonzero": bool(torch.all(stored_latent.var(dim=(0, 1)) > 0.0)),
+            "source_model_hash_exact": state_hash(source_model) == source_model_hash_before,
+            "source_std_hash_exact": tensor_hash(source_model.std) == source_std_hash_before,
+            "source_grad_none": all(parameter.grad is None for parameter in source_model.parameters()),
+            "residual_state_exact": state_hash(residual) == residual_hash_before,
+            "optimizer_steps_zero": len(algorithm.optimizer.state) == 0,
+            "non_knee_exact_zero": float(records["non_knee_max_abs"]) == 0.0,
+            "physical_bound": float(requested.abs().max()) <= 0.003 + 1.0e-8,
+            "effective_ratio": effective_abs_sum / requested_abs_sum >= 0.95,
+            "storage_shapes": (
+                list(algorithm.storage.actions.shape) == [200, 64, 2]
+                and list(algorithm.storage.rewards.shape) == [200, 64, 1]
+                and list(algorithm.storage.values.shape) == [200, 64, 1]
+            ),
+            "logprob_exact": float((new_log_prob - old_log_prob).abs().max()) <= 1.0e-6,
+            "ratio_exact": float((ratio - 1.0).abs().max()) <= 1.0e-6,
+            "reward_terms_exact": (
+                reward_term_names == expected_names
+                and reward_term_weights == expected_weights
+            ),
+            "reward_closure": float((decomposed_reward - stored_reward).abs().max()) <= 1.0e-7,
+            "advantage_reconstruction": float((normalized_total - storage_advantage).abs().max()) <= 1.0e-6,
+            "phase_coverage": phase_counts == expected_phase_counts,
+            "finite": all(
+                torch.isfinite(value).all()
+                for value in (
+                    stored_latent,
+                    stored_reward,
+                    term_reward,
+                    values,
+                    normalized_total,
+                    analytical_total,
+                )
+            ),
+            "encoder_gradient_exact_zero": all(
+                autograd_by_name[name] is not None
+                and float(autograd_by_name[name].norm()) == 0.0
+                for name in live_names
+                if name.startswith("encoder.")
+            ),
+            "head_gradient_nonzero": float(analytical_total.norm()) > 0.0,
+            "additive_gradient_closure": (
+                additive_autograd[0] >= 0.999999
+                and additive_autograd[1] <= 1.0e-5
+                and additive_autograd[2] <= 1.0e-6
+            ),
+            "phase_gradient_closure": (
+                phase_closure[0] >= 0.999999
+                and phase_closure[1] <= 1.0e-5
+                and phase_closure[2] <= 1.0e-6
+            ),
+            "autograd_analytical_match": (
+                analytical_autograd[0] >= 0.999999
+                and analytical_autograd[1] <= 1.0e-5
+                and analytical_autograd[2] <= 1.0e-6
+            ),
+            "phase68_gradient_exact_replay": (
+                replay_recovered[0] >= 0.999999
+                and replay_recovered[1] <= 1.0e-4
+            ),
+            "virtual_adam_candidate_exact": (
+                virtual_steps["count"] == 1 and virtual_candidate_exact
+            ),
+        }
+        valid = all(technical_checks.values())
+        bundle = {
+            "schema": "x2_phase69_reward_attribution_evidence_v1",
+            "artifact_role": "raw rollout evidence; not a model checkpoint",
+            "base_checkpoint_sha256": EXPECTED[ORIGINAL],
+            "source_residual_checkpoint_sha256": expected_source_sha,
+            "candidate_residual_checkpoint_sha256": expected_candidate_sha,
+            "policy_observation": algorithm.storage.observations["policy"].detach().cpu(),
+            "critic_observation": algorithm.storage.observations["critic"].detach().cpu(),
+            "latent_action": stored_latent.cpu(),
+            "old_mu": algorithm.storage.mu.detach().cpu(),
+            "old_sigma": algorithm.storage.sigma.detach().cpu(),
+            "old_log_prob": algorithm.storage.actions_log_prob.detach().cpu(),
+            "value": values.cpu(),
+            "total_reward": stored_reward.cpu(),
+            "reward_term_names": reward_term_names,
+            "reward_term_weights": reward_term_weights,
+            "reward_by_term": term_reward.cpu(),
+            "signed_pitch_rad": signed_pitch.cpu(),
+            "support_outside_m": support_outside.cpu(),
+            "phase_id": phase_id.cpu(),
+            "requested_knee_offset_rad": requested.cpu(),
+            "effective_knee_offset_rad": effective.cpu(),
+            "normalized_total_advantage": normalized_total.cpu(),
+            "terminal_bootstrap_value": terminal_values.cpu(),
+            "terminal_bootstrap_normalized_advantage": terminal_normalized_total.cpu(),
+            "head_ascent_per_env": {
+                name: value.cpu() for name, value in component_per_env.items()
+            },
+        }
+        bundle_sha = _atomic_save_phase69_bundle(args.rollout_bundle, bundle)
+        report = {
+            "schema": "x2_phase69_reward_attribution_screen_v1",
+            "phase": 69,
+            "decision": (
+                "ATTRIBUTION_VALID_PENDING_FINALIZATION"
+                if valid
+                else "FAIL_ATTRIBUTION_INVALID_STOP"
+            ),
+            "base_checkpoint_sha256": EXPECTED[ORIGINAL],
+            "source_residual_checkpoint_sha256": expected_source_sha,
+            "candidate_residual_checkpoint_sha256": expected_candidate_sha,
+            "rollout_bundle": str(args.rollout_bundle),
+            "rollout_bundle_sha256": bundle_sha,
+            "seed": 42,
+            "num_envs": 64,
+            "steps_per_env": 200,
+            "transitions": 12800,
+            "optimizer_steps": 0,
+            "virtual_counterfactual_adam_steps": virtual_steps["count"],
+            "checkpoint_count": 0,
+            "step_dt_s": step_dt,
+            "domain_upper_counts": domain_counts,
+            "rng": {
+                "cpu_before_rollout": cpu_rng_before,
+                "cuda_before_rollout": cuda_rng_before,
+            },
+            "reward_contract": [
+                {"index": index, "name": name, "weight": weight}
+                for index, (name, weight) in enumerate(PHASE69_REWARD_TERMS)
+            ],
+            "replay": {
+                "stored_latent_hash": tensor_hash(stored_latent),
+                "stored_reward_hash": tensor_hash(stored_reward),
+                "reward_by_term_hash": tensor_hash(term_reward),
+                "phase_counts": phase_counts,
+                "reward_closure_max_abs": float(
+                    (decomposed_reward - stored_reward).abs().max()
+                ),
+                "advantage_reconstruction_max_abs": float(
+                    (normalized_total - storage_advantage).abs().max()
+                ),
+                "old_new_logprob_max_abs": float(
+                    (new_log_prob - old_log_prob).abs().max()
+                ),
+                "ratio_max_abs_from_one": float((ratio - 1.0).abs().max()),
+            },
+            "physical": {
+                "requested_max_abs_rad": float(requested.abs().max()),
+                "effective_requested_abs_ratio": effective_abs_sum / requested_abs_sum,
+                "non_knee_max_abs_rad": float(records["non_knee_max_abs"]),
+            },
+            "gradient_replay": {
+                "analytical_vs_autograd": {
+                    "cosine": analytical_autograd[0],
+                    "relative_l2": analytical_autograd[1],
+                    "max_abs": analytical_autograd[2],
+                },
+                "analytical_vs_phase68_adam_moment": {
+                    "cosine": replay_recovered[0],
+                    "relative_l2": replay_recovered[1],
+                    "max_abs": replay_recovered[2],
+                },
+                "phase68_actual_update_vs_ascent": {
+                    "cosine": update_direction[0],
+                    "relative_l2": update_direction[1],
+                    "max_abs": update_direction[2],
+                },
+                "virtual_candidate_state_hash": virtual_candidate_hash,
+                "virtual_candidate_exact": virtual_candidate_exact,
+                "analytical_total_norm": float(analytical_total.norm()),
+                "autograd_head_weight_norm": float(autograd_head[0].norm()),
+                "autograd_head_bias_norm": float(autograd_head[1].norm()),
+                "recovered_head_weight_gradient_norm": float(
+                    (state_by_name["head.weight"]["exp_avg"] / 0.1).norm()
+                ),
+                "recovered_head_bias_gradient_norm": float(
+                    (state_by_name["head.bias"]["exp_avg"] / 0.1).norm()
+                ),
+            },
+            "additive_components": component_summary,
+            "phase_components": phase_summary,
+            "alignment": {
+                "pitch_reward_vs_signed_pitch_metric": pitch_metric_alignment,
+                "total_vs_signed_pitch_metric": total_metric_alignment,
+                "terminal_bootstrap_total_vs_signed_pitch_metric": terminal_total_metric_alignment,
+            },
+            "cutoff_diagnostic": {
+                "zero_vs_terminal_bootstrap_direction": {
+                    "cosine": zero_terminal_direction[0],
+                    "relative_l2": zero_terminal_direction[1],
+                    "max_abs": zero_terminal_direction[2],
+                },
+                "zero_bootstrap_raw_advantage_hash": tensor_hash(raw_advantage),
+                "terminal_bootstrap_raw_advantage_hash": tensor_hash(
+                    terminal_raw_advantage
+                ),
+            },
+            "environment_influence": {
+                "kish_effective_sample_size": kish_ess,
+                "maximum_absolute_env_contribution_fraction": max_env_abs_fraction,
+            },
+            "technical_checks": technical_checks,
+            "long_training_unlocked": False,
+            "five_update_unlocked": False,
+            "deployment_unlocked": False,
+            "task2_complete": False,
+        }
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report, indent=2), flush=True)
+        if not valid:
+            raise RuntimeError("Phase69 attribution validity gates failed")
+    finally:
+        if residual_env is not None:
+            residual_env.close()
+        elif wrapped is not None:
+            wrapped.close()
+        elif env is not None:
+            env.close()
+
+
 def main() -> None:
     if any(not path.is_file() or sha256(path) != expected for path, expected in EXPECTED.items()):
         raise RuntimeError(f"Phase{PHASE} immutable artifact hash guard failed")
     required = {
         "CWI_UPPER_MOTION": str(UPPER),
-        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_PHASE68 else "0.50",
-        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_PHASE68 else "1",
-        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_PHASE68 else "interleaved",
+        "CWI_UPPER_ZERO_FRACTION": "1.0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_DIAGNOSTIC else "0.50",
+        "CWI_UPPER_DETERMINISTIC_SPLIT": "0" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_DIAGNOSTIC else "1",
+        "CWI_UPPER_SPLIT_MODE": "contiguous" if PEFT_PHASE60 or PEFT_PHASE61 or ACTION_SCREEN or RESIDUAL_DIAGNOSTIC else "interleaved",
         "CWI_UPPER_SCALE": "0.25", "CWI_UPPER_TIME_SCALE": "1.0",
         "CWI_UPPER_LOOP": "1", "CWI_UPPER_MAX_EXCURSION_RAD": "0.12",
         "CWI_UPPER_MAX_VELOCITY_RADPS": "0.20",
@@ -2550,7 +3224,12 @@ def main() -> None:
             raise RuntimeError("Phase60 group A is frozen evaluation-only")
         if args.checkpoint.resolve() != ORIGINAL.resolve() and not PEFT_PHASE59:
             raise RuntimeError("Phase56 train must fresh-start from original Stage219 PT")
-        train_phase68() if RESIDUAL_PHASE68_TRAIN else train()
+        if RESIDUAL_PHASE69_ATTRIBUTION:
+            attribute_phase69()
+        elif RESIDUAL_PHASE68_TRAIN:
+            train_phase68()
+        else:
+            train()
 
 
 if __name__ == "__main__":
