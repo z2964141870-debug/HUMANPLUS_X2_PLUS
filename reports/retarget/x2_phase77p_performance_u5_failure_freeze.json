@@ -1,0 +1,72 @@
+{
+  "schema": "x2_phase77p_performance_u5_failure_freeze_v1",
+  "date": "2026-08-13",
+  "campaign_id": "x2_phase77p_performance_campaign_v1",
+  "decision": "FAIL_UPDATE5_NO_SAFE_SIGNAL_STOP",
+  "completed_stage": 5,
+  "preregistration_chain": [
+    {
+      "path": "reports/retarget/x2_phase77p_performance_campaign_prereg.json",
+      "sha256": "84ff45fcb10a4cfd0cacde594913590b4572868fbb74f86a8fb32e74e0f58334"
+    },
+    {
+      "path": "reports/retarget/x2_phase77p_performance_campaign_prereg_v2.json",
+      "sha256": "9797181c60f072d06dfcb136c36ac381bd092c551b2c5c8a275d1cc082858481"
+    },
+    {
+      "path": "reports/retarget/x2_phase77p_performance_campaign_prereg_v3.json",
+      "sha256": "3dc02e92e68695e4af446f82e6564ac0b4ec67ed2ffe9114f6c530aeec2c1f84"
+    }
+  ],
+  "local_gate": {
+    "path": "reports/retarget/x2_phase77p_performance_u5_local_gate.json",
+    "sha256": "f1b79a2deac97d167ad89116ec906bb90c9941d3966e77287bfb75d84639451c",
+    "train_seed_pass_count": 0,
+    "train_seed_count": 2,
+    "selected_train_seed": null
+  },
+  "update5": {
+    "train_seeds": [770101, 770102],
+    "train_launches": 2,
+    "train_reports": 2,
+    "checkpoints": 2,
+    "updates_per_seed": 5,
+    "optimizer_steps_per_seed": 20,
+    "optimizer_steps_total": 40,
+    "eval_seeds": [771001, 771002, 771003],
+    "eval_lanes": ["A", "B"],
+    "eval_launches": 12,
+    "eval_reports": 12
+  },
+  "checkpoint_sha256": {
+    "seed770101_u5.pt": "007314df98c54b92c65dbcc4149d49346629b619b4702eca83ffb9973474e4d8",
+    "seed770102_u5.pt": "d237d1d6891a577aad31beb41528520b42532a58a842ed2147dafd7533f46534"
+  },
+  "resource_summary": {
+    "launch_count": 14,
+    "autonomous_exit_zero_count": 14,
+    "timed_out_count": 0,
+    "forced_cleanup_count": 0,
+    "elapsed_s_total": 534.8600553129945,
+    "gpu_memory_used_peak_mib": 3444.0,
+    "cumulative_positive_disk_delta_bytes": 1896235008,
+    "minimum_postlaunch_free_disk_bytes": 369708380160,
+    "immutable_log_bytes_total": 1449114
+  },
+  "update10": {
+    "training_unlocked": false,
+    "train_launches": 0,
+    "train_reports": 0,
+    "checkpoints": 0,
+    "eval_launches": 0,
+    "eval_reports": 0
+  },
+  "unlocks": {
+    "official_panel": false,
+    "long_training": false,
+    "deployment": false
+  },
+  "stop_is_final_for_this_campaign": true,
+  "replacement_or_continuation_forbidden": true,
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase77p_performance_u5_failure"
+}

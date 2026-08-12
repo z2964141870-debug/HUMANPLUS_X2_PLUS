@@ -1,0 +1,261 @@
+{
+  "schema": "x2_phase77p_performance_campaign_prereg_v1",
+  "campaign_id": "x2_phase77p_performance_campaign_v1",
+  "date": "2026-08-13",
+  "objective": "Obtain a material, safe backward-pitch improvement with a coordinated 15D policy rather than continue the Phase77 one-action technical chain.",
+  "authorization": {
+    "basis": "user-approved performance-first route reset",
+    "phase77_shadow_is_a_prerequisite": false,
+    "phase77_shadow_files_must_remain_unchanged": true,
+    "local_pilot_launch_authorized_after_all_prerun_gates": true
+  },
+  "lineage": {
+    "semantic_identity": {
+      "source_stage": "Stage219",
+      "source_iteration": 2600,
+      "stage264_is_separate_checkpoint": false,
+      "stage264_definition": "Stage219 frozen weights + Stage250 deployment contract + Task50 decision",
+      "identity_manifest": {
+        "path": "stage264_frozen_baseline/manifest.json",
+        "sha256": "ad93566fe2a60cedee57df2c6f13234b864c5e566d27980f87e08e106323df79"
+      }
+    },
+    "source_pt": {
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+      "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+      "bytes": 1809013,
+      "iter": 2600,
+      "actor_arch": [93, 256, 128, 128, 15]
+    },
+    "exported_actor": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx",
+      "sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+      "bytes": 302551,
+      "manifest_path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.export.json",
+      "manifest_sha256": "d1ccdf1db802c708a80b6e476579069df3c02c4ce8a7f6498b78d2b2dd700a80",
+      "opset": 17,
+      "input_width": 93,
+      "output_width": 15,
+      "independent_reexport_byte_identical": true,
+      "independent_reexport_sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9"
+    },
+    "frozen_action_contract": {
+      "actor_clip": [-1.0, 1.0],
+      "template_scale": 0.15,
+      "execution_clip": [-1.0, 1.0],
+      "last_action_semantics": "clipped actor residual",
+      "warning": "recorded source identity is template_scale=0.15; current source default 0.20 is forbidden"
+    },
+    "current_source_gate": {
+      "report_path": "stage264_frozen_baseline/new_machine_replay.json",
+      "report_sha256": "41e160d6aa7e118a6d5d73db9ff953fa3c76e1d7ca585ba2263dbb03c819082d",
+      "passes": 22,
+      "runs": 24,
+      "historical_24_of_24_is_current": false,
+      "failures": [
+        {
+          "case": "stage264_low_straight_r4",
+          "sha256": "3d4b1576201ac9de03d16e889bbc228469e959cbfd9d3bf2b6d7b7aa54ad23c6",
+          "failure": "move/start pass; stop fall"
+        },
+        {
+          "case": "stage264_low_turn_right_r3",
+          "sha256": "e3740d2d7f481e005be523e0a7a1a7bbcbc032793c3b31e5604bd6a2facc60b4",
+          "failure": "move/start pass; stop fall"
+        }
+      ]
+    }
+  },
+  "pilot": {
+    "train_seeds": [770101, 770102],
+    "eval_seeds": [771001, 771002, 771003],
+    "train_envs": 256,
+    "steps_per_env": 48,
+    "updates_per_seed": 10,
+    "segments": [[0, 5], [5, 10]],
+    "transitions_per_seed": 122880,
+    "transitions_total": 245760,
+    "ppo_epochs": 1,
+    "ppo_minibatches": 4,
+    "optimizer_steps_per_seed": 40,
+    "optimizer_steps_total": 80,
+    "gamma": 0.99,
+    "lambda": 0.95,
+    "clip": 0.1,
+    "entropy_coefficient": 0.0,
+    "terminal_bootstrap": "V(s_T) via installed RSL-RL PPO.compute_returns",
+    "time_outs_required": 0,
+    "actor": {
+      "scope": "rank4 alpha4 zero-output LoRA on all four actor linear layers",
+      "trainable_parameters": 4528,
+      "learning_rate": 0.00001,
+      "std_initial_cfg_overridden_by_checkpoint": 0.4,
+      "std_frozen": true,
+      "std_actual_min": 0.08823904395103455,
+      "std_actual_max": 0.7206376791000366,
+      "std_tensor_hash": "2d49dce85d503d6ec9cc69351cb1285f54e600bbdaed1afacf6d69d69f711c51"
+    },
+    "critic": {
+      "scope": "all four dense critic linear layers",
+      "trainable_parameters": 73601,
+      "learning_rate": 0.0001
+    },
+    "reward": {
+      "original_locomotion_terms_retained": true,
+      "signed_backward_pitch_weight": -0.5,
+      "actual_contact_support_weight": -0.5,
+      "weight_constant_for_updates_1_to_10": true
+    },
+    "command_allocation_per_update": {
+      "vx_0p20": 64,
+      "vx_0p35": 64,
+      "vx_0p50": 64,
+      "turn_vx_0p35_yaw_pm_0p15": 32,
+      "transition_vx_0p35": 32,
+      "index_rule": "adjacent pairs; role=(env_id//2)%8; turn sign block-balanced",
+      "transition_phase": "fixed block-stratified offset modulo 8 s"
+    },
+    "domain": {
+      "actuator": "ideal",
+      "upper": "fixed",
+      "template_scale": 0.15,
+      "observation_corruption": false,
+      "push": false,
+      "episode_length_s": 12.0
+    }
+  },
+  "trust_region": {
+    "source_kl_coefficient": 0.1,
+    "post_step_source_kl_mean_max": 0.005,
+    "post_step_source_kl_max": 0.02,
+    "post_step_incremental_kl_mean_max": 0.0025,
+    "post_step_incremental_kl_max": 0.01,
+    "action_drift_max": 0.05,
+    "enforcement": "snapshot trainable tensors and Adam state before every minibatch; recompute after step; rollback and stop on any violation",
+    "retention_banks": ["fixed reset observations", "every current rollout observation"]
+  },
+  "evaluation": {
+    "envs_per_launch": 128,
+    "steps": 512,
+    "horizon_s": 10.24,
+    "lane_swap": [
+      "A: even source / odd candidate",
+      "B: even candidate / odd source"
+    ],
+    "reports_per_candidate_per_stage": 6,
+    "per_environment_summaries_required": true,
+    "bootstrap": "4096 draws; eval seed is top cluster, then environment",
+    "update5": {
+      "both_train_seeds_required": true,
+      "pitch_mean_delta_rad_min": 0.005,
+      "pitch_mean_ci95_lower_strictly_positive": true,
+      "pitch_p05_delta_rad_min": 0.0
+    },
+    "update10": {
+      "both_train_seeds_required": true,
+      "pitch_mean_delta_rad_min": 0.015,
+      "pitch_mean_ci95_lower_strictly_positive": true,
+      "pitch_p05_delta_rad_min": 0.01
+    },
+    "safety": {
+      "source_and_candidate_termination_rate": 0.0,
+      "source_and_candidate_survival_s_min": 10.24,
+      "source_and_candidate_time_outs": 0,
+      "support_regression_m_max": 0.001,
+      "velocity_rmse_regression_mps_max": 0.01,
+      "yaw_rmse_regression_radps_max": 0.015,
+      "stance_slip_p95_regression_mps_max": 0.03,
+      "root_height_global_min_m": 0.6,
+      "root_height_mean_regression_m_max": 0.005,
+      "tilt_global_max_rad": 0.35,
+      "tilt_mean_regression_rad_max": 0.01,
+      "terminal_speed_mean_mps_max": 0.12,
+      "terminal_speed_regression_mps_max": 0.02,
+      "terminal_double_support_mean_min": 0.95,
+      "terminal_double_support_regression_max": 0.02
+    }
+  },
+  "decision_tree": {
+    "update5_fail": "stop both seeds; no update10",
+    "update5_pass": "continue the same two seed/config/checkpoint chains to update10",
+    "update10_fail": "stop; permit only a separately preregistered last-two-layer fallback",
+    "update10_pass": "unlock current-machine official 24-case panel only",
+    "official_panel_material_improvement": ">=23/24 and repair at least one current stop failure with no new failure",
+    "long_training_unlocked": false,
+    "export_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "resources": {
+    "prelaunch_free_disk_bytes_min": 274877906944,
+    "postlaunch_free_disk_bytes_min": 268435456000,
+    "prelaunch_ram_available_bytes_min": 12884901888,
+    "gpu_idle_samples": 10,
+    "gpu_idle_sample_period_s": 1,
+    "gpu_idle_utilization_percent_max": 10,
+    "gpu_idle_memory_mib_max": 1536,
+    "gpu_idle_power_w_max": 80,
+    "gpu_idle_temperature_c_max": 60,
+    "gpu_peak_memory_mib_max": 20480,
+    "disk_delta_per_launch_bytes_max": 2147483648,
+    "campaign_positive_disk_delta_bytes_max": 10737418240,
+    "train_timeout_s": 600,
+    "eval_timeout_s": 300,
+    "checkpoint_count_max": 4,
+    "intermediate_checkpoint_count": 0,
+    "onnx_count": 0
+  },
+  "outputs": {
+    "overwrite_forbidden": true,
+    "train_reports": 4,
+    "eval_reports": 24,
+    "local_gate_reports": 2,
+    "checkpoints": 4,
+    "resource_reports": 28,
+    "logs": 28,
+    "all_small_evidence_sidecars_required": true,
+    "all_checkpoint_sidecars_required": true
+  },
+  "immutable_code": {
+    "scripts/run_x2_phase77p_performance_campaign.py": "dfa46691ed87a62c935528847e2b930d0d91db55a13dd45495c037d9f914306f",
+    "scripts/run_x2_phase77p_performance_campaign.sh": "7fa80ea6e53950b059d292e557307113013505dfb183daf5c3f8d7c0fc2e4ea5",
+    "src/cwi_x2/phase77p_performance_campaign.py": "93b2d1c3370125c453a48fdce4a8292bedc13645e29ead407195655739ca54b0",
+    "tools/retarget/finalize_x2_phase77p_performance_campaign.py": "765789d3e00d4813edf041ae4dc7406a67ff56f11c627dfae6d9fbd30c20092d",
+    "tests/test_phase77p_performance_campaign.py": "fcc2686a259ee891c33fd5ffda15edfba38ea0692e1d90ae8705ab7994a5b13d",
+    "tests/test_phase77p_performance_finalizer.py": "3810819cf5f2c703e3407656a330088442da6cbd4d3095def4b5e50eb4866ba0",
+    "src/x2_upper_robust_lora_phase57.py": "acf8f656b361be04aff0066f02c9241581fa4a4e121e3c92b1bbdcacfe72cabb",
+    "src/x2_native_locomotion_posture_phase60.py": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb",
+    "src/cwi_x2/transition_command.py": "f829ac7527813b99ec61c166357a7f03b1442adf9f2a18fe3e4007b0e259c0c5",
+    "src/cwi_x2/transition_schedule.py": "265850abdcf859b7b5342e8394c172e791f063eebd3743c351ad447491e3269b",
+    "hooks/sitecustomize.py": "58e572ff863093e58894027dda3a51726b1fa883d7cc9a5d54f5dd562b91f83d",
+    "tools/retarget/run_with_gpu_deadline_ledger_phase76.py": "8aa26334202f0a9ee83e106c1d296649c7b9b415b798df06f4233754d3d83704",
+    "tools/official_x2/export_rsl_actor_onnx.py": "e6e3c2be408a9afdb30330cf805a499ef1505680ed439eaae718311aad4e271a",
+    "tools/official_x2/stage208_official_mujoco_adapter.py": "91a67ab6c583d48bbf09fea1d02de33f0b77961a404d8e67b7fab7764662d733"
+  },
+  "immutable_evidence": {
+    "stage264_frozen_baseline/manifest.json": "ad93566fe2a60cedee57df2c6f13234b864c5e566d27980f87e08e106323df79",
+    "stage264_frozen_baseline/new_machine_replay.json": "41e160d6aa7e118a6d5d73db9ff953fa3c76e1d7ca585ba2263dbb03c819082d",
+    "reports/official_x2/x2_native_locomotion_baseline_preflight_20260812.json": "84945494d7dda98431b8efc3c2cd82bcfb6d9f7aed6015d249bde12aab53eda4",
+    "reports/official_x2/stage250_rsl_action_contract_fix_20260808.json": "7aedae2656b0071c5585d7bcd3d291dab41d71623a2f32345a7ffe46db7a915d",
+    "reports/official_x2/stage264_longtrain_readiness_task50.json": "e0ce0fa50ca0cce60bc64cd97958abe118ddfd9902c63a4db431bdda7753d81b"
+  },
+  "immutable_inputs": {
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/env.yaml": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/agent.yaml": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+    "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
+    "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+    "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.export.json": "d1ccdf1db802c708a80b6e476579069df3c02c4ce8a7f6498b78d2b2dd700a80",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/actions.py": "463b86ea509d5af3a454f151b98ed641618fe8312432c50c774efb430a1fce10",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/gait.py": "0d940c8f5363f0e6662ee9d7c85b3310edb8e90ab435bea6b8e1d1c7b79809e1",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/flat_env_cfg.py": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/rsl_rl_ppo_cfg.py": "35c152f3f06046db266d457e349c7c0648d8ec9d9d99ae103d9931ffd1b493cd",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/heading_command.py": "def18f85e55d555d447d02c03d080f6ee0eb6a80097fe629508147e35b0aa901",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/modular_tracking_env_cfg.py": "c85e9d3e1412d36b47d2cafa8744f8858b39a161e67193e405ded5e7d73bc22e",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/robots/x2.py": "8d9f7d22789b44d79c96789bfc569cf015bb662bc4f5b7c925deba20e10d943b",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/modules/actor_critic.py": "20c6396d32802112dc217ba51add5fe7f7953518a0c7cdb4b7da51f77dc30b6e",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/algorithms/ppo.py": "deafc8c947eba4df3e91b393869426cdab8d7b71e05974c3734125d2331d7d1c",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/storage/rollout_storage.py": "10510c1c0e7b250a343ba923a4747a5c337b78c286c1dd5d684128305ee0afa1",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/runners/on_policy_runner.py": "e51e4dd49664ccc8743a16b71d2971d392f40a6988136f10fe8c5f03ab6a83b5"
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "x2_phase77p_performance_campaign_prereg_v1",
+  "campaign_id": "x2_phase77p_performance_campaign_v1",
+  "revision": "cooldown_resume_v3",
+  "date": "2026-08-13",
+  "objective": "Obtain a material, safe backward-pitch improvement with a coordinated 15D policy rather than continue the Phase77 one-action technical chain.",
+  "supersedes": {
+    "v1": {
+      "path": "reports/retarget/x2_phase77p_performance_campaign_prereg.json",
+      "sha256": "84ff45fcb10a4cfd0cacde594913590b4572868fbb74f86a8fb32e74e0f58334"
+    },
+    "v2": {
+      "path": "reports/retarget/x2_phase77p_performance_campaign_prereg_v2.json",
+      "sha256": "9797181c60f072d06dfcb136c36ac381bd092c551b2c5c8a275d1cc082858481"
+    },
+    "reason": "The first authorized v2 training segment completed autonomously and validly. The next launch was refused because the idle gate sampled residual post-launch GPU power before the GPU cooled. V3 preserves every scientific parameter and threshold, waits for ten consecutive idle samples for at most 180 seconds, and reuses the immutable completed segment instead of retraining it.",
+    "scientific_contract_unchanged": true,
+    "training_and_evaluation_contract_unchanged": true,
+    "decision_thresholds_unchanged": true,
+    "resource_thresholds_unchanged_from_v2": true,
+    "completed_training_result_used_to_change_scientific_contract": false,
+    "new_physics_or_optimizer_work_before_v3": false
+  },
+  "authorization": {
+    "basis": "user-approved performance-first route reset",
+    "phase77_shadow_is_a_prerequisite": false,
+    "phase77_shadow_files_must_remain_unchanged": true,
+    "resume_from_verified_completed_segment_authorized": true,
+    "local_pilot_launch_authorized_after_all_prerun_gates": true
+  },
+  "inherited_scientific_contract": {
+    "path": "reports/retarget/x2_phase77p_performance_campaign_prereg.json",
+    "sha256": "84ff45fcb10a4cfd0cacde594913590b4572868fbb74f86a8fb32e74e0f58334",
+    "sections": ["lineage", "pilot", "trust_region", "evaluation", "decision_tree", "outputs"]
+  },
+  "completed_before_v3": {
+    "label": "seed770101_u5_train",
+    "seed": 770101,
+    "start_update": 0,
+    "end_update": 5,
+    "optimizer_steps": 20,
+    "decision": "SEGMENT_VALID",
+    "checkpoint": {
+      "path": "artifacts/retarget/x2_phase77p_performance_campaign/seed770101_u5.pt",
+      "sha256": "007314df98c54b92c65dbcc4149d49346629b619b4702eca83ffb9973474e4d8"
+    },
+    "report": {
+      "path": "reports/retarget/x2_phase77p_seed770101_u5_train.json",
+      "sha256": "bd33becc932f95e8a000891a2f93d5f3f11fa08156a9fa634b343e7b55d8838c"
+    },
+    "resource": {
+      "path": "reports/retarget/x2_phase77p_seed770101_u5_train_resource.json",
+      "sha256": "90ffc8b80711ff03e3713afc448f47437af01e805b13bf46435138aad777dbef",
+      "elapsed_s": 27.813472925001406,
+      "gpu_peak_memory_mib": 3444,
+      "disk_used_delta_bytes": 136011776
+    },
+    "log": {
+      "path": "/tmp/x2_phase77p_performance_logs/seed770101_u5_train.log",
+      "sha256": "e8da2236737912c2c06c1888ed239290dee378f36631a1f24c062e065173dee2"
+    },
+    "all_update_gates_true": true,
+    "retrain_forbidden": true
+  },
+  "pilot_summary": {
+    "train_seeds": [770101, 770102],
+    "eval_seeds": [771001, 771002, 771003],
+    "train_envs": 256,
+    "steps_per_env": 48,
+    "updates_per_seed": 10,
+    "segments": [[0, 5], [5, 10]],
+    "transitions_total": 245760,
+    "optimizer_steps_total": 80,
+    "actor": "rank4 alpha4 zero-output LoRA on all four actor linear layers",
+    "critic": "all four dense critic linear layers",
+    "reward_weights": {"signed_backward_pitch": -0.5, "actual_contact_support": -0.5},
+    "source_std_frozen_tensor_hash": "2d49dce85d503d6ec9cc69351cb1285f54e600bbdaed1afacf6d69d69f711c51",
+    "template_scale": 0.15
+  },
+  "decision_summary": {
+    "update5_pitch_mean_delta_rad_min": 0.005,
+    "update10_pitch_mean_delta_rad_min": 0.015,
+    "both_train_seeds_required": true,
+    "bootstrap_ci95_lower_strictly_positive": true,
+    "source_and_candidate_full_safety_required": true,
+    "update10_pass_unlocks": "current-machine official 24-case panel only",
+    "long_training_unlocked": false,
+    "export_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "resources": {
+    "prelaunch_free_disk_bytes_min": 274877906944,
+    "postlaunch_free_disk_bytes_min": 268435456000,
+    "prelaunch_ram_available_bytes_min": 12884901888,
+    "gpu_consecutive_idle_samples": 10,
+    "gpu_idle_sample_period_s": 1,
+    "gpu_idle_wait_timeout_s": 180,
+    "gpu_compute_apps_required_empty_per_sample": true,
+    "gpu_idle_utilization_percent_max": 50,
+    "gpu_idle_memory_mib_max": 1536,
+    "gpu_idle_power_w_max": 80,
+    "gpu_idle_temperature_c_max": 60,
+    "gpu_peak_memory_mib_max": 20480,
+    "disk_delta_per_launch_bytes_max": 2147483648,
+    "campaign_positive_disk_delta_bytes_max": 10737418240,
+    "train_timeout_s": 600,
+    "eval_timeout_s": 300,
+    "checkpoint_count_max": 4,
+    "intermediate_checkpoint_count": 0,
+    "onnx_count": 0
+  },
+  "immutable_code": {
+    "scripts/run_x2_phase77p_performance_campaign.py": "dfa46691ed87a62c935528847e2b930d0d91db55a13dd45495c037d9f914306f",
+    "scripts/run_x2_phase77p_performance_campaign.sh": "48dacdb1d77bf2844e2b0dba9c4dd9e6fd55b9d3a44a89cb8dd91aca53ceffcf",
+    "src/cwi_x2/phase77p_performance_campaign.py": "93b2d1c3370125c453a48fdce4a8292bedc13645e29ead407195655739ca54b0",
+    "tools/retarget/finalize_x2_phase77p_performance_campaign.py": "765789d3e00d4813edf041ae4dc7406a67ff56f11c627dfae6d9fbd30c20092d",
+    "tests/test_phase77p_performance_campaign.py": "fcc2686a259ee891c33fd5ffda15edfba38ea0692e1d90ae8705ab7994a5b13d",
+    "tests/test_phase77p_performance_finalizer.py": "3810819cf5f2c703e3407656a330088442da6cbd4d3095def4b5e50eb4866ba0",
+    "src/x2_upper_robust_lora_phase57.py": "acf8f656b361be04aff0066f02c9241581fa4a4e121e3c92b1bbdcacfe72cabb",
+    "src/x2_native_locomotion_posture_phase60.py": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb",
+    "src/cwi_x2/transition_command.py": "f829ac7527813b99ec61c166357a7f03b1442adf9f2a18fe3e4007b0e259c0c5",
+    "src/cwi_x2/transition_schedule.py": "265850abdcf859b7b5342e8394c172e791f063eebd3743c351ad447491e3269b",
+    "hooks/sitecustomize.py": "58e572ff863093e58894027dda3a51726b1fa883d7cc9a5d54f5dd562b91f83d",
+    "tools/retarget/run_with_gpu_deadline_ledger_phase76.py": "8aa26334202f0a9ee83e106c1d296649c7b9b415b798df06f4233754d3d83704",
+    "tools/official_x2/export_rsl_actor_onnx.py": "e6e3c2be408a9afdb30330cf805a499ef1505680ed439eaae718311aad4e271a",
+    "tools/official_x2/stage208_official_mujoco_adapter.py": "91a67ab6c583d48bbf09fea1d02de33f0b77961a404d8e67b7fab7764662d733"
+  },
+  "immutable_evidence": {
+    "reports/retarget/x2_phase77p_performance_campaign_prereg.json": "84ff45fcb10a4cfd0cacde594913590b4572868fbb74f86a8fb32e74e0f58334",
+    "reports/retarget/x2_phase77p_performance_campaign_prereg.json.sha256": "d67eb3df255f7f5792dcd3a52f15d073804a6aea75df201d7ebadb6a34ee44b0",
+    "reports/retarget/x2_phase77p_performance_campaign_prereg_v2.json": "9797181c60f072d06dfcb136c36ac381bd092c551b2c5c8a275d1cc082858481",
+    "reports/retarget/x2_phase77p_performance_campaign_prereg_v2.json.sha256": "62b2758b9970039e0dab82b6d0c7669a70cb00a5583f0aeb5a5996576547cfb5",
+    "artifacts/retarget/x2_phase77p_performance_campaign/seed770101_u5.pt": "007314df98c54b92c65dbcc4149d49346629b619b4702eca83ffb9973474e4d8",
+    "artifacts/retarget/x2_phase77p_performance_campaign/seed770101_u5.pt.sha256": "d2271525be8989ab4d743c6eb11e86c7f4814596bec98ca8ad02e0fa27b1194a",
+    "reports/retarget/x2_phase77p_seed770101_u5_train.json": "bd33becc932f95e8a000891a2f93d5f3f11fa08156a9fa634b343e7b55d8838c",
+    "reports/retarget/x2_phase77p_seed770101_u5_train.json.sha256": "85846ef2b61190d8d4f2713d02eba0c530223314599bf8be9ac5a85e5e8a8a57",
+    "reports/retarget/x2_phase77p_seed770101_u5_train_resource.json": "90ffc8b80711ff03e3713afc448f47437af01e805b13bf46435138aad777dbef",
+    "reports/retarget/x2_phase77p_seed770101_u5_train_resource.json.sha256": "d003b2de2f0293c38053e683a4d76903631524c9d4f908ad257ff443200b6dcc",
+    "stage264_frozen_baseline/manifest.json": "ad93566fe2a60cedee57df2c6f13234b864c5e566d27980f87e08e106323df79",
+    "stage264_frozen_baseline/new_machine_replay.json": "41e160d6aa7e118a6d5d73db9ff953fa3c76e1d7ca585ba2263dbb03c819082d",
+    "reports/official_x2/x2_native_locomotion_baseline_preflight_20260812.json": "84945494d7dda98431b8efc3c2cd82bcfb6d9f7aed6015d249bde12aab53eda4",
+    "reports/official_x2/stage250_rsl_action_contract_fix_20260808.json": "7aedae2656b0071c5585d7bcd3d291dab41d71623a2f32345a7ffe46db7a915d",
+    "reports/official_x2/stage264_longtrain_readiness_task50.json": "e0ce0fa50ca0cce60bc64cd97958abe118ddfd9902c63a4db431bdda7753d81b"
+  },
+  "immutable_inputs": {
+    "/tmp/x2_phase77p_performance_logs/seed770101_u5_train.log": "e8da2236737912c2c06c1888ed239290dee378f36631a1f24c062e065173dee2",
+    "/tmp/x2_phase77p_performance_logs/seed770101_u5_train.log.sha256": "f4f3636b8129519ff72b927556ec26b8c596f3585fe4da404bde9c003204e827",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/env.yaml": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/agent.yaml": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+    "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef",
+    "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9",
+    "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.export.json": "d1ccdf1db802c708a80b6e476579069df3c02c4ce8a7f6498b78d2b2dd700a80",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/actions.py": "463b86ea509d5af3a454f151b98ed641618fe8312432c50c774efb430a1fce10",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/gait.py": "0d940c8f5363f0e6662ee9d7c85b3310edb8e90ab435bea6b8e1d1c7b79809e1",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/flat_env_cfg.py": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/rsl_rl_ppo_cfg.py": "35c152f3f06046db266d457e349c7c0648d8ec9d9d99ae103d9931ffd1b493cd",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/heading_command.py": "def18f85e55d555d447d02c03d080f6ee0eb6a80097fe629508147e35b0aa901",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/modular_tracking_env_cfg.py": "c85e9d3e1412d36b47d2cafa8744f8858b39a161e67193e405ded5e7d73bc22e",
+    "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/robots/x2.py": "8d9f7d22789b44d79c96789bfc569cf015bb662bc4f5b7c925deba20e10d943b",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/modules/actor_critic.py": "20c6396d32802112dc217ba51add5fe7f7953518a0c7cdb4b7da51f77dc30b6e",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/algorithms/ppo.py": "deafc8c947eba4df3e91b393869426cdab8d7b71e05974c3734125d2331d7d1c",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/storage/rollout_storage.py": "10510c1c0e7b250a343ba923a4747a5c337b78c286c1dd5d684128305ee0afa1",
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/lib/python3.11/site-packages/rsl_rl/runners/on_policy_runner.py": "e51e4dd49664ccc8743a16b71d2971d392f40a6988136f10fe8c5f03ab6a83b5"
+  }
+}
