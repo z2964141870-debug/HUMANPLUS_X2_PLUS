@@ -28,6 +28,34 @@ def test_phase67_standing_is_zero_even_after_nonzero_head():
     assert torch.equal(module(observation), torch.zeros(16, 2))
 
 
+def test_phase67b_invalid_contact_suffix_is_fail_closed_after_nonzero_head():
+    module = PhaseConditionedKneeTargetResidual()
+    torch.nn.init.constant_(module.head.weight, 0.25)
+    torch.nn.init.constant_(module.head.bias, 0.25)
+    observation = moving_observation(batch=7)
+    observation[:, -2:] = torch.tensor(
+        [
+            [0.0, 0.0],
+            [0.6, 0.6],
+            [1.0, 0.4],
+            [1.2, -1.0],
+            [float("nan"), 1.0],
+            [float("inf"), 0.0],
+            [-float("inf"), 1.0],
+        ]
+    )
+    assert torch.equal(module(observation), torch.zeros(7, 2))
+
+
+def test_phase67b_three_deployable_contact_codes_remain_active():
+    module = PhaseConditionedKneeTargetResidual()
+    torch.nn.init.zeros_(module.head.weight)
+    torch.nn.init.constant_(module.head.bias, 0.25)
+    observation = moving_observation(batch=3)
+    observation[:, -2:] = torch.tensor([[1.0, 1.0], [1.0, 0.0], [0.0, 1.0]])
+    assert torch.count_nonzero(module(observation)) == 6
+
+
 def test_phase67_first_backward_reaches_only_zero_head_then_stays_bounded():
     module = PhaseConditionedKneeTargetResidual()
     observation = moving_observation()

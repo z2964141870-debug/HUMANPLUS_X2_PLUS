@@ -45,12 +45,32 @@ class PhaseConditionedKneeTargetResidual(nn.Module):
         gait_suffix = policy_observation[..., -4:]
         clock = gait_suffix[..., :2]
         desired_contacts = gait_suffix[..., 2:]
-        moving = clock.square().sum(dim=-1) > 0.25
-        valid_contacts = (desired_contacts > 0.5).any(dim=-1)
-        moving = moving & valid_contacts
+        # The deployed gait generator emits only the three supported contact
+        # codes [1, 1], [1, 0], and [0, 1].  Treat fractional, all-zero, and
+        # non-finite suffixes as invalid rather than thresholding them into a
+        # valid phase.  This is a safety gate, not a learned classifier.
+        finite_suffix = torch.isfinite(gait_suffix).all(dim=-1)
+        contact_is_zero = torch.isclose(
+            desired_contacts,
+            torch.zeros_like(desired_contacts),
+            rtol=0.0,
+            atol=1.0e-6,
+        )
+        contact_is_one = torch.isclose(
+            desired_contacts,
+            torch.ones_like(desired_contacts),
+            rtol=0.0,
+            atol=1.0e-6,
+        )
+        binary_contacts = (contact_is_zero | contact_is_one).all(dim=-1)
+        at_least_one_contact = contact_is_one.any(dim=-1)
+        valid_contacts = finite_suffix & binary_contacts & at_least_one_contact
+        moving = (clock.square().sum(dim=-1) > 0.25) & valid_contacts
         raw = self.head(self.encoder(policy_observation))
         bounded = self.maximum_target_offset_rad * torch.tanh(raw)
-        return bounded * moving.to(dtype=bounded.dtype).unsqueeze(-1)
+        # torch.where keeps an invalid row exactly zero even if a malformed
+        # suffix made the unselected network branch non-finite.
+        return torch.where(moving.unsqueeze(-1), bounded, torch.zeros_like(bounded))
 
     def target_offset_15d(self, policy_observation: torch.Tensor) -> torch.Tensor:
         """Return physical-radian offsets in the frozen 15D lower action order."""

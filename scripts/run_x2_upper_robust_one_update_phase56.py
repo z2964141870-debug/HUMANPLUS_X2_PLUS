@@ -905,6 +905,7 @@ def evaluate() -> None:
         phase67_contract = {
             "residual_output_max_abs_rad": 0.0,
             "standing_shadow_output_max_abs_rad": 0.0,
+            "invalid_contact_shadow_output_max_abs_rad": 0.0,
             "processed_target_delta_max_abs_rad": 0.0,
             "non_knee_output_max_abs_rad": 0.0,
             "finite": True,
@@ -1038,6 +1039,13 @@ def evaluate() -> None:
                     standing_shadow = obs["policy"].clone()
                     standing_shadow[:, -4:] = standing_shadow.new_tensor([0.0, 0.0, 1.0, 1.0])
                     shadow_output = phase67_residual.target_offset_15d(standing_shadow)
+                    invalid_contact_shadow = obs["policy"].clone()
+                    invalid_contact_shadow[:, -2:] = invalid_contact_shadow.new_tensor(
+                        [0.6, 0.6]
+                    )
+                    invalid_contact_output = phase67_residual.target_offset_15d(
+                        invalid_contact_shadow
+                    )
                     phase67_contract["residual_output_max_abs_rad"] = max(
                         phase67_contract["residual_output_max_abs_rad"],
                         float(phase67_requested_target.abs().max()),
@@ -1045,6 +1053,10 @@ def evaluate() -> None:
                     phase67_contract["standing_shadow_output_max_abs_rad"] = max(
                         phase67_contract["standing_shadow_output_max_abs_rad"],
                         float(shadow_output.abs().max()),
+                    )
+                    phase67_contract["invalid_contact_shadow_output_max_abs_rad"] = max(
+                        phase67_contract["invalid_contact_shadow_output_max_abs_rad"],
+                        float(invalid_contact_output.abs().max()),
                     )
                     non_knee = phase67_requested_target.clone()
                     non_knee[:, [3, 9]] = 0.0
@@ -1055,6 +1067,7 @@ def evaluate() -> None:
                     phase67_contract["finite"] &= bool(
                         torch.isfinite(phase67_requested_target).all()
                         and torch.isfinite(shadow_output).all()
+                        and torch.isfinite(invalid_contact_output).all()
                     )
                 raw_action = model.act_inference(obs)
                 action = raw_action
