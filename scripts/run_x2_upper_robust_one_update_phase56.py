@@ -30,13 +30,14 @@ _phase60_variant = os.environ.get("CWI_PHASE60_POSTURE_VARIANT")
 _phase61_transition = os.environ.get("CWI_PHASE61_TRANSITION_POSTURE", "0") == "1"
 _phase62_screen = os.environ.get("CWI_PHASE62_ACTION_SENSITIVITY", "0") == "1"
 _phase63_screen = os.environ.get("CWI_PHASE63_HIP_DOSE_SCREEN", "0") == "1"
-if sum((_phase60_variant is not None, _phase61_transition, _phase62_screen, _phase63_screen)) > 1:
-    raise ValueError("Phase60 through Phase63 modes are mutually exclusive")
-if _phase62_screen or _phase63_screen:
+_phase64_screen = os.environ.get("CWI_PHASE64_KNEE_DOSE_SCREEN", "0") == "1"
+if sum((_phase60_variant is not None, _phase61_transition, _phase62_screen, _phase63_screen, _phase64_screen)) > 1:
+    raise ValueError("Phase60 through Phase64 modes are mutually exclusive")
+if _phase62_screen or _phase63_screen or _phase64_screen:
     if args.mode != "screen" or args.num_envs != 64 or args.seed != 42 or args.eval_steps != 200:
-        raise ValueError("Phase62/63 require screen mode, 64 envs, seed 42, and 200 steps")
+        raise ValueError("Phase62/63/64 require screen mode, 64 envs, seed 42, and 200 steps")
 elif args.mode == "screen":
-    raise ValueError("screen mode requires a Phase62/63 screen flag")
+    raise ValueError("screen mode requires a Phase62/63/64 screen flag")
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -91,11 +92,12 @@ PEFT_PHASE60 = POSTURE_VARIANT is not None
 PEFT_PHASE61 = _phase61_transition
 ACTION_SCREEN_PHASE62 = _phase62_screen
 ACTION_SCREEN_PHASE63 = _phase63_screen
-ACTION_SCREEN = ACTION_SCREEN_PHASE62 or ACTION_SCREEN_PHASE63
+ACTION_SCREEN_PHASE64 = _phase64_screen
+ACTION_SCREEN = ACTION_SCREEN_PHASE62 or ACTION_SCREEN_PHASE63 or ACTION_SCREEN_PHASE64
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
 POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))))
+PHASE = 64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -400,6 +402,49 @@ def _sample_summary(samples: list[torch.Tensor], mask: torch.Tensor) -> dict[str
     }
 
 
+def _sample_summary_with_count(
+    samples: list[torch.Tensor], mask: torch.Tensor
+) -> dict[str, float | int | None]:
+    result = _sample_summary(samples, mask)
+    values = torch.stack(samples, dim=0)[:, mask.detach().cpu()].reshape(-1)
+    result["finite_count"] = int(torch.isfinite(values).sum())
+    return result
+
+
+def aggregate_phase64_semantics(
+    groups: dict[str, torch.Tensor],
+    phase_samples: dict[str, dict[str, list[torch.Tensor]]],
+) -> dict[str, dict[str, dict[str, float | int | None]]]:
+    """Summarize deployable gait-clock semantic regions for each mirrored group."""
+
+    result = {}
+    for group_name, group_mask in groups.items():
+        group_result = {}
+        for phase_name, metrics in phase_samples.items():
+            pitch = _sample_summary_with_count(metrics["signed_pitch_rad"], group_mask)
+            support = _sample_summary_with_count(metrics["com_support_outside_m"], group_mask)
+            slip = _sample_summary_with_count(metrics["stance_slip_mps"], group_mask)
+            flight = _sample_summary_with_count(metrics["flight_fraction"], group_mask)
+            velocity_sq = torch.stack(metrics["velocity_tracking_sq"], dim=0)[
+                :, group_mask.detach().cpu()
+            ].reshape(-1)
+            velocity_sq = velocity_sq[torch.isfinite(velocity_sq)]
+            group_result[phase_name] = {
+                "sample_count": int(velocity_sq.numel()),
+                "signed_pitch_rad": pitch,
+                "com_support_outside_m": support,
+                "stance_slip_mps": slip,
+                "flight_fraction": flight,
+                "velocity_tracking_rmse_mps": (
+                    math.sqrt(max(0.0, float(velocity_sq.mean())))
+                    if velocity_sq.numel()
+                    else None
+                ),
+            }
+        result[group_name] = group_result
+    return result
+
+
 def aggregate_phase60_group(
     mask, sums, counts, survival, terminal_rate, root_min, tilt_max,
     samples, knee_min, knee_max,
@@ -417,7 +462,22 @@ def aggregate_phase60_group(
     ):
         if name in samples:
             result[name] = _sample_summary(samples[name], mask)
-    result["knee_excursion_rad_mean"] = float((knee_max[mask] - knee_min[mask]).mean())
+    knee_excursion = knee_max[mask] - knee_min[mask]
+    result["knee_excursion_rad_mean"] = float(knee_excursion.mean())
+    result["knee_joint_range"] = {
+        side: {
+            "minimum_rad_mean": float(knee_min[mask, index].mean()),
+            "minimum_rad_min": float(knee_min[mask, index].min()),
+            "maximum_rad_mean": float(knee_max[mask, index].mean()),
+            "maximum_rad_max": float(knee_max[mask, index].max()),
+            "excursion_rad_mean": float(knee_excursion[:, index].mean()),
+            "excursion_rad_max": float(knee_excursion[:, index].max()),
+        }
+        for side, index in (("left", 0), ("right", 1))
+    }
+    result["knee_excursion_left_right_abs_diff_rad_mean"] = float(
+        (knee_excursion[:, 0] - knee_excursion[:, 1]).abs().mean()
+    )
     return result
 
 
@@ -480,6 +540,42 @@ def phase63_hip_pitch_doses(device: torch.device) -> tuple[torch.Tensor, dict[st
     return biases, groups
 
 
+def phase64_knee_pitch_mirrored_doses(
+    device: torch.device,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    """Assign knee doses to two mirrored round-robin lanes plus pooled groups."""
+
+    slot_specs = (
+        ("A_base", 0.0),
+        ("A_knee_m008", -0.008),
+        ("A_knee_m010", -0.010),
+        ("A_knee_m012", -0.012),
+        ("B_base", 0.0),
+        ("B_knee_m012", -0.012),
+        ("B_knee_m010", -0.010),
+        ("B_knee_m008", -0.008),
+    )
+    env_ids = torch.arange(64, device=device)
+    row = torch.div(env_ids, 8, rounding_mode="floor")
+    column = env_ids.remainder(8)
+    latin_slot = (row + column).remainder(8)
+    biases = torch.zeros((64, 15), device=device)
+    groups: dict[str, torch.Tensor] = {}
+    for slot, (name, value) in enumerate(slot_specs):
+        mask = latin_slot == slot
+        groups[name] = mask
+        biases[mask, 3] = value
+        biases[mask, 9] = value
+    groups["base"] = groups["A_base"] | groups["B_base"]
+    for suffix in ("m008", "m010", "m012"):
+        groups[f"knee_{suffix}"] = groups[f"A_knee_{suffix}"] | groups[f"B_knee_{suffix}"]
+    if any(int(groups[name].sum()) != 8 for name, _ in slot_specs):
+        raise RuntimeError("Phase64 mirrored lane partition is invalid")
+    if any(int(groups[name].sum()) != 16 for name in ("base", "knee_m008", "knee_m010", "knee_m012")):
+        raise RuntimeError("Phase64 pooled partition is invalid")
+    return biases, groups
+
+
 def evaluate() -> None:
     env = wrapped = None
     try:
@@ -503,6 +599,8 @@ def evaluate() -> None:
             action_bias, screen_groups = phase62_action_biases(env.device)
         elif ACTION_SCREEN_PHASE63:
             action_bias, screen_groups = phase63_hip_pitch_doses(env.device)
+        elif ACTION_SCREEN_PHASE64:
+            action_bias, screen_groups = phase64_knee_pitch_mirrored_doses(env.device)
         else:
             action_bias, screen_groups = torch.zeros((64, 15), device=env.device), {}
         metric_names = (
@@ -511,6 +609,15 @@ def evaluate() -> None:
         )
         if POSTURE_METRICS:
             metric_names += ("flight_fraction", "single_support_fraction", "double_support_fraction")
+        if ACTION_SCREEN_PHASE64:
+            metric_names += (
+                "knee_requested_bias_mean",
+                "knee_effective_bias_mean",
+                "knee_requested_target_offset_rad_mean",
+                "knee_effective_target_offset_rad_mean",
+                "knee_source_clip_fraction",
+                "knee_intervention_clip_fraction",
+            )
         sums = {name: torch.zeros(64, device=env.device) for name in metric_names}
         counts = torch.zeros(64, device=env.device)
         samples = {
@@ -519,6 +626,24 @@ def evaluate() -> None:
             "stance_slip_mps": [],
             "swing_sole_clearance_m": [],
         }
+        phase64_samples = {
+            phase_name: {
+                metric_name: []
+                for metric_name in (
+                    "signed_pitch_rad",
+                    "com_support_outside_m",
+                    "stance_slip_mps",
+                    "velocity_tracking_sq",
+                    "flight_fraction",
+                )
+            }
+            for phase_name in (
+                "double_support_zero",
+                "right_swing_left_support",
+                "double_support_half",
+                "left_swing_right_support",
+            )
+        } if ACTION_SCREEN_PHASE64 else {}
         if PEFT_PHASE61:
             samples.update(
                 terminal_base_speed_mps=[],
@@ -530,13 +655,14 @@ def evaluate() -> None:
             ["left_ankle_roll_link", "right_ankle_roll_link"], preserve_order=True
         )[0]
         knee_ids = [robot.joint_names.index("left_knee_joint"), robot.joint_names.index("right_knee_joint")]
-        knee_min = robot.data.joint_pos[:, knee_ids].amin(dim=-1).clone()
-        knee_max = robot.data.joint_pos[:, knee_ids].amax(dim=-1).clone()
+        knee_min = robot.data.joint_pos[:, knee_ids].clone()
+        knee_max = robot.data.joint_pos[:, knee_ids].clone()
         with torch.inference_mode():
             for step in range(args.eval_steps):
-                action = model.act_inference(obs)
+                raw_action = model.act_inference(obs)
+                action = raw_action
                 if ACTION_SCREEN:
-                    action = torch.clamp(action + action_bias, -1.0, 1.0)
+                    action = torch.clamp(raw_action + action_bias, -1.0, 1.0)
                 next_obs, reward, done, _ = wrapped.step(action)
                 done = done.reshape(-1).bool()
                 root_quat = robot.data.root_quat_w
@@ -560,6 +686,44 @@ def evaluate() -> None:
                     "action_delta_abs": (action - prev_action).abs().mean(-1),
                     "reward": reward.reshape(-1),
                 }
+                if ACTION_SCREEN_PHASE64:
+                    knee_action_ids = [3, 9]
+                    base_clipped_action = torch.clamp(raw_action, -1.0, 1.0)
+                    requested_knee_bias = action_bias[:, knee_action_ids]
+                    normalized_template = term._normalized_template_bias[:, knee_action_ids]
+                    normalized_plant = (
+                        term._normalized_plant_bias[knee_action_ids].unsqueeze(0)
+                        * term._plant_bias_env_mask
+                    )
+                    source_preclip = (
+                        base_clipped_action[:, knee_action_ids]
+                        + normalized_template
+                        + normalized_plant
+                    )
+                    intervention_preclip = (
+                        action[:, knee_action_ids] + normalized_template + normalized_plant
+                    )
+                    effective_knee_bias = (
+                        torch.clamp(intervention_preclip, -1.0, 1.0)
+                        - torch.clamp(source_preclip, -1.0, 1.0)
+                    )
+                    knee_scale = term._scale[:, knee_action_ids]
+                    values.update(
+                        knee_requested_bias_mean=requested_knee_bias.mean(dim=-1),
+                        knee_effective_bias_mean=effective_knee_bias.mean(dim=-1),
+                        knee_requested_target_offset_rad_mean=(
+                            requested_knee_bias * knee_scale
+                        ).mean(dim=-1),
+                        knee_effective_target_offset_rad_mean=(
+                            effective_knee_bias * knee_scale
+                        ).mean(dim=-1),
+                        knee_source_clip_fraction=(
+                            source_preclip.abs() > 1.0
+                        ).any(dim=-1).to(torch.float32),
+                        knee_intervention_clip_fraction=(
+                            intervention_preclip.abs() > 1.0
+                        ).any(dim=-1).to(torch.float32),
+                    )
                 if POSTURE_METRICS:
                     pitch = signed_root_pitch_rad(robot)
                     outside, contact_count = actual_support_com_outside_distance(
@@ -588,6 +752,34 @@ def evaluate() -> None:
                     ).nanmean(dim=-1)
                     moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.10
                     valid_bool = alive.clone()
+                    if ACTION_SCREEN_PHASE64:
+                        phase = torch.remainder(
+                            env.episode_length_buf.to(torch.float32) * env.step_dt / 0.8,
+                            1.0,
+                        )
+                        phase_masks = {
+                            "double_support_zero": (phase < 0.075) | (phase >= 0.925),
+                            "right_swing_left_support": (phase >= 0.075) & (phase < 0.425),
+                            "double_support_half": (phase >= 0.425) & (phase < 0.575),
+                            "left_swing_right_support": (phase >= 0.575) & (phase < 0.925),
+                        }
+                        phase_values = {
+                            "signed_pitch_rad": pitch,
+                            "com_support_outside_m": outside,
+                            "stance_slip_mps": stance_slip,
+                            "velocity_tracking_sq": velocity_error.square().sum(-1),
+                            "flight_fraction": (contact_count == 0).to(torch.float32),
+                        }
+                        for phase_name, phase_mask in phase_masks.items():
+                            phase_valid = valid_bool & moving & phase_mask
+                            for metric_name, value in phase_values.items():
+                                phase64_samples[phase_name][metric_name].append(
+                                    torch.where(
+                                        phase_valid,
+                                        value,
+                                        torch.full_like(value, torch.nan),
+                                    ).detach().cpu()
+                                )
                     for name, value in {
                         "signed_pitch_rad": pitch,
                         "com_support_outside_m": outside,
@@ -634,8 +826,12 @@ def evaluate() -> None:
                         double_support_fraction=(contact_count == 2).to(torch.float32),
                     )
                     knee = robot.data.joint_pos[:, knee_ids]
-                    knee_min = torch.where(alive, torch.minimum(knee_min, knee.amin(dim=-1)), knee_min)
-                    knee_max = torch.where(alive, torch.maximum(knee_max, knee.amax(dim=-1)), knee_max)
+                    knee_min = torch.where(
+                        alive.unsqueeze(-1), torch.minimum(knee_min, knee), knee_min
+                    )
+                    knee_max = torch.where(
+                        alive.unsqueeze(-1), torch.maximum(knee_max, knee), knee_max
+                    )
                 for name, value in values.items():
                     sums[name] += value * valid
                 counts += valid
@@ -674,7 +870,11 @@ def evaluate() -> None:
                 else (
                     "hip_pitch_dose"
                     if ACTION_SCREEN_PHASE63
-                    else ("joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT)
+                    else (
+                        "knee_pitch_mirrored_dose"
+                        if ACTION_SCREEN_PHASE64
+                        else ("joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT)
+                    )
                 )
             ),
             "control_dt_s": float(env.step_dt), "horizon_s": float(args.eval_steps * env.step_dt),
@@ -722,6 +922,31 @@ def evaluate() -> None:
                 "envs_per_dose": 8,
                 "actuator_domain": "ideal only",
                 "checkpoint_modified": False,
+            }
+        if ACTION_SCREEN_PHASE64:
+            report["knee_pitch_dose_screen"] = {
+                "normalized_action_doses": [0.0, -0.008, -0.010, -0.012],
+                "action_dimensions": [3, 9],
+                "grouping": "8x8_latin_square_slot_equals_row_plus_column_modulo_8",
+                "lane_a_slots": ["base", "m008", "m010", "m012"],
+                "lane_b_slots": ["base", "m012", "m010", "m008"],
+                "envs_per_lane_group": 8,
+                "envs_per_pooled_group": 16,
+                "actuator_domain": "ideal only",
+                "checkpoint_modified": False,
+            }
+            report["gait_phase_semantics"] = {
+                "observation_suffix": ["sin_2pi_phase", "cos_2pi_phase", "desired_left_contact", "desired_right_contact"],
+                "cycle_time_s": 0.8,
+                "double_support_fraction": 0.30,
+                "measurement_alignment": "post-step physical state grouped by the post-step deployable controller clock; constant dose is phase-invariant",
+                "regions": {
+                    "double_support_zero": "[0.000,0.075) union [0.925,1.000)",
+                    "right_swing_left_support": "[0.075,0.425)",
+                    "double_support_half": "[0.425,0.575)",
+                    "left_swing_right_support": "[0.575,0.925)",
+                },
+                "metrics_by_group": aggregate_phase64_semantics(screen_groups, phase64_samples),
             }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2) + "\n")

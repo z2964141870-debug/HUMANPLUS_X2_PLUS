@@ -1,0 +1,86 @@
+{
+  "schema": "x2_knee_pitch_dose_phase64_backup_manifest_v1",
+  "date": "2026-08-12",
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64",
+  "decision": "FAIL_INVALID_BASE_BALANCE_STOP",
+  "promotion": "none",
+  "files": [
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64_prereg.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64_prereg.json",
+      "bytes": 5378,
+      "sha256": "641a9d8acd812018e1a478f6f375d0f2cee6c6bdb62deea0cf76ec596bd35535"
+    },
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64_prereg.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64_prereg.json.sha256",
+      "bytes": 105,
+      "sha256": "3899796d79a94c6b0435a8d9ed4a72649437a03b528870d08ae2a46ddb7d9478"
+    },
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64_screen.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64_screen.json",
+      "bytes": 91183,
+      "sha256": "084767be40edf0855b4a2b9b57e6c0165cda36c873dd13a82a11a3e372573539"
+    },
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64_resource.json",
+      "bytes": 1362,
+      "sha256": "b371cd3e65693bd20e6bd18ffaaacd14f1d9191a781c423c83cbf60ea8591ebd"
+    },
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64_result.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64_result.json",
+      "bytes": 69774,
+      "sha256": "26691d4022eda316e18de032224f493716b0774ea95a4a2ac10b820e1a0592de"
+    },
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64_result.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64_result.json.sha256",
+      "bytes": 105,
+      "sha256": "6f192532c00c1498ea5d4fa1592a8bdc70fab568633d30492b7d4cee00a365c4"
+    },
+    {
+      "path": "reports/retarget/x2_knee_pitch_dose_phase64.md",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/x2_knee_pitch_dose_phase64.md",
+      "bytes": 794,
+      "sha256": "e76713dd427c6c0b048373245dd25b3282415e0ae9e5f4f925c17a076e377b93"
+    },
+    {
+      "path": "EXPERIMENTS.md",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/EXPERIMENTS.md",
+      "bytes": 15336,
+      "sha256": "c88991d984118365049b0455d14f838328cb0da2ebcbb43c3276d5717184ff06"
+    },
+    {
+      "path": "scripts/run_x2_upper_robust_one_update_phase56.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/run_x2_upper_robust_one_update_phase56.py",
+      "bytes": 59309,
+      "sha256": "a22b5ec37feecbdc34d28f6f7d7a5a29b4f77cbb2dda8f46be85cb1ed865bff9"
+    },
+    {
+      "path": "scripts/run_x2_knee_pitch_dose_phase64.sh",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/run_x2_knee_pitch_dose_phase64.sh",
+      "bytes": 2607,
+      "sha256": "91f07568d4085be70fb797d9878736d2f9f564cea236d99727d8aa59eae3eb29"
+    },
+    {
+      "path": "tools/retarget/finalize_x2_knee_pitch_dose_phase64.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/finalize_x2_knee_pitch_dose_phase64.py",
+      "bytes": 18113,
+      "sha256": "c1dc9934241908782a703f9dbf82043288375a897a2410dad99eefaa27d2d7e9"
+    },
+    {
+      "path": "tests/test_phase64_knee_pitch_dose.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase64/test_phase64_knee_pitch_dose.py",
+      "bytes": 2435,
+      "sha256": "28246a40d5937cfbddf5b86d729ea5660fad4f7474eadad022177e4f937be81d"
+    }
+  ],
+  "total_bytes": 266501,
+  "remote_listing_file_count": 12,
+  "remote_listing_byte_sizes_match": true,
+  "remote_listing_checked_at": "2026-08-12T17:47:00+08:00",
+  "verification": "All 12 payloads were listed remotely with exact byte-size equality after upload; SHA256 is preserved here because bdpan does not expose remote content hashes."
+}
