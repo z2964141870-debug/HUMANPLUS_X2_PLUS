@@ -1,0 +1,120 @@
+{
+  "schema": "x2_single_support_knee_crossover_phase65_prereg_v1",
+  "date": "2026-08-12",
+  "objective": "Test whether restricting the Phase64 knee direction to deployable single-support windows preserves posture benefit while removing the double-support support-polygon failure.",
+  "source": {
+    "checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "phase64_result_sha256": "26691d4022eda316e18de032224f493716b0774ea95a4a2ac10b820e1a0592de",
+    "phase64_finding": "Nominal -0.010 bilateral knee bias produced pooled pitch mean/p05 gains of +0.002459/+0.001003 rad, but DS0 support outside regressed +0.013869 m and only about 0.73 of the nominal bias survived final normalized clipping."
+  },
+  "screen": {
+    "sequential_batched_runs": 2,
+    "pass_indices": [0, 1],
+    "seed": 42,
+    "num_envs_per_pass": 64,
+    "steps_per_pass": 200,
+    "horizon_s_per_pass": 4.0,
+    "optimizer_steps": 0,
+    "checkpoint_modified": false,
+    "nominal_normalized_action_dose": -0.01,
+    "action_dimensions": [3, 9],
+    "configured_action_scale_rad": [0.4, 0.4],
+    "upper_motion": "fixed",
+    "actuator_domain": "ideal only",
+    "observation_corruption": false,
+    "intervention": "Apply the same bilateral knee dose only when the deployable pre-step gait suffix indicates [1,0] or [0,1] and the planar command is moving; double support and standing are exactly zero.",
+    "allocation": {
+      "scene_shape": [8, 8],
+      "sequence": "(row + column) modulo 2",
+      "sequence_TC": "pass0 treatment, pass1 control",
+      "sequence_CT": "pass0 control, pass1 treatment",
+      "envs_per_sequence": 32,
+      "reason": "Every environment index executes both treatment and control; each pass has four treatment and four control cells in every scene row and column."
+    }
+  },
+  "pairing_gates": {
+    "source_checkpoint_equal": true,
+    "configuration_equal_except_pass": true,
+    "initial_fingerprints_exact": true,
+    "first_three_ds0_replay_hashes_exact": true,
+    "expected_region_counts_per_env": {
+      "double_support_zero": 30,
+      "right_swing_left_support": 70,
+      "double_support_half": 30,
+      "left_swing_right_support": 70,
+      "standing": 0
+    },
+    "invalid_contact_suffix_count_max": 0
+  },
+  "realized_bias_gates": {
+    "requested_normalized_active": -0.01,
+    "effective_to_requested_mean_ratio_min": 0.55,
+    "effective_to_requested_mean_ratio_max": 1.0,
+    "effective_normalized_mean_min": -0.01,
+    "effective_normalized_mean_max": -0.0055,
+    "wrong_sign_fraction_max": 0.0,
+    "left_right_effective_mean_abs_diff_max": 0.00075,
+    "sequence_effective_mean_abs_diff_max": 0.0005,
+    "configured_scale_abs_error_max_rad": 1e-08,
+    "inactive_requested_max_abs": 1e-08,
+    "inactive_effective_max_abs": 1e-08,
+    "shadow_standing_requested_max_abs": 1e-08
+  },
+  "global_gates": {
+    "finite": true,
+    "survival_s_min": 4.0,
+    "termination_rate_max": 0.0,
+    "pooled_signed_pitch_mean_improvement_min_rad": 0.0015,
+    "sequence_signed_pitch_mean_improvement_min_rad": 0.001,
+    "signed_pitch_p05_improvement_min_rad": 0.0,
+    "lateral_abs_regression_max_m": 0.015,
+    "yaw_abs_regression_max_rad": 0.015,
+    "velocity_rmse_regression_max_mps": 0.005,
+    "com_support_mean_regression_max_m": 0.001,
+    "stance_slip_p95_regression_max_mps": 0.03,
+    "root_height_min_regression_max_m": 0.005,
+    "root_tilt_max_regression_max_rad": 0.01,
+    "action_delta_abs_regression_max": 0.01,
+    "swing_clearance_p05_regression_max_m": 0.003,
+    "knee_excursion_abs_change_max_rad": 0.03,
+    "knee_left_right_asymmetry_regression_max_rad": 0.02,
+    "flight_fraction_regression_max": 0.01
+  },
+  "sequence_interaction_gates": {
+    "signed_pitch_mean_delta_abs_diff_max_rad": 0.0015,
+    "signed_pitch_p05_delta_abs_diff_max_rad": 0.002,
+    "lateral_delta_abs_diff_max_m": 0.015,
+    "yaw_delta_abs_diff_max_rad": 0.015,
+    "velocity_rmse_delta_abs_diff_max_mps": 0.005,
+    "com_support_delta_abs_diff_max_m": 0.001,
+    "stance_slip_p95_delta_abs_diff_max_mps": 0.03
+  },
+  "phase_local_gates": {
+    "coverage_counts_are_not_independent_samples": true,
+    "non_slip_finite_fraction_min": 1.0,
+    "slip_finite_fraction_min": 0.97,
+    "double_support_signed_pitch_mean_regression_max_rad": 0.003,
+    "double_support_signed_pitch_p05_regression_max_rad": 0.005,
+    "single_support_pooled_signed_pitch_mean_improvement_min_rad": 0.001,
+    "single_support_sequence_signed_pitch_mean_improvement_min_rad": 0.0005,
+    "single_support_signed_pitch_p05_improvement_min_rad": 0.0,
+    "velocity_rmse_regression_max_mps": 0.02,
+    "com_support_mean_regression_max_m": 0.003,
+    "stance_slip_p95_regression_max_mps": 0.08,
+    "flight_fraction_regression_max": 0.03
+  },
+  "selection_rule": "The one phase-conditioned treatment passes only if replay pairing is exact and TC, CT, direct pooled, interaction, realized-bias, global, and all four pre-step-aligned phase gates pass. No threshold may be changed after either pass runs.",
+  "decision_boundary": {
+    "local_pass": "Unlocks a preregistered stance-versus-swing knee-role diagnostic only.",
+    "local_fail": "Stops bilateral single-support knee bias and permits only causal side/phase decomposition; it does not justify training.",
+    "training_unlocked": false,
+    "deployment_unlocked": false,
+    "task2_complete": false
+  },
+  "resource_limits": {
+    "disk_free_gib_min_before_each_run": 20,
+    "gpu_peak_memory_mib_max_each_run": 22528,
+    "expected_generated_checkpoint_count": 0,
+    "expected_temporary_disk_delta_bytes_max_total": 536870912
+  }
+}

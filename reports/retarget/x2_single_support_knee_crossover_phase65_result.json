@@ -1,0 +1,2350 @@
+{
+  "schema": "x2_single_support_knee_crossover_phase65_result_v1",
+  "decision": "FAIL_CROSSOVER_REPLAY_INVALID_STOP",
+  "inputs": [
+    {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_pass0.json",
+      "sha256": "63f6de4948aeee1f6cd1058c1212294704996e572b91c2e0c56405c56fc99016"
+    },
+    {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_pass1.json",
+      "sha256": "395aa3425d9ec76a480e0d45467e3140998c0bb6167e36ac07d0865e3c299329"
+    }
+  ],
+  "resources": [
+    {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_pass0_resource.json",
+      "sha256": "f27e0018b05a931911824e5697236244817a66f94e5df82ba44dbb3b45663a85",
+      "report": {
+        "schema": "x2_gpu_run_ledger_v1",
+        "label": "phase65_single_support_knee_crossover_pass0",
+        "command": [
+          "conda",
+          "run",
+          "--no-capture-output",
+          "-n",
+          "x2-sonic-isaaclab",
+          "python",
+          "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_upper_robust_one_update_phase56.py",
+          "--mode",
+          "screen",
+          "--checkpoint",
+          "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+          "--output",
+          "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_pass0.json",
+          "--num-envs",
+          "64",
+          "--seed",
+          "42",
+          "--eval-steps",
+          "200",
+          "--device",
+          "cuda:0",
+          "--headless"
+        ],
+        "exit_code": 0,
+        "start_wall_ns": 1786529267765442003,
+        "elapsed_s": 25.960734909000166,
+        "disk_before": {
+          "total_bytes": 502392610816,
+          "used_bytes": 102076993536,
+          "free_bytes": 374720245760
+        },
+        "disk_after": {
+          "total_bytes": 502392610816,
+          "used_bytes": 102222110720,
+          "free_bytes": 374575128576
+        },
+        "disk_used_delta_bytes": 145117184,
+        "gpu_sample_count": 49,
+        "gpu_sample_errors": 0,
+        "gpu": {
+          "memory_total_mib": 24576.0,
+          "memory_used_peak_mib": 3218.0,
+          "utilization_peak_percent": 66.0,
+          "power_peak_w": 118.26
+        }
+      }
+    },
+    {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_pass1_resource.json",
+      "sha256": "010e0a97ad9a143c238622c6a6b7a186045c468a61949a5f8a2945225181ecb3",
+      "report": {
+        "schema": "x2_gpu_run_ledger_v1",
+        "label": "phase65_single_support_knee_crossover_pass1",
+        "command": [
+          "conda",
+          "run",
+          "--no-capture-output",
+          "-n",
+          "x2-sonic-isaaclab",
+          "python",
+          "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_upper_robust_one_update_phase56.py",
+          "--mode",
+          "screen",
+          "--checkpoint",
+          "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+          "--output",
+          "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_pass1.json",
+          "--num-envs",
+          "64",
+          "--seed",
+          "42",
+          "--eval-steps",
+          "200",
+          "--device",
+          "cuda:0",
+          "--headless"
+        ],
+        "exit_code": 0,
+        "start_wall_ns": 1786529293768531495,
+        "elapsed_s": 26.554351782000595,
+        "disk_before": {
+          "total_bytes": 502392610816,
+          "used_bytes": 102222114816,
+          "free_bytes": 374575124480
+        },
+        "disk_after": {
+          "total_bytes": 502392610816,
+          "used_bytes": 102367223808,
+          "free_bytes": 374430015488
+        },
+        "disk_used_delta_bytes": 145108992,
+        "gpu_sample_count": 50,
+        "gpu_sample_errors": 0,
+        "gpu": {
+          "memory_total_mib": 24576.0,
+          "memory_used_peak_mib": 3218.0,
+          "utilization_peak_percent": 67.0,
+          "power_peak_w": 119.26
+        }
+      }
+    }
+  ],
+  "preregistration": {
+    "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_single_support_knee_crossover_phase65_prereg.json",
+    "sha256": "f22d4ce708e7d4dad9939f1a4b9f7b82014bb42a4558459f130db60611038c36"
+  },
+  "pairing": {
+    "checks": {
+      "checkpoint": true,
+      "runner": true,
+      "domain_upper": true,
+      "initial_fingerprints": true,
+      "first_three_ds0_replay": true,
+      "pre_step_regions": true,
+      "region_counts": false,
+      "invalid_contact_suffix": true
+    },
+    "passed": false
+  },
+  "comparisons": {
+    "TC": {
+      "candidate": {
+        "signed_pitch_rad": {
+          "finite_count": 6400,
+          "mean": -0.18914129637632868,
+          "p05": -0.22537794485688212,
+          "p50": -0.19349151104688644,
+          "p95": -0.11350141987204554,
+          "minimum": -0.2572600841522217,
+          "maximum": -0.0149793466553092
+        },
+        "com_support_outside_m": {
+          "finite_count": 6400,
+          "mean": 0.06821653137623798,
+          "p05": 0.0,
+          "p50": 0.047060199081897736,
+          "p95": 0.1873513638973236,
+          "minimum": 0.0,
+          "maximum": 0.19584065675735474
+        },
+        "stance_slip_mps": {
+          "finite_count": 6385,
+          "mean": 0.09146536155038158,
+          "p05": 0.017514802515506744,
+          "p50": 0.06424546241760254,
+          "p95": 0.23535367250442332,
+          "minimum": 0.00034218557993881404,
+          "maximum": 1.3836729526519775
+        },
+        "swing_sole_clearance_m": {
+          "finite_count": 3931,
+          "mean": 0.021816651907109085,
+          "p05": 0.012906208634376526,
+          "p50": 0.021459832787513733,
+          "p95": 0.03167414665222168,
+          "minimum": 0.006056897342205048,
+          "maximum": 0.03898252546787262
+        },
+        "flight_fraction": {
+          "finite_count": 6400,
+          "mean": 0.00234375,
+          "p05": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "velocity_tracking_rmse_mps": 0.09768777012148289,
+        "velocity_sample_count": 6400,
+        "lateral_abs_m": 0.093333033262752,
+        "yaw_abs_rad": 0.09356506122276187,
+        "action_delta_abs": 0.19411689369007945,
+        "root_height_min_mean_m": 0.6496617943048477,
+        "root_tilt_max_mean_rad": 0.2501579294912517,
+        "knee_left_excursion_mean_rad": 0.30122468154877424,
+        "knee_right_excursion_mean_rad": 0.4372739465907216,
+        "knee_left_right_asymmetry_mean_rad": 0.13604926504194736,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0
+      },
+      "control": {
+        "signed_pitch_rad": {
+          "finite_count": 6400,
+          "mean": -0.18998045985921636,
+          "p05": -0.22656035944819453,
+          "p50": -0.19442515820264816,
+          "p95": -0.1137427903711796,
+          "minimum": -0.2579713463783264,
+          "maximum": -0.0149793466553092
+        },
+        "com_support_outside_m": {
+          "finite_count": 6400,
+          "mean": 0.06769155690271873,
+          "p05": 0.0,
+          "p50": 0.04691620171070099,
+          "p95": 0.18707003593444824,
+          "minimum": 0.0,
+          "maximum": 0.19618993997573853
+        },
+        "stance_slip_mps": {
+          "finite_count": 6391,
+          "mean": 0.09550739414871001,
+          "p05": 0.016364088281989098,
+          "p50": 0.06430327147245407,
+          "p95": 0.2722398191690445,
+          "minimum": 0.0006929250084795058,
+          "maximum": 1.699936032295227
+        },
+        "swing_sole_clearance_m": {
+          "finite_count": 3914,
+          "mean": 0.021694171144857843,
+          "p05": 0.012715797871351242,
+          "p50": 0.021387845277786255,
+          "p95": 0.03163722306489944,
+          "minimum": 0.006107836961746216,
+          "maximum": 0.039286866784095764
+        },
+        "flight_fraction": {
+          "finite_count": 6400,
+          "mean": 0.00140625,
+          "p05": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "velocity_tracking_rmse_mps": 0.09513582292094999,
+        "velocity_sample_count": 6400,
+        "lateral_abs_m": 0.08862828509882092,
+        "yaw_abs_rad": 0.09021839941851795,
+        "action_delta_abs": 0.19352854043245316,
+        "root_height_min_mean_m": 0.6497290637344122,
+        "root_tilt_max_mean_rad": 0.24944827239960432,
+        "knee_left_excursion_mean_rad": 0.3015872295945883,
+        "knee_right_excursion_mean_rad": 0.43541691824793816,
+        "knee_left_right_asymmetry_mean_rad": 0.13382968865334988,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0
+      },
+      "delta": {
+        "signed_pitch_mean_rad": 0.0008391634828876782,
+        "signed_pitch_p05_rad": 0.0011824145913124084,
+        "velocity_tracking_rmse_mps": 0.0025519472005328947,
+        "com_support_outside_mean_m": 0.0005249744735192491,
+        "stance_slip_p95_mps": -0.03688614666462117,
+        "swing_clearance_p05_m": 0.0001904107630252838,
+        "flight_fraction": 0.0009375,
+        "lateral_abs_m": 0.004704748163931072,
+        "yaw_abs_rad": 0.0033466618042439222,
+        "action_delta_abs": 0.0005883532576262951,
+        "root_height_min_mean_m": -6.726942956447601e-05,
+        "root_tilt_max_mean_rad": 0.0007096570916473866,
+        "knee_left_excursion_mean_rad": -0.0003625480458140373,
+        "knee_right_excursion_mean_rad": 0.001857028342783451,
+        "knee_left_right_asymmetry_mean_rad": 0.0022195763885974884
+      },
+      "checks": {
+        "survival": true,
+        "termination": true,
+        "pitch_mean": false,
+        "pitch_p05": true,
+        "lateral": true,
+        "yaw": true,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true,
+        "clearance": true,
+        "knee_left_excursion": true,
+        "knee_right_excursion": true,
+        "knee_asymmetry": true,
+        "flight": true
+      },
+      "phase_regions": {
+        "double_support_zero": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 928,
+              "mean": -0.18508652857693458,
+              "p05": -0.24821926653385162,
+              "p50": -0.19992098957300186,
+              "p95": -0.029873923305422066,
+              "minimum": -0.2572600841522217,
+              "maximum": -0.0149793466553092
+            },
+            "com_support_outside_m": {
+              "finite_count": 928,
+              "mean": 0.09753466778884418,
+              "p05": 0.0,
+              "p50": 0.07959102839231491,
+              "p95": 0.17692973464727402,
+              "minimum": 0.0,
+              "maximum": 0.18129906058311462
+            },
+            "stance_slip_mps": {
+              "finite_count": 926,
+              "mean": 0.10619869783568975,
+              "p05": 0.02806543093174696,
+              "p50": 0.06613970175385475,
+              "p95": 0.38357699662446976,
+              "minimum": 0.009985825046896935,
+              "maximum": 0.9979932904243469
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 706,
+              "mean": 0.022263972558313323,
+              "p05": 0.010649248957633972,
+              "p50": 0.022034425288438797,
+              "p95": 0.03280143067240715,
+              "minimum": 0.00719064474105835,
+              "maximum": 0.037266284227371216
+            },
+            "flight_fraction": {
+              "finite_count": 928,
+              "mean": 0.0021551724137931034,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.0998647740345167,
+            "velocity_sample_count": 928
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 928,
+              "mean": -0.18479532756389055,
+              "p05": -0.24728332832455635,
+              "p50": -0.1993081346154213,
+              "p95": -0.029873923305422066,
+              "minimum": -0.2579713463783264,
+              "maximum": -0.0149793466553092
+            },
+            "com_support_outside_m": {
+              "finite_count": 928,
+              "mean": 0.08802970041167633,
+              "p05": 0.0,
+              "p50": 0.0733020082116127,
+              "p95": 0.17583754658699036,
+              "minimum": 0.0,
+              "maximum": 0.17965690791606903
+            },
+            "stance_slip_mps": {
+              "finite_count": 928,
+              "mean": 0.12247275369284988,
+              "p05": 0.029719018563628196,
+              "p50": 0.06819156184792519,
+              "p95": 0.5313836216926574,
+              "minimum": 0.0027337234932929277,
+              "maximum": 1.699936032295227
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 669,
+              "mean": 0.021844293693879618,
+              "p05": 0.008986547589302063,
+              "p50": 0.0219360813498497,
+              "p95": 0.031976282596588135,
+              "minimum": 0.006878174841403961,
+              "maximum": 0.03683565557003021
+            },
+            "flight_fraction": {
+              "finite_count": 928,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.09947630480978009,
+            "velocity_sample_count": 928
+          },
+          "delta": {
+            "signed_pitch_mean_rad": -0.000291201013044029,
+            "signed_pitch_p05_rad": -0.0009359382092952728,
+            "velocity_tracking_rmse_mps": 0.0003884692247366067,
+            "com_support_outside_mean_m": 0.009504967377167842,
+            "stance_slip_p95_mps": -0.14780662506818765,
+            "swing_clearance_p05_m": 0.0016627013683319092,
+            "flight_fraction": 0.0021551724137931034
+          },
+          "checks": {
+            "candidate_pitch_coverage": false,
+            "control_pitch_coverage": false,
+            "candidate_support_coverage": false,
+            "control_support_coverage": false,
+            "candidate_velocity_coverage": false,
+            "control_velocity_coverage": false,
+            "candidate_slip_coverage": false,
+            "control_slip_coverage": false,
+            "velocity": true,
+            "support": false,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": false
+        },
+        "right_swing_left_support": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 2240,
+              "mean": -0.18983768289908767,
+              "p05": -0.22662541940808295,
+              "p50": -0.19612416625022888,
+              "p95": -0.10897324718534947,
+              "minimum": -0.24430181086063385,
+              "maximum": -0.08507834374904633
+            },
+            "com_support_outside_m": {
+              "finite_count": 2240,
+              "mean": 0.07885818180927474,
+              "p05": 0.0,
+              "p50": 0.05062133073806763,
+              "p95": 0.18702752143144605,
+              "minimum": 0.0,
+              "maximum": 0.19584065675735474
+            },
+            "stance_slip_mps": {
+              "finite_count": 2240,
+              "mean": 0.09921058873483811,
+              "p05": 0.021533104684203865,
+              "p50": 0.07012220472097397,
+              "p95": 0.2531372383236879,
+              "minimum": 0.0035863094963133335,
+              "maximum": 1.0779675245285034
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1436,
+              "mean": 0.022049671962525188,
+              "p05": 0.014152027666568756,
+              "p50": 0.021184973418712616,
+              "p95": 0.03273811936378479,
+              "minimum": 0.007212311029434204,
+              "maximum": 0.03898252546787262
+            },
+            "flight_fraction": {
+              "finite_count": 2240,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.10840714932423776,
+            "velocity_sample_count": 2240
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 2240,
+              "mean": -0.19090451692297522,
+              "p05": -0.2285583958029747,
+              "p50": -0.1977713257074356,
+              "p95": -0.109146086871624,
+              "minimum": -0.24737673997879028,
+              "maximum": -0.08520282804965973
+            },
+            "com_support_outside_m": {
+              "finite_count": 2240,
+              "mean": 0.07966607708284365,
+              "p05": 0.0,
+              "p50": 0.050436101853847504,
+              "p95": 0.18658009469509124,
+              "minimum": 0.0,
+              "maximum": 0.19583547115325928
+            },
+            "stance_slip_mps": {
+              "finite_count": 2239,
+              "mean": 0.10330158421491464,
+              "p05": 0.01993990261107683,
+              "p50": 0.07046139985322952,
+              "p95": 0.30058772265910855,
+              "minimum": 0.0032750475220382214,
+              "maximum": 1.0877799987792969
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1449,
+              "mean": 0.022213665042213938,
+              "p05": 0.014606142044067384,
+              "p50": 0.021312162280082703,
+              "p95": 0.03296110183000564,
+              "minimum": 0.007248394191265106,
+              "maximum": 0.039286866784095764
+            },
+            "flight_fraction": {
+              "finite_count": 2240,
+              "mean": 0.0004464285714285714,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.10526901607559992,
+            "velocity_sample_count": 2240
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0010668340238875473,
+            "signed_pitch_p05_rad": 0.001932976394891761,
+            "velocity_tracking_rmse_mps": 0.003138133248637834,
+            "com_support_outside_mean_m": -0.0008078952735689066,
+            "stance_slip_p95_mps": -0.04745048433542065,
+            "swing_clearance_p05_m": -0.0004541143774986281,
+            "flight_fraction": -0.0004464285714285714
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        },
+        "double_support_half": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 960,
+              "mean": -0.19150367747060953,
+              "p05": -0.2066531665623188,
+              "p50": -0.1917310506105423,
+              "p95": -0.17445901483297346,
+              "minimum": -0.2158370167016983,
+              "maximum": -0.15847435593605042
+            },
+            "com_support_outside_m": {
+              "finite_count": 960,
+              "mean": 0.03988302475772798,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.19141253978013992,
+              "minimum": 0.0,
+              "maximum": 0.1953168511390686
+            },
+            "stance_slip_mps": {
+              "finite_count": 960,
+              "mean": 0.06128137442865409,
+              "p05": 0.012798427930101754,
+              "p50": 0.04330028407275677,
+              "p95": 0.1422847397625446,
+              "minimum": 0.0022164660040289164,
+              "maximum": 0.6475110054016113
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 361,
+              "mean": 0.01951298478815364,
+              "p05": 0.00918377935886383,
+              "p50": 0.020122148096561432,
+              "p95": 0.028989627957344055,
+              "minimum": 0.006056897342205048,
+              "maximum": 0.032736241817474365
+            },
+            "flight_fraction": {
+              "finite_count": 960,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.0686913300483304,
+            "velocity_sample_count": 960
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 960,
+              "mean": -0.19257498243823648,
+              "p05": -0.20867890268564224,
+              "p50": -0.19195690006017685,
+              "p95": -0.1753305569291115,
+              "minimum": -0.2223096489906311,
+              "maximum": -0.16249437630176544
+            },
+            "com_support_outside_m": {
+              "finite_count": 960,
+              "mean": 0.04398397501014794,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.19235642850399018,
+              "minimum": 0.0,
+              "maximum": 0.19618993997573853
+            },
+            "stance_slip_mps": {
+              "finite_count": 960,
+              "mean": 0.06076822466572291,
+              "p05": 0.012677838280797004,
+              "p50": 0.04520745575428009,
+              "p95": 0.12297200001776215,
+              "minimum": 0.0006929250084795058,
+              "maximum": 0.6849130392074585
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 371,
+              "mean": 0.018763880945762212,
+              "p05": 0.006533082574605942,
+              "p50": 0.019607163965702057,
+              "p95": 0.028257720172405243,
+              "minimum": 0.006107836961746216,
+              "maximum": 0.031191900372505188
+            },
+            "flight_fraction": {
+              "finite_count": 960,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.06550873828590445,
+            "velocity_sample_count": 960
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.001071304967626946,
+            "signed_pitch_p05_rad": 0.002025736123323435,
+            "velocity_tracking_rmse_mps": 0.003182591762425954,
+            "com_support_outside_mean_m": -0.004100950252419959,
+            "stance_slip_p95_mps": 0.019312739744782453,
+            "swing_clearance_p05_m": 0.002650696784257889,
+            "flight_fraction": 0.0
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        },
+        "left_swing_right_support": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 2272,
+              "mean": -0.18911270168281988,
+              "p05": -0.21615597754716873,
+              "p50": -0.19097010791301727,
+              "p95": -0.16140465214848518,
+              "minimum": -0.22932125627994537,
+              "maximum": -0.15124814212322235
+            },
+            "com_support_outside_m": {
+              "finite_count": 2272,
+              "mean": 0.05772165408436681,
+              "p05": 0.0,
+              "p50": 0.043800853192806244,
+              "p95": 0.1873329386115074,
+              "minimum": 0.0,
+              "maximum": 0.19463273882865906
+            },
+            "stance_slip_mps": {
+              "finite_count": 2259,
+              "mean": 0.0905730416493105,
+              "p05": 0.013801394309848548,
+              "p50": 0.06509754806756973,
+              "p95": 0.2537013858556744,
+              "minimum": 0.00034218557993881404,
+              "maximum": 1.3836729526519775
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1428,
+              "mean": 0.02194354171846427,
+              "p05": 0.014412578567862513,
+              "p50": 0.0217437744140625,
+              "p95": 0.030349452048540112,
+              "minimum": 0.009372100234031677,
+              "maximum": 0.03317385911941528
+            },
+            "flight_fraction": {
+              "finite_count": 2272,
+              "mean": 0.005721830985915493,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09606051497376422,
+            "velocity_sample_count": 2272
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 2272,
+              "mean": -0.19009101147514204,
+              "p05": -0.21807089820504189,
+              "p50": -0.19197605550289154,
+              "p95": -0.162435332685709,
+              "minimum": -0.232134148478508,
+              "maximum": -0.15167567133903503
+            },
+            "com_support_outside_m": {
+              "finite_count": 2272,
+              "mean": 0.057595851021149835,
+              "p05": 0.0,
+              "p50": 0.04365254566073418,
+              "p95": 0.1865061640739441,
+              "minimum": 0.0,
+              "maximum": 0.19318604469299316
+            },
+            "stance_slip_mps": {
+              "finite_count": 2264,
+              "mean": 0.0914767216612867,
+              "p05": 0.012248560693114996,
+              "p50": 0.06238650158047676,
+              "p95": 0.2687538817524905,
+              "minimum": 0.001034447574056685,
+              "maximum": 1.6312276124954224
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1425,
+              "mean": 0.02185835291419113,
+              "p05": 0.014581674337387085,
+              "p50": 0.021601811051368713,
+              "p95": 0.030323421955108645,
+              "minimum": 0.009017199277877808,
+              "maximum": 0.03347468376159668
+            },
+            "flight_fraction": {
+              "finite_count": 2272,
+              "mean": 0.0035211267605633804,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09335250423163616,
+            "velocity_sample_count": 2272
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0009783097923221629,
+            "signed_pitch_p05_rad": 0.0019149206578731592,
+            "velocity_tracking_rmse_mps": 0.002708010742128064,
+            "com_support_outside_mean_m": 0.00012580306321697404,
+            "stance_slip_p95_mps": -0.015052495896816065,
+            "swing_clearance_p05_m": -0.00016909576952457185,
+            "flight_fraction": 0.0022007042253521128
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        }
+      },
+      "passed": false
+    },
+    "CT": {
+      "candidate": {
+        "signed_pitch_rad": {
+          "finite_count": 6400,
+          "mean": -0.18870571088322322,
+          "p05": -0.22620248943567275,
+          "p50": -0.1925906091928482,
+          "p95": -0.11347987018525602,
+          "minimum": -0.2576419711112976,
+          "maximum": -0.014980919659137726
+        },
+        "com_support_outside_m": {
+          "finite_count": 6400,
+          "mean": 0.0679833828646224,
+          "p05": 0.0,
+          "p50": 0.04686960205435753,
+          "p95": 0.18764329701662064,
+          "minimum": 0.0,
+          "maximum": 0.19691523909568787
+        },
+        "stance_slip_mps": {
+          "finite_count": 6378,
+          "mean": 0.09476940312067834,
+          "p05": 0.017793089151382446,
+          "p50": 0.06382907181978226,
+          "p95": 0.2693032041192045,
+          "minimum": 0.0013766790507361293,
+          "maximum": 1.6758979558944702
+        },
+        "swing_sole_clearance_m": {
+          "finite_count": 3911,
+          "mean": 0.021896183450747498,
+          "p05": 0.01306140422821045,
+          "p50": 0.021442458033561707,
+          "p95": 0.031919561326503754,
+          "minimum": 0.006104670464992523,
+          "maximum": 0.03930560499429703
+        },
+        "flight_fraction": {
+          "finite_count": 6400,
+          "mean": 0.0034375,
+          "p05": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "velocity_tracking_rmse_mps": 0.0979419126497488,
+        "velocity_sample_count": 6400,
+        "lateral_abs_m": 0.09846886422019452,
+        "yaw_abs_rad": 0.09910555649548769,
+        "action_delta_abs": 0.1940202210098505,
+        "root_height_min_mean_m": 0.6495396345853806,
+        "root_tilt_max_mean_rad": 0.2518023122102022,
+        "knee_left_excursion_mean_rad": 0.30058169551193714,
+        "knee_right_excursion_mean_rad": 0.4385466231033206,
+        "knee_left_right_asymmetry_mean_rad": 0.13796492759138346,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0
+      },
+      "control": {
+        "signed_pitch_rad": {
+          "finite_count": 6400,
+          "mean": -0.19035184350490453,
+          "p05": -0.22663165107369423,
+          "p50": -0.19478367269039154,
+          "p95": -0.11373395845294,
+          "minimum": -0.25867849588394165,
+          "maximum": -0.014980919659137726
+        },
+        "com_support_outside_m": {
+          "finite_count": 6400,
+          "mean": 0.06821223277656827,
+          "p05": 0.0,
+          "p50": 0.04684022441506386,
+          "p95": 0.18713889718055726,
+          "minimum": 0.0,
+          "maximum": 0.19603905081748962
+        },
+        "stance_slip_mps": {
+          "finite_count": 6380,
+          "mean": 0.09435855408759221,
+          "p05": 0.016832198854535817,
+          "p50": 0.0629086121916771,
+          "p95": 0.25657704323530034,
+          "minimum": 0.00039705433300696313,
+          "maximum": 1.718261480331421
+        },
+        "swing_sole_clearance_m": {
+          "finite_count": 3937,
+          "mean": 0.02173253092588372,
+          "p05": 0.01274174451828003,
+          "p50": 0.02139313519001007,
+          "p95": 0.031825846433639525,
+          "minimum": 0.006063118577003479,
+          "maximum": 0.03945659101009369
+        },
+        "flight_fraction": {
+          "finite_count": 6400,
+          "mean": 0.003125,
+          "p05": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "velocity_tracking_rmse_mps": 0.09516640368277827,
+        "velocity_sample_count": 6400,
+        "lateral_abs_m": 0.09772261022590101,
+        "yaw_abs_rad": 0.09712072229012847,
+        "action_delta_abs": 0.19331086613237858,
+        "root_height_min_mean_m": 0.6497169267386198,
+        "root_tilt_max_mean_rad": 0.24967177119106054,
+        "knee_left_excursion_mean_rad": 0.3009733725339174,
+        "knee_right_excursion_mean_rad": 0.4333743518218398,
+        "knee_left_right_asymmetry_mean_rad": 0.13240097928792238,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0
+      },
+      "delta": {
+        "signed_pitch_mean_rad": 0.0016461326216813121,
+        "signed_pitch_p05_rad": 0.0004291616380214802,
+        "velocity_tracking_rmse_mps": 0.0027755089669705274,
+        "com_support_outside_mean_m": -0.00022884991194586923,
+        "stance_slip_p95_mps": 0.012726160883904158,
+        "swing_clearance_p05_m": 0.0003196597099304199,
+        "flight_fraction": 0.00031249999999999984,
+        "lateral_abs_m": 0.0007462539942935109,
+        "yaw_abs_rad": 0.0019848342053592205,
+        "action_delta_abs": 0.0007093548774719238,
+        "root_height_min_mean_m": -0.00017729215323925018,
+        "root_tilt_max_mean_rad": 0.002130541019141674,
+        "knee_left_excursion_mean_rad": -0.00039167702198028564,
+        "knee_right_excursion_mean_rad": 0.005172271281480789,
+        "knee_left_right_asymmetry_mean_rad": 0.005563948303461075
+      },
+      "checks": {
+        "survival": true,
+        "termination": true,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "lateral": true,
+        "yaw": true,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true,
+        "clearance": true,
+        "knee_left_excursion": true,
+        "knee_right_excursion": true,
+        "knee_asymmetry": true,
+        "flight": true
+      },
+      "phase_regions": {
+        "double_support_zero": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 928,
+              "mean": -0.1845608029287742,
+              "p05": -0.2492512062191963,
+              "p50": -0.198559008538723,
+              "p95": -0.02986093740910292,
+              "minimum": -0.2576419711112976,
+              "maximum": -0.014980919659137726
+            },
+            "com_support_outside_m": {
+              "finite_count": 928,
+              "mean": 0.09939052446359961,
+              "p05": 0.0,
+              "p50": 0.0796024352312088,
+              "p95": 0.17706918492913246,
+              "minimum": 0.0,
+              "maximum": 0.1805410385131836
+            },
+            "stance_slip_mps": {
+              "finite_count": 927,
+              "mean": 0.11223875693052589,
+              "p05": 0.028553794510662558,
+              "p50": 0.06435339897871017,
+              "p95": 0.47894229292869506,
+              "minimum": 0.007650912739336491,
+              "maximum": 1.6758979558944702
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 712,
+              "mean": 0.022386510003609267,
+              "p05": 0.010431256145238876,
+              "p50": 0.0223277285695076,
+              "p95": 0.03283499553799628,
+              "minimum": 0.007051676511764526,
+              "maximum": 0.036545053124427795
+            },
+            "flight_fraction": {
+              "finite_count": 928,
+              "mean": 0.0010775862068965517,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09916536483907688,
+            "velocity_sample_count": 928
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 928,
+              "mean": -0.18511092606911853,
+              "p05": -0.24799597635865211,
+              "p50": -0.20035987347364426,
+              "p95": -0.02986093740910292,
+              "minimum": -0.25867849588394165,
+              "maximum": -0.014980919659137726
+            },
+            "com_support_outside_m": {
+              "finite_count": 928,
+              "mean": 0.08823583465358563,
+              "p05": 0.0,
+              "p50": 0.07330448180437088,
+              "p95": 0.17595065087080003,
+              "minimum": 0.0,
+              "maximum": 0.17988069355487823
+            },
+            "stance_slip_mps": {
+              "finite_count": 926,
+              "mean": 0.12438195806220938,
+              "p05": 0.030062093399465084,
+              "p50": 0.06707442179322243,
+              "p95": 0.5338335931301117,
+              "minimum": 0.003689102130010724,
+              "maximum": 1.718261480331421
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 672,
+              "mean": 0.021754908114893452,
+              "p05": 0.010675402358174324,
+              "p50": 0.02193251997232437,
+              "p95": 0.03218194730579853,
+              "minimum": 0.007168732583522797,
+              "maximum": 0.03654702007770538
+            },
+            "flight_fraction": {
+              "finite_count": 928,
+              "mean": 0.0021551724137931034,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09978610957261294,
+            "velocity_sample_count": 928
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.000550123140344333,
+            "signed_pitch_p05_rad": -0.001255229860544188,
+            "velocity_tracking_rmse_mps": -0.0006207447335360577,
+            "com_support_outside_mean_m": 0.011154689810013982,
+            "stance_slip_p95_mps": -0.05489130020141664,
+            "swing_clearance_p05_m": -0.0002441462129354477,
+            "flight_fraction": -0.0010775862068965517
+          },
+          "checks": {
+            "candidate_pitch_coverage": false,
+            "control_pitch_coverage": false,
+            "candidate_support_coverage": false,
+            "control_support_coverage": false,
+            "candidate_velocity_coverage": false,
+            "control_velocity_coverage": false,
+            "candidate_slip_coverage": false,
+            "control_slip_coverage": false,
+            "velocity": true,
+            "support": false,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": false
+        },
+        "right_swing_left_support": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 2240,
+              "mean": -0.18970527311653962,
+              "p05": -0.22755953669548035,
+              "p50": -0.19553010165691376,
+              "p95": -0.10894516371190549,
+              "minimum": -0.24253247678279877,
+              "maximum": -0.08512754738330841
+            },
+            "com_support_outside_m": {
+              "finite_count": 2240,
+              "mean": 0.0778492051792065,
+              "p05": 0.0,
+              "p50": 0.0504851508885622,
+              "p95": 0.1871939778327942,
+              "minimum": 0.0,
+              "maximum": 0.19691523909568787
+            },
+            "stance_slip_mps": {
+              "finite_count": 2238,
+              "mean": 0.10428775317939473,
+              "p05": 0.0224423423409462,
+              "p50": 0.07110126316547394,
+              "p95": 0.34960981458425566,
+              "minimum": 0.0034467754885554314,
+              "maximum": 1.0138049125671387
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1415,
+              "mean": 0.022168648948517788,
+              "p05": 0.014385776966810227,
+              "p50": 0.02113330364227295,
+              "p95": 0.03315650150179863,
+              "minimum": 0.007228061556816101,
+              "maximum": 0.03930560499429703
+            },
+            "flight_fraction": {
+              "finite_count": 2240,
+              "mean": 0.0008928571428571428,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.10883675157943032,
+            "velocity_sample_count": 2240
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 2240,
+              "mean": -0.1913502680104492,
+              "p05": -0.22851846292614936,
+              "p50": -0.19754918664693832,
+              "p95": -0.1091270260512829,
+              "minimum": -0.24398230016231537,
+              "maximum": -0.08525235950946808
+            },
+            "com_support_outside_m": {
+              "finite_count": 2240,
+              "mean": 0.08070902832218313,
+              "p05": 0.0,
+              "p50": 0.05061807110905647,
+              "p95": 0.1862098217010498,
+              "minimum": 0.0,
+              "maximum": 0.19500425457954407
+            },
+            "stance_slip_mps": {
+              "finite_count": 2240,
+              "mean": 0.1005462349791612,
+              "p05": 0.019931143429130316,
+              "p50": 0.06711103022098541,
+              "p95": 0.2607190668582902,
+              "minimum": 0.0045221648178994656,
+              "maximum": 1.1552550792694092
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1463,
+              "mean": 0.02221284952888078,
+              "p05": 0.014313732832670211,
+              "p50": 0.02115972340106964,
+              "p95": 0.03302732408046722,
+              "minimum": 0.007260188460350037,
+              "maximum": 0.03945659101009369
+            },
+            "flight_fraction": {
+              "finite_count": 2240,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.10484890079026948,
+            "velocity_sample_count": 2240
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0016449948939095682,
+            "signed_pitch_p05_rad": 0.0009589262306690105,
+            "velocity_tracking_rmse_mps": 0.003987850789160835,
+            "com_support_outside_mean_m": -0.002859823142976628,
+            "stance_slip_p95_mps": 0.08889074772596545,
+            "swing_clearance_p05_m": 7.204413414001534e-05,
+            "flight_fraction": 0.0008928571428571428
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": false,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": false
+        },
+        "double_support_half": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 960,
+              "mean": -0.19152544216873746,
+              "p05": -0.20665269941091538,
+              "p50": -0.19167493283748627,
+              "p95": -0.17389504462480546,
+              "minimum": -0.21536420285701752,
+              "maximum": -0.15962105989456177
+            },
+            "com_support_outside_m": {
+              "finite_count": 960,
+              "mean": 0.04001456163047502,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.19200639575719833,
+              "minimum": 0.0,
+              "maximum": 0.1960819959640503
+            },
+            "stance_slip_mps": {
+              "finite_count": 960,
+              "mean": 0.059007199077071464,
+              "p05": 0.014598450902849437,
+              "p50": 0.043355995789170265,
+              "p95": 0.13333396390080446,
+              "minimum": 0.004757555667310953,
+              "maximum": 0.6727074384689331
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 353,
+              "mean": 0.019782134434656786,
+              "p05": 0.009104976058006288,
+              "p50": 0.02011808753013611,
+              "p95": 0.028370147943496703,
+              "minimum": 0.006104670464992523,
+              "maximum": 0.03153365105390549
+            },
+            "flight_fraction": {
+              "finite_count": 960,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.06941895914603805,
+            "velocity_sample_count": 960
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 960,
+              "mean": -0.1932861496694386,
+              "p05": -0.20950534269213675,
+              "p50": -0.19315695017576218,
+              "p95": -0.17614073902368546,
+              "minimum": -0.2199845165014267,
+              "maximum": -0.16735389828681946
+            },
+            "com_support_outside_m": {
+              "finite_count": 960,
+              "mean": 0.04512351165758446,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.19224693924188613,
+              "minimum": 0.0,
+              "maximum": 0.19603905081748962
+            },
+            "stance_slip_mps": {
+              "finite_count": 960,
+              "mean": 0.06296340157956971,
+              "p05": 0.014584856526926161,
+              "p50": 0.0448748916387558,
+              "p95": 0.13648263216018666,
+              "minimum": 0.002334020333364606,
+              "maximum": 0.6713799834251404
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 362,
+              "mean": 0.019349622401249343,
+              "p05": 0.009159748628735543,
+              "p50": 0.019666947424411774,
+              "p95": 0.028577593713998792,
+              "minimum": 0.006063118577003479,
+              "maximum": 0.03224401921033859
+            },
+            "flight_fraction": {
+              "finite_count": 960,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.06645432685930538,
+            "velocity_sample_count": 960
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0017607075007011475,
+            "signed_pitch_p05_rad": 0.0028526432812213676,
+            "velocity_tracking_rmse_mps": 0.00296463228673266,
+            "com_support_outside_mean_m": -0.005108950027109434,
+            "stance_slip_p95_mps": -0.0031486682593822035,
+            "swing_clearance_p05_m": -5.477257072925533e-05,
+            "flight_fraction": 0.0
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        },
+        "left_swing_right_support": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 2272,
+              "mean": -0.18822178180972246,
+              "p05": -0.2165159098803997,
+              "p50": -0.1899890974164009,
+              "p95": -0.16044158935546876,
+              "minimum": -0.22970892488956451,
+              "maximum": -0.14457832276821136
+            },
+            "com_support_outside_m": {
+              "finite_count": 2272,
+              "mean": 0.057246058479174446,
+              "p05": 0.0,
+              "p50": 0.04381348192691803,
+              "p95": 0.18766012638807295,
+              "minimum": 0.0,
+              "maximum": 0.19596117734909058
+            },
+            "stance_slip_mps": {
+              "finite_count": 2253,
+              "mean": 0.09336485694612294,
+              "p05": 0.01263631470501423,
+              "p50": 0.06686960905790329,
+              "p95": 0.28300101757049567,
+              "minimum": 0.0013766790507361293,
+              "maximum": 1.5400989055633545
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1431,
+              "mean": 0.021904295342919045,
+              "p05": 0.014436885714530945,
+              "p50": 0.02173912525177002,
+              "p95": 0.03043818473815918,
+              "minimum": 0.009087331593036652,
+              "maximum": 0.03414296358823776
+            },
+            "flight_fraction": {
+              "finite_count": 2272,
+              "mean": 0.008362676056338027,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09638492967782093,
+            "velocity_sample_count": 2272
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 2272,
+              "mean": -0.19026829005861787,
+              "p05": -0.2184625029563904,
+              "p50": -0.19176429510116577,
+              "p95": -0.16343168914318087,
+              "minimum": -0.23083284497261047,
+              "maximum": -0.15330703556537628
+            },
+            "com_support_outside_m": {
+              "finite_count": 2272,
+              "mean": 0.05746859180393406,
+              "p05": 0.0,
+              "p50": 0.04335331171751022,
+              "p95": 0.18677836209535598,
+              "minimum": 0.0,
+              "maximum": 0.1948172152042389
+            },
+            "stance_slip_mps": {
+              "finite_count": 2254,
+              "mean": 0.08924642859073842,
+              "p05": 0.012722371425479651,
+              "p50": 0.0626443363726139,
+              "p95": 0.2165153570473194,
+              "minimum": 0.00039705433300696313,
+              "maximum": 1.4953680038452148
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1440,
+              "mean": 0.021833134605549274,
+              "p05": 0.014187771081924438,
+              "p50": 0.021536529064178467,
+              "p95": 0.030338841304183004,
+              "minimum": 0.00922992080450058,
+              "maximum": 0.03386762738227844
+            },
+            "flight_fraction": {
+              "finite_count": 2272,
+              "mean": 0.007922535211267605,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09348889737519932,
+            "velocity_sample_count": 2272
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0020465082488954067,
+            "signed_pitch_p05_rad": 0.0019465930759906824,
+            "velocity_tracking_rmse_mps": 0.002896032302621615,
+            "com_support_outside_mean_m": -0.00022253332475961202,
+            "stance_slip_p95_mps": 0.06648566052317628,
+            "swing_clearance_p05_m": 0.00024911463260650704,
+            "flight_fraction": 0.00044014084507042195
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        }
+      },
+      "passed": false
+    },
+    "pooled": {
+      "candidate": {
+        "signed_pitch_rad": {
+          "finite_count": 12800,
+          "mean": -0.18892350362977595,
+          "p05": -0.22584267184138299,
+          "p50": -0.1930123046040535,
+          "p95": -0.11348365992307663,
+          "minimum": -0.2576419711112976,
+          "maximum": -0.0149793466553092
+        },
+        "com_support_outside_m": {
+          "finite_count": 12800,
+          "mean": 0.0680999571204302,
+          "p05": 0.0,
+          "p50": 0.04697674512863159,
+          "p95": 0.1875172644853592,
+          "minimum": 0.0,
+          "maximum": 0.19691523909568787
+        },
+        "stance_slip_mps": {
+          "finite_count": 12763,
+          "mean": 0.09311647626756037,
+          "p05": 0.017650046758353712,
+          "p50": 0.06403680145740509,
+          "p95": 0.25486224293708787,
+          "minimum": 0.00034218557993881404,
+          "maximum": 1.6758979558944702
+        },
+        "swing_sole_clearance_m": {
+          "finite_count": 7842,
+          "mean": 0.021856316261504628,
+          "p05": 0.012993164360523224,
+          "p50": 0.0214570090174675,
+          "p95": 0.03179363273084164,
+          "minimum": 0.006056897342205048,
+          "maximum": 0.03930560499429703
+        },
+        "flight_fraction": {
+          "finite_count": 12800,
+          "mean": 0.002890625,
+          "p05": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "velocity_tracking_rmse_mps": 0.09781492392472305,
+        "velocity_sample_count": 12800,
+        "lateral_abs_m": 0.09590094874147326,
+        "yaw_abs_rad": 0.09633530885912478,
+        "action_delta_abs": 0.19406855734996498,
+        "root_height_min_mean_m": 0.6496007144451141,
+        "root_tilt_max_mean_rad": 0.25098012085072696,
+        "knee_left_excursion_mean_rad": 0.3009031885303557,
+        "knee_right_excursion_mean_rad": 0.4379102848470211,
+        "knee_left_right_asymmetry_mean_rad": 0.1370070963166654,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0
+      },
+      "control": {
+        "signed_pitch_rad": {
+          "finite_count": 12800,
+          "mean": -0.19016615168206044,
+          "p05": -0.22661438211798668,
+          "p50": -0.19459028542041779,
+          "p95": -0.11373476386070253,
+          "minimum": -0.25867849588394165,
+          "maximum": -0.0149793466553092
+        },
+        "com_support_outside_m": {
+          "finite_count": 12800,
+          "mean": 0.0679518948396435,
+          "p05": 0.0,
+          "p50": 0.046877387911081314,
+          "p95": 0.18709236830472942,
+          "minimum": 0.0,
+          "maximum": 0.19618993997573853
+        },
+        "stance_slip_mps": {
+          "finite_count": 12771,
+          "mean": 0.09493346888131265,
+          "p05": 0.016647707670927048,
+          "p50": 0.06367314606904984,
+          "p95": 0.26468825340270996,
+          "minimum": 0.00039705433300696313,
+          "maximum": 1.718261480331421
+        },
+        "swing_sole_clearance_m": {
+          "finite_count": 7851,
+          "mean": 0.021713407224070537,
+          "p05": 0.01273108646273613,
+          "p50": 0.02138950675725937,
+          "p95": 0.03173837810754776,
+          "minimum": 0.006063118577003479,
+          "maximum": 0.03945659101009369
+        },
+        "flight_fraction": {
+          "finite_count": 12800,
+          "mean": 0.002265625,
+          "p05": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "velocity_tracking_rmse_mps": 0.09515111453041385,
+        "velocity_sample_count": 12800,
+        "lateral_abs_m": 0.09317544766236097,
+        "yaw_abs_rad": 0.09366956085432321,
+        "action_delta_abs": 0.19341970328241587,
+        "root_height_min_mean_m": 0.649722995236516,
+        "root_tilt_max_mean_rad": 0.24956002179533243,
+        "knee_left_excursion_mean_rad": 0.30128030106425285,
+        "knee_right_excursion_mean_rad": 0.434395635034889,
+        "knee_left_right_asymmetry_mean_rad": 0.13311533397063613,
+        "survival_s_mean": 4.0,
+        "termination_rate": 0.0
+      },
+      "delta": {
+        "signed_pitch_mean_rad": 0.0012426480522844952,
+        "signed_pitch_p05_rad": 0.0007717102766036932,
+        "velocity_tracking_rmse_mps": 0.0026638093943091995,
+        "com_support_outside_mean_m": 0.00014806228078668993,
+        "stance_slip_p95_mps": -0.009826010465622093,
+        "swing_clearance_p05_m": 0.0002620778977870941,
+        "flight_fraction": 0.0006250000000000001,
+        "lateral_abs_m": 0.0027255010791122913,
+        "yaw_abs_rad": 0.0026657480048015714,
+        "action_delta_abs": 0.0006488540675491095,
+        "root_height_min_mean_m": -0.0001222807914018631,
+        "root_tilt_max_mean_rad": 0.0014200990553945303,
+        "knee_left_excursion_mean_rad": -0.0003771125338971615,
+        "knee_right_excursion_mean_rad": 0.00351464981213212,
+        "knee_left_right_asymmetry_mean_rad": 0.0038917623460292816
+      },
+      "checks": {
+        "survival": true,
+        "termination": true,
+        "pitch_mean": false,
+        "pitch_p05": true,
+        "lateral": true,
+        "yaw": true,
+        "velocity": true,
+        "support": true,
+        "slip": true,
+        "root_height": true,
+        "root_tilt": true,
+        "action_delta": true,
+        "clearance": true,
+        "knee_left_excursion": true,
+        "knee_right_excursion": true,
+        "knee_asymmetry": true,
+        "flight": true
+      },
+      "phase_regions": {
+        "double_support_zero": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 1856,
+              "mean": -0.1848236657528544,
+              "p05": -0.24854189902544022,
+              "p50": -0.19915639609098434,
+              "p95": -0.02987096831202507,
+              "minimum": -0.2576419711112976,
+              "maximum": -0.0149793466553092
+            },
+            "com_support_outside_m": {
+              "finite_count": 1856,
+              "mean": 0.0984625961262219,
+              "p05": 0.0,
+              "p50": 0.07959429174661636,
+              "p95": 0.17703010514378548,
+              "minimum": 0.0,
+              "maximum": 0.18129906058311462
+            },
+            "stance_slip_mps": {
+              "finite_count": 1853,
+              "mean": 0.10922035718858403,
+              "p05": 0.02823099717497826,
+              "p50": 0.06509707868099213,
+              "p95": 0.42743529081344556,
+              "minimum": 0.007650912739336491,
+              "maximum": 1.6758979558944702
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1418,
+              "mean": 0.022325500528024685,
+              "p05": 0.01043253019452095,
+              "p50": 0.022164668887853622,
+              "p95": 0.03282034881412982,
+              "minimum": 0.007051676511764526,
+              "maximum": 0.037266284227371216
+            },
+            "flight_fraction": {
+              "finite_count": 1856,
+              "mean": 0.0016163793103448276,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09951568388106546,
+            "velocity_sample_count": 1856
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 1856,
+              "mean": -0.18495312681650453,
+              "p05": -0.24781394377350807,
+              "p50": -0.19974932074546814,
+              "p95": -0.02987096831202507,
+              "minimum": -0.25867849588394165,
+              "maximum": -0.0149793466553092
+            },
+            "com_support_outside_m": {
+              "finite_count": 1856,
+              "mean": 0.08813276753263098,
+              "p05": 0.0,
+              "p50": 0.07330363243818283,
+              "p95": 0.1758958250284195,
+              "minimum": 0.0,
+              "maximum": 0.17988069355487823
+            },
+            "stance_slip_mps": {
+              "finite_count": 1854,
+              "mean": 0.12342632610171013,
+              "p05": 0.029920179303735493,
+              "p50": 0.06772272288799286,
+              "p95": 0.5331077992916106,
+              "minimum": 0.0027337234932929277,
+              "maximum": 1.718261480331421
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 1341,
+              "mean": 0.021799500920517422,
+              "p05": 0.00909452885389328,
+              "p50": 0.021933317184448242,
+              "p95": 0.0320785790681839,
+              "minimum": 0.006878174841403961,
+              "maximum": 0.03683565557003021
+            },
+            "flight_fraction": {
+              "finite_count": 1856,
+              "mean": 0.0010775862068965517,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.09963132760895489,
+            "velocity_sample_count": 1856
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0001294610636501381,
+            "signed_pitch_p05_rad": -0.0007279552519321442,
+            "velocity_tracking_rmse_mps": -0.0001156437278894279,
+            "com_support_outside_mean_m": 0.010329828593590912,
+            "stance_slip_p95_mps": -0.105672508478165,
+            "swing_clearance_p05_m": 0.0013380013406276703,
+            "flight_fraction": 0.0005387931034482759
+          },
+          "checks": {
+            "candidate_pitch_coverage": false,
+            "control_pitch_coverage": false,
+            "candidate_support_coverage": false,
+            "control_support_coverage": false,
+            "candidate_velocity_coverage": false,
+            "control_velocity_coverage": false,
+            "candidate_slip_coverage": false,
+            "control_slip_coverage": false,
+            "velocity": true,
+            "support": false,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": false
+        },
+        "right_swing_left_support": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 4480,
+              "mean": -0.18977147800781366,
+              "p05": -0.22700442150235176,
+              "p50": -0.19590850919485092,
+              "p95": -0.1089470937848091,
+              "minimum": -0.24430181086063385,
+              "maximum": -0.08507834374904633
+            },
+            "com_support_outside_m": {
+              "finite_count": 4480,
+              "mean": 0.07835369349424062,
+              "p05": 0.0,
+              "p50": 0.05053369328379631,
+              "p95": 0.1871180549263954,
+              "minimum": 0.0,
+              "maximum": 0.19691523909568787
+            },
+            "stance_slip_mps": {
+              "finite_count": 4478,
+              "mean": 0.10174803715531996,
+              "p05": 0.021890589222311973,
+              "p50": 0.07078613340854645,
+              "p95": 0.3054198473691923,
+              "minimum": 0.0034467754885554314,
+              "maximum": 1.0779675245285034
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 2851,
+              "mean": 0.022108722273005556,
+              "p05": 0.01427050307393074,
+              "p50": 0.021161004900932312,
+              "p95": 0.03290790319442749,
+              "minimum": 0.007212311029434204,
+              "maximum": 0.03930560499429703
+            },
+            "flight_fraction": {
+              "finite_count": 4480,
+              "mean": 0.0004464285714285714,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.10862216283744816,
+            "velocity_sample_count": 4480
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 4480,
+              "mean": -0.1911273924667122,
+              "p05": -0.2285583958029747,
+              "p50": -0.1976483389735222,
+              "p95": -0.10912943221628665,
+              "minimum": -0.24737673997879028,
+              "maximum": -0.08520282804965973
+            },
+            "com_support_outside_m": {
+              "finite_count": 4480,
+              "mean": 0.08018755270251339,
+              "p05": 0.0,
+              "p50": 0.05052580684423447,
+              "p95": 0.1863367795944214,
+              "minimum": 0.0,
+              "maximum": 0.19583547115325928
+            },
+            "stance_slip_mps": {
+              "finite_count": 4479,
+              "mean": 0.1019236020117247,
+              "p05": 0.01993032041937113,
+              "p50": 0.06847403198480606,
+              "p95": 0.28079591095446743,
+              "minimum": 0.0032750475220382214,
+              "maximum": 1.1552550792694092
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 2912,
+              "mean": 0.02221325532517877,
+              "p05": 0.014417632669210433,
+              "p50": 0.021252959966659546,
+              "p95": 0.03302673399448395,
+              "minimum": 0.007248394191265106,
+              "maximum": 0.03945659101009369
+            },
+            "flight_fraction": {
+              "finite_count": 4480,
+              "mean": 0.0002232142857142857,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.10505916843011058,
+            "velocity_sample_count": 4480
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.001355914458898544,
+            "signed_pitch_p05_rad": 0.0015539743006229567,
+            "velocity_tracking_rmse_mps": 0.00356299440733758,
+            "com_support_outside_mean_m": -0.0018338592082727673,
+            "stance_slip_p95_mps": 0.02462393641472488,
+            "swing_clearance_p05_m": -0.0001471295952796929,
+            "flight_fraction": 0.0002232142857142857
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        },
+        "double_support_half": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 1920,
+              "mean": -0.1915145598196735,
+              "p05": -0.20665302500128746,
+              "p50": -0.19170201569795609,
+              "p95": -0.17408496215939523,
+              "minimum": -0.2158370167016983,
+              "maximum": -0.15847435593605042
+            },
+            "com_support_outside_m": {
+              "finite_count": 1920,
+              "mean": 0.0399487931941015,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.19161170423030854,
+              "minimum": 0.0,
+              "maximum": 0.1960819959640503
+            },
+            "stance_slip_mps": {
+              "finite_count": 1920,
+              "mean": 0.06014428675286278,
+              "p05": 0.014079038333147763,
+              "p50": 0.043355995789170265,
+              "p95": 0.13925853446125983,
+              "minimum": 0.0022164660040289164,
+              "maximum": 0.6727074384689331
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 714,
+              "mean": 0.01964605177024833,
+              "p05": 0.009156052768230439,
+              "p50": 0.020120766013860703,
+              "p95": 0.028741154819726944,
+              "minimum": 0.006056897342205048,
+              "maximum": 0.032736241817474365
+            },
+            "flight_fraction": {
+              "finite_count": 1920,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.06905610296247522,
+            "velocity_sample_count": 1920
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 1920,
+              "mean": -0.19293056605383754,
+              "p05": -0.20926511958241464,
+              "p50": -0.19266915321350098,
+              "p95": -0.17580265253782273,
+              "minimum": -0.2223096489906311,
+              "maximum": -0.16249437630176544
+            },
+            "com_support_outside_m": {
+              "finite_count": 1920,
+              "mean": 0.0445537433338662,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.19231504946947098,
+              "minimum": 0.0,
+              "maximum": 0.19618993997573853
+            },
+            "stance_slip_mps": {
+              "finite_count": 1920,
+              "mean": 0.06186581312264631,
+              "p05": 0.013011000864207745,
+              "p50": 0.0450487919151783,
+              "p95": 0.131871098279953,
+              "minimum": 0.0006929250084795058,
+              "maximum": 0.6849130392074585
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 733,
+              "mean": 0.019053155716412064,
+              "p05": 0.006646467745304108,
+              "p50": 0.019624069333076477,
+              "p95": 0.02843977212905884,
+              "minimum": 0.006063118577003479,
+              "maximum": 0.03224401921033859
+            },
+            "flight_fraction": {
+              "finite_count": 1920,
+              "mean": 0.0,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 0.0
+            },
+            "velocity_tracking_rmse_mps": 0.06598322646754447,
+            "velocity_sample_count": 1920
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0014160062341640467,
+            "signed_pitch_p05_rad": 0.0026120945811271834,
+            "velocity_tracking_rmse_mps": 0.0030728764949307513,
+            "com_support_outside_mean_m": -0.004604950139764696,
+            "stance_slip_p95_mps": 0.007387436181306828,
+            "swing_clearance_p05_m": 0.002509585022926331,
+            "flight_fraction": 0.0
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        },
+        "left_swing_right_support": {
+          "candidate": {
+            "signed_pitch_rad": {
+              "finite_count": 4544,
+              "mean": -0.18866724174627117,
+              "p05": -0.21628462672233584,
+              "p50": -0.1905045285820961,
+              "p95": -0.16094670668244362,
+              "minimum": -0.22970892488956451,
+              "maximum": -0.14457832276821136
+            },
+            "com_support_outside_m": {
+              "finite_count": 4544,
+              "mean": 0.05748385628177063,
+              "p05": 0.0,
+              "p50": 0.043808091431856155,
+              "p95": 0.18752466440200805,
+              "minimum": 0.0,
+              "maximum": 0.19596117734909058
+            },
+            "stance_slip_mps": {
+              "finite_count": 4512,
+              "mean": 0.09196709303754597,
+              "p05": 0.012933669472113253,
+              "p50": 0.06598153337836266,
+              "p95": 0.2668045029044151,
+              "minimum": 0.00034218557993881404,
+              "maximum": 1.5400989055633545
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 2859,
+              "mean": 0.021923897939728623,
+              "p05": 0.014415166527032853,
+              "p50": 0.02173912525177002,
+              "p95": 0.030403750389814375,
+              "minimum": 0.009087331593036652,
+              "maximum": 0.03414296358823776
+            },
+            "flight_fraction": {
+              "finite_count": 4544,
+              "mean": 0.007042253521126761,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.0962228590461312,
+            "velocity_sample_count": 4544
+          },
+          "control": {
+            "signed_pitch_rad": {
+              "finite_count": 4544,
+              "mean": -0.19017965076687995,
+              "p05": -0.21823966801166536,
+              "p50": -0.19184177368879318,
+              "p95": -0.16285369917750364,
+              "minimum": -0.232134148478508,
+              "maximum": -0.15167567133903503
+            },
+            "com_support_outside_m": {
+              "finite_count": 4544,
+              "mean": 0.057532221412541946,
+              "p05": 0.0,
+              "p50": 0.04346964508295059,
+              "p95": 0.18664594590663908,
+              "minimum": 0.0,
+              "maximum": 0.1948172152042389
+            },
+            "stance_slip_mps": {
+              "finite_count": 4518,
+              "mean": 0.09036404335650232,
+              "p05": 0.012506397627294065,
+              "p50": 0.062470151111483574,
+              "p95": 0.24069345071911794,
+              "minimum": 0.00039705433300696313,
+              "maximum": 1.6312276124954224
+            },
+            "swing_sole_clearance_m": {
+              "finite_count": 2865,
+              "mean": 0.021845677743355434,
+              "p05": 0.014281833171844482,
+              "p50": 0.021558165550231934,
+              "p95": 0.03032907396554947,
+              "minimum": 0.009017199277877808,
+              "maximum": 0.03386762738227844
+            },
+            "flight_fraction": {
+              "finite_count": 4544,
+              "mean": 0.005721830985915493,
+              "p05": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "velocity_tracking_rmse_mps": 0.0934207256949661,
+            "velocity_sample_count": 4544
+          },
+          "delta": {
+            "signed_pitch_mean_rad": 0.0015124090206087848,
+            "signed_pitch_p05_rad": 0.0019550412893295233,
+            "velocity_tracking_rmse_mps": 0.002802133351165109,
+            "com_support_outside_mean_m": -4.836513077131899e-05,
+            "stance_slip_p95_mps": 0.026111052185297162,
+            "swing_clearance_p05_m": 0.00013333335518837114,
+            "flight_fraction": 0.0013204225352112676
+          },
+          "checks": {
+            "candidate_pitch_coverage": true,
+            "control_pitch_coverage": true,
+            "candidate_support_coverage": true,
+            "control_support_coverage": true,
+            "candidate_velocity_coverage": true,
+            "control_velocity_coverage": true,
+            "candidate_slip_coverage": true,
+            "control_slip_coverage": true,
+            "velocity": true,
+            "support": true,
+            "slip": true,
+            "flight": true,
+            "pitch_mean": true,
+            "pitch_p05": true
+          },
+          "passed": true
+        }
+      },
+      "passed": false
+    }
+  },
+  "sequence_interaction_checks": {
+    "signed_pitch_mean": true,
+    "signed_pitch_p05": true,
+    "lateral": true,
+    "yaw": true,
+    "velocity": true,
+    "support": true,
+    "slip": false
+  },
+  "realized_bias": {
+    "TC": {
+      "left": {
+        "requested": {
+          "finite_count": 4512,
+          "mean": -0.009999999776482582,
+          "p05": -0.009999999776482582,
+          "p50": -0.009999999776482582,
+          "p95": -0.009999999776482582,
+          "minimum": -0.009999999776482582,
+          "maximum": -0.009999999776482582
+        },
+        "effective": {
+          "finite_count": 4512,
+          "mean": -0.004763236846271176,
+          "p05": -0.01000000536441803,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": -0.010000020265579224,
+          "maximum": 0.0
+        },
+        "target_offset_rad": {
+          "finite_count": 4512,
+          "mean": -0.0019052948250734988,
+          "p05": -0.0040000020526349545,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": -0.0040000081062316895,
+          "maximum": 0.0
+        },
+        "effective_to_requested_mean_ratio": 0.4763236952737819,
+        "wrong_sign_fraction": 0.519281914893617
+      },
+      "right": {
+        "requested": {
+          "finite_count": 4512,
+          "mean": -0.009999999776482582,
+          "p05": -0.009999999776482582,
+          "p50": -0.009999999776482582,
+          "p95": -0.009999999776482582,
+          "minimum": -0.009999999776482582,
+          "maximum": -0.009999999776482582
+        },
+        "effective": {
+          "finite_count": 4512,
+          "mean": -0.009642206956401255,
+          "p05": -0.01000000536441803,
+          "p50": -0.009999990463256836,
+          "p95": -0.009999990463256836,
+          "minimum": -0.010000050067901611,
+          "maximum": 0.0
+        },
+        "target_offset_rad": {
+          "finite_count": 4512,
+          "mean": -0.003856883013781147,
+          "p05": -0.0040000020526349545,
+          "p50": -0.003999996464699507,
+          "p95": -0.003999996464699507,
+          "minimum": -0.0040000202134251595,
+          "maximum": 0.0
+        },
+        "effective_to_requested_mean_ratio": 0.9642207171921381,
+        "wrong_sign_fraction": 0.0350177304964539
+      }
+    },
+    "CT": {
+      "left": {
+        "requested": {
+          "finite_count": 4512,
+          "mean": -0.009999999776482582,
+          "p05": -0.009999999776482582,
+          "p50": -0.009999999776482582,
+          "p95": -0.009999999776482582,
+          "minimum": -0.009999999776482582,
+          "maximum": -0.009999999776482582
+        },
+        "effective": {
+          "finite_count": 4512,
+          "mean": -0.004738192245527666,
+          "p05": -0.01000000536441803,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": -0.010000020265579224,
+          "maximum": 0.0
+        },
+        "target_offset_rad": {
+          "finite_count": 4512,
+          "mean": -0.0018952769852464842,
+          "p05": -0.0040000020526349545,
+          "p50": 0.0,
+          "p95": 0.0,
+          "minimum": -0.0040000081062316895,
+          "maximum": 0.0
+        },
+        "effective_to_requested_mean_ratio": 0.4738192351434518,
+        "wrong_sign_fraction": 0.5237145390070922
+      },
+      "right": {
+        "requested": {
+          "finite_count": 4512,
+          "mean": -0.009999999776482582,
+          "p05": -0.009999999776482582,
+          "p50": -0.009999999776482582,
+          "p95": -0.009999999776482582,
+          "minimum": -0.009999999776482582,
+          "maximum": -0.009999999776482582
+        },
+        "effective": {
+          "finite_count": 4512,
+          "mean": -0.0096512200626221,
+          "p05": -0.01000000536441803,
+          "p50": -0.009999990463256836,
+          "p95": -0.009999990463256836,
+          "minimum": -0.010000050067901611,
+          "maximum": 0.0
+        },
+        "target_offset_rad": {
+          "finite_count": 4512,
+          "mean": -0.003860488255681216,
+          "p05": -0.0040000020526349545,
+          "p50": -0.003999996464699507,
+          "p95": -0.003999996464699507,
+          "minimum": -0.0040000202134251595,
+          "maximum": 0.0
+        },
+        "effective_to_requested_mean_ratio": 0.9651220278343684,
+        "wrong_sign_fraction": 0.033023049645390073
+      }
+    },
+    "pooled": {
+      "left": {
+        "requested": {
+          "finite_count": 9024,
+          "mean": -0.009999999776482582
+        },
+        "effective": {
+          "finite_count": 9024,
+          "mean": -0.004750714545899421
+        },
+        "target_offset_rad": {
+          "finite_count": 9024,
+          "mean": -0.0019002859051599915
+        },
+        "effective_to_requested_mean_ratio": 0.4750714652086168,
+        "wrong_sign_fraction": 0.5214982269503545
+      },
+      "right": {
+        "requested": {
+          "finite_count": 9024,
+          "mean": -0.009999999776482582
+        },
+        "effective": {
+          "finite_count": 9024,
+          "mean": -0.009646713509511679
+        },
+        "target_offset_rad": {
+          "finite_count": 9024,
+          "mean": -0.0038586856347311814
+        },
+        "effective_to_requested_mean_ratio": 0.9646713725132533,
+        "wrong_sign_fraction": 0.03402039007092199
+      }
+    }
+  },
+  "realized_bias_checks": {
+    "TC": {
+      "left_ratio": false,
+      "right_ratio": true,
+      "left_range": false,
+      "left_sign": false,
+      "right_range": true,
+      "right_sign": false,
+      "left_right": false
+    },
+    "CT": {
+      "left_ratio": false,
+      "right_ratio": true,
+      "left_range": false,
+      "left_sign": false,
+      "right_range": true,
+      "right_sign": false,
+      "left_right": false
+    },
+    "pooled": {
+      "left_ratio": false,
+      "right_ratio": true,
+      "left_range": false,
+      "left_sign": false,
+      "right_range": true,
+      "right_sign": false,
+      "left_right": false
+    }
+  },
+  "inactive_bias_checks": {
+    "pass0_inactive_requested": true,
+    "pass1_inactive_requested": true,
+    "pass0_inactive_effective": true,
+    "pass1_inactive_effective": true,
+    "pass0_shadow_standing": true,
+    "pass1_shadow_standing": true
+  },
+  "sequence_effective_mean_max_abs_diff": 2.5044600743509733e-05,
+  "realized_bias_passed": false,
+  "selection_rule": "The one phase-conditioned treatment passes only if replay pairing is exact and TC, CT, direct pooled, interaction, realized-bias, global, and all four pre-step-aligned phase gates pass. No threshold may be changed after either pass runs.",
+  "stance_swing_role_diagnostic_unlocked": false,
+  "training_unlocked": false,
+  "deployment_unlocked": false,
+  "task2_complete": false,
+  "boundary": "This paired zero-optimizer screen tests one deployable timing rule only; it cannot promote the frozen checkpoint or satisfy official MuJoCo gates."
+}

@@ -31,13 +31,27 @@ _phase61_transition = os.environ.get("CWI_PHASE61_TRANSITION_POSTURE", "0") == "
 _phase62_screen = os.environ.get("CWI_PHASE62_ACTION_SENSITIVITY", "0") == "1"
 _phase63_screen = os.environ.get("CWI_PHASE63_HIP_DOSE_SCREEN", "0") == "1"
 _phase64_screen = os.environ.get("CWI_PHASE64_KNEE_DOSE_SCREEN", "0") == "1"
-if sum((_phase60_variant is not None, _phase61_transition, _phase62_screen, _phase63_screen, _phase64_screen)) > 1:
-    raise ValueError("Phase60 through Phase64 modes are mutually exclusive")
-if _phase62_screen or _phase63_screen or _phase64_screen:
+_phase65_pass_raw = os.environ.get("CWI_PHASE65_CROSSOVER_PASS")
+_phase65_screen = _phase65_pass_raw is not None
+_phase65_pass = int(_phase65_pass_raw) if _phase65_screen else None
+if sum(
+    (
+        _phase60_variant is not None,
+        _phase61_transition,
+        _phase62_screen,
+        _phase63_screen,
+        _phase64_screen,
+        _phase65_screen,
+    )
+) > 1:
+    raise ValueError("Phase60 through Phase65 modes are mutually exclusive")
+if _phase62_screen or _phase63_screen or _phase64_screen or _phase65_screen:
     if args.mode != "screen" or args.num_envs != 64 or args.seed != 42 or args.eval_steps != 200:
-        raise ValueError("Phase62/63/64 require screen mode, 64 envs, seed 42, and 200 steps")
+        raise ValueError("Phase62/63/64/65 require screen mode, 64 envs, seed 42, and 200 steps")
+    if _phase65_screen and _phase65_pass not in (0, 1):
+        raise ValueError("Phase65 crossover pass must be 0 or 1")
 elif args.mode == "screen":
-    raise ValueError("screen mode requires a Phase62/63/64 screen flag")
+    raise ValueError("screen mode requires a Phase62/63/64/65 screen flag")
 if _phase61_transition:
     if args.num_envs != 64 or args.seed != 42:
         raise ValueError("Phase61 requires 64 envs and seed 42")
@@ -93,11 +107,17 @@ PEFT_PHASE61 = _phase61_transition
 ACTION_SCREEN_PHASE62 = _phase62_screen
 ACTION_SCREEN_PHASE63 = _phase63_screen
 ACTION_SCREEN_PHASE64 = _phase64_screen
-ACTION_SCREEN = ACTION_SCREEN_PHASE62 or ACTION_SCREEN_PHASE63 or ACTION_SCREEN_PHASE64
+ACTION_SCREEN_PHASE65 = _phase65_screen
+ACTION_SCREEN = (
+    ACTION_SCREEN_PHASE62
+    or ACTION_SCREEN_PHASE63
+    or ACTION_SCREEN_PHASE64
+    or ACTION_SCREEN_PHASE65
+)
 PEFT_POSTURE = PEFT_PHASE60 or PEFT_PHASE61
 POSTURE_METRICS = PEFT_POSTURE or ACTION_SCREEN
 PEFT_PROTECTED = PEFT_PHASE58 or PEFT_PHASE59 or PEFT_POSTURE
-PHASE = 64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56))))))
+PHASE = 65 if ACTION_SCREEN_PHASE65 else (64 if ACTION_SCREEN_PHASE64 else (63 if ACTION_SCREEN_PHASE63 else (62 if ACTION_SCREEN_PHASE62 else (61 if PEFT_PHASE61 else (60 if PEFT_PHASE60 else (59 if PEFT_PHASE59 else (58 if PEFT_PHASE58 else 56)))))))
 TRAIN_STEPS = 512 if PEFT_PHASE61 else 24
 POSTURE_REWARD_WEIGHTS = {
     "A": (0.0, 0.0),
@@ -576,6 +596,70 @@ def phase64_knee_pitch_mirrored_doses(
     return biases, groups
 
 
+def phase65_crossover_partition(
+    device: torch.device, pass_index: int,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    """Return the balanced checkerboard treatment mask for one crossover pass."""
+
+    env_ids = torch.arange(64, device=device)
+    row = torch.div(env_ids, 8, rounding_mode="floor")
+    column = env_ids.remainder(8)
+    sequence_tc = (row + column).remainder(2) == 0
+    sequence_ct = ~sequence_tc
+    treatment = sequence_tc if pass_index == 0 else sequence_ct
+    groups = {
+        "sequence_TC": sequence_tc,
+        "sequence_CT": sequence_ct,
+        "treatment": treatment,
+        "control": ~treatment,
+    }
+    if any(int(mask.sum()) != 32 for mask in groups.values()):
+        raise RuntimeError("Phase65 checkerboard crossover partition is invalid")
+    return treatment, groups
+
+
+def phase65_single_support_knee_bias(
+    policy_observation: torch.Tensor,
+    command: torch.Tensor,
+    treatment_mask: torch.Tensor,
+    *,
+    dose: float = -0.010,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    """Build a deployable bilateral bias from the actor's gait suffix only."""
+
+    if policy_observation.ndim != 2 or policy_observation.shape[1] < 4:
+        raise RuntimeError("Phase65 requires the deployable four-value gait suffix")
+    gait = policy_observation[:, -4:]
+    sine, cosine, desired_left, desired_right = gait.unbind(dim=-1)
+    left = desired_left > 0.5
+    right = desired_right > 0.5
+    moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.10
+    double_support = left & right
+    right_swing_left_support = left & ~right
+    left_swing_right_support = ~left & right
+    valid_contacts = double_support | right_swing_left_support | left_swing_right_support
+    standing = ~moving
+    active_single_support = (
+        treatment_mask
+        & moving
+        & (right_swing_left_support | left_swing_right_support)
+    )
+    bias = torch.zeros((policy_observation.shape[0], 15), device=policy_observation.device)
+    bias[active_single_support, 3] = dose
+    bias[active_single_support, 9] = dose
+    semantics = {
+        "double_support_zero": moving & double_support & (cosine >= 0.0),
+        "right_swing_left_support": moving & right_swing_left_support,
+        "double_support_half": moving & double_support & (cosine < 0.0),
+        "left_swing_right_support": moving & left_swing_right_support,
+        "standing": standing,
+        "invalid_contact_suffix": moving & ~valid_contacts,
+        "active_single_support": active_single_support,
+        "moving": moving,
+    }
+    return bias, semantics
+
+
 def evaluate() -> None:
     env = wrapped = None
     try:
@@ -601,6 +685,11 @@ def evaluate() -> None:
             action_bias, screen_groups = phase63_hip_pitch_doses(env.device)
         elif ACTION_SCREEN_PHASE64:
             action_bias, screen_groups = phase64_knee_pitch_mirrored_doses(env.device)
+        elif ACTION_SCREEN_PHASE65:
+            phase65_treatment_mask, screen_groups = phase65_crossover_partition(
+                env.device, _phase65_pass
+            )
+            action_bias = torch.zeros((64, 15), device=env.device)
         else:
             action_bias, screen_groups = torch.zeros((64, 15), device=env.device), {}
         metric_names = (
@@ -609,7 +698,7 @@ def evaluate() -> None:
         )
         if POSTURE_METRICS:
             metric_names += ("flight_fraction", "single_support_fraction", "double_support_fraction")
-        if ACTION_SCREEN_PHASE64:
+        if ACTION_SCREEN_PHASE64 or ACTION_SCREEN_PHASE65:
             metric_names += (
                 "knee_requested_bias_mean",
                 "knee_effective_bias_mean",
@@ -644,6 +733,48 @@ def evaluate() -> None:
                 "left_swing_right_support",
             )
         } if ACTION_SCREEN_PHASE64 else {}
+        phase65_raw_samples = {
+            name: []
+            for name in (
+                "signed_pitch_rad",
+                "com_support_outside_m",
+                "stance_slip_mps",
+                "swing_sole_clearance_m",
+                "velocity_tracking_sq",
+                "flight_fraction",
+                "knee_requested_bias_left",
+                "knee_requested_bias_right",
+                "knee_effective_bias_left",
+                "knee_effective_bias_right",
+                "knee_effective_target_offset_left_rad",
+                "knee_effective_target_offset_right_rad",
+                "knee_source_clip_left",
+                "knee_source_clip_right",
+                "knee_intervention_clip_left",
+                "knee_intervention_clip_right",
+            )
+        } if ACTION_SCREEN_PHASE65 else {}
+        phase65_pre_step_regions = []
+        phase65_replay_hashes = []
+        phase65_bias_contract = {
+            "inactive_requested_max_abs": 0.0,
+            "inactive_effective_max_abs": 0.0,
+            "shadow_standing_requested_max_abs": 0.0,
+            "invalid_contact_suffix_count": 0,
+            "active_sample_count": 0,
+        } if ACTION_SCREEN_PHASE65 else {}
+        phase65_initial_fingerprints = (
+            {
+                "policy_observation": tensor_hash(obs["policy"]),
+                "critic_observation": tensor_hash(obs["critic"]),
+                "root_state": tensor_hash(robot.data.root_state_w),
+                "joint_position": tensor_hash(robot.data.joint_pos),
+                "joint_velocity": tensor_hash(robot.data.joint_vel),
+                "command": tensor_hash(env.command_manager.get_command("base_velocity")),
+            }
+            if ACTION_SCREEN_PHASE65
+            else {}
+        )
         if PEFT_PHASE61:
             samples.update(
                 terminal_base_speed_mps=[],
@@ -659,6 +790,47 @@ def evaluate() -> None:
         knee_max = robot.data.joint_pos[:, knee_ids].clone()
         with torch.inference_mode():
             for step in range(args.eval_steps):
+                phase65_pre_policy = obs["policy"] if ACTION_SCREEN_PHASE65 else None
+                if ACTION_SCREEN_PHASE65:
+                    pre_step_command = env.command_manager.get_command("base_velocity")
+                    action_bias, phase65_semantics = phase65_single_support_knee_bias(
+                        phase65_pre_policy,
+                        pre_step_command,
+                        phase65_treatment_mask,
+                    )
+                    shadow_standing_bias, _ = phase65_single_support_knee_bias(
+                        phase65_pre_policy,
+                        torch.zeros_like(pre_step_command),
+                        phase65_treatment_mask,
+                    )
+                    phase65_bias_contract["shadow_standing_requested_max_abs"] = max(
+                        phase65_bias_contract["shadow_standing_requested_max_abs"],
+                        float(shadow_standing_bias.abs().max()),
+                    )
+                    phase65_bias_contract["invalid_contact_suffix_count"] += int(
+                        phase65_semantics["invalid_contact_suffix"].sum()
+                    )
+                    active_phase65 = phase65_semantics["active_single_support"]
+                    phase65_bias_contract["active_sample_count"] += int(active_phase65.sum())
+                    inactive_phase65 = ~active_phase65
+                    phase65_bias_contract["inactive_requested_max_abs"] = max(
+                        phase65_bias_contract["inactive_requested_max_abs"],
+                        float(action_bias[inactive_phase65].abs().max()),
+                    )
+                    region_index = torch.full(
+                        (64,), -1, dtype=torch.int64, device=env.device
+                    )
+                    for index, name in enumerate(
+                        (
+                            "double_support_zero",
+                            "right_swing_left_support",
+                            "double_support_half",
+                            "left_swing_right_support",
+                            "standing",
+                        )
+                    ):
+                        region_index[phase65_semantics[name]] = index
+                    phase65_pre_step_regions.append(region_index.detach().cpu())
                 raw_action = model.act_inference(obs)
                 action = raw_action
                 if ACTION_SCREEN:
@@ -686,7 +858,7 @@ def evaluate() -> None:
                     "action_delta_abs": (action - prev_action).abs().mean(-1),
                     "reward": reward.reshape(-1),
                 }
-                if ACTION_SCREEN_PHASE64:
+                if ACTION_SCREEN_PHASE64 or ACTION_SCREEN_PHASE65:
                     knee_action_ids = [3, 9]
                     base_clipped_action = torch.clamp(raw_action, -1.0, 1.0)
                     requested_knee_bias = action_bias[:, knee_action_ids]
@@ -724,6 +896,16 @@ def evaluate() -> None:
                             intervention_preclip.abs() > 1.0
                         ).any(dim=-1).to(torch.float32),
                     )
+                    if ACTION_SCREEN_PHASE65:
+                        phase65_bias_contract["inactive_effective_max_abs"] = max(
+                            phase65_bias_contract["inactive_effective_max_abs"],
+                            float(effective_knee_bias[inactive_phase65].abs().max()),
+                        )
+                        phase65_effective_bias = effective_knee_bias
+                        phase65_requested_bias = requested_knee_bias
+                        phase65_effective_target_offset = effective_knee_bias * knee_scale
+                        phase65_source_clip = source_preclip.abs() > 1.0
+                        phase65_intervention_clip = intervention_preclip.abs() > 1.0
                 if POSTURE_METRICS:
                     pitch = signed_root_pitch_rad(robot)
                     outside, contact_count = actual_support_com_outside_distance(
@@ -750,6 +932,42 @@ def evaluate() -> None:
                         sole_height,
                         torch.full_like(sole_height, torch.nan),
                     ).nanmean(dim=-1)
+                    if ACTION_SCREEN_PHASE65:
+                        phase65_sample_valid = alive.clone()
+                        phase65_step_values = {
+                            "signed_pitch_rad": pitch,
+                            "com_support_outside_m": outside,
+                            "stance_slip_mps": stance_slip,
+                            "swing_sole_clearance_m": swing_clearance,
+                            "velocity_tracking_sq": velocity_error.square().sum(-1),
+                            "flight_fraction": (contact_count == 0).to(torch.float32),
+                            "knee_requested_bias_left": phase65_requested_bias[:, 0],
+                            "knee_requested_bias_right": phase65_requested_bias[:, 1],
+                            "knee_effective_bias_left": phase65_effective_bias[:, 0],
+                            "knee_effective_bias_right": phase65_effective_bias[:, 1],
+                            "knee_effective_target_offset_left_rad": (
+                                phase65_effective_target_offset[:, 0]
+                            ),
+                            "knee_effective_target_offset_right_rad": (
+                                phase65_effective_target_offset[:, 1]
+                            ),
+                            "knee_source_clip_left": phase65_source_clip[:, 0].to(torch.float32),
+                            "knee_source_clip_right": phase65_source_clip[:, 1].to(torch.float32),
+                            "knee_intervention_clip_left": (
+                                phase65_intervention_clip[:, 0].to(torch.float32)
+                            ),
+                            "knee_intervention_clip_right": (
+                                phase65_intervention_clip[:, 1].to(torch.float32)
+                            ),
+                        }
+                        for name, value in phase65_step_values.items():
+                            phase65_raw_samples[name].append(
+                                torch.where(
+                                    phase65_sample_valid,
+                                    value,
+                                    torch.full_like(value, torch.nan),
+                                ).detach().cpu()
+                            )
                     moving = torch.linalg.vector_norm(command[:, :2], dim=-1) > 0.10
                     valid_bool = alive.clone()
                     if ACTION_SCREEN_PHASE64:
@@ -832,6 +1050,18 @@ def evaluate() -> None:
                     knee_max = torch.where(
                         alive.unsqueeze(-1), torch.maximum(knee_max, knee), knee_max
                     )
+                if ACTION_SCREEN_PHASE65 and step < 3:
+                    phase65_replay_hashes.append(
+                        {
+                            "step": step,
+                            "pre_policy_observation": tensor_hash(phase65_pre_policy),
+                            "raw_actor_action": tensor_hash(raw_action),
+                            "applied_outer_action": tensor_hash(action),
+                            "post_root_state": tensor_hash(robot.data.root_state_w),
+                            "post_joint_position": tensor_hash(robot.data.joint_pos),
+                            "post_joint_velocity": tensor_hash(robot.data.joint_vel),
+                        }
+                    )
                 for name, value in values.items():
                     sums[name] += value * valid
                 counts += valid
@@ -871,9 +1101,11 @@ def evaluate() -> None:
                     "hip_pitch_dose"
                     if ACTION_SCREEN_PHASE63
                     else (
-                        "knee_pitch_mirrored_dose"
-                        if ACTION_SCREEN_PHASE64
+                        "single_support_knee_crossover"
+                        if ACTION_SCREEN_PHASE65
                         else ("joint_transition" if PEFT_PHASE61 else POSTURE_VARIANT)
+                        if not ACTION_SCREEN_PHASE64
+                        else "knee_pitch_mirrored_dose"
                     )
                 )
             ),
@@ -947,6 +1179,79 @@ def evaluate() -> None:
                     "left_swing_right_support": "[0.575,0.925)",
                 },
                 "metrics_by_group": aggregate_phase64_semantics(screen_groups, phase64_samples),
+            }
+        if ACTION_SCREEN_PHASE65:
+            region_names = (
+                "double_support_zero",
+                "right_swing_left_support",
+                "double_support_half",
+                "left_swing_right_support",
+                "standing",
+            )
+            region_tensor = torch.stack(phase65_pre_step_regions, dim=0)
+            knee_excursion_per_env = knee_max - knee_min
+            phase65_per_env_records = []
+            for env_id in range(64):
+                count = max(float(counts[env_id]), 1.0)
+                phase65_per_env_records.append(
+                    {
+                        "env_id": env_id,
+                        "row": env_id // 8,
+                        "column": env_id % 8,
+                        "sequence": "TC" if bool(screen_groups["sequence_TC"][env_id]) else "CT",
+                        "received_treatment": bool(phase65_treatment_mask[env_id]),
+                        "survival_s": float(survival[env_id]),
+                        "terminated": bool(terminal[env_id]),
+                        "lateral_abs_mean_m": float(sums["lateral_abs"][env_id] / count),
+                        "yaw_abs_mean_rad": float(sums["yaw_abs"][env_id] / count),
+                        "velocity_tracking_rmse_mps": math.sqrt(
+                            max(0.0, float(sums["velocity_tracking_sq"][env_id] / count))
+                        ),
+                        "action_delta_abs_mean": float(
+                            sums["action_delta_abs"][env_id] / count
+                        ),
+                        "root_height_min_m": float(root_min[env_id]),
+                        "root_tilt_max_rad": float(tilt_max[env_id]),
+                        "knee_left_excursion_rad": float(knee_excursion_per_env[env_id, 0]),
+                        "knee_right_excursion_rad": float(knee_excursion_per_env[env_id, 1]),
+                        "knee_left_right_excursion_abs_diff_rad": float(
+                            abs(
+                                knee_excursion_per_env[env_id, 0]
+                                - knee_excursion_per_env[env_id, 1]
+                            )
+                        ),
+                    }
+                )
+            report["single_support_knee_crossover"] = {
+                "pass_index": _phase65_pass,
+                "runner_sha256": sha256(Path(__file__)),
+                "normalized_action_dose": -0.010,
+                "action_dimensions": [3, 9],
+                "configured_action_scale_rad": [
+                    float(term._scale[0, 3]),
+                    float(term._scale[0, 9]),
+                ],
+                "allocation": "8x8_checkerboard_sequence_equals_row_plus_column_modulo_2",
+                "treatment_sequence": "TC" if _phase65_pass == 0 else "CT",
+                "partition": {name: int(mask.sum()) for name, mask in screen_groups.items()},
+                "phase_source": "pre-step deployable actor observation suffix and command",
+                "measurement_alignment": "post-step physical outcome labeled by the pre-step semantic region that produced its action",
+                "regions": list(region_names),
+                "pre_step_region_index": region_tensor.tolist(),
+                "pre_step_region_counts_per_env": {
+                    name: (region_tensor == index).sum(dim=0).tolist()
+                    for index, name in enumerate(region_names)
+                },
+                "initial_fingerprints": phase65_initial_fingerprints,
+                "first_three_ds0_replay_hashes": phase65_replay_hashes,
+                "bias_contract": phase65_bias_contract,
+                "per_env_records": phase65_per_env_records,
+                "raw_samples": {
+                    name: torch.stack(values, dim=0).tolist()
+                    for name, values in phase65_raw_samples.items()
+                },
+                "actuator_domain": "ideal only",
+                "checkpoint_modified": False,
             }
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2) + "\n")
