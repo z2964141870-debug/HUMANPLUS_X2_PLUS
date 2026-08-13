@@ -1,0 +1,62 @@
+{
+  "schema": "x2_gpu_deadline_ledger_phase76_v1",
+  "label": "x2_brake_handoff_panel_v5",
+  "command": [
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_brake_handoff_panel_v5.py",
+    "--prereg",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_prereg.json",
+    "--source",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--stationary",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/../x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+    "--report",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_screen.json",
+    "--failure",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_failure.json",
+    "--num-envs",
+    "256",
+    "--seed",
+    "785001",
+    "--steps",
+    "820",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "log_path": "/tmp/x2_brake_handoff_panel_v5.log",
+  "child_pid": 599772,
+  "child_pgid": 599772,
+  "timeout_seconds": 1200.0,
+  "term_grace_seconds": 5.0,
+  "timed_out": false,
+  "term_sent": false,
+  "kill_sent": false,
+  "forced_cleanup": false,
+  "raw_returncode": 0,
+  "autonomous_exit": true,
+  "exit_code": 0,
+  "start_wall_ns": 1786595802064335214,
+  "elapsed_s": 58.86525490999338,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 126086643712,
+    "free_bytes": 350710595584
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 126086713344,
+    "free_bytes": 350710525952
+  },
+  "disk_used_delta_bytes": 69632,
+  "log_bytes": 3907,
+  "log_sha256": "120569cfedf12919475511d6f94bdbed880b1b9a579f3abd5febfc8031b7df38",
+  "gpu_sample_count": 108,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 905.0,
+    "utilization_peak_percent": 34.0,
+    "power_peak_w": 121.08
+  }
+}

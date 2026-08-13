@@ -1,0 +1,25 @@
+{
+  "schema": "x2_brake_handoff_panel_v5_attempt0_failure_v1",
+  "recorded_at": "2026-08-13T12:39:00+08:00",
+  "decision": "FAIL_PRE_PHYSICS_IMPORT_STOP",
+  "scientific_result": null,
+  "physics_rollout_started": false,
+  "screen_written": false,
+  "failure_file_written": false,
+  "error": "ModuleNotFoundError: No module named 'gear_sonic'",
+  "cause": "The v5 shell omitted the frozen sonic_x2_sandbox and hooks directories from PYTHONPATH. The exception occurred in post-AppLauncher imports before environment construction.",
+  "repair_boundary": "A separate v5b preregistration may change only environment exports and output namespace. Runner, strategies, seeds, thresholds, and scientific design must remain unchanged.",
+  "provenance": {
+    "prereg": {"path": "reports/retarget/x2_brake_handoff_panel_v5_prereg.json", "sha256": "ba5fcb0b7918321ae06a92e938983e861483aacd1ff9039a0ad5e78ea37631c8"},
+    "resource": {"path": "reports/retarget/x2_brake_handoff_panel_v5_resource.json", "sha256": "57b31e240d7d2e1169438cc1945821e433e7438890c1269bb29ee015da86957d", "raw_returncode": 0, "elapsed_s": 58.86525490999338},
+    "log": {"path": "/tmp/x2_brake_handoff_panel_v5.log", "sha256": "120569cfedf12919475511d6f94bdbed880b1b9a579f3abd5febfc8031b7df38"},
+    "runner": {"path": "scripts/run_x2_brake_handoff_panel_v5.py", "sha256": "def811bba214008dedd228b940310276eebf063dcd1d8da4b624cc8262028c7f"},
+    "shell": {"path": "scripts/run_x2_brake_handoff_panel_v5.sh", "sha256": "6be799d7bf5b5d3b2b31e5335e259e8906592424fd8cbe4be1aeadfcd7286e05"}
+  },
+  "optimizer_steps": 0,
+  "backward_calls": 0,
+  "checkpoint_writes": 0,
+  "training_unlocked": false,
+  "deployment_unlocked": false,
+  "baidu_access_or_upload": false
+}
