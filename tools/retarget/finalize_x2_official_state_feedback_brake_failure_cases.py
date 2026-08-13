@@ -69,25 +69,27 @@ def main() -> None:
     for path in (args.prereg, *args.case, *args.resource):
         verify_sidecar(path)
 
-    prereg = json.loads(args.prereg.read_text(encoding="utf-8"))
-    if prereg.get("schema") != "x2_official_state_feedback_brake_prereg_v1":
+    signed_prereg = json.loads(args.prereg.read_text(encoding="utf-8"))
+    if signed_prereg.get("schema") == "x2_official_state_feedback_brake_refinalize_v1":
+        inherited = signed_prereg["inherits"]
+        inherited_path = Path(inherited["path"])
+        verify_sidecar(inherited_path)
+        if sha256(inherited_path) != inherited["sha256"]:
+            raise RuntimeError("inherited preregistration drift")
+        prereg = json.loads(inherited_path.read_text(encoding="utf-8"))
+    elif signed_prereg.get("schema") == "x2_official_state_feedback_brake_prereg_v1":
+        prereg = signed_prereg
+    else:
         raise RuntimeError("unexpected preregistration schema")
+    if prereg.get("schema") != "x2_official_state_feedback_brake_prereg_v1":
+        raise RuntimeError("unexpected inherited preregistration schema")
     for section in ("immutable_code", "immutable_inputs", "immutable_evidence"):
-        for name, record in prereg[section].items():
+        for name, record in signed_prereg[section].items():
             path = Path(record["path"])
             if not path.is_file() or sha256(path) != record["sha256"]:
                 raise RuntimeError(f"immutable drift: {section}.{name}")
 
     contract = prereg["controller_contract"]
-    command_tokens = {
-        f"STOP_CONTROLLER={contract['stop_controller']}",
-        f"STOP_BRAKE_GAIN={contract['gain']}",
-        f"STOP_BRAKE_LIMIT={contract['limit_mps']}",
-        f"STOP_BRAKE_TEMPLATE_SPEED={contract['template_speed_mps']}",
-        f"STOP_BRAKE_TEMPLATE_FLOOR={contract['template_floor']}",
-        f"EVENT_HOLD_MIN_SECONDS={contract['hold_min_seconds']}",
-        f"EVENT_HOLD_SPEED={contract['hold_speed_mps']}",
-    }
     rows = []
     for index, (case_path, resource_path) in enumerate(zip(args.case, args.resource)):
         expected = prereg["cases"][index]
@@ -99,6 +101,32 @@ def main() -> None:
         summary = payload["summary"]
         resource = json.loads(resource_path.read_text(encoding="utf-8"))
         command = set(resource.get("command", []))
+        command_env = {}
+        for token in command:
+            if "=" in token:
+                name, value = token.split("=", 1)
+                command_env[name] = value
+        resource_parameter_checks = {
+            "controller": command_env.get("STOP_CONTROLLER") == contract["stop_controller"],
+            "gain": close(float(command_env.get("STOP_BRAKE_GAIN", "nan")), contract["gain"]),
+            "limit": close(float(command_env.get("STOP_BRAKE_LIMIT", "nan")), contract["limit_mps"]),
+            "template_speed": close(
+                float(command_env.get("STOP_BRAKE_TEMPLATE_SPEED", "nan")),
+                contract["template_speed_mps"],
+            ),
+            "template_floor": close(
+                float(command_env.get("STOP_BRAKE_TEMPLATE_FLOOR", "nan")),
+                contract["template_floor"],
+            ),
+            "hold_min": close(
+                float(command_env.get("EVENT_HOLD_MIN_SECONDS", "nan")),
+                contract["hold_min_seconds"],
+            ),
+            "hold_speed": close(
+                float(command_env.get("EVENT_HOLD_SPEED", "nan")),
+                contract["hold_speed_mps"],
+            ),
+        }
         controller_checks = {
             "controller": summary.get("stop_controller") == contract["stop_controller"],
             "gain": close(summary.get("stop_brake_gain"), contract["gain"]),
@@ -109,7 +137,7 @@ def main() -> None:
             "template_floor": close(
                 summary.get("stop_brake_template_floor"), contract["template_floor"]
             ),
-            "resource_tokens": command_tokens.issubset(command),
+            "resource_parameters": all(resource_parameter_checks.values()),
             "no_emergency_latch": summary.get("stop_emergency_tilt_rad") is None,
         }
         if not all(controller_checks.values()):
@@ -147,6 +175,7 @@ def main() -> None:
             "resource_sha256": sha256(resource_path),
             "resource_checks": resource_checks,
             "controller_checks": controller_checks,
+            "resource_parameter_checks": resource_parameter_checks,
             "latch_observed": summary.get("stop_hold_latch_s") is not None,
             "stop_hold_latch_s": summary.get("stop_hold_latch_s"),
             "startup_gate_pass": bool(summary["startup_gate_pass"]),

@@ -1,0 +1,71 @@
+{
+  "schema": "x2_official_state_feedback_brake_refinalize_v1",
+  "created_at": "2026-08-13T14:27:00+08:00",
+  "objective": "CPU-only result-blind repair of numeric environment-token parsing after both preregistered physics cases completed; no physics rerun and no scientific contract change.",
+  "inherits": {
+    "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_state_feedback_brake_prereg_v1.json",
+    "sha256": "85ae0e9de918fa9264d95a6796702c8bd2c207c386c5a020022b6a91eacd1c55"
+  },
+  "repair_boundary": {
+    "physics_launches": 0,
+    "raw_results_reused_exactly": true,
+    "resources_reused_exactly": true,
+    "scientific_thresholds_changed": false,
+    "controller_contract_changed": false,
+    "cases_changed": false,
+    "decision_tree_changed": false,
+    "only_change": "parse resource KEY=value tokens and compare numeric values rather than their textual formatting",
+    "attempt0_failure_sha256": "72c5d3c1c340890b4deb1bf553a097933f46b794d4a5b904b524ba203fec7ef7",
+    "optimizer_steps": 0,
+    "backward_calls": 0,
+    "checkpoint_writes": 0,
+    "baidu_access_or_upload": false,
+    "github_remote_access_or_push": false
+  },
+  "immutable_code": {
+    "finalizer": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/finalize_x2_official_state_feedback_brake_failure_cases.py",
+      "sha256": "81288f52907fe232aa934c866b46f19c08fff1d89b821caa48435f8a15ec473e"
+    },
+    "finalizer_test": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tests/test_finalize_x2_official_state_feedback_brake_failure_cases.py",
+      "sha256": "bba32ef7f6a59e3419a2750f75c7eae7e57dcb563ae18d14c9054a504272f0d6"
+    }
+  },
+  "immutable_inputs": {
+    "inherited_prereg": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_state_feedback_brake_prereg_v1.json",
+      "sha256": "85ae0e9de918fa9264d95a6796702c8bd2c207c386c5a020022b6a91eacd1c55"
+    }
+  },
+  "immutable_evidence": {
+    "attempt0_failure": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_state_feedback_brake_attempt0_failure.json",
+      "sha256": "72c5d3c1c340890b4deb1bf553a097933f46b794d4a5b904b524ba203fec7ef7"
+    },
+    "straight_raw": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/state_feedback_brake_then_zero_feasibility_20260813/x2_state_feedback_brake_low_straight_r4.json",
+      "sha256": "8e540ada23f91f4d903f6fdf00444a27dd774e81f6173cbc9258b4a50739b6f6"
+    },
+    "turn_raw": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/state_feedback_brake_then_zero_feasibility_20260813/x2_state_feedback_brake_low_turn_right_r3.json",
+      "sha256": "0f945ba121acf35f9609589b2628d2fb3158b99999447426b446dc6e4fa1e8ee"
+    },
+    "straight_resource": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_state_feedback_brake_low_straight_r4_resource.json",
+      "sha256": "8db9d3c256f722f77082a4109d6519f2c8104a85e604c053045b98296c56bf6c"
+    },
+    "turn_resource": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_state_feedback_brake_low_turn_right_r3_resource.json",
+      "sha256": "209c139c78580cf5cf7bb108b5c48deb7b213662e5cefd2f69a123e8285c719c"
+    },
+    "straight_log": {
+      "path": "/tmp/x2_state_feedback_brake_low_straight_r4.log",
+      "sha256": "a803424c41c66bf06d9c665f6bc5f2c18300d96b3aed5f5be15e451cec78097f"
+    },
+    "turn_log": {
+      "path": "/tmp/x2_state_feedback_brake_low_turn_right_r3.log",
+      "sha256": "7c54752e7ba43de76032444af154ee48539db073c07b62901d34e3eee9370a77"
+    }
+  }
+}
