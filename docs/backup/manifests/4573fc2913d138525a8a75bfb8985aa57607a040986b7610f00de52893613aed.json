@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "src/cwi_x2/phase68_residual_ppo.py",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase69_posthoc/phase68_residual_ppo.py",
+  "local_size": 11268,
+  "remote_size": null,
+  "local_sha256": "c67dd5f8bb8387ef9b1ec616cf0d885846944f19ed3e16155b4b607363f85157",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-12T19:44:41+08:00"
+}

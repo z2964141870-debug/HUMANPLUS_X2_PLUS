@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "EXPERIMENTS.md",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase69_posthoc/EXPERIMENTS.md",
+  "local_size": 27963,
+  "remote_size": null,
+  "local_sha256": "6fe3dd61c8390cce17ff766f939c8727fa98382144c59a8a3183fddac606e660",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-12T19:44:50+08:00"
+}

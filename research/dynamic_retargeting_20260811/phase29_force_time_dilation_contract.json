@@ -1,0 +1,13 @@
+{
+  "stage": "X2 Phase29 centroidal-force time-dilation A/B",
+  "status": "PREREGISTERED_NOT_RUN",
+  "control": "Phase28 frozen Phase27 path at dt=0.02s",
+  "candidate": "identical path/contact/model with dt=0.04s (2x time dilation)",
+  "only_variable": "time scale 2.0; geometry and number of samples unchanged for the model-feasibility oracle",
+  "rationale": "finite-difference COM acceleration and Hdot scale approximately with inverse time squared; one fixed conservative test, no scale scan",
+  "pass": "all centred-derivative frames jointly geometry and force feasible",
+  "stop": "no second time scale, resampling, contact-band, friction, path, or solver change",
+  "physics_authorized": false,
+  "training_authorized": false,
+  "resource": {"single_process": true, "cpu_threads": 1, "gpu": false}
+}

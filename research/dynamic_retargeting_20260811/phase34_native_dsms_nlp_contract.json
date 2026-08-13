@@ -1,0 +1,11 @@
+{
+  "stage": "Dynamic Retargeting Phase34",
+  "status": "PREREGISTERED_NLP_BUILD_PREFLIGHT_ONLY",
+  "hypothesis": "Use the safe Phase33b compressed-PD rollout as dynamically consistent shooting nodes while retaining the exact Phase34 closed trajectory as the soft reference.",
+  "fixed": {"horizon_s": 0.34, "nodes": 17, "substeps": 20, "control_knots": 18, "spline": "linear", "cpu_threads": 1, "gpu": false},
+  "cost": {"base_position": 40.0, "base_orientation": 10.0, "base_linear_velocity": 1.0, "base_angular_velocity": 1.0, "joint_position": 0.1, "joint_velocity": 0.01, "torque": 1e-7, "control_rate": 0.01},
+  "swing_objective": {"side": "right", "stance_side": "left", "lift_start_s": 0.08, "plateau_start_s": 0.14, "plateau_end_s": 0.26, "touchdown_s": 0.34, "clearance_m": 0.012},
+  "hard_gates": {"constraints_absmax": 1e-8, "initial_state_absmax": 1e-12, "warmstart_root_z_min_m": 0.55, "warmstart_root_tilt_max_rad": 0.3, "objective_finite": true, "gradient_finite": true},
+  "ipopt_authorized": false,
+  "training_authorized": false
+}

@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/backups/migration_20260810/x2_forward4_dynamics_feasibility_seed_v1.tar.gz",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-10/dynamics_feasibility/x2_forward4_dynamics_feasibility_seed_v1.tar.gz",
+  "local_size": 336075248,
+  "remote_size": null,
+  "local_sha256": "660f892728d64c65cee374e898ede7cff15e89fa691b72f6d886aa52cb510033",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-10T17:02:35+08:00"
+}

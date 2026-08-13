@@ -1,0 +1,50 @@
+{
+  "stage": "Dynamic Retargeting Phase35",
+  "scope": "one native 0.34s DSMS solve; 1 CPU thread/50 iterations/no retry/no GPU/training",
+  "contract_sha256": "efc98140c58cf1ccef4ca5351267252c76a3d3e5cfe75dc90b4eb0ab32b8181d",
+  "phase34_result_sha256": "088bc67cd1186bb9340fcc2958009e6aeaa32da5e25027a8d13333ca07727858",
+  "metrics": {
+    "solver_status": -1,
+    "solver_status_msg": "Maximum number of iterations exceeded (can be specified by an option).",
+    "wall_s": 254.31307480199757,
+    "objective": 10.089899769348042,
+    "max_defect": 2.3314683517128287e-14,
+    "root_z_min_m": 0.6541031956077854,
+    "root_tilt_max_rad": 0.2837383036322915,
+    "right_swing_off_s": 0.0,
+    "right_clearance_m": 0.0,
+    "left_contact_fraction": 0.9264705882352942,
+    "left_foot_speed_p95_mps": 0.35436195324741726,
+    "terminal_right_contact_40ms": true,
+    "joint_semantic_rms_rad": 0.03641148846318318
+  },
+  "checks": {
+    "solver_status": false,
+    "defect": true,
+    "root_z": true,
+    "root_tilt": true,
+    "swing_off": false,
+    "clearance": false,
+    "left_contact": false,
+    "left_speed": false,
+    "terminal": true,
+    "semantic": true
+  },
+  "artifact": {
+    "path": "/home/humanplus/projects/ZHY/CWI_CrossEmbodiment_Sim/research/dynamic_retargeting_20260811/phase35_native_dsms_candidate.npz",
+    "sha256": "c56da4193c69b832c36de6fa6c0e947ad9e076148c52dc33617652a0bde93403"
+  },
+  "execution": {
+    "solve_count": 1,
+    "retry_count": 0,
+    "max_iterations": 50,
+    "cpu_threads": 1,
+    "gpu": false
+  },
+  "decision": {
+    "dynamic_teacher_qualified": false,
+    "longer_solve_authorized": false,
+    "training_unlocked": false,
+    "result": "NATIVE_SHORT_DSMS_REJECTED_STOP"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "stage": "X2 Phase24 continuous contact-manifold path",
+  "status": "PREREGISTERED_NOT_RUN",
+  "inputs": ["Phase22 hard-feasible keyframes", "Phase23 fixed 50 Hz timing"],
+  "variables_per_intermediate_frame": ["root xyz/local rotation correction", "lower12+waist3 correction"],
+  "support_order_per_segment": [
+    "DS", "left support/right lift", "left support/right touchdown",
+    "right support/left lift", "right support/left touchdown", "DS"
+  ],
+  "hard_constraints": [
+    "stance selected sole sphere signed distance=0.25mm",
+    "stance foot centroid XY fixed to Phase22 native anchor",
+    "COM xy equals active support-foot centroid center",
+    "all active12 sole spheres nonpenetrating",
+    "swing all-sole clearance follows a fixed minimum-jerk 0.25mm<->12mm profile",
+    "official lower15 limits"
+  ],
+  "objective": "minimum correction from the Phase23 interpolated frame",
+  "solver": {"backend": "SLSQP analytic MuJoCo Jacobians", "max_iterations_per_frame": 80, "ftol": 1e-09, "single_configuration": true},
+  "correction_bounds": {"root_xy_m": 0.08, "root_z_m": 0.05, "root_rotation_rad": 0.2, "lower_increment_rad": 0.3},
+  "continuity_gates": {"joint_step_p95_rad": 0.1, "joint_step_max_rad": 0.15, "root_horizontal_acceleration_max_mps2": 4.0},
+  "stop": "first infeasible intermediate frame or final continuity gate failure; no alternate contact sphere, timing, bounds, threshold, initialization, or solver configuration",
+  "physics_authorized": false,
+  "training_authorized": false,
+  "resource": {"single_process": true, "cpu_threads": 1, "gpu": false}
+}

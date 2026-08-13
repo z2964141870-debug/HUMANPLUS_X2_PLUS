@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "tests/test_phase69_posthoc_calibration.py",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase69_posthoc/test_phase69_posthoc_calibration.py",
+  "local_size": 3224,
+  "remote_size": null,
+  "local_sha256": "41b5204eda0d88ee0f38d146b058aac3291ac0aeb3aa8ccf0fc293f4a7c6d8bb",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-12T19:44:35+08:00"
+}

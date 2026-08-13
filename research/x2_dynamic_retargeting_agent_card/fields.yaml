@@ -1,0 +1,25 @@
+fields:
+  - name: upstream_status
+    description: Paper, repository, commit, released code and checkpoint status.
+  - name: license_status
+    description: License and redistribution constraints for code and solvers.
+  - name: method_fidelity
+    description: Official reproduction, architecture-inspired implementation, or diagnostic.
+  - name: input_contract
+    description: Source reference or human keypoints, coordinate system, rate and hashes.
+  - name: dynamics_contract
+    description: MuJoCo model, state, control, contact, constraints and integration rate.
+  - name: compute_budget
+    description: Candidates, iterations, physics steps, CPU/GPU memory and wall time.
+  - name: reference_quality
+    description: Penetration, slip, contact timing, flight, limits, self-collision and semantics.
+  - name: free_root_result
+    description: Independent replay duration, termination and realized contact.
+  - name: training_result
+    description: Faithful Any2Any update contract and target/Gold regression.
+  - name: four_domain_result
+    description: Ideal, filter, delay and delay-noise pass counts and progress error.
+  - name: decision
+    description: PASS, REJECT, BLOCKED or NOT_PROMOTABLE with exact failed gates.
+  - name: evidence_boundary
+    description: Claims that are and are not supported by the experiment.

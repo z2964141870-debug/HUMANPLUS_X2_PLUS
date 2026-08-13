@@ -1,0 +1,11 @@
+{
+  "stage": "X2 Phase30 quiescent-native centered load-transfer skeleton",
+  "status": "PREREGISTERED_NOT_RUN",
+  "base": "Phase26 centered load-transfer implementation and all numerical contracts",
+  "only_variable": "Phase41 pose-nearest native boundary -> Phase42 minimum-qvel coherent native boundary",
+  "unchanged": ["support sequence", "COM targets relative to selected boundary", "contact constraints", "clearance", "bounds", "solver", "truth boundary"],
+  "stop": "first failed keyframe; no alternate boundary, sequence, bounds, solver, or tolerance",
+  "physics_authorized": false,
+  "training_authorized": false,
+  "resource": {"single_process": true, "cpu_threads": 1, "gpu": false}
+}

@@ -1,0 +1,3601 @@
+{
+  "stage": "Phase29 centroidal-force time-dilation A/B",
+  "intervention": {
+    "time_scale": 2.0,
+    "dt_s": 0.04,
+    "only_variable": "time"
+  },
+  "control": {
+    "dt_s": 0.02,
+    "summary": {
+      "geometry_qualified_frames": 92,
+      "force_lp_feasible_frames": 22,
+      "jointly_feasible_frames": 22,
+      "com_acceleration_norm_p95_max_mps2": [
+        3.0267784266401536,
+        3.191085747067605
+      ],
+      "centroidal_hdot_norm_p95_max_nms": [
+        23.87917803943355,
+        25.498344967704735
+      ]
+    },
+    "evaluated_frames": 98
+  },
+  "candidate": {
+    "stage": "Phase28 left-half centroidal/contact-force feasibility",
+    "execution": {
+      "evaluated_frames": 98,
+      "mj_step_calls": 0,
+      "gpu": false
+    },
+    "model": {
+      "mass_kg": 43.474796659272606,
+      "friction_mu": 1.0,
+      "contact_band_m": [
+        -1e-05,
+        0.0005
+      ]
+    },
+    "summary": {
+      "geometry_qualified_frames": 92,
+      "force_lp_feasible_frames": 33,
+      "jointly_feasible_frames": 33,
+      "com_acceleration_norm_p95_max_mps2": [
+        0.7566946066600384,
+        0.7977714367669012
+      ],
+      "centroidal_hdot_norm_p95_max_nms": [
+        5.969794509858388,
+        6.374586241926184
+      ]
+    },
+    "frames": [
+      {
+        "frame": 1,
+        "time_s": 0.04,
+        "geometry": {
+          "left": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.000305886856932956
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.00030584804187989544
+          }
+        },
+        "geometry_qualified": false,
+        "candidate_count": 0,
+        "force_feasible": false,
+        "solver_status": -1,
+        "target_force_n": [],
+        "target_moment_nm": [],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 2,
+        "time_s": 0.08,
+        "geometry": {
+          "left": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.000305886856932956
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.00030584804187989544
+          }
+        },
+        "geometry_qualified": false,
+        "candidate_count": 0,
+        "force_feasible": false,
+        "solver_status": -1,
+        "target_force_n": [],
+        "target_moment_nm": [],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 3,
+        "time_s": 0.12,
+        "geometry": {
+          "left": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.000305886856932956
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.00030584804187989544
+          }
+        },
+        "geometry_qualified": false,
+        "candidate_count": 0,
+        "force_feasible": false,
+        "solver_status": -1,
+        "target_force_n": [],
+        "target_moment_nm": [],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 4,
+        "time_s": 0.16,
+        "geometry": {
+          "left": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.000305886856932956
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.00030584804187989544
+          }
+        },
+        "geometry_qualified": false,
+        "candidate_count": 0,
+        "force_feasible": false,
+        "solver_status": -1,
+        "target_force_n": [],
+        "target_moment_nm": [],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 5,
+        "time_s": 0.2,
+        "geometry": {
+          "left": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.000305886856932956
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.00030584804187989544
+          }
+        },
+        "geometry_qualified": false,
+        "candidate_count": 0,
+        "force_feasible": false,
+        "solver_status": -1,
+        "target_force_n": [],
+        "target_moment_nm": [],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 6,
+        "time_s": 0.24,
+        "geometry": {
+          "left": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.000305886856932956
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": -0.00030584804187989544
+          }
+        },
+        "geometry_qualified": false,
+        "candidate_count": 0,
+        "force_feasible": false,
+        "solver_status": -1,
+        "target_force_n": [],
+        "target_moment_nm": [],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 7,
+        "time_s": 0.28,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.0002487255123052772
+          },
+          "right": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999405439944
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 20,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          1.882485833873008,
+          12.349310873696476,
+          412.47783845398016
+        ],
+        "target_moment_nm": [
+          -2.260148157483907,
+          0.2650121653155036,
+          -0.09439155401823385
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 8,
+        "time_s": 0.32,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.0002476531301811207
+          },
+          "right": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              5,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.000249999999354507
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 17,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          3.327872726216241,
+          21.83120527323015,
+          428.20738485708614
+        ],
+        "target_moment_nm": [
+          -3.913860814264962,
+          0.46010757552307785,
+          -0.163490950610863
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 9,
+        "time_s": 0.36,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00024502042006971803
+          },
+          "right": {
+            "candidate_indices": [
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999278370755
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 13,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          4.334419238917397,
+          28.43425936301491,
+          428.5630214011615
+        ],
+        "target_moment_nm": [
+          -5.151691108429639,
+          0.6067653366875074,
+          -0.21526253658125036
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 10,
+        "time_s": 0.4,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00024048416707953425
+          },
+          "right": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999996362413
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 12,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          4.943919850544004,
+          32.43264960784403,
+          428.5148053517659
+        ],
+        "target_moment_nm": [
+          -5.908080197912383,
+          0.6911043249892569,
+          -0.2469354070231996
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 11,
+        "time_s": 0.44,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00023402403688549834
+          },
+          "right": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002500000012884184
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 12,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          5.198168517556653,
+          34.10054800680587,
+          428.06010620847195
+        ],
+        "target_moment_nm": [
+          -6.234485476376486,
+          0.72145786840768,
+          -0.2605737908676749
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 12,
+        "time_s": 0.48,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00021927796257554134
+          },
+          "right": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002500000009444019
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 12,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          5.138959945094068,
+          33.71213345102973,
+          427.2472009428875
+        ],
+        "target_moment_nm": [
+          -6.182348332740118,
+          0.7043206818033715,
+          -0.2581916153231115
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 13,
+        "time_s": 0.52,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00017403815180131333
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999994168183
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          4.808088256289672,
+          31.541579281893185,
+          426.1723569088389
+        ],
+        "target_moment_nm": [
+          -5.8028739133567155,
+          0.6468738308702475,
+          -0.24176707984390866
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 14,
+        "time_s": 0.56,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 0.00012567932997687315
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999954618708
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          4.247347811523518,
+          27.863061162298006,
+          424.9681318587865
+        ],
+        "target_moment_nm": [
+          -5.146752924555301,
+          0.5567383690714266,
+          -0.21330410272564942
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 15,
+        "time_s": 0.6,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 7.960727917886035e-05
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999998733630114
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          3.4985329514917916,
+          22.950754314413206,
+          423.7863330423103
+        ],
+        "target_moment_nm": [
+          -4.263954021040927,
+          0.441736427329455,
+          -0.17484652102884493
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 16,
+        "time_s": 0.64,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 3.945504338021422e-05
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999995046694635
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          2.603437546984837,
+          17.078833885459566,
+          422.77879046413636
+        ],
+        "target_moment_nm": [
+          -3.203153453620064,
+          0.3075122412373659,
+          -0.12874636938657555
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 17,
+        "time_s": 0.68,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 7.99085475671358e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999991071660444
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          1.6038572026956897,
+          10.521475832844228,
+          422.10441166094506
+        ],
+        "target_moment_nm": [
+          -2.0120495889204113,
+          0.15863553871136235,
+          -0.07742546645189106
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 18,
+        "time_s": 0.72,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.999881298651363e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999984957351385
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.5415846676570889,
+          3.552854480319788,
+          421.84517355323453
+        ],
+        "target_moment_nm": [
+          -0.7417034028074865,
+          0.016714013549868137,
+          -0.022256665175284136
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 19,
+        "time_s": 0.76,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.999867243283382e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999980662189936
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -0.5415849074780186,
+          -3.552854013255557,
+          421.88110170113464
+        ],
+        "target_moment_nm": [
+          0.5588598293814362,
+          -0.10848727370947851,
+          0.0341523429972377
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 20,
+        "time_s": 0.8,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.999997136518439e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999999560442344
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -1.603856863972715,
+          -10.52147608384739,
+          422.529089807548
+        ],
+        "target_moment_nm": [
+          1.847329609986953,
+          -0.24179973254415468,
+          0.08760079487750722
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 21,
+        "time_s": 0.84,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.999997715624646e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999948694003
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -2.6034378018623436,
+          -17.078834105747745,
+          423.64723086702753
+        ],
+        "target_moment_nm": [
+          3.0744422177160833,
+          -0.3814135393115904,
+          0.13654763182549354
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 22,
+        "time_s": 0.88,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -2.2888793219056833e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999999316756717
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -3.498532863112693,
+          -22.950754350283677,
+          425.0216105886611
+        ],
+        "target_moment_nm": [
+          4.182419818285835,
+          -0.49589562358222894,
+          0.17991153364136178
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 23,
+        "time_s": 0.92,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 9.195961518927882e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999904214305
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -4.247347483719664,
+          -27.863061055030027,
+          426.4667652602477
+        ],
+        "target_moment_nm": [
+          5.116368957058073,
+          -0.5768818031327533,
+          0.21509040338330468
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 24,
+        "time_s": 0.96,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 1.8485048751311524e-05
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999983875305
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -4.808088505278357,
+          -31.541579373122893,
+          427.93627222256146
+        ],
+        "target_moment_nm": [
+          5.823845024595411,
+          -0.634319725183465,
+          0.24023745647920192
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 25,
+        "time_s": 1.0,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 1.9274585342361934e-05
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999999716219124
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -5.1389598907158565,
+          -33.71213343146606,
+          429.20178385245185
+        ],
+        "target_moment_nm": [
+          6.249044311744325,
+          -0.6667698636793612,
+          0.25384246989526676
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 26,
+        "time_s": 1.04,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 8.974688701858698e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.000249999996205859
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -5.198168703154731,
+          -34.10054843348613,
+          430.0986731609514
+        ],
+        "target_moment_nm": [
+          6.33460950351049,
+          -0.6659153044607588,
+          0.25422234574110647
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 27,
+        "time_s": 1.08,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": 7.449313757417267e-07
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999963697973
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -4.943919909499163,
+          -32.432648907063815,
+          430.4999207495538
+        ],
+        "target_moment_nm": [
+          6.024936177897602,
+          -0.6268891818597532,
+          0.2396474221435262
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 28,
+        "time_s": 1.12,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -5.048925046695178e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999999790348715
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -4.334418809101688,
+          -28.434259658444912,
+          430.3316894774552
+        ],
+        "target_moment_nm": [
+          5.266123468597463,
+          -0.5443959297964963,
+          0.20822783647172924
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 29,
+        "time_s": 1.16,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -8.415855372890906e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999166509408
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -3.3278733297849548,
+          -21.83120522234967,
+          429.5779360774449
+        ],
+        "target_moment_nm": [
+          4.006291137877187,
+          -0.4127378893527451,
+          0.15788936559336902
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 30,
+        "time_s": 1.2,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.78803108272596e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00024999998879592523
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -1.8825086146398153,
+          -12.349320189773707,
+          428.2685948198649
+        ],
+        "target_moment_nm": [
+          2.3150614329728683,
+          -0.2381862621987965,
+          0.09111028156129009
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 31,
+        "time_s": 1.24,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -0.34135519248331314,
+          -2.2394694691498906,
+          426.8121365684163
+        ],
+        "target_moment_nm": [
+          0.7990155700098533,
+          -0.08217115654487125,
+          0.03143176885582929
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 32,
+        "time_s": 1.28,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.10633517853583974,
+          -0.010926203585481548,
+          0.004181344466401474
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 33,
+        "time_s": 1.32,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 34,
+        "time_s": 1.36,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 35,
+        "time_s": 1.4000000000000001,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 36,
+        "time_s": 1.44,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0008856403361374222,
+          -0.003767504636363482,
+          0.001031272516937589
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 37,
+        "time_s": 1.48,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "min_signed_distance_m": -9.998505855600241e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00025000006035891687
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 11,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          2.314061342428464e-05,
+          9.320840645997002e-06,
+          433.4842421474519
+        ],
+        "target_moment_nm": [
+          -0.05817178742732851,
+          -0.022278070345470243,
+          0.00481349121396584
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 38,
+        "time_s": 1.52,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999985579081
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0005085758178806814
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -2.3141028782037345e-05,
+          -9.32069056666375e-06,
+          419.86677843746384
+        ],
+        "target_moment_nm": [
+          -0.20737671044202238,
+          -0.060953994758745356,
+          0.012192643692981687
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 39,
+        "time_s": 1.56,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00024950082760482207
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0005521785309809029
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -6.170975599692799e-10,
+          2.1569190608153262e-10,
+          427.0496991093868
+        ],
+        "target_moment_nm": [
+          -0.35180581011166473,
+          -0.10622176621893585,
+          0.021438931842745836
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 40,
+        "time_s": 1.6,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002478562194360616
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0006610820745337519
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -7.902732730251258e-10,
+          2.60187788804646e-10,
+          427.21971429690075
+        ],
+        "target_moment_nm": [
+          -0.4499022813963111,
+          -0.1410065099593049,
+          0.02879852734881767
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 41,
+        "time_s": 1.6400000000000001,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002449274266342798
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0008551943300592378
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -8.70403570301919e-10,
+          2.473669412403591e-10,
+          427.32274425323675
+        ],
+        "target_moment_nm": [
+          -0.5157938222260179,
+          -0.16164218003842984,
+          0.03299646499142121
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 42,
+        "time_s": 1.68,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00024053353973168146
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0011468215254219248
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -8.651243977754478e-10,
+          1.8703354093783249e-10,
+          427.365852619045
+        ],
+        "target_moment_nm": [
+          -0.5439712877393317,
+          -0.1704454487982765,
+          0.034766308599309695
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 43,
+        "time_s": 1.72,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00023459867115470812
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0015415105287763147
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -7.793378442202929e-10,
+          8.823759794244515e-11,
+          427.35608698228486
+        ],
+        "target_moment_nm": [
+          -0.5388713302326091,
+          -0.16880802847032317,
+          0.03439357506908995
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 44,
+        "time_s": 1.76,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00022713959735730805
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0020388420075719187
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 4,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -6.282215306500583e-10,
+          -3.242920266260805e-11,
+          427.3004800724648
+        ],
+        "target_moment_nm": [
+          -0.5049254298425634,
+          -0.15812258108300786,
+          0.0321662922927927
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 45,
+        "time_s": 1.8,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002182534475563729
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.002633177189847892
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 4,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -4.248791174429491e-10,
+          -1.5234183576387968e-10,
+          427.20605404485
+        ],
+        "target_moment_nm": [
+          -0.4465613171686403,
+          -0.13978253781345784,
+          0.028374454659468567
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 46,
+        "time_s": 1.84,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00020810542892800866
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.003314370015391037
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 3,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -1.9118146220863117e-10,
+          -2.5566278378195646e-10,
+          427.079826472704
+        ],
+        "target_moment_nm": [
+          -0.3682049545937479,
+          -0.11518184984125271,
+          0.0233091942948134
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 47,
+        "time_s": 1.8800000000000001,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00019691657284927767
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.004068461730130109
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 3,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          5.2226099636874594e-11,
+          -3.1599618408448307e-10,
+          426.9288167986722
+        ],
+        "target_moment_nm": [
+          -0.27428269124319843,
+          -0.08571468703262039,
+          0.017261810524897364
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 48,
+        "time_s": 1.92,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00018495148420054775
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.00487837697657723
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 3,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          2.8432114892565664e-10,
+          -3.3937537670171214e-10,
+          426.76005220746356
+        ],
+        "target_moment_nm": [
+          -0.16922285701792342,
+          -0.052774706803481244,
+          0.01052275666711803
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 49,
+        "time_s": 1.96,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00017250607526106843
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.005724639711093095
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          8.768714050852878e-07,
+          -1.2194586869146677e-07,
+          426.5805732595508
+        ],
+        "target_moment_nm": [
+          -0.05745916998149275,
+          -0.01775625481929364,
+          0.0033808033506736853
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 50,
+        "time_s": 2.0,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00015989523767325365
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.006586124331444542
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -8.8586174162693e-07,
+          1.8945517279247514e-07,
+          426.39742962509894
+        ],
+        "target_moment_nm": [
+          0.052403687614498845,
+          0.016663718273861837,
+          -0.003618837776852321
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 51,
+        "time_s": 2.04,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0001474406023392232
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.007440853432824819
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -8.797247978358454e-07,
+          -1.5859388437022898e-08,
+          426.2445547217458
+        ],
+        "target_moment_nm": [
+          0.1569459457101144,
+          0.04940031047748587,
+          -0.010254298130180495
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 52,
+        "time_s": 2.08,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00013541068589497263
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.008270080005460066
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          7.266313398835094e-07,
+          -7.00712111113544e-08,
+          426.06852443471706
+        ],
+        "target_moment_nm": [
+          0.2676701962432568,
+          0.08398199101375854,
+          -0.017237426469287536
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 53,
+        "time_s": 2.12,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00012411512578068985
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.009051956679146562
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          1.2106339844110434e-07,
+          9.945961039871511e-09,
+          425.8679097343215
+        ],
+        "target_moment_nm": [
+          0.37689512801169256,
+          0.11805359123176631,
+          -0.024096740693853206
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 54,
+        "time_s": 2.16,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00011390723904397982
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.009761316476036026
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          5.64271897166899e-08,
+          8.028113077754947e-09,
+          425.74876482070374
+        ],
+        "target_moment_nm": [
+          0.4594964105733784,
+          0.1438562846402822,
+          -0.02927280667536959
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 55,
+        "time_s": 2.2,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00010499689060135698
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.01038263812546084
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          3.2261683205830564e-08,
+          4.819130349164313e-09,
+          425.6618119547874
+        ],
+        "target_moment_nm": [
+          0.5132320299754375,
+          0.16065407207340732,
+          -0.03262258646088184
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 56,
+        "time_s": 2.24,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 9.753747148088122e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.010904298716960654
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          1.159278005531657e-08,
+          1.671235188379987e-09,
+          425.61311721605495
+        ],
+        "target_moment_nm": [
+          0.5428430376794608,
+          0.16988525138673813,
+          -0.034441834724433254
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 57,
+        "time_s": 2.2800000000000002,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 9.161514258095461e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011319440011575439
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -3.4536158126297847e-09,
+          -4.826672024202128e-10,
+          425.608923682652
+        ],
+        "target_moment_nm": [
+          0.54441325702857,
+          0.17033812843462612,
+          -0.03449200577876554
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 58,
+        "time_s": 2.32,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.723776373794224e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011626834746252538
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -1.2260124025225296e-08,
+          -1.5053183375480387e-09,
+          425.6557511341664
+        ],
+        "target_moment_nm": [
+          0.5138577913448146,
+          0.16074715473068918,
+          -0.03252180108592627
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 59,
+        "time_s": 2.36,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.432335653126444e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011831752937812277
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -4.23512188842345e-09,
+          1.0684969776827084e-07,
+          425.76045898224766
+        ],
+        "target_moment_nm": [
+          0.44688216882583975,
+          0.13977635433429692,
+          -0.028262995565473726
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 60,
+        "time_s": 2.4,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.26879731984408e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011946828290329992
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -3.417519470480039e-08,
+          -2.03964601397729e-07,
+          425.9302528952121
+        ],
+        "target_moment_nm": [
+          0.3389776385532224,
+          0.10601736121648422,
+          -0.02142988955649697
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 61,
+        "time_s": 2.44,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.203318416565453e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011992923994927119
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          2.1708730450540448e-07,
+          4.071071602163361e-08,
+          426.1726025727763
+        ],
+        "target_moment_nm": [
+          0.19560003133611714,
+          0.06117342994329358,
+          -0.012363485371736871
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 62,
+        "time_s": 2.48,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -2.1697917573954979e-07,
+          5.229623721472628e-08,
+          426.4306134381125
+        ],
+        "target_moment_nm": [
+          0.06746911868713144,
+          0.02110083461861801,
+          -0.004264399124404801
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 63,
+        "time_s": 2.52,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.008977367503181054,
+          0.0028076382436548865,
+          -0.0005674196513707397
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 64,
+        "time_s": 2.56,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 65,
+        "time_s": 2.6,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 66,
+        "time_s": 2.64,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 67,
+        "time_s": 2.68,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.015770893385033572,
+          0.003409937014651574,
+          -0.0004190092866036653
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 68,
+        "time_s": 2.72,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 8.193267658153803e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011999999931968767
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -1.7896291166705185e-07,
+          3.9786106661997386e-08,
+          430.8936212384519
+        ],
+        "target_moment_nm": [
+          0.07576960555941745,
+          0.022945549093968693,
+          -0.004403424823524042
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 69,
+        "time_s": 2.7600000000000002,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999974654764
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.012154570299522622
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          1.7892435485342101e-07,
+          -3.9679014876460406e-08,
+          421.6678653672208
+        ],
+        "target_moment_nm": [
+          0.1940107595818997,
+          0.06489451212312966,
+          -0.013512793934938443
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 70,
+        "time_s": 2.8000000000000003,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999974357502
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.012106370151533891
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -7.664227257180333e-11,
+          1.561126732827876e-10,
+          425.86820066605327
+        ],
+        "target_moment_nm": [
+          0.3407338295273459,
+          0.11266684860912035,
+          -0.02325992300483279
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 71,
+        "time_s": 2.84,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999736461265
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011986091747561784
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -1.5545277671697872e-10,
+          1.8929604344917722e-10,
+          425.6808289316881
+        ],
+        "target_moment_nm": [
+          0.4570345804131446,
+          0.14881076408721594,
+          -0.030365610873919095
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 72,
+        "time_s": 2.88,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999972476923
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011772085762697396
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -2.8337843954592963e-10,
+          1.8703354093783249e-10,
+          425.5673983964485
+        ],
+        "target_moment_nm": [
+          0.523911643353833,
+          0.17059174486141726,
+          -0.03482839081160701
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 73,
+        "time_s": 2.92,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999970946897
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011451485328089945
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -4.5759113291947523e-10,
+          1.5385017077144283e-10,
+          425.52013170739957
+        ],
+        "target_moment_nm": [
+          0.5524337844279384,
+          0.17988947933407826,
+          -0.03675632180112639
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 74,
+        "time_s": 2.96,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999692833664
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.011019322816507363
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -6.408538363383998e-10,
+          8.522092792731883e-11,
+          425.5312462553306
+        ],
+        "target_moment_nm": [
+          0.5471130800878944,
+          0.17817246463568437,
+          -0.03644734197722939
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 75,
+        "time_s": 3.0,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999678132923
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.010477599567575147
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -7.778295092127297e-10,
+          6.0333400302526605e-12,
+          425.5929541030032
+        ],
+        "target_moment_nm": [
+          0.5124653716493733,
+          0.16690922317253565,
+          -0.0341968113605379
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 76,
+        "time_s": 3.04,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999668673823
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.009834310943309877
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -8.253420619509694e-10,
+          -8.597509543110042e-11,
+          425.6974627255208
+        ],
+        "target_moment_nm": [
+          0.45300937534674346,
+          0.1475684289404867,
+          -0.03029823081880877
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 77,
+        "time_s": 3.08,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999966762466
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.009102437671801415
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -7.4219509465905e-10,
+          -1.6893352084707448e-10,
+          425.83697633487617
+        ],
+        "target_moment_nm": [
+          0.3732654084701453,
+          0.12161899322922524,
+          -0.025044258612984586
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 78,
+        "time_s": 3.12,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.00024999999676595264
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.008298919491755017
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -5.279172526471078e-10,
+          -2.368085961874169e-10,
+          426.0036976610292
+        ],
+        "target_moment_nm": [
+          0.2692651699108962,
+          0.08759720275818092,
+          -0.01816077668880681
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 79,
+        "time_s": 3.16,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              9
+            ],
+            "min_signed_distance_m": 0.0002499999969591731
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.007443629177254403
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 2,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -5.435935669225877e-08,
+          -4.575534245442861e-09,
+          426.2516364926341
+        ],
+        "target_moment_nm": [
+          0.1472078056905416,
+          0.04756994005131153,
+          -0.010057931396139025
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 80,
+        "time_s": 3.2,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002500000015028441
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.006565155234523686
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 3,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -3.104769977499335e-07,
+          -4.0672253478940744e-08,
+          426.4377852471645
+        ],
+        "target_moment_nm": [
+          0.04072842990390478,
+          0.013070157336019569,
+          -0.0029783091357121977
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 81,
+        "time_s": 3.24,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002500000343355945
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.005684844808334218
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 3,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          1.9416004676481654e-07,
+          1.2389463752123838e-08,
+          426.55081858221456
+        ],
+        "target_moment_nm": [
+          -0.049103637491805865,
+          -0.015671046047396192,
+          0.0030202003062653436
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 82,
+        "time_s": 3.2800000000000002,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0002500000525643602
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.004815760216244126
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 4,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          9.52329728947092e-08,
+          1.3979248850095415e-08,
+          426.7486324734889
+        ],
+        "target_moment_nm": [
+          -0.1511273340990063,
+          -0.0487273948407016,
+          0.009869909966858442
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 83,
+        "time_s": 3.3200000000000003,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00023595268873355824
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.003979920035622105
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          8.455631781461131e-08,
+          1.5859388437022898e-08,
+          426.9383855652243
+        ],
+        "target_moment_nm": [
+          -0.25997151881489955,
+          -0.0842928290930545,
+          0.017199760927166623
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 84,
+        "time_s": 3.36,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00021817900865656482
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0031980433734358537
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 5,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          6.482682456099524e-08,
+          1.3159468773484834e-08,
+          427.11169835128885
+        ],
+        "target_moment_nm": [
+          -0.359076500497469,
+          -0.11670367685662937,
+          0.02388981137038974
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 85,
+        "time_s": 3.4,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              3,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.00017812356866931268
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0024886835746981877
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 6,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          4.041989017798783e-08,
+          7.71513356368559e-09,
+          427.2598045400163
+        ],
+        "target_moment_nm": [
+          -0.44338978870902285,
+          -0.14429488041944222,
+          0.02959349698273715
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 86,
+        "time_s": 3.44,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              3,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 0.0001300919971839636
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.001867361919322315
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 6,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          1.5839308727234714e-08,
+          1.8937146019955537e-09,
+          427.37367679088845
+        ],
+        "target_moment_nm": [
+          -0.5077455510999618,
+          -0.16536849765237446,
+          0.03395745723187706
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 87,
+        "time_s": 3.48,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 8.959052948379499e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0013457013190823113
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 7,
+        "force_feasible": false,
+        "solver_status": 2,
+        "target_force_n": [
+          -5.2065839042321005e-09,
+          -2.4238943571540065e-09,
+          427.44420105209406
+        ],
+        "target_moment_nm": [
+          -0.5469544686559136,
+          -0.17822457969100797,
+          0.03662843492990231
+        ],
+        "jointly_feasible": false
+      },
+      {
+        "frame": 88,
+        "time_s": 3.52,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 5.655215943588688e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0009305600142210562
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 8,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -2.0332450172889438e-08,
+          -4.52274252017815e-09,
+          427.4623777098781
+        ],
+        "target_moment_nm": [
+          -0.555900858907926,
+          -0.1811926856769458,
+          0.037260139168218805
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 89,
+        "time_s": 3.56,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 2.6535867239154028e-05
+          },
+          "right": {
+            "candidate_indices": [],
+            "min_signed_distance_m": 0.0006231652694979649
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 8,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -2.851281081547029e-08,
+          -4.7384344262596835e-09,
+          427.4195150447806
+        ],
+        "target_moment_nm": [
+          -0.5296318101306604,
+          -0.1726594055523129,
+          0.03551912079301362
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 90,
+        "time_s": 3.6,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": 6.48600789917176e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00041824706982492455
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -1.708215791927917e-07,
+          2.649126482158376e-07,
+          427.3073718869967
+        ],
+        "target_moment_nm": [
+          -0.4634148242120131,
+          -0.1510863090880572,
+          0.031088625447350325
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 91,
+        "time_s": 3.64,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -4.7875116555113825e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.00030317199007958307
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          2.3831221764808144e-07,
+          -5.043804390215884e-07,
+          427.1182023736626
+        ],
+        "target_moment_nm": [
+          -0.3527548017709913,
+          -0.11501267258852155,
+          0.023668966080070318
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 92,
+        "time_s": 3.68,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.306207310304064e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.000257076042746056
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          2.0909953938910186e-08,
+          2.0841117300002522e-07,
+          426.84465687185264
+        ],
+        "target_moment_nm": [
+          -0.20389844470172003,
+          -0.0664796081313301,
+          0.013681878476750963
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 93,
+        "time_s": 3.72,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.999990013605069e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999886332637
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          -1.600219948095774e-07,
+          2.2600137585822685e-08,
+          426.55248954486484
+        ],
+        "target_moment_nm": [
+          -0.07038257804478386,
+          -0.022947435620412522,
+          0.004722757247093699
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 94,
+        "time_s": 3.7600000000000002,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.999990013605069e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999886332637
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          -0.00936762017194005,
+          -0.0030542239888393615,
+          0.0006285755990756323
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 95,
+        "time_s": 3.8000000000000003,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.999990013605069e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999886332637
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 96,
+        "time_s": 3.84,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.999990013605069e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999886332637
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 97,
+        "time_s": 3.88,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.999990013605069e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999886332637
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "jointly_feasible": true
+      },
+      {
+        "frame": 98,
+        "time_s": 3.92,
+        "geometry": {
+          "left": {
+            "candidate_indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              6,
+              7,
+              9
+            ],
+            "min_signed_distance_m": -9.999990013605069e-06
+          },
+          "right": {
+            "candidate_indices": [
+              4
+            ],
+            "min_signed_distance_m": 0.0002499999886332637
+          }
+        },
+        "geometry_qualified": true,
+        "candidate_count": 9,
+        "force_feasible": true,
+        "solver_status": 0,
+        "target_force_n": [
+          0.0,
+          0.0,
+          426.4877552274643
+        ],
+        "target_moment_nm": [
+          8.006925975866483e-16,
+          2.7294986511889095e-17,
+          2.6841651972572234e-17
+        ],
+        "jointly_feasible": true
+      }
+    ],
+    "decision": {
+      "centroidal_force_preflight_pass": false,
+      "dynamics_truth": false,
+      "physics_unlocked": false,
+      "training_unlocked": false,
+      "next": "stop; do not run physics or tune force/contact gates"
+    }
+  },
+  "decision": {
+    "time_dilation_force_preflight_pass": false,
+    "physics_unlocked": false,
+    "training_unlocked": false,
+    "next": "stop time-dilation route; require force-aware trajectory generation"
+  }
+}

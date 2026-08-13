@@ -1,0 +1,57 @@
+{
+  "stage": "Dynamic Retargeting Phase32",
+  "status": "PREREGISTERED_PREFLIGHT_ONLY",
+  "objective": "Qualify the Phase34 stable closed-AimDK trajectory as an exact short-horizon DSMS warm start before any optimizer run.",
+  "source": {
+    "phase34_audit": "reports/official_x2/phase34_closed_full_trace_manifest.json",
+    "phase37_window": "reports/official_x2/phase37_three_event_teacher_prereg.json",
+    "selection": {
+      "anchor_physics_index": 2309,
+      "aligned_physics_index": 2310,
+      "swing_side": "right",
+      "stance_side": "left"
+    }
+  },
+  "horizon": {
+    "seconds": 0.34,
+    "physics_dt_s": 0.001,
+    "node_dt_s": 0.02,
+    "nodes": 17,
+    "substeps_per_node": 20
+  },
+  "preflight_gates": {
+    "asset_hashes_exact": true,
+    "mujoco_version": "3.3.7",
+    "raw_motor_model": true,
+    "qpos_qvel_only_replay_qpos_absmax": 1e-6,
+    "qpos_qvel_only_replay_qvel_absmax": 0.0001,
+    "recorded_ctrl_applied_force_match_absmax": 1e-10,
+    "pd_equivalent_target_ctrl_absmax": 1e-10,
+    "pd_equivalent_target_joint_limit_overshoot_rad": 0.0,
+    "initial_root_z_min_m": 0.55,
+    "initial_root_tilt_max_rad": 0.3
+  },
+  "future_single_solve_if_qualified": {
+    "authorized": false,
+    "cpu_threads": 1,
+    "gpu": false,
+    "nice": 10,
+    "max_iterations": 50,
+    "linear_solver": "mumps",
+    "actuator_variable": "recorded motor command warm-start; MuJoCo ctrllimited clips it to the authored per-actuator force range",
+    "reference": "exact Phase34 qpos/qvel; swing/contact objectives are soft and may deviate",
+    "cost": {
+      "base_position": 40.0,
+      "base_orientation": 10.0,
+      "base_linear_velocity": 1.0,
+      "base_angular_velocity": 1.0,
+      "joint_position": 0.1,
+      "joint_velocity": 0.01,
+      "torque_regularization": 1e-7,
+      "control_rate": 0.01
+    },
+    "hard_stop": "No solve unless every preflight gate passes; no automatic retry or parameter scan."
+  },
+  "training_authorized": false,
+  "physics_rollout_authorized": false
+}

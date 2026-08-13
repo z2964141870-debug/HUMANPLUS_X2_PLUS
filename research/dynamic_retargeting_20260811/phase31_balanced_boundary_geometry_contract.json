@@ -1,0 +1,11 @@
+{
+  "stage": "X2 Phase31 balanced-native centered load-transfer skeleton",
+  "status": "PREREGISTERED_NOT_RUN",
+  "base": "Phase26 centered load-transfer implementation and all numerical contracts",
+  "only_variable": "native boundary = Phase43 hard-low-speed then pose-nearest coherent Stage250 anchor",
+  "unchanged": ["support sequence", "contact constraints", "clearance", "bounds", "solver", "tolerances", "truth boundary"],
+  "stop": "first failed keyframe; no alternate boundary, sequence, bounds, solver, or tolerance",
+  "physics_authorized": false,
+  "training_authorized": false,
+  "resource": {"single_process": true, "cpu_threads": 1, "gpu": false}
+}

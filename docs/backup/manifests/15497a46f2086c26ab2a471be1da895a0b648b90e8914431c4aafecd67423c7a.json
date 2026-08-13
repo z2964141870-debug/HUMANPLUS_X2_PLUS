@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "tools/retarget/calibrate_x2_phase69_posthoc.py",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase69_posthoc/calibrate_x2_phase69_posthoc.py",
+  "local_size": 16881,
+  "remote_size": null,
+  "local_sha256": "5e27ec3defeae478c873789974a0d48700965b88595c0de4af0337852ac2517e",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-12T19:44:32+08:00"
+}

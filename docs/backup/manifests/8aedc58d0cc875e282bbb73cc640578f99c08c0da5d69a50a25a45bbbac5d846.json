@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "docs/backup/X2_CYCLE30_RESTORE_20260811.md",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-11/cycle30/X2_CYCLE30_RESTORE_20260811.md",
+  "local_size": 2192,
+  "remote_size": null,
+  "local_sha256": "d18a1a681c37f189c0f3ba2ac9f9c0518c6b3b9408fc0ec2d4e8e1c55bdc8529",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-11T13:14:16+08:00"
+}

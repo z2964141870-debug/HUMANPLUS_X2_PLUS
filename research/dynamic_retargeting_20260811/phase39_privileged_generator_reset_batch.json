@@ -1,0 +1,49 @@
+{
+  "stage": "Dynamic Retargeting Phase39",
+  "scope": "CPU reset-batch construction only; no live env mutation/Isaac/physics/optimizer",
+  "assets": {
+    "seed_sha256": "4bd8bc428cc47fea3c5a783af9277babb45cc5cfdbdf2ce451628e81be5e7ad2",
+    "adapter_sha256": "2f72af70bce9c08daf9addf1be22307b0276dc5420ac226d11f26893c1e1c114"
+  },
+  "frames": [
+    0,
+    13,
+    27,
+    40,
+    53,
+    66,
+    80,
+    93,
+    106,
+    119,
+    133,
+    146,
+    159,
+    172,
+    186,
+    199
+  ],
+  "checks": {
+    "frames": true,
+    "root_pose": true,
+    "root_velocity": true,
+    "joint_pos31": true,
+    "joint_vel31": true,
+    "future_10x58": true,
+    "finite": true,
+    "endpoints_exact": true,
+    "monotonic_frames": true
+  },
+  "execution": {
+    "env_instances": 0,
+    "env_resets": 0,
+    "physics_steps": 0,
+    "optimizer_steps": 0,
+    "gpu": false
+  },
+  "decision": {
+    "reset_batch_adapter_ready": true,
+    "live_zero_executed": false,
+    "training_unlocked": false
+  }
+}

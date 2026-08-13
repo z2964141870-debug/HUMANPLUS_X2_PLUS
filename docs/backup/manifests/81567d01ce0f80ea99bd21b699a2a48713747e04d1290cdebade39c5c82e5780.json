@@ -1,0 +1,10 @@
+{
+  "status": "uploaded_size_verified",
+  "local_path": "reports/retarget/x2_phase69_posthoc_calibration_backup_manifest.json",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase69_posthoc/x2_phase69_posthoc_calibration_backup_manifest.json",
+  "local_size": 4541,
+  "remote_size": 4541,
+  "local_sha256": "c40ae040daee2773cc65670f7b29e3b46e4da37240ee89b3e04320056258f1f0",
+  "verification": "remote path and byte size verified; cryptographic readback pending",
+  "uploaded_at": "2026-08-12T19:45:46+08:00"
+}

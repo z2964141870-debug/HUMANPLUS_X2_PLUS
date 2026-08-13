@@ -1,0 +1,43 @@
+{
+  "stage": "Dynamic Retargeting Phase34",
+  "scope": "NLP build/objective/gradient/zero-defect warm-start only; IPOPT not constructed",
+  "contract_sha256": "b5e883f3e50b281b0613014b856274249596c5338d621a7e27ccdb0c8ab49df9",
+  "source": {
+    "phase32_sha256": "a69869897f9b86d9fbe62cdf4402542a117e567799c2b69226d0ce9f30a8a63c",
+    "phase33b_sha256": "d6b3d4ce248b960b914a755a3640a62a25ae9810f2cb2ff3f3af705216e84df9"
+  },
+  "metrics": {
+    "variables": 1908,
+    "constraints": 1350,
+    "constraints_returned": 1350,
+    "constraints_absmax": 7.771561172376096e-15,
+    "initial_state_absmax": 0.0,
+    "objective": 25.015922655358835,
+    "gradient_absmax": 5657.626469057718,
+    "warmstart_root_z_min_m": 0.6541031956077852,
+    "warmstart_root_tilt_max_rad": 0.2837383036322915,
+    "desired_clearance_max_m": 0.012
+  },
+  "checks": {
+    "constraints": true,
+    "initial": true,
+    "root_z": true,
+    "root_tilt": true,
+    "objective_finite": true,
+    "gradient_finite": true,
+    "constraint_count": true
+  },
+  "execution": {
+    "mj_step_calls": 340,
+    "optimizer_instances": 0,
+    "optimizer_steps": 0,
+    "cpu_threads": 1,
+    "gpu": false
+  },
+  "decision": {
+    "native_contact_nlp_preflight_qualified": true,
+    "ipopt_solve_authorized": false,
+    "training_unlocked": false,
+    "result": "NLP_PREFLIGHT_PASSED_SOLVE_STILL_LOCKED"
+  }
+}

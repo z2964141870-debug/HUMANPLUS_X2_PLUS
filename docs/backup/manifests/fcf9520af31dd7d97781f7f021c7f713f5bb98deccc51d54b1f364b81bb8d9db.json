@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "tools/retarget/build_x2_phase69_posthoc_backup_manifest.py",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase69_posthoc/build_x2_phase69_posthoc_backup_manifest.py",
+  "local_size": 4003,
+  "remote_size": null,
+  "local_sha256": "85fef0ef2a9e4b6562017dbc85c7fe274ac7f0617df362a9a6dd3cedae8a4af8",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-12T19:44:53+08:00"
+}

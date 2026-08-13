@@ -1,0 +1,76 @@
+{
+  "stage": "Dynamic Retargeting Phase32",
+  "scope": "one deterministic 340 ms native-suffix replay; no IPOPT/optimizer/training/GPU/closed ROS",
+  "assets": {
+    "mmap": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/phase34_full_stage250_trace/phase34_stage250_closed_full_once_d230.mmap",
+      "sha256": "8bb90c96a17308ce6f3e5be1f19f72a3e3998800f29d6f020692eac318de24ef"
+    },
+    "rollout": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/results/phase34_full_stage250_trace/phase34_stage250_closed_full_once_d230.json",
+      "sha256": "c380b920096751f666d3592d7d6ec6f568d4d0d8e2c01445fc3d354a664fc376"
+    },
+    "scene": {
+      "path": "/home/humanplus/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    }
+  },
+  "contract_sha256": "11c7914da3e53d1b643313d74b8056aefa97ae3b892d5f3e6e214b3d94899e39",
+  "selection": {
+    "anchor_physics_index": 2309,
+    "aligned_physics_index": 2310,
+    "swing_side": "right",
+    "stance_side": "left"
+  },
+  "model": {
+    "mujoco": "3.3.7",
+    "nq": 38,
+    "nv": 37,
+    "nu": 31
+  },
+  "replay": {
+    "steps": 340,
+    "qpos_absmax": 2.6645352591003757e-15,
+    "qvel_absmax": 1.3508638652126592e-13,
+    "root_z_min_m": 0.6633156226185825,
+    "root_tilt_max_rad": 0.16893523674214858
+  },
+  "pd_equivalent_targets": {
+    "shape": [
+      340,
+      31
+    ],
+    "target_sha256": "30b56de731b0c2beb3a07b78cee7e92763697e8bc64f745567093318526553c9",
+    "ctrl_reconstruction_absmax": 2.842170943040401e-14,
+    "joint_limit_overshoot_rad": 0.0,
+    "recorded_ctrl_range_overshoot": 31.665578450550896,
+    "recorded_ctrl_overshoot_count": 21,
+    "clipped_ctrl_vs_qfrc_actuator_absmax": 0.0,
+    "target_absmax_rad": 1.2041639619657438
+  },
+  "checks": {
+    "asset_hashes_exact": true,
+    "mujoco_version_exact": true,
+    "raw_motor_model": true,
+    "qpos_replay": true,
+    "qvel_replay": true,
+    "recorded_ctrl_applied_force_match": true,
+    "pd_equivalent_ctrl": true,
+    "pd_equivalent_target_within_joint_limits": true,
+    "root_z_safe": true,
+    "root_tilt_safe": true
+  },
+  "execution": {
+    "mj_step_calls": 340,
+    "optimizer_instances": 0,
+    "optimizer_steps": 0,
+    "gpu": false,
+    "cpu_threads": 1
+  },
+  "decision": {
+    "native_dsms_warmstart_qualified": true,
+    "single_short_solve_authorized": false,
+    "training_unlocked": false,
+    "result": "NATIVE_DSMS_PREFLIGHT_PASSED_SOLVE_STILL_LOCKED"
+  }
+}

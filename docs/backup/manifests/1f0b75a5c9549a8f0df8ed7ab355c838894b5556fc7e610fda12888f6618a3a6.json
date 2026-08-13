@@ -1,0 +1,10 @@
+{
+  "status": "upload_command_succeeded_unverified",
+  "local_path": "/home/humanplus/projects/ZHY/backups/x2_cycle30_load_force_boundary_20260811.tar.gz",
+  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-11/cycle30/x2_cycle30_load_force_boundary_20260811.tar.gz",
+  "local_size": 89040,
+  "remote_size": null,
+  "local_sha256": "9efdcc638c14900eef2bf4edb35af43e00e56497af361cc3e6da3000e5f3b7c3",
+  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit",
+  "uploaded_at": "2026-08-11T13:11:32+08:00"
+}
