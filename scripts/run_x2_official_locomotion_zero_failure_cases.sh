@@ -4,11 +4,11 @@ set -euo pipefail
 ROOT=/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim
 OFFICIAL=/home/yu/projects/ZHY/x2_official_rl_deploy_v1
 PY=/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python
-PREREG="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_prereg.json"
-RAW_ROOT="$OFFICIAL/results/locomotion_zero_brake_feasibility_20260813"
+PREREG="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_prereg_v2.json"
+RAW_ROOT="$OFFICIAL/results/locomotion_zero_brake_feasibility_v2_20260813"
 LEDGER="$ROOT/tools/retarget/run_with_gpu_deadline_ledger_phase76.py"
-RESULT="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_result.json"
-MARKDOWN="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases.md"
+RESULT="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_v2_result.json"
+MARKDOWN="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_v2.md"
 
 verify_sidecar() {
   local path="$1"
@@ -40,10 +40,10 @@ fi
 mkdir -p "$RAW_ROOT"
 
 cases=(
-  x2_locomotion_zero_low_straight_r4
-  x2_locomotion_zero_low_turn_right_r3
+  x2_locomotion_zero_v2_low_straight_r4
+  x2_locomotion_zero_v2_low_turn_right_r3
 )
-domains=(410 411)
+domains=(210 211)
 ports=(31910 31911)
 motions=(straight turn_right)
 resources=()
@@ -81,7 +81,7 @@ for index in 0 1; do
     )
   fi
   set +e
-  "$PY" "$LEDGER" --label "x2_official_locomotion_zero_case${index}" \
+  "$PY" "$LEDGER" --label "x2_official_locomotion_zero_v2_case${index}" \
     --resource-output "$resource" --log "$log" --disk-path "$ROOT" \
     --timeout-seconds 180 --term-grace-seconds 5 -- \
     env "${common[@]}" "${extra[@]}" bash "$ROOT/tools/official_x2/run_official_gate_case.sh"
@@ -93,7 +93,7 @@ for index in 0 1; do
   test -s "$raw"
   (cd "$RAW_ROOT" && sha256sum "$(basename "$raw")" > "$(basename "$raw").sha256")
   verify_sidecar "$raw"
-  jq -e --arg expected_label "x2_official_locomotion_zero_case${index}" '
+  jq -e --arg expected_label "x2_official_locomotion_zero_v2_case${index}" '
     .label == $expected_label and (.raw_returncode == 0 or .raw_returncode == 2) and
     .exit_code == .raw_returncode and .timed_out == false and .term_sent == false and
     .kill_sent == false and .forced_cleanup == false and .elapsed_s <= 180 and
