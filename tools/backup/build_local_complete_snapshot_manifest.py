@@ -27,6 +27,14 @@ def git(root: Path, *args: str) -> str:
     return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
 
 
+def tracked_diff_clean(root: Path) -> bool:
+    unstaged = subprocess.run(["git", "-C", str(root), "diff", "--quiet"], check=False).returncode == 0
+    staged = subprocess.run(
+        ["git", "-C", str(root), "diff", "--cached", "--quiet"], check=False
+    ).returncode == 0
+    return unstaged and staged
+
+
 def ignored_files(root: Path) -> list[Path]:
     raw = subprocess.check_output(
         ["git", "-C", str(root), "ls-files", "--others", "-i", "--exclude-standard", "-z"]
@@ -67,7 +75,7 @@ def main() -> None:
             "head": git(root, "rev-parse", "HEAD"),
             "tree": git(root, "rev-parse", "HEAD^{tree}"),
             "branch": git(root, "branch", "--show-current"),
-            "tracked_status_clean": git(root, "status", "--porcelain=v1") == "",
+            "tracked_diff_clean_before_manifest_write": tracked_diff_clean(root),
         },
         "external_evidence_policy": {
             "included": "git-ignored regular files except generated caches",

@@ -1,12 +1,12 @@
 {
   "schema": "cwi_x2_local_complete_snapshot_manifest_v1",
-  "generated_at": "2026-08-13T11:16:55+08:00",
+  "generated_at": "2026-08-13T11:17:16+08:00",
   "workspace_root": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim",
   "git": {
-    "head": "70ad0cc27884e0850a747b9bad08297afc4fc12e",
-    "tree": "1fc1a170645585b307074165680e019fb9160acc",
+    "head": "9744325bd4ae6b7f58489b7f681baba881fd8012",
+    "tree": "69d4eae9e7b5f3bb35c0419207ec78338d417386",
     "branch": "main",
-    "tracked_status_clean": false
+    "tracked_diff_clean_before_manifest_write": false
   },
   "external_evidence_policy": {
     "included": "git-ignored regular files except generated caches",
