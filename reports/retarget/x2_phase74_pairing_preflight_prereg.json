@@ -1,0 +1,152 @@
+{
+  "schema": "x2_phase74_pairing_preflight_prereg_v1",
+  "date": "2026-08-12",
+  "objective": "Test whether one Isaac process can construct 64 causally matched paired lanes by explicitly copying all preregistered dynamic initial state before any scored physical action.",
+  "execution_authority": {
+    "source": "active X2 native locomotion roadmap goal and user authorization to use available compute",
+    "technical_preflight_only": true,
+    "launch_count_exact": 3,
+    "replacement_launches_forbidden": true,
+    "phase72_and_phase73_data_excluded": true,
+    "optimizer_or_checkpoint_authority": false
+  },
+  "phase73_disclosure": {
+    "decision_unchanged": "FAIL_INVALID_STOP",
+    "failure_sha256": "32a4ceef83bb8b7b02f84ccd6f64e3b3b7ab8b1ebb3747f3bea3290168c90433",
+    "backup_manifest_sha256": "9b4237e5c4e57b6adcbf5344d3febd18a0ffdaff9c4df0106217b4aac135a118",
+    "failure": "independent-process same-seed initial state was not bitwise identical; minus stopped before rollout",
+    "scientific_direction_examined_for_phase74": false,
+    "phase73_plus_excluded_from_phase74_and_future_confirmatory_n": true
+  },
+  "technical_seeds": [
+    {"seed_index": 0, "env_seed": 740041},
+    {"seed_index": 1, "env_seed": 740042},
+    {"seed_index": 2, "env_seed": 740043}
+  ],
+  "pairing": {
+    "num_envs": 128,
+    "pair_count_per_launch": 64,
+    "pair_indices": "(2*i, 2*i+1)",
+    "donor_rule": "left donor iff (pair_id + seed_index) mod 2 == 0",
+    "world_position_copy": "copy root position relative to donor env origin, then add recipient env origin",
+    "no_scored_action": true,
+    "physics_rollout_steps": 0,
+    "neutral_refresh_steps": 0
+  },
+  "explicit_dynamic_copy_allowlist": [
+    "root pose relative to env origin; root velocity; joint position and velocity",
+    "episode length, reset, reset-terminated and reset-timeout buffers",
+    "action manager current/previous; gait-template raw/processed/preemphasis/template/preclip/plant buffers; upper-hook per-env state",
+    "command time/counter/value/standing/heading/integral/metrics buffers",
+    "termination term/last/truncated/terminated buffers",
+    "reward aggregate/step/episode buffers and air/contact/dwell/phase memory",
+    "all configured scene sensor clocks/dirty flags and tensor data buffers without sensor.data lazy-access side effects",
+    "robot user/simulation joint targets, torque buffers, and instantaneous/permanent wrench buffers",
+    "actuator effort/filter/ideal-mask state and position/velocity/effort delay buffers",
+    "observation term circular-history buffers and event interval timers"
+  ],
+  "excluded_from_pair_equality": [
+    "env origins and world x/y",
+    "prim paths, scene ids, CUDA pointers and allocator state",
+    "logs and performance counters",
+    "static global indices, joint lists and model parameters",
+    "hidden PhysX contact manifold and solver warm-start state; therefore Phase74 cannot unlock a scientific rollout"
+  ],
+  "static_state_not_copied_but_pair_equality_checked": [
+    "actuator stiffness, damping, armature, friction and limits",
+    "delay and observation circular-buffer maximum lengths"
+  ],
+  "derived_tolerances": {
+    "writable_float_state_max_abs": 0.0,
+    "integer_and_boolean_exact": true,
+    "derived_float_max_abs": 1e-06,
+    "contact_force_max_abs_n": 0.001,
+    "contact_force_relative_l2": 1e-06,
+    "phase_and_active_mask_exact": true,
+    "thresholds_may_not_be_relaxed_after_launch": true
+  },
+  "required_derived_fields": [
+    "physx.root_transform_local_xyzw", "physx.root_velocity_w", "physx.joint_position", "physx.joint_velocity",
+    "policy_observation", "critic_observation", "source_action",
+    "residual_encoded_feature", "residual_latent_mean", "phase_id", "active_mask"
+  ],
+  "reset_perturbation": {
+    "root_pose_roll_rad": [-0.005, 0.005],
+    "root_pose_pitch_rad": [-0.005, 0.005],
+    "root_linear_x_mps": [-0.01, 0.01],
+    "root_linear_y_mps": [-0.01, 0.01],
+    "root_angular_roll_radps": [-0.01, 0.01],
+    "root_angular_pitch_radps": [-0.01, 0.01],
+    "root_angular_yaw_radps": [-0.01, 0.01]
+  },
+  "evidence_contract": {
+    "commit_written_before_decision": true,
+    "commit_contains_only_state_hashes_shapes_and_ids": true,
+    "screen_contains_per_field_pair_pass_count_maxabs_relative_l2_and_hashes": true,
+    "reward_pitch_support_return_gradient_direction_forbidden": true,
+    "failure_written_and_flushed_before_direct_os_exit": true,
+    "exception_path_must_not_call_simulation_app_close": true,
+    "success_requires_status0_screen_sidecar_resource_sidecar_and_all_pairs_pass": true,
+    "observation_recomputed_after_clone_without_history_update": true,
+    "low_level_physx_readback_required": true,
+    "all_explicit_copied_fields_must_be_diagnosed": true,
+    "unknown_num_env_batched_mutable_tensor_list_must_be_empty": true,
+    "three_source_donor_initial_hashes_must_be_distinct": true,
+    "all_float_state_must_be_finite_except_matching_contact_position_nan_sentinels": true,
+    "all_scene_sensors_discovered_at_runtime": true,
+    "articulation_previous_joint_velocity_copied": true,
+    "articulation_lazy_caches_invalidated_then_recomputed_from_physx": true,
+    "action_scale_offset_and_clip_are_pair_invariants": true,
+    "app_launcher_and_post_launcher_import_failures_write_evidence_then_direct_exit": true
+  },
+  "immutable_inputs": {
+    "base_checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+    "zero_residual_checkpoint_sha256": "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3",
+    "environment_yaml_sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7",
+    "agent_yaml_sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368",
+    "gait_template_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+    "upper_motion_sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef"
+  },
+  "immutable_code": {
+    "runner_sha256": "3430a5130f8c04ea5083e932f387f69a91e781564333568c2de060e6187effcc",
+    "helper_sha256": "a74d0d47c1b18d472b821c1b12afc143a78ee71cae42ba3e2cd40a180f887aee",
+    "run_script_sha256": "4d69ea8acdb757db0cc0d77d7a797410fcbe519794df025d0d32367fbf31030f",
+    "test_sha256": "9e38df8b71a0f7fb4d30ed6b8ef89090b395c65c514c89b6f93600595f2a64b7",
+    "finalizer_sha256": "48ea1b3fc8de1500c13f371b110a901c162d457227d43e3421f75d3927b16955",
+    "finalizer_test_sha256": "ed5e67b4eb87757778aea7f2e2b9333db184aa05f384ffe351c8b225c9d5e4f5",
+    "phase60_posture_module_sha256": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb",
+    "x2_flat_env_cfg_sha256": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8",
+    "x2_reward_module_sha256": "a3dc36a3e072bdfe0abd0fcdb05e07de24415e2bc364b74397ca097cb52f388d",
+    "x2_gait_module_sha256": "0d940c8f5363f0e6662ee9d7c85b3310edb8e90ab435bea6b8e1d1c7b79809e1",
+    "x2_action_module_sha256": "147a2d1b1aaedd73443ce5c56cdcf5f91978e41ea14a72efb722faeac4bb06f0",
+    "x2_gait_action_module_sha256": "463b86ea509d5af3a454f151b98ed641618fe8312432c50c774efb430a1fce10",
+    "upper_hook_sha256": "58e572ff863093e58894027dda3a51726b1fa883d7cc9a5d54f5dd562b91f83d",
+    "heading_command_module_sha256": "def18f85e55d555d447d02c03d080f6ee0eb6a80097fe629508147e35b0aa901",
+    "modular_env_cfg_sha256": "c85e9d3e1412d36b47d2cafa8744f8858b39a161e67193e405ded5e7d73bc22e",
+    "x2_robot_cfg_sha256": "8d9f7d22789b44d79c96789bfc569cf015bb662bc4f5b7c925deba20e10d943b",
+    "phase68_interface_sha256": "c67dd5f8bb8387ef9b1ec616cf0d885846944f19ed3e16155b4b607363f85157",
+    "residual_module_sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b",
+    "phase69_helper_sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295",
+    "ledger_sha256": "d5a4f1a6b15cb827b5cba1bc7ff49cd7b794247259d23768686a7507bc45383e"
+  },
+  "resource_limits": {
+    "free_gib_min_before": 32,
+    "free_gib_min_after": 28,
+    "gpu_peak_memory_mib_max": 8192,
+    "wall_seconds_max": 120,
+    "per_launch_disk_delta_bytes_max": 536870912,
+    "cumulative_disk_delta_bytes_max": 1610612736,
+    "commit_plus_screen_bytes_max": 16777216
+  },
+  "decision": {
+    "all_three_required": true,
+    "any_failure": "FAIL_TECHNICAL_STOP; stop all remaining launches; no replacement",
+    "highest_label": "PASS_INITIAL_PAIRING_PREFLIGHT_ONLY",
+    "phase75_shadow_preregistration_unlocked_only_on_pass": true,
+    "phase75_scientific_preregistration_unlocked": false,
+    "phase75_launch_unlocked": false,
+    "optimizer_unlocked": false,
+    "training_unlocked": false,
+    "deployment_unlocked": false
+  }
+}

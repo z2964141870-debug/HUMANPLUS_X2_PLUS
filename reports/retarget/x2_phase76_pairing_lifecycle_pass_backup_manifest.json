@@ -1,0 +1,496 @@
+{
+  "schema": "x2_phase76_pairing_lifecycle_pass_backup_manifest_v1",
+  "date": "2026-08-12",
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass",
+  "decision": "PASS_INITIAL_PAIRING_PREFLIGHT_ONLY",
+  "scientific_result": null,
+  "prereg_sha256": "83cf7a50eed9f8b21023e5fe0f91dff6d29873149504145e4cd95c9d2261b367",
+  "launches_started": 3,
+  "launches_accepted": 3,
+  "autonomous_exit_zero_count": 3,
+  "registered_output_paths": 33,
+  "registered_outputs_present": 27,
+  "registered_outputs_absent": 6,
+  "elapsed_s": [
+    12.99055121600395,
+    12.887417668993294,
+    12.837565317000553
+  ],
+  "gpu_memory_used_peak_mib": [
+    3225.0,
+    3222.0,
+    3222.0
+  ],
+  "cumulative_positive_disk_delta_bytes": 413736960,
+  "physics_rollout_steps": 0,
+  "optimizer_steps": 0,
+  "backward_calls": 0,
+  "checkpoint_count": 0,
+  "phase77_shadow_preregistration_unlocked": true,
+  "phase77_scientific_preregistration_unlocked": false,
+  "phase77_launch_unlocked": false,
+  "files": [
+    {
+      "role": "prereg",
+      "path": "reports/retarget/x2_phase76_pairing_lifecycle_preflight_prereg.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_pairing_lifecycle_preflight_prereg.json",
+      "bytes": 9364,
+      "sha256": "83cf7a50eed9f8b21023e5fe0f91dff6d29873149504145e4cd95c9d2261b367"
+    },
+    {
+      "role": "prereg_sidecar",
+      "path": "reports/retarget/x2_phase76_pairing_lifecycle_preflight_prereg.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_pairing_lifecycle_preflight_prereg.json.sha256",
+      "bytes": 117,
+      "sha256": "c0515af10c13c4858733568abd6bc03782f20fe4e8fe1d13c9a797a3e154f7d3"
+    },
+    {
+      "role": "final_result",
+      "path": "reports/retarget/x2_phase76_pairing_lifecycle_preflight_result.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_pairing_lifecycle_preflight_result.json",
+      "bytes": 2203,
+      "sha256": "4f99508b3cd2d97282351bdc62c214f8feffe91ea86f0fde2bd2cca07b67acf5"
+    },
+    {
+      "role": "final_result_sidecar",
+      "path": "reports/retarget/x2_phase76_pairing_lifecycle_preflight_result.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_pairing_lifecycle_preflight_result.json.sha256",
+      "bytes": 117,
+      "sha256": "e0afa08bf70e6ba28876c324ebcb60be303e98685b6ca1a235f6f3e96776d2f2"
+    },
+    {
+      "role": "final_markdown",
+      "path": "reports/retarget/x2_phase76_pairing_lifecycle_preflight.md",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_pairing_lifecycle_preflight.md",
+      "bytes": 404,
+      "sha256": "3d8724c52fff5d8bccdd45eae27130397a3126df23e3564d46970dda787274ae"
+    },
+    {
+      "role": "technical_commit_seed0",
+      "path": "artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed0_commit.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed0_commit.json",
+      "bytes": 155904,
+      "sha256": "6973a11fbfa33a787671d82680d6a39b8d0333bd857443f48426495f62861448"
+    },
+    {
+      "role": "technical_commit_seed0_sidecar",
+      "path": "artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed0_commit.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed0_commit.json.sha256",
+      "bytes": 84,
+      "sha256": "8d31edd5781ef66457786e3aad7f9f8b0f242eb3531bc4c8dc663c525e7163e8"
+    },
+    {
+      "role": "technical_screen_seed0",
+      "path": "reports/retarget/x2_phase76_seed0_screen.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed0_screen.json",
+      "bytes": 150766,
+      "sha256": "ed0d3ce21a4bc690305f00f15b68aefdb4ec3d93f382b24c5e851577ab7ae42f"
+    },
+    {
+      "role": "technical_screen_seed0_sidecar",
+      "path": "reports/retarget/x2_phase76_seed0_screen.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed0_screen.json.sha256",
+      "bytes": 95,
+      "sha256": "52f0323c477a6c84bd5e3c66d45474e431d85774284e73de36b2809d64983f1c"
+    },
+    {
+      "role": "resource_ledger_seed0",
+      "path": "reports/retarget/x2_phase76_seed0_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed0_resource.json",
+      "bytes": 2297,
+      "sha256": "e2878c223a6264f34d78d21fa2264fef809cf5449c4f988415740d6424ee9fcf"
+    },
+    {
+      "role": "resource_ledger_seed0_sidecar",
+      "path": "reports/retarget/x2_phase76_seed0_resource.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed0_resource.json.sha256",
+      "bytes": 97,
+      "sha256": "53a210cb40bbc2f414ec5204a497d68c288a94929efc7727df39fc24a9277134"
+    },
+    {
+      "role": "immutable_log_seed0",
+      "path": "/tmp/x2_phase76_logs/seed0.log",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed0.log",
+      "bytes": 167515,
+      "sha256": "f80975e0512afdb3a8c6dbe3336ba3d4f8c54002e3145439184c97b570055938"
+    },
+    {
+      "role": "immutable_log_seed0_sidecar",
+      "path": "/tmp/x2_phase76_logs/seed0.log.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed0.log.sha256",
+      "bytes": 76,
+      "sha256": "49acf0cd04261c5739ea1e652eb69f7fdba89f2abfe84a9aa7c6aeffb552c7be"
+    },
+    {
+      "role": "technical_commit_seed1",
+      "path": "artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed1_commit.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed1_commit.json",
+      "bytes": 155902,
+      "sha256": "dfba38aaf9e769abcffa101627f4495e6efa4088a0634481fdbdb5165f682064"
+    },
+    {
+      "role": "technical_commit_seed1_sidecar",
+      "path": "artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed1_commit.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed1_commit.json.sha256",
+      "bytes": 84,
+      "sha256": "8500e6c858d21730b9b0797a49ace66a3329375744c9a9253cc26da8d22e3c9c"
+    },
+    {
+      "role": "technical_screen_seed1",
+      "path": "reports/retarget/x2_phase76_seed1_screen.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed1_screen.json",
+      "bytes": 150765,
+      "sha256": "1642be946d7de7a0304b47a8dc82e545cdada1841ee6577b7ea5fef767488c17"
+    },
+    {
+      "role": "technical_screen_seed1_sidecar",
+      "path": "reports/retarget/x2_phase76_seed1_screen.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed1_screen.json.sha256",
+      "bytes": 95,
+      "sha256": "454b417195355aa7c9cd146665ae5d4ad0e914f091a8b604f7dde234b8e95715"
+    },
+    {
+      "role": "resource_ledger_seed1",
+      "path": "reports/retarget/x2_phase76_seed1_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed1_resource.json",
+      "bytes": 2298,
+      "sha256": "8ab476bf117d3e6bf669c48d76b03da3c28988b00416c7fe28e12c28736d9d2e"
+    },
+    {
+      "role": "resource_ledger_seed1_sidecar",
+      "path": "reports/retarget/x2_phase76_seed1_resource.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed1_resource.json.sha256",
+      "bytes": 97,
+      "sha256": "094df475ac8e6a3449679fb94d3314e1980d3287fa79db1f37a226c858a3b6cc"
+    },
+    {
+      "role": "immutable_log_seed1",
+      "path": "/tmp/x2_phase76_logs/seed1.log",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed1.log",
+      "bytes": 167514,
+      "sha256": "f126fce91a064aae7856d43bb710f69f38403f60b08071d033168fba262b36a6"
+    },
+    {
+      "role": "immutable_log_seed1_sidecar",
+      "path": "/tmp/x2_phase76_logs/seed1.log.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed1.log.sha256",
+      "bytes": 76,
+      "sha256": "4fc3d7188e1b97d641881606613cc76ee6ba82fe0c43e115ad758a2a7d24b3ee"
+    },
+    {
+      "role": "technical_commit_seed2",
+      "path": "artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed2_commit.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed2_commit.json",
+      "bytes": 155905,
+      "sha256": "c841e2cc5b5f6e35bdddfefb5406a34cd2740c43398f2dea4a3db56dc1996430"
+    },
+    {
+      "role": "technical_commit_seed2_sidecar",
+      "path": "artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed2_commit.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed2_commit.json.sha256",
+      "bytes": 84,
+      "sha256": "c9ad2b03f6b98074ba36a0cb626f8a02d5400a7adfbeedbf669341be534dcc7f"
+    },
+    {
+      "role": "technical_screen_seed2",
+      "path": "reports/retarget/x2_phase76_seed2_screen.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed2_screen.json",
+      "bytes": 150767,
+      "sha256": "26c4d310825803057aecb273de0bf3edb63c5027402449b4bf4bba914663091e"
+    },
+    {
+      "role": "technical_screen_seed2_sidecar",
+      "path": "reports/retarget/x2_phase76_seed2_screen.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed2_screen.json.sha256",
+      "bytes": 95,
+      "sha256": "6466076238b913ee20ed4eb9d502f40cd57346933d475a80460fabf5b715654b"
+    },
+    {
+      "role": "resource_ledger_seed2",
+      "path": "reports/retarget/x2_phase76_seed2_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed2_resource.json",
+      "bytes": 2298,
+      "sha256": "98e286b60a31898e811bfb0a14722d03c426b082998aab31bd5543b1bab664ec"
+    },
+    {
+      "role": "resource_ledger_seed2_sidecar",
+      "path": "reports/retarget/x2_phase76_seed2_resource.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_phase76_seed2_resource.json.sha256",
+      "bytes": 97,
+      "sha256": "bc7d55f6e2f53c38a926fa39fcf466aaa602778393295ef9fd79591db5aaee9f"
+    },
+    {
+      "role": "immutable_log_seed2",
+      "path": "/tmp/x2_phase76_logs/seed2.log",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed2.log",
+      "bytes": 167516,
+      "sha256": "db3391ef5bbb663e25bd60acbee4cf72a2978ac0a48b0cffc85eccd985204c25"
+    },
+    {
+      "role": "immutable_log_seed2_sidecar",
+      "path": "/tmp/x2_phase76_logs/seed2.log.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/seed2.log.sha256",
+      "bytes": 76,
+      "sha256": "065a0004279dcc4aeaff677f863ad79bb17768d51131dcdbd0fc6a378c83f44b"
+    },
+    {
+      "role": "immutable_code:runner_sha256",
+      "path": "scripts/run_x2_phase76_pairing_lifecycle_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/run_x2_phase76_pairing_lifecycle_preflight.py",
+      "bytes": 4946,
+      "sha256": "e6cd670a83a76e97bca5f1efa248f11aa94c127716cff14484d8aac5fab86f47"
+    },
+    {
+      "role": "immutable_code:helper_sha256",
+      "path": "src/cwi_x2/phase76_pairing_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase76_pairing_preflight.py",
+      "bytes": 3292,
+      "sha256": "6a62eac271f6b8fea03d4e9da62d77861e459ac17f12178dd95f046712ed3551"
+    },
+    {
+      "role": "immutable_code:run_script_sha256",
+      "path": "scripts/run_x2_phase76_pairing_lifecycle_preflight.sh",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/run_x2_phase76_pairing_lifecycle_preflight.sh",
+      "bytes": 6644,
+      "sha256": "e3b4d4d4b9e6a97d99fe092cc94c414e38a58fd5ff98767c9623416ce78ebce4"
+    },
+    {
+      "role": "immutable_code:test_sha256",
+      "path": "tests/test_phase76_pairing_lifecycle_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/test_phase76_pairing_lifecycle_preflight.py",
+      "bytes": 3467,
+      "sha256": "18adb40c02bde7bc2ce78cea23a084cde185f5f77fbdae16f97ed36906f4c679"
+    },
+    {
+      "role": "immutable_code:finalizer_sha256",
+      "path": "tools/retarget/finalize_x2_phase76_pairing_lifecycle_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/finalize_x2_phase76_pairing_lifecycle_preflight.py",
+      "bytes": 2107,
+      "sha256": "ba2f8967458f82faf11a33e1224f4892f0fb80f4dd7a60e851bcd5d7c8e44491"
+    },
+    {
+      "role": "immutable_code:finalizer_test_sha256",
+      "path": "tests/test_phase76_pairing_lifecycle_finalizer.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/test_phase76_pairing_lifecycle_finalizer.py",
+      "bytes": 3213,
+      "sha256": "311a54ed63c0930db2e89f7e1577a27c00b1b9e94c78bd54f83d383f727e6ed0"
+    },
+    {
+      "role": "immutable_code:phase60_posture_module_sha256",
+      "path": "src/x2_native_locomotion_posture_phase60.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_native_locomotion_posture_phase60_dependency.py",
+      "bytes": 9478,
+      "sha256": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb"
+    },
+    {
+      "role": "immutable_code:x2_flat_env_cfg_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/flat_env_cfg.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_flat_env_cfg_dependency.py",
+      "bytes": 22682,
+      "sha256": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8"
+    },
+    {
+      "role": "immutable_code:x2_reward_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/rewards.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_rewards_dependency.py",
+      "bytes": 11497,
+      "sha256": "a3dc36a3e072bdfe0abd0fcdb05e07de24415e2bc364b74397ca097cb52f388d"
+    },
+    {
+      "role": "immutable_code:x2_gait_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/gait.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_gait_dependency.py",
+      "bytes": 3739,
+      "sha256": "0d940c8f5363f0e6662ee9d7c85b3310edb8e90ab435bea6b8e1d1c7b79809e1"
+    },
+    {
+      "role": "immutable_code:x2_action_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/mdp/actions.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_manager_actions_dependency.py",
+      "bytes": 5164,
+      "sha256": "147a2d1b1aaedd73443ce5c56cdcf5f91978e41ea14a72efb722faeac4bb06f0"
+    },
+    {
+      "role": "immutable_code:x2_gait_action_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/actions.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_gait_actions_dependency.py",
+      "bytes": 8823,
+      "sha256": "463b86ea509d5af3a454f151b98ed641618fe8312432c50c774efb430a1fce10"
+    },
+    {
+      "role": "immutable_code:upper_hook_sha256",
+      "path": "hooks/sitecustomize.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/sitecustomize_upper_hook.py",
+      "bytes": 16067,
+      "sha256": "58e572ff863093e58894027dda3a51726b1fa883d7cc9a5d54f5dd562b91f83d"
+    },
+    {
+      "role": "immutable_code:heading_command_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/heading_command.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/heading_command_dependency.py",
+      "bytes": 11111,
+      "sha256": "def18f85e55d555d447d02c03d080f6ee0eb6a80097fe629508147e35b0aa901"
+    },
+    {
+      "role": "immutable_code:modular_env_cfg_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/modular_tracking_env_cfg.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/modular_tracking_env_cfg_dependency.py",
+      "bytes": 67963,
+      "sha256": "c85e9d3e1412d36b47d2cafa8744f8858b39a161e67193e405ded5e7d73bc22e"
+    },
+    {
+      "role": "immutable_code:x2_robot_cfg_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/robots/x2.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_robot_cfg_dependency.py",
+      "bytes": 22596,
+      "sha256": "8d9f7d22789b44d79c96789bfc569cf015bb662bc4f5b7c925deba20e10d943b"
+    },
+    {
+      "role": "immutable_code:phase68_interface_sha256",
+      "path": "src/cwi_x2/phase68_residual_ppo.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase68_residual_ppo_dependency.py",
+      "bytes": 11268,
+      "sha256": "c67dd5f8bb8387ef9b1ec616cf0d885846944f19ed3e16155b4b607363f85157"
+    },
+    {
+      "role": "immutable_code:residual_module_sha256",
+      "path": "src/cwi_x2/phase_conditioned_knee_residual.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase_conditioned_knee_residual_dependency.py",
+      "bytes": 4174,
+      "sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b"
+    },
+    {
+      "role": "immutable_code:phase69_helper_sha256",
+      "path": "src/cwi_x2/phase69_reward_attribution.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase69_reward_attribution_dependency.py",
+      "bytes": 9468,
+      "sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295"
+    },
+    {
+      "role": "immutable_code:ledger_sha256",
+      "path": "tools/retarget/run_with_gpu_deadline_ledger_phase76.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/run_with_gpu_deadline_ledger_phase76.py",
+      "bytes": 8261,
+      "sha256": "8aa26334202f0a9ee83e106c1d296649c7b9b415b798df06f4233754d3d83704"
+    },
+    {
+      "role": "immutable_code:supervisor_test_sha256",
+      "path": "tests/test_phase76_deadline_supervisor.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/test_phase76_deadline_supervisor.py",
+      "bytes": 2961,
+      "sha256": "85f2635343f5902fa3449ca04f06eda404217741dbdd4e8ef7ba11fd62deee9e"
+    },
+    {
+      "role": "dynamic_wrapper_source",
+      "path": "scripts/run_x2_phase75_pairing_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase75_runner_source.py",
+      "bytes": 4608,
+      "sha256": "a08cc5d79b87beec71394c71b2c83800fc1e84fded0d7672123dbf27dc24c107"
+    },
+    {
+      "role": "dynamic_wrapper_source",
+      "path": "tools/retarget/finalize_x2_phase75_pairing_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase75_finalizer_source.py",
+      "bytes": 1048,
+      "sha256": "ee946567b0fc50afc41fee18fc72f3159aff8701d3083416b60bd41411308e5b"
+    },
+    {
+      "role": "dynamic_wrapper_source",
+      "path": "scripts/run_x2_phase74_pairing_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase74_runner_source.py",
+      "bytes": 35563,
+      "sha256": "3430a5130f8c04ea5083e932f387f69a91e781564333568c2de060e6187effcc"
+    },
+    {
+      "role": "dynamic_wrapper_source",
+      "path": "tools/retarget/finalize_x2_phase74_pairing_preflight.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase74_finalizer_source.py",
+      "bytes": 7147,
+      "sha256": "48ea1b3fc8de1500c13f371b110a901c162d457227d43e3421f75d3927b16955"
+    },
+    {
+      "role": "immutable_input:base_checkpoint_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/base_model_2600.pt",
+      "bytes": 1809013,
+      "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb"
+    },
+    {
+      "role": "immutable_input:zero_residual_checkpoint_sha256",
+      "path": "artifacts/retarget/x2_phase_conditioned_residual_phase68/source_stage219_zero_residual.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/source_stage219_zero_residual.pt",
+      "bytes": 20949,
+      "sha256": "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3"
+    },
+    {
+      "role": "immutable_input:environment_yaml_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/env.yaml",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/stage219_env.yaml",
+      "bytes": 41000,
+      "sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7"
+    },
+    {
+      "role": "immutable_input:agent_yaml_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/agent.yaml",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/stage219_agent.yaml",
+      "bytes": 1106,
+      "sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368"
+    },
+    {
+      "role": "immutable_input:gait_template_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_official_forward_gait_phase_template_15dof.npz",
+      "bytes": 8595,
+      "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"
+    },
+    {
+      "role": "immutable_input:upper_motion_sha256",
+      "path": "artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/x2_hybrid_phase44_upper_motion.npz",
+      "bytes": 24363,
+      "sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef"
+    },
+    {
+      "role": "phase75_provenance_control",
+      "path": "reports/retarget/x2_phase75_seed0_resource_failure_freeze.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase75_failure_freeze.json",
+      "bytes": 3986,
+      "sha256": "6bfdac618c115edc5e54a4797de73f1d88d9fa422cd593fa44038117ed73bc8f"
+    },
+    {
+      "role": "phase75_provenance_control_sidecar",
+      "path": "reports/retarget/x2_phase75_seed0_resource_failure_freeze.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase75_failure_freeze.json.sha256",
+      "bytes": 112,
+      "sha256": "04d4d09ef8076f7dfa4fc84093c1dbaa9feb5bd50e15440bd436fd92730c4658"
+    },
+    {
+      "role": "phase75_provenance_control",
+      "path": "reports/retarget/x2_phase75_seed0_resource_failure_backup_manifest.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase75_failure_backup_manifest.json",
+      "bytes": 17562,
+      "sha256": "80f7efc92c2fe7faaea5814f85d00cdecb992852538c7f6ab394e142f4df07c8"
+    },
+    {
+      "role": "phase75_provenance_control_sidecar",
+      "path": "reports/retarget/x2_phase75_seed0_resource_failure_backup_manifest.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/phase75_failure_backup_manifest.json.sha256",
+      "bytes": 121,
+      "sha256": "94138b07ac719e47487c72d1f36ebee2df0675c0dd168003a3f8941c8e5ff59c"
+    },
+    {
+      "role": "manifest_builder",
+      "path": "tools/retarget/build_x2_phase76_pairing_lifecycle_pass_backup_manifest.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase76_pairing_lifecycle_pass/build_x2_phase76_pairing_lifecycle_pass_backup_manifest.py",
+      "bytes": 19832,
+      "sha256": "36fb5b20d0ac4dc5e61a364e547a70e60d2b4b1dc953d2df458d69fd0df5d702"
+    }
+  ],
+  "payload_count": 65,
+  "payload_total_bytes": 3676634,
+  "remote_expected_unique_file_count_including_controls": 67,
+  "remote_listing_file_count": 67,
+  "remote_listing_byte_sizes_match": true,
+  "remote_listing_checked_at": "2026-08-12T23:24:23+08:00",
+  "verification": "All 67 unique remote basenames were listed with exact byte-size equality; SHA256 is preserved in this manifest because bdpan does not expose remote content SHA256."
+}

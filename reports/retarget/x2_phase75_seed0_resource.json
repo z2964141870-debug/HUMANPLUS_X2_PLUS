@@ -1,0 +1,51 @@
+{
+  "schema": "x2_gpu_run_ledger_v1",
+  "label": "phase75_seed0_single_process_pairing_preflight",
+  "command": [
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_phase75_pairing_preflight.py",
+    "--checkpoint",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--residual-checkpoint",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase_conditioned_residual_phase68/source_stage219_zero_residual.pt",
+    "--prereg",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_phase75_pairing_preflight_prereg.json",
+    "--seed-index",
+    "0",
+    "--env-seed",
+    "750041",
+    "--commit",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase75_pairing_preflight/seed0_commit.json",
+    "--output",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_phase75_seed0_screen.json",
+    "--failure",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_phase75_seed0_failure.json",
+    "--num-envs",
+    "128",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "exit_code": 0,
+  "start_wall_ns": 1786546445580386414,
+  "elapsed_s": 144.31169396899713,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 104568225792,
+    "free_bytes": 372229013504
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 104703512576,
+    "free_bytes": 372093726720
+  },
+  "disk_used_delta_bytes": 135286784,
+  "gpu_sample_count": 270,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 3122.0,
+    "utilization_peak_percent": 50.0,
+    "power_peak_w": 121.38
+  }
+}

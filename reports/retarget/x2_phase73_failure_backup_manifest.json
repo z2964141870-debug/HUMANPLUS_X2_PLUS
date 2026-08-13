@@ -1,0 +1,474 @@
+{
+  "schema": "x2_phase73_failure_backup_manifest_v1",
+  "date": "2026-08-12",
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure",
+  "decision": "FAIL_INVALID_STOP",
+  "scientific_result": null,
+  "launches_started": 2,
+  "launches_with_complete_rollout": 1,
+  "launches_not_started": 8,
+  "remaining_launches_forbidden": true,
+  "replacement_launch_forbidden": true,
+  "registered_output_paths": 113,
+  "registered_outputs_present": 14,
+  "registered_outputs_absent": 99,
+  "raw_bundle_sha256": "c64b146ddb6e42015b21430dbc9aa27c0b46756b34203f2dd149d929a4cb9c9b",
+  "ledger_exit_code_reliable": false,
+  "files": [
+    {
+      "role": "failure_summary",
+      "path": "reports/retarget/x2_phase73_failure.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_failure.json",
+      "bytes": 4442,
+      "sha256": "32a4ceef83bb8b7b02f84ccd6f64e3b3b7ab8b1ebb3747f3bea3290168c90433"
+    },
+    {
+      "role": "failure_summary_sidecar",
+      "path": "reports/retarget/x2_phase73_failure.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_failure.json.sha256",
+      "bytes": 90,
+      "sha256": "6ea524545a47daf5c357a7b23e41553f71a8caa2da3cc6513a9b790337df63d2"
+    },
+    {
+      "role": "failure_markdown",
+      "path": "reports/retarget/x2_phase73_failure.md",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_failure.md",
+      "bytes": 1231,
+      "sha256": "c99bb885433fc82a935ed49641d5a4d5a2ea03a5f1649177f2b12bfe755cfa62"
+    },
+    {
+      "role": "prereg",
+      "path": "reports/retarget/x2_phase73_antithetic_prereg.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_antithetic_prereg.json",
+      "bytes": 13091,
+      "sha256": "c243d59f1332c940f2009a0d09c044a80d0900a27b4cc065e1c10a74cf8ec49e"
+    },
+    {
+      "role": "prereg_sidecar",
+      "path": "reports/retarget/x2_phase73_antithetic_prereg.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_antithetic_prereg.json.sha256",
+      "bytes": 100,
+      "sha256": "925f55b922e80d48e4e9ebb5ad85b5b911ec374644cfde950a2e9dacaa1e7ff6"
+    },
+    {
+      "role": "schedule_inventory",
+      "path": "reports/retarget/x2_phase73_schedule_inventory.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_schedule_inventory.json",
+      "bytes": 2416,
+      "sha256": "a215f7790141a6198c6d28bfb1bb10825b6634e20a206a9af2b76864cf3334e0"
+    },
+    {
+      "role": "schedule_inventory_sidecar",
+      "path": "reports/retarget/x2_phase73_schedule_inventory.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_schedule_inventory.json.sha256",
+      "bytes": 101,
+      "sha256": "59cabc330e0026bf25f36c6f0a9fb0d5dbbe4b1acbe4381bec7887f1a58917e0"
+    },
+    {
+      "role": "schedule_seed0",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed0.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed0.pt",
+      "bytes": 206703,
+      "sha256": "a18a22611e571c99ca8071af2bb562acef68304ff2f674d94cc587f5733589a6"
+    },
+    {
+      "role": "schedule_seed0_sidecar",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed0.pt.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed0.pt.sha256",
+      "bytes": 83,
+      "sha256": "7e0ed0d141f309f8775a77edf8cacf0d66f93b50b1e8c483158d6b2306c2bac6"
+    },
+    {
+      "role": "schedule_seed1",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed1.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed1.pt",
+      "bytes": 206703,
+      "sha256": "f5d5b0976f7064c731b56855ebd67ae21e25752673e82944befd42f7e7454f73"
+    },
+    {
+      "role": "schedule_seed1_sidecar",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed1.pt.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed1.pt.sha256",
+      "bytes": 83,
+      "sha256": "670922238fdb935cbe409ddeb5b7a10a7f13c98c47cce9b7a38af101520b39e5"
+    },
+    {
+      "role": "schedule_seed2",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed2.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed2.pt",
+      "bytes": 206703,
+      "sha256": "52b570d28193f92220230a68913742f4c546160fe0875376bfdb2dc484e767bc"
+    },
+    {
+      "role": "schedule_seed2_sidecar",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed2.pt.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed2.pt.sha256",
+      "bytes": 83,
+      "sha256": "aaa22ad91ad120a667941c40396332969bdffd7bcfaa23f4822c8ab31055cd80"
+    },
+    {
+      "role": "schedule_seed3",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed3.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed3.pt",
+      "bytes": 206703,
+      "sha256": "2c9074663bfc4924137300081757bb1469e10e1ccdc87b2b7de8912b08a79638"
+    },
+    {
+      "role": "schedule_seed3_sidecar",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed3.pt.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed3.pt.sha256",
+      "bytes": 83,
+      "sha256": "21920bfe3fd14d5855cb0c3d33afef9b254c773012dbe08ff3a273e31b6680eb"
+    },
+    {
+      "role": "schedule_seed4",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed4.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed4.pt",
+      "bytes": 206703,
+      "sha256": "12318621e0a5648ee204ebd79219a32c33d5b285b52bcdfd3e18e683099fcb95"
+    },
+    {
+      "role": "schedule_seed4_sidecar",
+      "path": "artifacts/retarget/x2_phase73_schedules/epsilon_seed4.pt.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/epsilon_seed4.pt.sha256",
+      "bytes": 83,
+      "sha256": "0f547f1c9751ba9fd2ea24545d3ef8133de5b5ec4de2f89ef8f8ff6731b57106"
+    },
+    {
+      "role": "initial_commit",
+      "path": "artifacts/retarget/x2_phase73_antithetic/seed0_initial_commit.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_initial_commit.json",
+      "bytes": 5563,
+      "sha256": "ac1aee4930c713cdd8e7b064484835ccab7c79591c771274a6d70ebf5dbc0471"
+    },
+    {
+      "role": "initial_commit_sidecar",
+      "path": "artifacts/retarget/x2_phase73_antithetic/seed0_initial_commit.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_initial_commit.json.sha256",
+      "bytes": 92,
+      "sha256": "83fdf25ab3e5684a972b329ff7ec866302e24faaf276646247e6e514d957190e"
+    },
+    {
+      "role": "raw_rollout",
+      "path": "artifacts/retarget/x2_phase73_antithetic/seed0_plus_rollout.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_plus_rollout.pt",
+      "bytes": 24788017,
+      "sha256": "c64b146ddb6e42015b21430dbc9aa27c0b46756b34203f2dd149d929a4cb9c9b"
+    },
+    {
+      "role": "raw_rollout_sidecar",
+      "path": "artifacts/retarget/x2_phase73_antithetic/seed0_plus_rollout.pt.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_plus_rollout.pt.sha256",
+      "bytes": 88,
+      "sha256": "5813fb237586994669618c3fe4186a78aafbde054fa5f8c295273e99895b0ff6"
+    },
+    {
+      "role": "plus_technical_screen",
+      "path": "reports/retarget/x2_phase73_seed0_plus_screen.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_seed0_plus_screen.json",
+      "bytes": 2081,
+      "sha256": "236881ebd2c0a0ff20a38bd15d41423f2ce11b3b86ee2f6cc3125f21273b9c70"
+    },
+    {
+      "role": "plus_technical_screen_sidecar",
+      "path": "reports/retarget/x2_phase73_seed0_plus_screen.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_seed0_plus_screen.json.sha256",
+      "bytes": 100,
+      "sha256": "022109d8425b63cba52dae908d78bffb2007aef0902c968f70840b2932ae34d4"
+    },
+    {
+      "role": "plus_resource_ledger",
+      "path": "reports/retarget/x2_phase73_seed0_plus_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_seed0_plus_resource.json",
+      "bytes": 2073,
+      "sha256": "87712bd5b512753f957d35a2ba861fea3a7fd8676f63161c58d1eb4a2f79c600"
+    },
+    {
+      "role": "plus_resource_ledger_sidecar",
+      "path": "reports/retarget/x2_phase73_seed0_plus_resource.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_seed0_plus_resource.json.sha256",
+      "bytes": 102,
+      "sha256": "6c8eeedf5e7aa1319354e11c8f56ce4b6de0c9f5aa216ba59f973b79c8ab493a"
+    },
+    {
+      "role": "minus_resource_ledger",
+      "path": "reports/retarget/x2_phase73_seed0_minus_resource.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_seed0_minus_resource.json",
+      "bytes": 2079,
+      "sha256": "0cbe73d35eba5446336b990091a566952096f52c85d01b04639f9333b52f53d3"
+    },
+    {
+      "role": "minus_resource_ledger_sidecar",
+      "path": "reports/retarget/x2_phase73_seed0_minus_resource.json.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_phase73_seed0_minus_resource.json.sha256",
+      "bytes": 103,
+      "sha256": "5d0d3ed85e93ae99be5a12ba4687a0a38e44bb583744e478840beeb2f35e3b57"
+    },
+    {
+      "role": "plus_immutable_log",
+      "path": "/tmp/x2_phase73_logs/seed0_plus.log",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_plus.log",
+      "bytes": 18991,
+      "sha256": "1d75246f458b7a47c97ef39f42954aec0254875533d1f28cf46df911e0c60b23"
+    },
+    {
+      "role": "plus_immutable_log_sidecar",
+      "path": "/tmp/x2_phase73_logs/seed0_plus.log.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_plus.log.sha256",
+      "bytes": 81,
+      "sha256": "6d2b59a6d9996a1796943abcd9417380c60b66721ac0eea1044f181e79caa6a0"
+    },
+    {
+      "role": "minus_failure_log",
+      "path": "/tmp/x2_phase73_logs/seed0_minus.log",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_minus.log",
+      "bytes": 10661,
+      "sha256": "2f5227a1a6272cd1acc173c94bf4735e7ec9c87c011822274e73c34b89ac0c64"
+    },
+    {
+      "role": "minus_failure_log_sidecar",
+      "path": "/tmp/x2_phase73_logs/seed0_minus.log.sha256",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/seed0_minus.log.sha256",
+      "bytes": 82,
+      "sha256": "d1870d7623b7f96f1d0aac242f506795a92bb975f95537911ed13bd333db81eb"
+    },
+    {
+      "role": "immutable_code:runner_sha256",
+      "path": "scripts/run_x2_phase73_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/run_x2_phase73_antithetic.py",
+      "bytes": 1797,
+      "sha256": "f5bd3185645c9b2bfa2ae7cd307a4746b05d7808931a5b470b1f5a6e08fa34ec"
+    },
+    {
+      "role": "immutable_code:helper_sha256",
+      "path": "src/cwi_x2/phase73_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase73_antithetic.py",
+      "bytes": 467,
+      "sha256": "1ef6e1aecae0cf350b6c51c9c71042103ce8d491d8bbc2277eefa7fe0e654789"
+    },
+    {
+      "role": "immutable_code:run_script_sha256",
+      "path": "scripts/run_x2_phase73_antithetic.sh",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/run_x2_phase73_antithetic.sh",
+      "bytes": 8028,
+      "sha256": "1faf9e433dd71beab794808b36cb1eeba016ca742d2f74493acd5a6c70f782ec"
+    },
+    {
+      "role": "immutable_code:pair_validator_sha256",
+      "path": "tools/retarget/validate_x2_phase73_pair.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/validate_x2_phase73_pair.py",
+      "bytes": 668,
+      "sha256": "6a852e3e509ee603c9d0d56f2256b77ce0a22a4f97966124f3714860b06cfc0c"
+    },
+    {
+      "role": "immutable_code:finalizer_sha256",
+      "path": "tools/retarget/finalize_x2_phase73_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/finalize_x2_phase73_antithetic.py",
+      "bytes": 664,
+      "sha256": "475708b8ebf32f061109adf1a5f8d4c4ff045af14f714a3e95c28d1b65a79372"
+    },
+    {
+      "role": "immutable_code:runner_test_sha256",
+      "path": "tests/test_phase73_antithetic_runner.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/test_phase73_antithetic_runner.py",
+      "bytes": 3585,
+      "sha256": "aa37d4ebecf67235e7c7343a05ef832b7769e98708c8fc3bfdcbfa75add7e1bb"
+    },
+    {
+      "role": "immutable_code:helper_test_sha256",
+      "path": "tests/test_phase73_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/test_phase73_antithetic.py",
+      "bytes": 5579,
+      "sha256": "58f3ed9097ee5ab727ae2d6bd7157330bf5a19d359839b61dd8ce2499942113e"
+    },
+    {
+      "role": "immutable_code:finalizer_test_sha256",
+      "path": "tests/test_phase73_antithetic_finalizer.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/test_phase73_antithetic_finalizer.py",
+      "bytes": 381,
+      "sha256": "7a2fbf7a5163258505625a3cc2df574030948d999886877a5ce85f9bca7b1ebd"
+    },
+    {
+      "role": "immutable_code:schedule_generator_sha256",
+      "path": "tools/retarget/prepare_x2_phase73_schedules.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/prepare_x2_phase73_schedules.py",
+      "bytes": 3295,
+      "sha256": "831b475c659536f1c0079242fa3109dc51b2eb63294c03514728289b23dd9e65"
+    },
+    {
+      "role": "immutable_code:phase60_posture_module_sha256",
+      "path": "src/x2_native_locomotion_posture_phase60.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_native_locomotion_posture_phase60_dependency.py",
+      "bytes": 9478,
+      "sha256": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb"
+    },
+    {
+      "role": "immutable_code:x2_flat_env_cfg_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/flat_env_cfg.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_flat_env_cfg_dependency.py",
+      "bytes": 22682,
+      "sha256": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8"
+    },
+    {
+      "role": "immutable_code:x2_reward_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/rewards.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_rewards_dependency.py",
+      "bytes": 11497,
+      "sha256": "a3dc36a3e072bdfe0abd0fcdb05e07de24415e2bc364b74397ca097cb52f388d"
+    },
+    {
+      "role": "immutable_code:x2_gait_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/gait.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_gait_dependency.py",
+      "bytes": 3739,
+      "sha256": "0d940c8f5363f0e6662ee9d7c85b3310edb8e90ab435bea6b8e1d1c7b79809e1"
+    },
+    {
+      "role": "immutable_code:x2_action_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/mdp/actions.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_actions_dependency.py",
+      "bytes": 5164,
+      "sha256": "147a2d1b1aaedd73443ce5c56cdcf5f91978e41ea14a72efb722faeac4bb06f0"
+    },
+    {
+      "role": "immutable_code:heading_command_module_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/heading_command.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/heading_command_dependency.py",
+      "bytes": 11111,
+      "sha256": "def18f85e55d555d447d02c03d080f6ee0eb6a80097fe629508147e35b0aa901"
+    },
+    {
+      "role": "immutable_code:modular_env_cfg_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/modular_tracking_env_cfg.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/modular_tracking_env_cfg_dependency.py",
+      "bytes": 67963,
+      "sha256": "c85e9d3e1412d36b47d2cafa8744f8858b39a161e67193e405ded5e7d73bc22e"
+    },
+    {
+      "role": "immutable_code:x2_robot_cfg_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/robots/x2.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_robot_cfg_dependency.py",
+      "bytes": 22596,
+      "sha256": "8d9f7d22789b44d79c96789bfc569cf015bb662bc4f5b7c925deba20e10d943b"
+    },
+    {
+      "role": "immutable_code:phase68_interface_sha256",
+      "path": "src/cwi_x2/phase68_residual_ppo.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase68_residual_ppo_dependency.py",
+      "bytes": 11268,
+      "sha256": "c67dd5f8bb8387ef9b1ec616cf0d885846944f19ed3e16155b4b607363f85157"
+    },
+    {
+      "role": "immutable_code:residual_module_sha256",
+      "path": "src/cwi_x2/phase_conditioned_knee_residual.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase_conditioned_knee_residual_dependency.py",
+      "bytes": 4174,
+      "sha256": "f365b1318be1023d4352c78d26657873f3dfc89803148ef7f61a5bd057019d0b"
+    },
+    {
+      "role": "immutable_code:phase69_helper_sha256",
+      "path": "src/cwi_x2/phase69_reward_attribution.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase69_reward_attribution_dependency.py",
+      "bytes": 9468,
+      "sha256": "b3ebe7bc500cedc3ee9af23bafb5936bf92f9801c5ae2722fff009ec157d3295"
+    },
+    {
+      "role": "immutable_code:phase70_helper_sha256",
+      "path": "src/cwi_x2/phase70_long_lookahead.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase70_long_lookahead_dependency.py",
+      "bytes": 4111,
+      "sha256": "9d36a8e6a37393374f740ed00b0292033d2a5d0148ba1cc9e1d626eb49f2331a"
+    },
+    {
+      "role": "immutable_code:ledger_sha256",
+      "path": "tools/retarget/run_with_gpu_ledger.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/run_with_gpu_ledger.py",
+      "bytes": 4219,
+      "sha256": "d5a4f1a6b15cb827b5cba1bc7ff49cd7b794247259d23768686a7507bc45383e"
+    },
+    {
+      "role": "wrapper_runtime_dependency:phase72_runner_source",
+      "path": "scripts/run_x2_phase72_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase72_frozen_runner_source.py",
+      "bytes": 32490,
+      "sha256": "444482b29d05303b6b957b0f043d588c7f67b5bedc231912e33f7e47cccfb335"
+    },
+    {
+      "role": "wrapper_runtime_dependency:phase72_helper_source",
+      "path": "src/cwi_x2/phase72_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase72_frozen_helper_source.py",
+      "bytes": 9222,
+      "sha256": "9201a323e593215394879fe61c3d066020dbbe4a4574d33c250db26906310cb2"
+    },
+    {
+      "role": "wrapper_runtime_dependency:phase72_pair_validator_source",
+      "path": "tools/retarget/validate_x2_phase72_pair.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase72_frozen_pair_validator_source.py",
+      "bytes": 10425,
+      "sha256": "f744bbb03f1dd1ce7de4ad79c2b17aa52b76cf49225455ad219f941aadd587bf"
+    },
+    {
+      "role": "wrapper_runtime_dependency:phase72_finalizer_source",
+      "path": "tools/retarget/finalize_x2_phase72_antithetic.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/phase72_frozen_finalizer_source.py",
+      "bytes": 15787,
+      "sha256": "0e7e3cbf4c292f53984d54607d382e1c4326d9da56d6ecce6af3de61f8c20197"
+    },
+    {
+      "role": "immutable_input:base_checkpoint_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/base_model_2600.pt",
+      "bytes": 1809013,
+      "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb"
+    },
+    {
+      "role": "immutable_input:zero_residual_checkpoint_sha256",
+      "path": "artifacts/retarget/x2_phase_conditioned_residual_phase68/source_stage219_zero_residual.pt",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/source_stage219_zero_residual.pt",
+      "bytes": 20949,
+      "sha256": "801b433da9e1c34569b590192d81dcddc26cc9b115d1903049729ad154d4eaf3"
+    },
+    {
+      "role": "immutable_input:environment_yaml_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/env.yaml",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/stage219_env.yaml",
+      "bytes": 41000,
+      "sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7"
+    },
+    {
+      "role": "immutable_input:agent_yaml_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/agent.yaml",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/stage219_agent.yaml",
+      "bytes": 1106,
+      "sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368"
+    },
+    {
+      "role": "immutable_input:gait_template_sha256",
+      "path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_official_forward_gait_phase_template_15dof.npz",
+      "bytes": 8595,
+      "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"
+    },
+    {
+      "role": "immutable_input:upper_motion_sha256",
+      "path": "artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/x2_hybrid_phase44_upper_motion.npz",
+      "bytes": 24363,
+      "sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef"
+    },
+    {
+      "role": "manifest_builder",
+      "path": "tools/retarget/build_x2_phase73_failure_backup_manifest.py",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-12/task2_backward_pitch/phase73_failure/build_x2_phase73_failure_backup_manifest.py",
+      "bytes": 17997,
+      "sha256": "067bf73ebaab063620b039cf1926f619f7d4739e90a0de5e81af717d1b5bc0a6"
+    }
+  ],
+  "payload_count": 64,
+  "payload_total_bytes": 28088395,
+  "remote_expected_unique_file_count_including_controls": 66,
+  "remote_listing_file_count": 66,
+  "remote_listing_byte_sizes_match": true,
+  "remote_listing_checked_at": "2026-08-12T13:59:25Z",
+  "verification": "All 66 unique remote basenames were listed with exact byte-size equality; SHA256 is preserved locally because bdpan does not expose remote content SHA256."
+}

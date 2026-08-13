@@ -1,0 +1,15 @@
+{
+  "schema": "x2_phase74_pairing_preflight_failure_v1",
+  "decision": "FAIL_TECHNICAL_STOP",
+  "seed_index": 0,
+  "env_seed": 740041,
+  "exception_type": "RuntimeError",
+  "exception": "indices should be either on cpu or on the same device as the indexed tensor (cpu)",
+  "screen_exists": false,
+  "commit_exists": false,
+  "scientific_metrics_present": false,
+  "optimizer_steps": 0,
+  "backward_calls": 0,
+  "checkpoint_count": 0,
+  "remaining_launches_forbidden": true
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "x2_phase73_failure_v1",
+  "date": "2026-08-12",
+  "decision": "FAIL_INVALID_STOP",
+  "scientific_result": null,
+  "scientific_values_examined_for_failure_record": false,
+  "optimizer_or_checkpoint_authority": false,
+  "task2_complete": false,
+  "failure_class": "PAIR_INITIAL_STATE_BITWISE_MISMATCH",
+  "failure_message": "RuntimeError: Phase73 pair initial tensors are not bitwise identical",
+  "failure_site": {
+    "runtime_source": "scripts/run_x2_phase73_antithetic.py",
+    "compiled_line": 461,
+    "phase": "seed0_minus_init_verify_before_rollout",
+    "traceback_log": "/tmp/x2_phase73_logs/seed0_minus.log",
+    "traceback_log_line": 102
+  },
+  "execution": {
+    "planned_launches": 10,
+    "launches_started": 2,
+    "launches_with_complete_rollout": 1,
+    "launches_failed_before_rollout": 1,
+    "launches_not_started": 8,
+    "replacement_launch_forbidden": true,
+    "remaining_launches_forbidden": true,
+    "seed0_plus_start_utc": "2026-08-12T13:50:51.856787+00:00",
+    "seed0_plus_elapsed_s": 35.55031971800054,
+    "seed0_minus_start_utc": "2026-08-12T13:51:27.552079+00:00",
+    "seed0_minus_elapsed_s": 13.916112435999821
+  },
+  "registered_outputs": {
+    "total_paths": 113,
+    "present_paths": 14,
+    "absent_paths": 99,
+    "minus_rollout_present": false,
+    "minus_screen_present": false,
+    "seed0_pair_present": false,
+    "final_result_present": false
+  },
+  "evidence": {
+    "prereg": {
+      "path": "reports/retarget/x2_phase73_antithetic_prereg.json",
+      "bytes": 13091,
+      "sha256": "c243d59f1332c940f2009a0d09c044a80d0900a27b4cc065e1c10a74cf8ec49e"
+    },
+    "schedule_inventory": {
+      "path": "reports/retarget/x2_phase73_schedule_inventory.json",
+      "bytes": 2416,
+      "sha256": "a215f7790141a6198c6d28bfb1bb10825b6634e20a206a9af2b76864cf3334e0"
+    },
+    "seed0_initial_commit": {
+      "path": "artifacts/retarget/x2_phase73_antithetic/seed0_initial_commit.json",
+      "bytes": 5563,
+      "sha256": "ac1aee4930c713cdd8e7b064484835ccab7c79591c771274a6d70ebf5dbc0471",
+      "combined_sha256": "73c6322c44fc6635205f567a8d7e8bfa35929dc0204293858ef7646719adb099"
+    },
+    "seed0_plus_rollout": {
+      "path": "artifacts/retarget/x2_phase73_antithetic/seed0_plus_rollout.pt",
+      "bytes": 24788017,
+      "sha256": "c64b146ddb6e42015b21430dbc9aa27c0b46756b34203f2dd149d929a4cb9c9b",
+      "schema": "x2_phase73_antithetic_evidence_v1",
+      "seed_index": 0,
+      "sign": "plus"
+    },
+    "seed0_plus_screen": {
+      "path": "reports/retarget/x2_phase73_seed0_plus_screen.json",
+      "bytes": 2081,
+      "sha256": "236881ebd2c0a0ff20a38bd15d41423f2ce11b3b86ee2f6cc3125f21273b9c70",
+      "decision": "VALID_PENDING_PAIR",
+      "optimizer_steps": 0,
+      "backward_calls": 0,
+      "checkpoint_count": 0
+    },
+    "seed0_plus_resource": {
+      "path": "reports/retarget/x2_phase73_seed0_plus_resource.json",
+      "bytes": 2073,
+      "sha256": "87712bd5b512753f957d35a2ba861fea3a7fd8676f63161c58d1eb4a2f79c600",
+      "ledger_exit_code": 0,
+      "disk_used_delta_bytes": 149434368,
+      "gpu_memory_used_peak_mib": 3273
+    },
+    "seed0_plus_log": {
+      "path": "/tmp/x2_phase73_logs/seed0_plus.log",
+      "bytes": 18991,
+      "sha256": "1d75246f458b7a47c97ef39f42954aec0254875533d1f28cf46df911e0c60b23"
+    },
+    "seed0_minus_resource": {
+      "path": "reports/retarget/x2_phase73_seed0_minus_resource.json",
+      "bytes": 2079,
+      "sha256": "0cbe73d35eba5446336b990091a566952096f52c85d01b04639f9333b52f53d3",
+      "ledger_exit_code": 0,
+      "disk_used_delta_bytes": 132558848,
+      "gpu_memory_used_peak_mib": 3173
+    },
+    "seed0_minus_log": {
+      "path": "/tmp/x2_phase73_logs/seed0_minus.log",
+      "bytes": 10661,
+      "sha256": "2f5227a1a6272cd1acc173c94bf4735e7ec9c87c011822274e73c34b89ac0c64",
+      "contains_failure_message": true
+    }
+  },
+  "ledger_provenance_warning": {
+    "reliable": false,
+    "observed": "seed0 minus traceback is a RuntimeError but its resource ledger records exit_code 0",
+    "shell_stop_basis": "the required seed0 minus screen was absent",
+    "no_root_cause_beyond_observed_traceback_asserted": true
+  },
+  "audit_snapshot": {
+    "checked_at_utc": "2026-08-12T13:54:27Z",
+    "git_head": "1684ecb4ffce44de31bff469519bb21c911b3f72",
+    "disk_total_bytes": 502392610816,
+    "disk_used_bytes": 104418357248,
+    "disk_free_bytes": 372378882048,
+    "phase73_or_isaac_processes": 0
+  }
+}

@@ -1,0 +1,4819 @@
+{
+  "schema": "x2_phase76_pairing_preflight_screen_v1",
+  "decision": "PASS_INITIAL_PAIRING_LAUNCH",
+  "seed_index": 1,
+  "env_seed": 760042,
+  "commit": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/retarget/x2_phase76_pairing_lifecycle_preflight/seed1_commit.json",
+  "commit_sha256": "dfba38aaf9e769abcffa101627f4495e6efa4088a0634481fdbdb5165f682064",
+  "pair_count": 64,
+  "field_count": 268,
+  "diagnostics": {
+    "active_mask": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "critic_observation": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        93
+      ],
+      "donor_sha256": "5eee52eb358beba80496f7ddcaa2dc923cc9e19ab21318841a6ff19f80384e36",
+      "recipient_sha256": "74fb2a8be070e73578170fbcc67bb9bb9705f095188cc38fcef9e6c8bd606b89",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 6.204936653375626e-08,
+      "relative_l2": 1.3514574345932552e-08,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_manager._action": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_manager._prev_action": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._clip": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15,
+        2
+      ],
+      "donor_sha256": "87cece761b5009bf6b44edaeabf55fe30d2b38eb62b2f1dc908b1fc1496cc53d",
+      "recipient_sha256": "87cece761b5009bf6b44edaeabf55fe30d2b38eb62b2f1dc908b1fc1496cc53d",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._combined_normalized_actions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_initial_yaw": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_initial_yaw_valid": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_prev_upper_target": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "7a4eaa168fcf6297a79f7b532955358479ce393bd1e72b78584c7043dd8bb957",
+      "recipient_sha256": "7a4eaa168fcf6297a79f7b532955358479ce393bd1e72b78584c7043dd8bb957",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_upper_baseline": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "63bbf4abb631124b4a8801de328bc1cb121795a13a74c40039f03f0204f50871",
+      "recipient_sha256": "63bbf4abb631124b4a8801de328bc1cb121795a13a74c40039f03f0204f50871",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_upper_clip_ids": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_upper_fallback_active": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_upper_heading_error": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._cwi_upper_zero_mask": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._normalized_template_bias": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._offset": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "82f9f9918efff94ab6ced672fb1e6308cf5278d8fe00412f65979de845b93fb9",
+      "recipient_sha256": "82f9f9918efff94ab6ced672fb1e6308cf5278d8fe00412f65979de845b93fb9",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._plant_bias_env_mask": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "recipient_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._preclip_combined_actions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._processed_actions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._raw_actions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "recipient_sha256": "9780e5962f5e2b063710d3f3b902ff5237f9a0ae1ebfea7fef421d3383e775eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.action_term._scale": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "44efbaa6534aac792101db68569f590ed422c19389ccdbf95b34e12eae22d4eb",
+      "recipient_sha256": "44efbaa6534aac792101db68569f590ed422c19389ccdbf95b34e12eae22d4eb",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms._filtered_joint_positions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "56a33ba1aef014b35e75047123ece45d97d14ec470975d6eeb68d76323cd5d43",
+      "recipient_sha256": "56a33ba1aef014b35e75047123ece45d97d14ec470975d6eeb68d76323cd5d43",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms._ideal_env_mask": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms._position_alpha": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "recipient_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms._position_filter_initialized": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.applied_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "recipient_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "7f28ced321758604bb3a4aaa263990deeb20331acb38e71e23c8195fa7f27118",
+      "recipient_sha256": "7f28ced321758604bb3a4aaa263990deeb20331acb38e71e23c8195fa7f27118",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.computed_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "recipient_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "4a2687f09c603026e55764a192a94a141e362750cf059b27e6886584821747ec",
+      "recipient_sha256": "4a2687f09c603026e55764a192a94a141e362750cf059b27e6886584821747ec",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.dynamic_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "recipient_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.effort_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "e4a152a8f464556379bebfbe204d791fa2be93fdddad666a23ae9e73cbb8643f",
+      "recipient_sha256": "e4a152a8f464556379bebfbe204d791fa2be93fdddad666a23ae9e73cbb8643f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.effort_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "e4a152a8f464556379bebfbe204d791fa2be93fdddad666a23ae9e73cbb8643f",
+      "recipient_sha256": "e4a152a8f464556379bebfbe204d791fa2be93fdddad666a23ae9e73cbb8643f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.efforts_delay_buffer._circular_buffer._buffer": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        43,
+        14
+      ],
+      "donor_sha256": "07e3e743a5e067bc17ea9e0a07536872d16a36618f113e432900f7dafa895e14",
+      "recipient_sha256": "07e3e743a5e067bc17ea9e0a07536872d16a36618f113e432900f7dafa895e14",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.efforts_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "767a3b42621a697337d91e1cab3cd39b93eee5c307807a62a8b109e2fb1c4cac",
+      "recipient_sha256": "767a3b42621a697337d91e1cab3cd39b93eee5c307807a62a8b109e2fb1c4cac",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.efforts_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.efforts_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "recipient_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.positions_delay_buffer._circular_buffer._buffer": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        43,
+        14
+      ],
+      "donor_sha256": "9436cddc1dc660bf39bd4f993d3849f3a49ba61f3fa88bcb9901ed36af79f065",
+      "recipient_sha256": "9436cddc1dc660bf39bd4f993d3849f3a49ba61f3fa88bcb9901ed36af79f065",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.positions_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "767a3b42621a697337d91e1cab3cd39b93eee5c307807a62a8b109e2fb1c4cac",
+      "recipient_sha256": "767a3b42621a697337d91e1cab3cd39b93eee5c307807a62a8b109e2fb1c4cac",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.positions_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.positions_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "074161345c25585ae8bebc8eb7a87e6c15bfd5489b3464b28dd452e1f88c187d",
+      "recipient_sha256": "074161345c25585ae8bebc8eb7a87e6c15bfd5489b3464b28dd452e1f88c187d",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.velocities_delay_buffer._circular_buffer._buffer": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        43,
+        14
+      ],
+      "donor_sha256": "07e3e743a5e067bc17ea9e0a07536872d16a36618f113e432900f7dafa895e14",
+      "recipient_sha256": "07e3e743a5e067bc17ea9e0a07536872d16a36618f113e432900f7dafa895e14",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.velocities_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "767a3b42621a697337d91e1cab3cd39b93eee5c307807a62a8b109e2fb1c4cac",
+      "recipient_sha256": "767a3b42621a697337d91e1cab3cd39b93eee5c307807a62a8b109e2fb1c4cac",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.velocities_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.velocities_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.velocity_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "57fd37564496c7f8c88c5da1b2d1785399cea93736310bcfa4a8aec80205593a",
+      "recipient_sha256": "57fd37564496c7f8c88c5da1b2d1785399cea93736310bcfa4a8aec80205593a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.velocity_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "57fd37564496c7f8c88c5da1b2d1785399cea93736310bcfa4a8aec80205593a",
+      "recipient_sha256": "57fd37564496c7f8c88c5da1b2d1785399cea93736310bcfa4a8aec80205593a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.arms.viscous_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        14
+      ],
+      "donor_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "recipient_sha256": "f5281e5c57f515d04cd53b2baaf680b34cef2756ad6678a45c25d73d01a0b3a6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet._filtered_joint_positions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "a5316403d6883a33e9490dab1ceee97465c824fcef097961ef88f8c9f466fa59",
+      "recipient_sha256": "a5316403d6883a33e9490dab1ceee97465c824fcef097961ef88f8c9f466fa59",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet._ideal_env_mask": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet._position_alpha": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "recipient_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet._position_filter_initialized": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.applied_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "recipient_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "9e560bcf8d0d10f1a64172c88ec73fd8910e3842580c6931dd55bf10f47fbdcc",
+      "recipient_sha256": "9e560bcf8d0d10f1a64172c88ec73fd8910e3842580c6931dd55bf10f47fbdcc",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.computed_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "recipient_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "2cd181351909183ced90816fb5ba2ed8a78306f68c928cd38cce8f15a1f325e1",
+      "recipient_sha256": "2cd181351909183ced90816fb5ba2ed8a78306f68c928cd38cce8f15a1f325e1",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.dynamic_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "recipient_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.effort_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "aac1bf1b46dabb4d631c36ee8c01ec0a1ecba0c06240582caa7a2f753e6db185",
+      "recipient_sha256": "aac1bf1b46dabb4d631c36ee8c01ec0a1ecba0c06240582caa7a2f753e6db185",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.effort_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "aac1bf1b46dabb4d631c36ee8c01ec0a1ecba0c06240582caa7a2f753e6db185",
+      "recipient_sha256": "aac1bf1b46dabb4d631c36ee8c01ec0a1ecba0c06240582caa7a2f753e6db185",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.efforts_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "recipient_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.efforts_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.efforts_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "recipient_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.positions_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "recipient_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.positions_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.positions_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "b3c758c1de50f51ea3f1023d7892ff29c04ffaaea96816eff63508d43f074605",
+      "recipient_sha256": "b3c758c1de50f51ea3f1023d7892ff29c04ffaaea96816eff63508d43f074605",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.velocities_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "recipient_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.velocities_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.velocities_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.velocity_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "a029abb4420048564638aa74518ec1ad84434c15c62ce648b4e0fc9a4b15a891",
+      "recipient_sha256": "a029abb4420048564638aa74518ec1ad84434c15c62ce648b4e0fc9a4b15a891",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.velocity_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "a029abb4420048564638aa74518ec1ad84434c15c62ce648b4e0fc9a4b15a891",
+      "recipient_sha256": "a029abb4420048564638aa74518ec1ad84434c15c62ce648b4e0fc9a4b15a891",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.feet.viscous_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        4
+      ],
+      "donor_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "recipient_sha256": "efe47351b2082d9fd0735206f8d18dab105d72aff02e201119160563566fe66b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.applied_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "45638265335ffa3b5ce92461c059d1a1a7fc8016715384ac152f1c58084883ff",
+      "recipient_sha256": "45638265335ffa3b5ce92461c059d1a1a7fc8016715384ac152f1c58084883ff",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.computed_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "509d01f0bf4f69d5ad016b52b1f33e6aa56d891d3e8405b10d46d473d59bf13b",
+      "recipient_sha256": "509d01f0bf4f69d5ad016b52b1f33e6aa56d891d3e8405b10d46d473d59bf13b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.dynamic_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.effort_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "2a7833bf319aa4d756ca966dee62344f180914552cc0e8f203c83cfdf9ae37b7",
+      "recipient_sha256": "2a7833bf319aa4d756ca966dee62344f180914552cc0e8f203c83cfdf9ae37b7",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.effort_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "2a7833bf319aa4d756ca966dee62344f180914552cc0e8f203c83cfdf9ae37b7",
+      "recipient_sha256": "2a7833bf319aa4d756ca966dee62344f180914552cc0e8f203c83cfdf9ae37b7",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "1b941de7acf1f522301f00d802487ad8bae047805419ad40ec868142b5ceb207",
+      "recipient_sha256": "1b941de7acf1f522301f00d802487ad8bae047805419ad40ec868142b5ceb207",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.velocity_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "b56aaf2298a3b4a6226a0d45184b600923b4022b950532930210ed104329a1e9",
+      "recipient_sha256": "b56aaf2298a3b4a6226a0d45184b600923b4022b950532930210ed104329a1e9",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.velocity_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "b56aaf2298a3b4a6226a0d45184b600923b4022b950532930210ed104329a1e9",
+      "recipient_sha256": "b56aaf2298a3b4a6226a0d45184b600923b4022b950532930210ed104329a1e9",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.head.viscous_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs._filtered_joint_positions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "bb78d142ec6be584c1778e68cc6267f04a8515b4df701eb936d03b1e23366e5d",
+      "recipient_sha256": "bb78d142ec6be584c1778e68cc6267f04a8515b4df701eb936d03b1e23366e5d",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs._ideal_env_mask": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs._position_alpha": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "recipient_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs._position_filter_initialized": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.applied_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "recipient_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "9251e3eaa2963bc606b908a3432cac0433e60d7549ab4abe04cfe6f341e80c78",
+      "recipient_sha256": "9251e3eaa2963bc606b908a3432cac0433e60d7549ab4abe04cfe6f341e80c78",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.computed_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "recipient_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "248c4151bbdc3a164f53120b5f151eeb5a57273ee91dcd588bfe6c68cb018cad",
+      "recipient_sha256": "248c4151bbdc3a164f53120b5f151eeb5a57273ee91dcd588bfe6c68cb018cad",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.dynamic_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "recipient_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.effort_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "edf42fcf935ea6e34f77d4fd0ae08a13ff752ab6c544328749d9030b800333d0",
+      "recipient_sha256": "edf42fcf935ea6e34f77d4fd0ae08a13ff752ab6c544328749d9030b800333d0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.effort_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "edf42fcf935ea6e34f77d4fd0ae08a13ff752ab6c544328749d9030b800333d0",
+      "recipient_sha256": "edf42fcf935ea6e34f77d4fd0ae08a13ff752ab6c544328749d9030b800333d0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.efforts_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "recipient_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.efforts_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.efforts_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "recipient_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.positions_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "recipient_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.positions_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.positions_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "a6e62cbeb2371f188f70ec7d1c8cbec053f9a6d01c8cd74cc189641b87e93ee3",
+      "recipient_sha256": "a6e62cbeb2371f188f70ec7d1c8cbec053f9a6d01c8cd74cc189641b87e93ee3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.velocities_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "recipient_sha256": "3dc28b7af1b803686cd927a96fb5bfea316be668bdffe0724fdc8c805e0c68ef",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.velocities_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.velocities_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.velocity_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "525e33fee96bdc40d3df42b7f48613100be2cc87602abe35da1c0da51343b850",
+      "recipient_sha256": "525e33fee96bdc40d3df42b7f48613100be2cc87602abe35da1c0da51343b850",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.velocity_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "525e33fee96bdc40d3df42b7f48613100be2cc87602abe35da1c0da51343b850",
+      "recipient_sha256": "525e33fee96bdc40d3df42b7f48613100be2cc87602abe35da1c0da51343b850",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.legs.viscous_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        8
+      ],
+      "donor_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "recipient_sha256": "7de27c4b60861e81b0c934d84c62a9bad0e85d103c81d43192d39c4562f6024a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist._filtered_joint_positions": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "recipient_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist._ideal_env_mask": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist._position_alpha": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "recipient_sha256": "9acbfe5a2a7ef9977c001c83cd51589b2891c967ee13abada59d678c774125cc",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist._position_filter_initialized": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.applied_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "recipient_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "ff109544e5636eddd8fc7a9bf3062aa091a5d06d51a5edb56e022cc1b32fa01d",
+      "recipient_sha256": "ff109544e5636eddd8fc7a9bf3062aa091a5d06d51a5edb56e022cc1b32fa01d",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.computed_effort": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "recipient_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "1363d805b1287becf41647ac7a2b96c8cd2af4f88be3c58f10853ea531927b74",
+      "recipient_sha256": "1363d805b1287becf41647ac7a2b96c8cd2af4f88be3c58f10853ea531927b74",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.dynamic_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "recipient_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.effort_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "313b2e49a96efd2bbdc1608f7881e550d2721656d7c43fbf60682780dba4ff5f",
+      "recipient_sha256": "313b2e49a96efd2bbdc1608f7881e550d2721656d7c43fbf60682780dba4ff5f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.effort_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "313b2e49a96efd2bbdc1608f7881e550d2721656d7c43fbf60682780dba4ff5f",
+      "recipient_sha256": "313b2e49a96efd2bbdc1608f7881e550d2721656d7c43fbf60682780dba4ff5f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.efforts_delay_buffer._circular_buffer._buffer": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        5,
+        3
+      ],
+      "donor_sha256": "732ace1bf599fd9f2acfba30d8cb79d2daee616827f33d7cd3c34d5800e37895",
+      "recipient_sha256": "732ace1bf599fd9f2acfba30d8cb79d2daee616827f33d7cd3c34d5800e37895",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.efforts_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "e9dfe2734d0fc57cec9b52fda6d6f52ccc93906c592cb1483cc5a39c22648caa",
+      "recipient_sha256": "e9dfe2734d0fc57cec9b52fda6d6f52ccc93906c592cb1483cc5a39c22648caa",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.efforts_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.efforts_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "recipient_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.positions_delay_buffer._circular_buffer._buffer": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        5,
+        3
+      ],
+      "donor_sha256": "732ace1bf599fd9f2acfba30d8cb79d2daee616827f33d7cd3c34d5800e37895",
+      "recipient_sha256": "732ace1bf599fd9f2acfba30d8cb79d2daee616827f33d7cd3c34d5800e37895",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.positions_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "e9dfe2734d0fc57cec9b52fda6d6f52ccc93906c592cb1483cc5a39c22648caa",
+      "recipient_sha256": "e9dfe2734d0fc57cec9b52fda6d6f52ccc93906c592cb1483cc5a39c22648caa",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.positions_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.positions_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "416908c0db6e6f9d7ada8d4ebd459356d13d7a4cffcc6f468d1645cf9f0f0201",
+      "recipient_sha256": "416908c0db6e6f9d7ada8d4ebd459356d13d7a4cffcc6f468d1645cf9f0f0201",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.velocities_delay_buffer._circular_buffer._buffer": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        5,
+        3
+      ],
+      "donor_sha256": "732ace1bf599fd9f2acfba30d8cb79d2daee616827f33d7cd3c34d5800e37895",
+      "recipient_sha256": "732ace1bf599fd9f2acfba30d8cb79d2daee616827f33d7cd3c34d5800e37895",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.velocities_delay_buffer._circular_buffer._max_len": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "e9dfe2734d0fc57cec9b52fda6d6f52ccc93906c592cb1483cc5a39c22648caa",
+      "recipient_sha256": "e9dfe2734d0fc57cec9b52fda6d6f52ccc93906c592cb1483cc5a39c22648caa",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.velocities_delay_buffer._circular_buffer._num_pushes": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.velocities_delay_buffer._time_lags": {
+      "dtype": "torch.int32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "recipient_sha256": "8ec93309245a9edc80e637b8e12fe13d05aa4a3a359de5dec509c7ba1bc48326",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.velocity_limit": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "f6a51c3aed7168cf7593692cea191019649b34ad16d01982c727c1917c1593fd",
+      "recipient_sha256": "f6a51c3aed7168cf7593692cea191019649b34ad16d01982c727c1917c1593fd",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.velocity_limit_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "f6a51c3aed7168cf7593692cea191019649b34ad16d01982c727c1917c1593fd",
+      "recipient_sha256": "f6a51c3aed7168cf7593692cea191019649b34ad16d01982c727c1917c1593fd",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.actuator.waist.viscous_friction": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "recipient_sha256": "94d44c9590d2031086a9dd92916494f3d3393c5e4c763be60001dc1b03371cb2",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.command_counter": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "recipient_sha256": "eed0e9761eda1abe4ec1138a1f352c19f84fb57ab73a9d7b2c4ef04631607e9a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.heading_control_stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "1f2bfc3cd579d77b0dab269e6b5583cd458ff805785268139b8a4fc2fedf6a97",
+      "recipient_sha256": "1f2bfc3cd579d77b0dab269e6b5583cd458ff805785268139b8a4fc2fedf6a97",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.heading_error": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.heading_error_integral": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.heading_integral_contribution": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.heading_integral_gain": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.heading_target": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.is_heading_env": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.is_standing_env": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.metrics.error_vel_xy": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.metrics.error_vel_yaw": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.time_left": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "ca3d0c6e11d5add2cc607ca76cbbec5e8e73683405b6129ab76426a0301849e6",
+      "recipient_sha256": "ca3d0c6e11d5add2cc607ca76cbbec5e8e73683405b6129ab76426a0301849e6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.command.vel_command_b": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "ac62dde523cf0ac84e8d65699cd8a0f6d17cb9dd881bfe1263a96e43ea31d5a3",
+      "recipient_sha256": "ac62dde523cf0ac84e8d65699cd8a0f6d17cb9dd881bfe1263a96e43ea31d5a3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.env.episode_length_buf": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.action_magnitude_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.action_rate_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.actual_support_com": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.ang_vel_xy_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.contact_dwell": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.contact_phase": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.dof_acc_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.dof_pos_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.dof_torques_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.feet_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.feet_slide": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.flat_orientation_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.heading_error_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.joint_deviation_arms": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.joint_deviation_hip": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.joint_deviation_torso": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.lin_vel_z_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.signed_backward_pitch": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.stand_lin_vel_xy_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.termination_penalty": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.track_ang_vel_z_exp": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.track_lin_vel_xy_exp": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._episode_sums.yaw_rate_l2": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._reward_buf": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward._step_reward": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        23
+      ],
+      "donor_sha256": "caf48f6d8ea9e465b2c7bfdb8980e6024985cc78cd7bdfcb84e44b39440f79c4",
+      "recipient_sha256": "caf48f6d8ea9e465b2c7bfdb8980e6024985cc78cd7bdfcb84e44b39440f79c4",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.contact_dwell._contact": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "fc3a27999262d5dca667ad53e9ef67b648b9e22def15a1fd95501ec602a3a2ab",
+      "recipient_sha256": "fc3a27999262d5dca667ad53e9ef67b648b9e22def15a1fd95501ec602a3a2ab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.contact_dwell._initialized": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.contact_dwell._mode_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.contact_phase._contact": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "fc3a27999262d5dca667ad53e9ef67b648b9e22def15a1fd95501ec602a3a2ab",
+      "recipient_sha256": "fc3a27999262d5dca667ad53e9ef67b648b9e22def15a1fd95501ec602a3a2ab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.contact_phase._initialized": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.feet_air_time._air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.reward_term.feet_air_time._contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._instantaneous_wrench_composer._composed_force_b_torch": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32,
+        3
+      ],
+      "donor_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "recipient_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._instantaneous_wrench_composer._composed_torque_b_torch": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32,
+        3
+      ],
+      "donor_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "recipient_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._joint_effort_target_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._joint_pos_target_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "48c89b8ddb9e7e95ff5d38aeb4f8458cd71b181bec178f8fca5dd8cd31829dca",
+      "recipient_sha256": "48c89b8ddb9e7e95ff5d38aeb4f8458cd71b181bec178f8fca5dd8cd31829dca",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._joint_vel_target_sim": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._permanent_wrench_composer._composed_force_b_torch": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32,
+        3
+      ],
+      "donor_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "recipient_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot._permanent_wrench_composer._composed_torque_b_torch": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32,
+        3
+      ],
+      "donor_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "recipient_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.FORWARD_VEC_B": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "a8f202ad5cdaeb711fc4da8947da5b25138a6f149cf537b4a12510798b224736",
+      "recipient_sha256": "a8f202ad5cdaeb711fc4da8947da5b25138a6f149cf537b4a12510798b224736",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.GRAVITY_VEC_W": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "98d0cbffdd9e62c7d9f62cb1d5be3a917216b1ab3bf458f06f8849efb03e6390",
+      "recipient_sha256": "98d0cbffdd9e62c7d9f62cb1d5be3a917216b1ab3bf458f06f8849efb03e6390",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data._previous_joint_vel": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.applied_torque": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.computed_torque": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_inertia": {
+      "dtype": "torch.float32",
+      "device": "cpu",
+      "shape": [
+        128,
+        32,
+        9
+      ],
+      "donor_sha256": "9fbe898b20d78ab38a6747dde458c10ce00789f446858ce89ac61c68a4ce5519",
+      "recipient_sha256": "9fbe898b20d78ab38a6747dde458c10ce00789f446858ce89ac61c68a4ce5519",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "e9e6f23b8de476f30ccce1934120fe8ee4ce29ccf68926896af8567a8acb205b",
+      "recipient_sha256": "e9e6f23b8de476f30ccce1934120fe8ee4ce29ccf68926896af8567a8acb205b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "2509bae6cdd926c8d2698b8ebb6095203d47c6c943e74d7eb23c00f6d3c78d52",
+      "recipient_sha256": "2509bae6cdd926c8d2698b8ebb6095203d47c6c943e74d7eb23c00f6d3c78d52",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_dynamic_friction_coeff": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_friction_coeff": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_pos": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "98fe13c7b8a4aca3d6a6f77a186c8cf8b0a838a9ac88bc9e0bfa240d1c87d524",
+      "recipient_sha256": "98fe13c7b8a4aca3d6a6f77a186c8cf8b0a838a9ac88bc9e0bfa240d1c87d524",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_pos_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31,
+        2
+      ],
+      "donor_sha256": "422c5dfe85798027271d57d86aa2ba2aa3ee22a30172586a9710ba2c2b18c14e",
+      "recipient_sha256": "422c5dfe85798027271d57d86aa2ba2aa3ee22a30172586a9710ba2c2b18c14e",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "f95f3b4c4e716d426a8f0b504f6952de9cf6186ada829dcac2148174a1978241",
+      "recipient_sha256": "f95f3b4c4e716d426a8f0b504f6952de9cf6186ada829dcac2148174a1978241",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_vel": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_joint_viscous_friction_coeff": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_mass": {
+      "dtype": "torch.float32",
+      "device": "cpu",
+      "shape": [
+        128,
+        32
+      ],
+      "donor_sha256": "1a96a8fca978e269f1c77da302eeb8fc5f2c339f5b4bc494e6a5cb086e40a2f4",
+      "recipient_sha256": "1a96a8fca978e269f1c77da302eeb8fc5f2c339f5b4bc494e6a5cb086e40a2f4",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.default_root_state": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        13
+      ],
+      "donor_sha256": "6162e9f5057de9db09fda81fc0ccc9b58255d0eaa9ff1f2883bb220c4b8bcf7a",
+      "recipient_sha256": "6162e9f5057de9db09fda81fc0ccc9b58255d0eaa9ff1f2883bb220c4b8bcf7a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.gear_ratio": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "e6ae48a1ce01ba65f7b55f114f12e9bbd8f0fd14dd1eaa5a1e44104bb1609def",
+      "recipient_sha256": "e6ae48a1ce01ba65f7b55f114f12e9bbd8f0fd14dd1eaa5a1e44104bb1609def",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_armature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "e9e6f23b8de476f30ccce1934120fe8ee4ce29ccf68926896af8567a8acb205b",
+      "recipient_sha256": "e9e6f23b8de476f30ccce1934120fe8ee4ce29ccf68926896af8567a8acb205b",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_damping": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "2509bae6cdd926c8d2698b8ebb6095203d47c6c943e74d7eb23c00f6d3c78d52",
+      "recipient_sha256": "2509bae6cdd926c8d2698b8ebb6095203d47c6c943e74d7eb23c00f6d3c78d52",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_dynamic_friction_coeff": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_effort_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "a98569dfbb5b929c661346f77219f8504321ed1b668823fce0708994f8cbf9ca",
+      "recipient_sha256": "a98569dfbb5b929c661346f77219f8504321ed1b668823fce0708994f8cbf9ca",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_effort_target": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_friction_coeff": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_pos_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31,
+        2
+      ],
+      "donor_sha256": "422c5dfe85798027271d57d86aa2ba2aa3ee22a30172586a9710ba2c2b18c14e",
+      "recipient_sha256": "422c5dfe85798027271d57d86aa2ba2aa3ee22a30172586a9710ba2c2b18c14e",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_pos_target": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_stiffness": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "f95f3b4c4e716d426a8f0b504f6952de9cf6186ada829dcac2148174a1978241",
+      "recipient_sha256": "f95f3b4c4e716d426a8f0b504f6952de9cf6186ada829dcac2148174a1978241",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_vel_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "d37c6473b52e9571fad0e40e78b42d4a1dc40fd39f864f84ecb2d2a8cebf2aa3",
+      "recipient_sha256": "d37c6473b52e9571fad0e40e78b42d4a1dc40fd39f864f84ecb2d2a8cebf2aa3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_vel_target": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.joint_viscous_friction_coeff": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.soft_joint_pos_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31,
+        2
+      ],
+      "donor_sha256": "6cb50a0806cf74c05a476196a91f5a4da5a1e3505e4f4e983649f1d68317a2f6",
+      "recipient_sha256": "6cb50a0806cf74c05a476196a91f5a4da5a1e3505e4f4e983649f1d68317a2f6",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.robot.data.soft_joint_vel_limits": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "d37c6473b52e9571fad0e40e78b42d4a1dc40fd39f864f84ecb2d2a8cebf2aa3",
+      "recipient_sha256": "d37c6473b52e9571fad0e40e78b42d4a1dc40fd39f864f84ecb2d2a8cebf2aa3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.contact_forces._is_outdated": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces._timestamp": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces._timestamp_last_update": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces.data.current_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32
+      ],
+      "donor_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "recipient_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces.data.current_contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32
+      ],
+      "donor_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "recipient_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces.data.last_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32
+      ],
+      "donor_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "recipient_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces.data.last_contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32
+      ],
+      "donor_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "recipient_sha256": "510994966875a4a386fd7376aa92d47f32cdb7299de631913027607e062751db",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces.data.net_forces_w": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32,
+        3
+      ],
+      "donor_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "recipient_sha256": "f3eeba010a6d0850c925c94cdec8998102955011dcfa92224ebe2b91f3d87b35",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.contact_forces.data.net_forces_w_history": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3,
+        32,
+        3
+      ],
+      "donor_sha256": "ec753aaf0a4f3cc4949579d0cf08d4be7730e27f751640e8a8019665cea2dbf8",
+      "recipient_sha256": "ec753aaf0a4f3cc4949579d0cf08d4be7730e27f751640e8a8019665cea2dbf8",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.left_foot_ground_contact._is_outdated": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact._timestamp": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact._timestamp_last_update": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.current_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.current_contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.force_matrix_w": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1,
+        1,
+        3
+      ],
+      "donor_sha256": "70dd3fea73e691c9104c726e27186e1d20905175ed709512504f1ebca1e92d84",
+      "recipient_sha256": "70dd3fea73e691c9104c726e27186e1d20905175ed709512504f1ebca1e92d84",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.force_matrix_w_history": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3,
+        1,
+        1,
+        3
+      ],
+      "donor_sha256": "b9fa82f220e73d5d31d6e8f8e78a3d4c0c43ff3c8f39192f2cc35cc24826a675",
+      "recipient_sha256": "b9fa82f220e73d5d31d6e8f8e78a3d4c0c43ff3c8f39192f2cc35cc24826a675",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.last_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.last_contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.net_forces_w": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1,
+        3
+      ],
+      "donor_sha256": "f8a8a2d23ec71cf742e333ef1afeddf9a2091aa272d01f3104846ecc38e9d9ba",
+      "recipient_sha256": "f8a8a2d23ec71cf742e333ef1afeddf9a2091aa272d01f3104846ecc38e9d9ba",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.left_foot_ground_contact.data.net_forces_w_history": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3,
+        1,
+        3
+      ],
+      "donor_sha256": "607a2321b7f59e66d9b017983ce138ff5d32d607d2dddb86b69bbcb736a8a1d3",
+      "recipient_sha256": "607a2321b7f59e66d9b017983ce138ff5d32d607d2dddb86b69bbcb736a8a1d3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.right_foot_ground_contact._is_outdated": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "recipient_sha256": "200e4616a638567dfbd6b61011a6b12c4a5a5680a8ea0ab7ed39eef5592cd538",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact._timestamp": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact._timestamp_last_update": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "recipient_sha256": "71c9f279f11d1cf7d365e6cbf8427509003542541baa816c75ac6e8a2ad9892f",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.current_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.current_contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.force_matrix_w": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1,
+        1,
+        3
+      ],
+      "donor_sha256": "70dd3fea73e691c9104c726e27186e1d20905175ed709512504f1ebca1e92d84",
+      "recipient_sha256": "70dd3fea73e691c9104c726e27186e1d20905175ed709512504f1ebca1e92d84",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.force_matrix_w_history": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3,
+        1,
+        1,
+        3
+      ],
+      "donor_sha256": "b9fa82f220e73d5d31d6e8f8e78a3d4c0c43ff3c8f39192f2cc35cc24826a675",
+      "recipient_sha256": "b9fa82f220e73d5d31d6e8f8e78a3d4c0c43ff3c8f39192f2cc35cc24826a675",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.last_air_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.last_contact_time": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1
+      ],
+      "donor_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "recipient_sha256": "7fa7b9a2ad3e87c9a592223e674e8090359636ad37dce5ba113af864a9903498",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.net_forces_w": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        1,
+        3
+      ],
+      "donor_sha256": "f8a8a2d23ec71cf742e333ef1afeddf9a2091aa272d01f3104846ecc38e9d9ba",
+      "recipient_sha256": "f8a8a2d23ec71cf742e333ef1afeddf9a2091aa272d01f3104846ecc38e9d9ba",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.sensor.right_foot_ground_contact.data.net_forces_w_history": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3,
+        1,
+        3
+      ],
+      "donor_sha256": "607a2321b7f59e66d9b017983ce138ff5d32d607d2dddb86b69bbcb736a8a1d3",
+      "recipient_sha256": "607a2321b7f59e66d9b017983ce138ff5d32d607d2dddb86b69bbcb736a8a1d3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.001,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true,
+      "relative_l2_threshold": 1e-06
+    },
+    "dynamic.termination._last_episode_dones": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "61f54a4105440e84d5925cd0e2c9550de16f069ff8b2fe3d91a20213f0888702",
+      "recipient_sha256": "61f54a4105440e84d5925cd0e2c9550de16f069ff8b2fe3d91a20213f0888702",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.termination._term_dones": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        3
+      ],
+      "donor_sha256": "61f54a4105440e84d5925cd0e2c9550de16f069ff8b2fe3d91a20213f0888702",
+      "recipient_sha256": "61f54a4105440e84d5925cd0e2c9550de16f069ff8b2fe3d91a20213f0888702",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.termination._terminated_buf": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "dynamic.termination._truncated_buf": {
+      "dtype": "torch.bool",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "recipient_sha256": "932874ab06c129b16c527e2454d3cd7e30b4fb61e657b6abfcf0a9b6d3fdfeab",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "phase_id": {
+      "dtype": "torch.int64",
+      "device": "cuda:0",
+      "shape": [
+        128
+      ],
+      "donor_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "recipient_sha256": "7ccc62df8a6dd56c862df70c0397350624f3195634252aa3351e9b682b469cee",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 0.0,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "physx.joint_position": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "48c89b8ddb9e7e95ff5d38aeb4f8458cd71b181bec178f8fca5dd8cd31829dca",
+      "recipient_sha256": "48c89b8ddb9e7e95ff5d38aeb4f8458cd71b181bec178f8fca5dd8cd31829dca",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "physx.joint_velocity": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        31
+      ],
+      "donor_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "recipient_sha256": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "physx.root_transform_local_xyzw": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        7
+      ],
+      "donor_sha256": "b753b8c2d8127d96b083f9f3f73041873e25a201c6ab711bafef13fecdafb671",
+      "recipient_sha256": "0faf53ad5279395ff83c0c45236950db7f520a5edb55cf6db4e7ea5990f873c3",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 2.384185791015625e-07,
+      "relative_l2": 1.3819455102066508e-07,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "physx.root_velocity_w": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        6
+      ],
+      "donor_sha256": "ed3a2c7159ad549ac0321e68f9de2223444390578bb630ab6012ab9877f40758",
+      "recipient_sha256": "ed3a2c7159ad549ac0321e68f9de2223444390578bb630ab6012ab9877f40758",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "policy_observation": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        93
+      ],
+      "donor_sha256": "5eee52eb358beba80496f7ddcaa2dc923cc9e19ab21318841a6ff19f80384e36",
+      "recipient_sha256": "74fb2a8be070e73578170fbcc67bb9bb9705f095188cc38fcef9e6c8bd606b89",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 6.204936653375626e-08,
+      "relative_l2": 1.3514574345932552e-08,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "residual_encoded_feature": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        32
+      ],
+      "donor_sha256": "739059018e2676773bfc0df2ae5ac590e7d8fcfa26be1c44172ab0ddf9f962b7",
+      "recipient_sha256": "01eca40e87904dd6b19d00a4fe17a54627030ec426f28c0be35a371e7f00df24",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 2.9802322387695312e-08,
+      "relative_l2": 3.075342634650445e-08,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "residual_latent_mean": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        2
+      ],
+      "donor_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "recipient_sha256": "796d25240b8e4f520000fa9af02e91875dacb221061436373d5d029b91886fd0",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 0.0,
+      "relative_l2": 0.0,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    },
+    "source_action": {
+      "dtype": "torch.float32",
+      "device": "cuda:0",
+      "shape": [
+        128,
+        15
+      ],
+      "donor_sha256": "4e5dfb08ce5c14850b707d52cfb68a20602f3b12d62730db02a167fd824025c9",
+      "recipient_sha256": "99416c6b92fd94505133c778392e89a0e2bc4d4aa59a7554c18b71d35f9d797a",
+      "pair_pass_count": 64,
+      "pair_count": 64,
+      "max_abs": 2.384185791015625e-07,
+      "relative_l2": 1.2571326628935606e-07,
+      "threshold": 1e-06,
+      "passed": true,
+      "finite_required": true,
+      "all_finite": true
+    }
+  },
+  "state_manifest_field_count": 257,
+  "copied_dynamic_field_count": 166,
+  "unknown_mutable_tensor_fields": [],
+  "unknown_mutable_tensor_fields_empty": true,
+  "cpu_manifest_fields": [
+    "robot.data.default_inertia",
+    "robot.data.default_mass"
+  ],
+  "mixed_device_evidence_path_exercised": true,
+  "source_donor_initial": {
+    "field_sha256": {
+      "root_transform_local_xyzw": "b753b8c2d8127d96b083f9f3f73041873e25a201c6ab711bafef13fecdafb671",
+      "root_velocity_w": "ed3a2c7159ad549ac0321e68f9de2223444390578bb630ab6012ab9877f40758",
+      "joint_position": "48c89b8ddb9e7e95ff5d38aeb4f8458cd71b181bec178f8fca5dd8cd31829dca",
+      "joint_velocity": "768a59cc3b9e0376429e8bfdb262a1b271641a425abfdbb2b64bccfbf4754978",
+      "command": "ac62dde523cf0ac84e8d65699cd8a0f6d17cb9dd881bfe1263a96e43ea31d5a3"
+    },
+    "combined_sha256": "9520946051e554750a218dc2b7efb1e4549bc7767b8908fff931afe316140a90",
+    "randomized_state_max_range": 0.019627770408988,
+    "nondegenerate": true
+  },
+  "observation_recomputed_after_clone": true,
+  "physx_low_level_readback_present": true,
+  "all_pairs_pass": true,
+  "scientific_metrics_present": false,
+  "physics_rollout_steps": 0,
+  "optimizer_steps": 0,
+  "backward_calls": 0,
+  "checkpoint_count": 0,
+  "phase77_shadow_preregistration_unlocked": false,
+  "phase77_scientific_preregistration_unlocked": false,
+  "phase77_launch_unlocked": false,
+  "training_unlocked": false,
+  "deployment_unlocked": false
+}

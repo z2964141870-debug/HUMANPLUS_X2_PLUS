@@ -1,0 +1,112 @@
+{
+  "schema": "x2_phase75_seed0_resource_failure_freeze_v1",
+  "date": "2026-08-12",
+  "decision": "FAIL_TECHNICAL_STOP",
+  "scientific_result": null,
+  "technical_screen_decision": "PASS_INITIAL_PAIRING_LAUNCH",
+  "launch_accepted": false,
+  "scientific_metrics_present": false,
+  "optimizer_or_checkpoint_authority": false,
+  "task2_complete": false,
+  "failure_class": "HARD_WALL_SECONDS_EXCEEDED_AFTER_TECHNICAL_SCREEN",
+  "failure_message": "seed0 resource ledger elapsed_s 144.31169396899713 exceeded the preregistered 120 second hard limit",
+  "execution": {
+    "planned_launches": 3,
+    "launches_started": 1,
+    "technical_screens_passed": 1,
+    "launches_accepted": 0,
+    "launches_not_started": 2,
+    "replacement_launch_forbidden": true,
+    "remaining_launches_forbidden": true,
+    "seed_index": 0,
+    "env_seed": 750041,
+    "child_ledger_exit_code": 0,
+    "outer_shell_exit_code": 1,
+    "start_wall_ns": 1786546445580386300,
+    "elapsed_s": 144.31169396899713,
+    "wall_seconds_limit": 120,
+    "wall_seconds_excess": 24.311693968997133
+  },
+  "termination_observation": {
+    "root_sigterm_approx_elapsed_s": 136,
+    "source": "external orchestration observation",
+    "present_in_child_log": false,
+    "claim_boundary": "the immutable child log contains a completed screen and no traceback; signal provenance is retained as an external observation"
+  },
+  "registered_outputs": {
+    "total_paths": 33,
+    "present_paths": 8,
+    "absent_paths": 25,
+    "seed0_commit_present": true,
+    "seed0_screen_present": true,
+    "seed0_failure_json_present": false,
+    "seed1_started": false,
+    "seed2_started": false,
+    "final_result_present": false
+  },
+  "evidence": {
+    "prereg": {
+      "path": "reports/retarget/x2_phase75_pairing_preflight_prereg.json",
+      "bytes": 6968,
+      "sha256": "ab32d7b1a1d4e6a1cf8d5e00b8d2b5d224d89f426c24e5bd701bb86fade3fdb2"
+    },
+    "commit": {
+      "path": "artifacts/retarget/x2_phase75_pairing_preflight/seed0_commit.json",
+      "bytes": 155905,
+      "sha256": "30bb7a1cd998846661c0fd737dcd6f22f110da11742fa43f970414cdbabcc757",
+      "pair_count": 64,
+      "tensor_side_count": 268,
+      "state_manifest_field_count": 257,
+      "mixed_device_evidence_path_exercised": true
+    },
+    "screen": {
+      "path": "reports/retarget/x2_phase75_seed0_screen.json",
+      "bytes": 150758,
+      "sha256": "ea4536d2d2b8b43a1fa7aeb166c172005d7d4b31bc43702bf00cd89ff56058e9",
+      "decision": "PASS_INITIAL_PAIRING_LAUNCH",
+      "all_pairs_pass": true,
+      "failed_diagnostic_count": 0,
+      "field_count": 268,
+      "commit_sha256_exact": true
+    },
+    "resource": {
+      "path": "reports/retarget/x2_phase75_seed0_resource.json",
+      "bytes": 1854,
+      "sha256": "141de473eeaac127e52a4a456f6bebac1b2e734146e39ebc94eb4029ccc9cf79",
+      "exit_code": 0,
+      "elapsed_s": 144.31169396899713,
+      "disk_used_delta_bytes": 135286784,
+      "disk_after_free_bytes": 372093726720,
+      "gpu_sample_count": 270,
+      "gpu_sample_errors": 0,
+      "gpu_memory_used_peak_mib": 3122,
+      "wall_gate_pass": false,
+      "all_other_resource_gates_pass": true
+    },
+    "log": {
+      "path": "/tmp/x2_phase75_logs/seed0.log",
+      "bytes": 167677,
+      "sha256": "1de4cea1ea03d730d14d172a25331eba07dda53df40ecd8c5850df45c05ba48d",
+      "contains_completed_screen": true,
+      "contains_traceback": false
+    }
+  },
+  "safety": {
+    "physics_rollout_steps": 0,
+    "optimizer_steps": 0,
+    "backward_calls": 0,
+    "checkpoint_count": 0,
+    "phase76_shadow_preregistration_unlocked": false,
+    "phase76_scientific_preregistration_unlocked": false,
+    "phase76_launch_unlocked": false,
+    "training_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "audit_snapshot": {
+    "git_head": "1684ecb4ffce44de31bff469519bb21c911b3f72",
+    "disk_total_bytes": 502392610816,
+    "disk_used_bytes": 104704540672,
+    "disk_free_bytes": 372092698624,
+    "phase75_or_isaac_processes": 0
+  }
+}
