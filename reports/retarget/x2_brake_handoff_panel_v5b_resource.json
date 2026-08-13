@@ -1,0 +1,62 @@
+{
+  "schema": "x2_gpu_deadline_ledger_phase76_v1",
+  "label": "x2_brake_handoff_panel_v5b",
+  "command": [
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_brake_handoff_panel_v5.py",
+    "--prereg",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5b_prereg.json",
+    "--source",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--stationary",
+    "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+    "--report",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5b_screen.json",
+    "--failure",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5b_failure.json",
+    "--num-envs",
+    "256",
+    "--seed",
+    "785001",
+    "--steps",
+    "820",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "log_path": "/tmp/x2_brake_handoff_panel_v5b.log",
+  "child_pid": 601380,
+  "child_pgid": 601380,
+  "timeout_seconds": 1200.0,
+  "term_grace_seconds": 5.0,
+  "timed_out": true,
+  "term_sent": true,
+  "kill_sent": false,
+  "forced_cleanup": false,
+  "raw_returncode": 0,
+  "autonomous_exit": false,
+  "exit_code": 124,
+  "start_wall_ns": 1786596056710907689,
+  "elapsed_s": 1200.6663488490012,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 126082433024,
+    "free_bytes": 350714806272
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 126236733440,
+    "free_bytes": 350560505856
+  },
+  "disk_used_delta_bytes": 154300416,
+  "log_bytes": 10333,
+  "log_sha256": "1ba9ac1b2073ee06b8c61019b778676f28b651a926fb66cc2030a1b0ab1e4270",
+  "gpu_sample_count": 2249,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 3374.0,
+    "utilization_peak_percent": 70.0,
+    "power_peak_w": 156.99
+  }
+}
