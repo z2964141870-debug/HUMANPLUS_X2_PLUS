@@ -1,0 +1,11 @@
+{
+  "checkpoint_writes": 0,
+  "decision": "FAIL_IMPLEMENTATION_STOP",
+  "error": "empty metric",
+  "error_type": "RuntimeError",
+  "launch_id": "s781003_B",
+  "optimizer_steps": 0,
+  "preregistration_sha256": "617e709d4324641657eb69a1b57aa061eb1afab3ce505104ca6437afe96a0b45",
+  "schema": "x2_privileged_teacher_panel_failure_v1",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_privileged_teacher_panel_v2d.py\", line 437, in <module>\n    result = run()\n             ^^^^^\n  File \"/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_privileged_teacher_panel_v2d.py\", line 378, in run\n    \"terminal_speed_mean_mps\": finite_mean(stacked[\"terminal_speed\"][:, env_id]) if role_id == 7 else 0.0,\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_privileged_teacher_panel_v2d.py\", line 256, in finite_mean\n    raise RuntimeError(\"empty metric\")\nRuntimeError: empty metric\n"
+}

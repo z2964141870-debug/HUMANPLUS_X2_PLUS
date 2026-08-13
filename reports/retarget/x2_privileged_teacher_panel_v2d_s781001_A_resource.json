@@ -1,0 +1,62 @@
+{
+  "schema": "x2_gpu_deadline_ledger_phase76_v1",
+  "label": "x2_privileged_teacher_panel_v2d_s781001_A",
+  "command": [
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_privileged_teacher_panel_v2d.py",
+    "--prereg",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_teacher_panel_v2d_prereg.json",
+    "--source",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--report",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_teacher_panel_v2d_s781001_A_report.json",
+    "--failure",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_teacher_panel_v2d_s781001_A_failure.json",
+    "--num-envs",
+    "128",
+    "--seed",
+    "781001",
+    "--lane",
+    "A",
+    "--steps",
+    "512",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "log_path": "/tmp/x2_privileged_teacher_panel_v2d_s781001_A.log",
+  "child_pid": 572842,
+  "child_pgid": 572842,
+  "timeout_seconds": 180.0,
+  "term_grace_seconds": 5.0,
+  "timed_out": false,
+  "term_sent": false,
+  "kill_sent": false,
+  "forced_cleanup": false,
+  "raw_returncode": 0,
+  "autonomous_exit": true,
+  "exit_code": 0,
+  "start_wall_ns": 1786588761943374846,
+  "elapsed_s": 37.980301029005204,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 107676209152,
+    "free_bytes": 369121030144
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 107811045376,
+    "free_bytes": 368986193920
+  },
+  "disk_used_delta_bytes": 134836224,
+  "log_bytes": 16856,
+  "log_sha256": "30db103e6a4ee847f7611ab9835b90a6fa6e17a5d4470aaf84c06d21c076d6df",
+  "gpu_sample_count": 72,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 3280.0,
+    "utilization_peak_percent": 65.0,
+    "power_peak_w": 149.83
+  }
+}

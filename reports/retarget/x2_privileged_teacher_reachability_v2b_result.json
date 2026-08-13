@@ -1,0 +1,625 @@
+{
+  "decision": "FAIL_NO_TEACHER_REACHABILITY_STOP",
+  "evidence_boundary": {
+    "backward_calls": 0,
+    "bc_or_dagger_unlocked": false,
+    "cem_distribution_updates": 8,
+    "checkpoint_writes": 0,
+    "deployment_unlocked": false,
+    "optimizer_steps": 0,
+    "policy_optimizer_steps": 0,
+    "ppo_or_long_training_unlocked": false,
+    "privileged_oracle_not_deployable": true,
+    "teacher_panel_preregistration_unlocked": false,
+    "torch_optimizer_objects": 0
+  },
+  "preregistration_sha256": "232189e8d59e265da62f544c7e42fd6b24b2a25a6e823f925aa401911e76b1cf",
+  "resource": {
+    "control_steps": 2000,
+    "isaac_launches": 1,
+    "physics_substeps_per_environment": 8000,
+    "wall_time_s": 107.030586976005
+  },
+  "schema": "x2_privileged_teacher_isaac_reachability_result_v1",
+  "search": {
+    "best_cost": 10.430554808863764,
+    "best_parameters_15x5": [
+      [
+        -0.9125208637502634,
+        -0.6021869005266686,
+        0.07867797656236689,
+        -0.1354172908056736,
+        0.6584841288794201
+      ],
+      [
+        -0.5115987307559259,
+        0.38897273216754236,
+        0.5145582012128783,
+        1.2432197433709944,
+        -0.3493203720880349
+      ],
+      [
+        -0.43700198582543714,
+        0.7283199824569204,
+        -0.21066567108292034,
+        0.14403566634494297,
+        0.7885011300778624
+      ],
+      [
+        -1.073719820819399,
+        0.11757599656825393,
+        -0.9031204570098346,
+        -0.08808644767850926,
+        -2.0
+      ],
+      [
+        1.723049711491674,
+        0.2766079600052908,
+        0.30444170697294776,
+        -0.27948897699767294,
+        0.07062752851581393
+      ],
+      [
+        -0.5326910897486228,
+        -0.03867186292997485,
+        0.4696405665286491,
+        -0.34114020032548764,
+        0.03159989472494591
+      ],
+      [
+        -0.8233188153451199,
+        -0.11683810249822821,
+        -0.06620435625398652,
+        0.4988582245304068,
+        0.22845284872647964
+      ],
+      [
+        -0.35366717555680105,
+        -0.2234821743133551,
+        -0.6559484444202284,
+        -0.4369980229251522,
+        -0.4440214502026757
+      ],
+      [
+        1.125305589366545,
+        1.8017068116230162,
+        -0.4576743409399367,
+        0.301593407740119,
+        0.724089064144129
+      ],
+      [
+        1.6015926429944662,
+        0.45861113797497366,
+        0.6724838683070467,
+        -0.32132857486645616,
+        -0.056641523140516764
+      ],
+      [
+        -1.0531842322761589,
+        -0.8976632820008813,
+        0.07928865691389272,
+        0.6179339140243303,
+        -0.6157598526774982
+      ],
+      [
+        -0.3245474410182738,
+        0.23495304471093556,
+        -0.24981803970726804,
+        -0.7442433221387466,
+        1.3617693239336088
+      ],
+      [
+        0.28117767284369377,
+        -0.6277539474803767,
+        -0.27434723274183936,
+        0.45812736721072944,
+        1.7399394757927076
+      ],
+      [
+        -0.4287993089694647,
+        0.08337422394580926,
+        -0.044435196161659404,
+        0.9058331048234127,
+        -0.20218045994231465
+      ],
+      [
+        0.46894424704081505,
+        -0.5239582928850465,
+        0.546428899921441,
+        -0.6077218039973911,
+        0.1862072555671098
+      ]
+    ],
+    "config": {
+      "candidates_per_iteration": 63,
+      "coefficient_bounds": [
+        -2.0,
+        2.0
+      ],
+      "elites": 8,
+      "gradient_calls": 0,
+      "initial_std": 0.75,
+      "iterations": 8,
+      "method": "batched deterministic cross-entropy method",
+      "parameters": 75,
+      "policy_optimizer_steps": 0,
+      "seed": 780113,
+      "source_reference_envs_per_iteration": 1,
+      "std_floor": 0.08,
+      "target_pitch_rad": -0.05,
+      "total_candidate_trajectories": 504
+    },
+    "iterations": [
+      {
+        "best_cost": 14.63228419259599,
+        "best_env_id": 62,
+        "best_survived": true,
+        "iteration": 0,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.03415850238611486,
+          "root_tilt_max_rad": 0.24692882597446442,
+          "root_z_min_m": 0.6496647596359253,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.19052077865693717,
+            "p05": -0.22596562579274176,
+            "p50": -0.19476112723350525
+          },
+          "stance_slip_p95_mps": 0.17716682404279704,
+          "support_outside_mean_m": 0.06976194765418768,
+          "support_outside_p95_m": 0.1865659236907959,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09414394769723416,
+          "yaw_rmse_radps": 0.3641361332383392
+        }
+      },
+      {
+        "best_cost": 12.797812152119885,
+        "best_env_id": 24,
+        "best_survived": true,
+        "iteration": 1,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.036253169139612004,
+          "root_tilt_max_rad": 0.2500934600830078,
+          "root_z_min_m": 0.6505897045135498,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.19260678147897126,
+            "p05": -0.2287891313433647,
+            "p50": -0.197515070438385
+          },
+          "stance_slip_p95_mps": 0.19313071966171136,
+          "support_outside_mean_m": 0.06762229334563016,
+          "support_outside_p95_m": 0.18639499396085737,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09472901432539894,
+          "yaw_rmse_radps": 0.3501257004622911
+        }
+      },
+      {
+        "best_cost": 11.876136699043709,
+        "best_env_id": 31,
+        "best_survived": true,
+        "iteration": 2,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.03672267719576562,
+          "root_tilt_max_rad": 0.24728702008724213,
+          "root_z_min_m": 0.6510064601898193,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.19108602849766612,
+            "p05": -0.23047049045562745,
+            "p50": -0.19706802815198898
+          },
+          "stance_slip_p95_mps": 0.1878358326852301,
+          "support_outside_mean_m": 0.06680983580648898,
+          "support_outside_p95_m": 0.18567486256361007,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09420002474318523,
+          "yaw_rmse_radps": 0.3493804205835832
+        }
+      },
+      {
+        "best_cost": 11.636447480579092,
+        "best_env_id": 26,
+        "best_survived": true,
+        "iteration": 3,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.03489045845540917,
+          "root_tilt_max_rad": 0.24127502739429474,
+          "root_z_min_m": 0.651225745677948,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.19250776902772487,
+            "p05": -0.22605029866099358,
+            "p50": -0.19799674302339554
+          },
+          "stance_slip_p95_mps": 0.1769919656217098,
+          "support_outside_mean_m": 0.06897649604827166,
+          "support_outside_p95_m": 0.18752506375312805,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09652698992602503,
+          "yaw_rmse_radps": 0.3462850577479526
+        }
+      },
+      {
+        "best_cost": 10.84347534516113,
+        "best_env_id": 15,
+        "best_survived": true,
+        "iteration": 4,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.03490732564142616,
+          "root_tilt_max_rad": 0.24384371936321259,
+          "root_z_min_m": 0.6507031917572021,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.19191881392151117,
+            "p05": -0.22549427300691605,
+            "p50": -0.1968567818403244
+          },
+          "stance_slip_p95_mps": 0.29483341276645625,
+          "support_outside_mean_m": 0.06755976365879178,
+          "support_outside_p95_m": 0.18720300197601317,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09654441414093705,
+          "yaw_rmse_radps": 0.36192248584755365
+        }
+      },
+      {
+        "best_cost": 10.896066671646567,
+        "best_env_id": 28,
+        "best_survived": true,
+        "iteration": 5,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.036349924781425874,
+          "root_tilt_max_rad": 0.25121474266052246,
+          "root_z_min_m": 0.6490632891654968,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.1902887730207294,
+            "p05": -0.2283525675535202,
+            "p50": -0.1960366666316986
+          },
+          "stance_slip_p95_mps": 0.3501753017306325,
+          "support_outside_mean_m": 0.06796499960124493,
+          "support_outside_p95_m": 0.1870465472340584,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09834492533020965,
+          "yaw_rmse_radps": 0.3622798955157967
+        }
+      },
+      {
+        "best_cost": 10.430554808863764,
+        "best_env_id": 62,
+        "best_survived": true,
+        "iteration": 6,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.036349924781425874,
+          "root_tilt_max_rad": 0.25121474266052246,
+          "root_z_min_m": 0.6490632891654968,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.1902887730207294,
+            "p05": -0.2283525675535202,
+            "p50": -0.1960366666316986
+          },
+          "stance_slip_p95_mps": 0.3501753017306325,
+          "support_outside_mean_m": 0.06796499960124493,
+          "support_outside_p95_m": 0.1870465472340584,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09834492533020965,
+          "yaw_rmse_radps": 0.3622798955157967
+        }
+      },
+      {
+        "best_cost": 10.566193252207725,
+        "best_env_id": 49,
+        "best_survived": true,
+        "iteration": 7,
+        "source": {
+          "environment_count": 1,
+          "flight_fraction": 0.0,
+          "lateral_rms_mps": 0.036349924781425874,
+          "root_tilt_max_rad": 0.25121474266052246,
+          "root_z_min_m": 0.6490632891654968,
+          "sample_count": 200,
+          "signed_pitch_rad": {
+            "mean": -0.1902887730207294,
+            "p05": -0.2283525675535202,
+            "p50": -0.1960366666316986
+          },
+          "stance_slip_p95_mps": 0.3501753017306325,
+          "support_outside_mean_m": 0.06796499960124493,
+          "support_outside_p95_m": 0.1870465472340584,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.09834492533020965,
+          "yaw_rmse_radps": 0.3622798955157967
+        }
+      }
+    ]
+  },
+  "technical_checks": {
+    "finite": true,
+    "initial_env_spread": true,
+    "reset_observation_replay": true,
+    "reset_root_replay": true,
+    "source_model_immutable": true,
+    "source_survival_every_search_iteration": true
+  },
+  "validation": {
+    "candidate": {
+      "environment_count": 64,
+      "flight_fraction": 0.002109375,
+      "lateral_rms_mps": 0.0552763825335567,
+      "root_tilt_max_rad": 0.7813231348991394,
+      "root_z_min_m": 0.6128088235855103,
+      "sample_count": 12800,
+      "signed_pitch_rad": {
+        "mean": -0.07155722897895714,
+        "p05": -0.17336712926626205,
+        "p50": -0.08711470663547516
+      },
+      "stance_slip_p95_mps": 0.1575204856693744,
+      "support_outside_mean_m": 0.04180343112955597,
+      "support_outside_p95_m": 0.1704212076961994,
+      "survived_full_horizon": false,
+      "teacher_residual_abs_max": 0.17500978708267212,
+      "teacher_residual_rms": 0.08384016663441814,
+      "teacher_residual_step_abs_max": 0.17500978708267212,
+      "teacher_residual_step_rms": 0.02110861902517648,
+      "termination_count": 3,
+      "velocity_rmse_mps": 0.21159482175165875,
+      "yaw_rmse_radps": 0.3551201264972585
+    },
+    "deltas": {
+      "lateral_rms_mps": 0.016752722051911098,
+      "signed_pitch_mean_rad": 0.12163556628653793,
+      "signed_pitch_p05_rad": 0.05628415718674659,
+      "stance_slip_p95_mps": -0.10248878523707391,
+      "support_outside_mean_m": -0.02453904079371568,
+      "velocity_rmse_mps": 0.09891735631511821,
+      "yaw_rmse_radps": -0.012741134340166493
+    },
+    "gates": {
+      "candidate_survival": false,
+      "flight": true,
+      "lateral": false,
+      "pitch_mean": true,
+      "pitch_p05": true,
+      "residual_bound": true,
+      "residual_slew": false,
+      "root_height": true,
+      "slip": true,
+      "source_survival": false,
+      "support": true,
+      "tilt": false,
+      "velocity": false,
+      "yaw": true
+    },
+    "lane_consistency": false,
+    "lane_gates": {
+      "A": {
+        "candidate_survival": false,
+        "flight": true,
+        "lateral": false,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "residual_bound": true,
+        "residual_slew": false,
+        "root_height": true,
+        "slip": true,
+        "source_survival": false,
+        "support": true,
+        "tilt": false,
+        "velocity": false,
+        "yaw": true
+      },
+      "B": {
+        "candidate_survival": true,
+        "flight": true,
+        "lateral": true,
+        "pitch_mean": true,
+        "pitch_p05": true,
+        "residual_bound": true,
+        "residual_slew": false,
+        "root_height": true,
+        "slip": true,
+        "source_survival": false,
+        "support": true,
+        "tilt": true,
+        "velocity": false,
+        "yaw": true
+      }
+    },
+    "lane_pitch": {
+      "A": {
+        "mean_delta_rad": 0.11743630780766239,
+        "p05_delta_rad": 0.05089050903916359
+      },
+      "B": {
+        "mean_delta_rad": 0.1258348247654135,
+        "p05_delta_rad": 0.06092842891812325
+      }
+    },
+    "lane_summaries": {
+      "A": {
+        "candidate": {
+          "environment_count": 32,
+          "flight_fraction": 0.00234375,
+          "lateral_rms_mps": 0.05753998888376935,
+          "root_tilt_max_rad": 0.7813231348991394,
+          "root_z_min_m": 0.6128088235855103,
+          "sample_count": 6400,
+          "signed_pitch_rad": {
+            "mean": -0.07528385163808139,
+            "p05": -0.17812801748514176,
+            "p50": -0.09110937640070915
+          },
+          "stance_slip_p95_mps": 0.16124467924237243,
+          "support_outside_mean_m": 0.04191329104687611,
+          "support_outside_p95_m": 0.1711003921926021,
+          "survived_full_horizon": false,
+          "teacher_residual_abs_max": 0.17500978708267212,
+          "teacher_residual_rms": 0.08376253309788248,
+          "teacher_residual_step_abs_max": 0.17500978708267212,
+          "teacher_residual_step_rms": 0.02105785867003352,
+          "termination_count": 3,
+          "velocity_rmse_mps": 0.22035293974750367,
+          "yaw_rmse_radps": 0.3766269981135726
+        },
+        "source": {
+          "environment_count": 32,
+          "flight_fraction": 0.00046875,
+          "lateral_rms_mps": 0.03803655793493747,
+          "root_tilt_max_rad": 0.7680144906044006,
+          "root_z_min_m": 0.6162521839141846,
+          "sample_count": 6400,
+          "signed_pitch_rad": {
+            "mean": -0.19272015944574378,
+            "p05": -0.22901852652430535,
+            "p50": -0.1962236687541008
+          },
+          "stance_slip_p95_mps": 0.27227003872394556,
+          "support_outside_mean_m": 0.06656834364810493,
+          "support_outside_p95_m": 0.1866003155708313,
+          "survived_full_horizon": false,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 1,
+          "velocity_rmse_mps": 0.10629627110529428,
+          "yaw_rmse_radps": 0.36828945033200633
+        }
+      },
+      "B": {
+        "candidate": {
+          "environment_count": 32,
+          "flight_fraction": 0.001875,
+          "lateral_rms_mps": 0.05291603359330595,
+          "root_tilt_max_rad": 0.2105277180671692,
+          "root_z_min_m": 0.6259887218475342,
+          "sample_count": 6400,
+          "signed_pitch_rad": {
+            "mean": -0.0678306063198329,
+            "p05": -0.16911429762840272,
+            "p50": -0.07937002554535866
+          },
+          "stance_slip_p95_mps": 0.15399644523859005,
+          "support_outside_mean_m": 0.04169357121223584,
+          "support_outside_p95_m": 0.16980610787868497,
+          "survived_full_horizon": true,
+          "teacher_residual_abs_max": 0.17500978708267212,
+          "teacher_residual_rms": 0.08391772835104715,
+          "teacher_residual_step_abs_max": 0.17500972747802734,
+          "teacher_residual_step_rms": 0.021159257608266393,
+          "termination_count": 0,
+          "velocity_rmse_mps": 0.2024581910638972,
+          "yaw_rmse_radps": 0.33222388953658455
+        },
+        "source": {
+          "environment_count": 32,
+          "flight_fraction": 0.00046875,
+          "lateral_rms_mps": 0.03900468041494958,
+          "root_tilt_max_rad": 0.7921173572540283,
+          "root_z_min_m": 0.6152325868606567,
+          "sample_count": 6400,
+          "signed_pitch_rad": {
+            "mean": -0.1936654310852464,
+            "p05": -0.23004272654652597,
+            "p50": -0.19669953733682632
+          },
+          "stance_slip_p95_mps": 0.24859718009829443,
+          "support_outside_mean_m": 0.06611660019843839,
+          "support_outside_p95_m": 0.1868249848484993,
+          "survived_full_horizon": false,
+          "teacher_residual_abs_max": 0.0,
+          "teacher_residual_rms": 0.0,
+          "teacher_residual_step_abs_max": 0.0,
+          "teacher_residual_step_rms": 0.0,
+          "termination_count": 2,
+          "velocity_rmse_mps": 0.11871615384401298,
+          "yaw_rmse_radps": 0.36743257235028676
+        }
+      }
+    },
+    "source": {
+      "environment_count": 64,
+      "flight_fraction": 0.00046875,
+      "lateral_rms_mps": 0.0385236604816456,
+      "root_tilt_max_rad": 0.7921173572540283,
+      "root_z_min_m": 0.6152325868606567,
+      "sample_count": 12800,
+      "signed_pitch_rad": {
+        "mean": -0.19319279526549507,
+        "p05": -0.22965128645300864,
+        "p50": -0.19643745571374893
+      },
+      "stance_slip_p95_mps": 0.2600092709064483,
+      "support_outside_mean_m": 0.06634247192327165,
+      "support_outside_p95_m": 0.1866767570376396,
+      "survived_full_horizon": false,
+      "teacher_residual_abs_max": 0.0,
+      "teacher_residual_rms": 0.0,
+      "teacher_residual_step_abs_max": 0.0,
+      "teacher_residual_step_rms": 0.0,
+      "termination_count": 3,
+      "velocity_rmse_mps": 0.11267746543654054,
+      "yaw_rmse_radps": 0.367861260837425
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schema": "x2_privileged_teacher_reachability_prereg_v1",
+  "created_at": "2026-08-13T00:00:00+08:00",
+  "objective": "Test whether a privileged gait/contact-conditioned coordinated 15-D residual can materially reduce Stage219 backward pitch in a same-snapshot official-MuJoCo medium-straight closed loop without locomotion or support regression.",
+  "lineage": {
+    "source_stage": "Stage219 iteration 2600",
+    "stage264_is_separate_checkpoint": false,
+    "stage264_identity": "Stage219 actor plus Stage250 deployment contract and Task50 decision",
+    "current_machine_source_gate": "22/24; historical 24/24 is not treated as current",
+    "phase77p_reward_only_result": "FAIL_UPDATE5_NO_SAFE_SIGNAL_STOP",
+    "intervention_is_privileged_oracle": true,
+    "intervention_is_deployable": false
+  },
+  "immutable_code": {
+    "teacher_helper": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/src/cwi_x2/privileged_teacher_reachability.py",
+      "sha256": "fa9df71fb15aee4c5da6c79246618d62c8b7bd4f79f857ad1941739327efc295"
+    },
+    "teacher_runner": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_privileged_teacher_reachability.py",
+      "sha256": "d6c998cf8ecd96f5653d898fd9466c52dd8402867f106510b3b3accd94f0c166"
+    },
+    "teacher_test": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tests/test_privileged_teacher_reachability.py",
+      "sha256": "e5053d83019145f4b4826208f4e00296339c5d5ed80a776514e8c46788f9601e"
+    },
+    "stage250_direct_contract": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_phase28_stage250_extended_direct.py",
+      "sha256": "c792a954f6aba7d83ae15fe49e4e353f4dd660d538c9e05be09f072b0cbbe767"
+    },
+    "stage250_audit_helpers": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/audit_stage250_native_dynamic_seed.py",
+      "sha256": "015cb870f2196c0b622daacf89c56d797ab9f3cce41101bdb5c7ceb70082ada1"
+    },
+    "direct_mujoco_contract": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/replay_official_trace_direct_mujoco.py",
+      "sha256": "c2cb04b64bb14b1206834c17160a1abe1da239341c5e227fa956e9a0b364ba50"
+    },
+    "snapshot_contract": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_testonly_official_mjcf_suffix_probe.py",
+      "sha256": "946cb62fbac1c9748908c2c3784b03637ddbbf04c144823122c0048ce7d52581"
+    }
+  },
+  "immutable_inputs": {
+    "scene": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "actor": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx",
+      "sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9"
+    },
+    "stationary_actor": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+      "sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565"
+    },
+    "template": {
+      "path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+      "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"
+    },
+    "historical_trace": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/stage264_new_machine_freeze_20260812/stage264_low_straight_r1.json",
+      "sha256": "86f0656a5102009786dfdf4ded29c6dc08015dbc946c9b05dd7fbd5efde6b1c2"
+    },
+    "stage264_identity_manifest": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/stage264_frozen_baseline/manifest.json",
+      "sha256": "ad93566fe2a60cedee57df2c6f13234b864c5e566d27980f87e08e106323df79"
+    },
+    "current_machine_replay": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/stage264_frozen_baseline/new_machine_replay.json",
+      "sha256": "41e160d6aa7e118a6d5d73db9ff953fa3c76e1d7ca585ba2263dbb03c819082d"
+    }
+  },
+  "experiment": {
+    "domain": "unchanged vendor scene in direct official MuJoCo",
+    "control_dt_s": 0.02,
+    "physics_dt_s": 0.001,
+    "warmup_ticks": 150,
+    "rollout_ticks": 200,
+    "command_vx_mps": 0.30,
+    "teacher_features": [
+      "bias",
+      "sin_phase",
+      "cos_phase",
+      "left_desired_contact_minus_half",
+      "right_desired_contact_minus_half"
+    ],
+    "teacher_parameter_shape": [15, 5],
+    "teacher_residual_abs_max": 0.20,
+    "same_snapshot_source_candidate": true,
+    "source_actor_and_stationary_actor_frozen": true,
+    "optimizer_steps": 0,
+    "checkpoint_writes": 0
+  },
+  "search": {
+    "algorithm": "CEM",
+    "seed": 780013,
+    "population": 48,
+    "iterations": 5,
+    "elites": 8,
+    "coefficient_bounds": [-2.0, 2.0],
+    "initial_std": 0.75,
+    "std_floor": 0.08,
+    "candidate_evaluations": 240,
+    "no_horizon_bound_seed_or_threshold_sweep": true
+  },
+  "gates": {
+    "pitch_mean_delta_rad_min": 0.015,
+    "pitch_p05_delta_rad_min": 0.010,
+    "velocity_rmse_regression_mps_max": 0.010,
+    "lateral_rms_regression_mps_max": 0.015,
+    "heading_regression_rad_max": 0.015,
+    "support_regression_m_max": 0.001,
+    "slip_regression_mps_max": 0.030,
+    "root_z_absolute_min_m": 0.55,
+    "root_z_regression_m_max": 0.005,
+    "tilt_absolute_max_rad": 0.35,
+    "tilt_regression_rad_max": 0.010,
+    "teacher_residual_abs_max": 0.20
+  },
+  "decision": {
+    "pass": "PASS_TEACHER_REACHABILITY_LOCAL_ONLY; unlock only a separately preregistered vx/start/stop/turn teacher panel",
+    "fail": "FAIL_NO_TEACHER_REACHABILITY_STOP; do not collect BC labels or resume reward-only PPO",
+    "bc_or_dagger_unlocked": false,
+    "ppo_or_long_training_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "resource": {
+    "cpu_only": true,
+    "gpu_required": false,
+    "output_bytes_max": 8388608,
+    "free_disk_bytes_min": 34359738368,
+    "checkpoint_count": 0
+  },
+  "output": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_teacher_reachability_v1_result.json",
+  "overwrite_forbidden": true
+}
