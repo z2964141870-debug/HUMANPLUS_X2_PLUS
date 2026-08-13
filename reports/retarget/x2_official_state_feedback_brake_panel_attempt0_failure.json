@@ -1,0 +1,48 @@
+{
+  "schema": "x2_official_state_feedback_brake_panel_attempt0_failure_v1",
+  "decision": "FAIL_INVALID_PANEL_CONFIG_STOP",
+  "recorded_at": "2026-08-13T14:49:00+08:00",
+  "prereg_path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_state_feedback_brake_panel_prereg_v1.json",
+  "prereg_sha256": "97ae6e1dc4909a94ef113ea034386a9a41987d71c15a5706001ca9096a10fe7b",
+  "physics_cases_completed": 24,
+  "contract_valid_cases": 18,
+  "invalid_cases": [
+    "x2_sfbrake_medium_turn_left_r1",
+    "x2_sfbrake_medium_turn_left_r2",
+    "x2_sfbrake_medium_turn_left_r3",
+    "x2_sfbrake_low_turn_left_r1",
+    "x2_sfbrake_low_turn_left_r2",
+    "x2_sfbrake_low_turn_left_r3"
+  ],
+  "root_cause": {
+    "category": "configuration_boolean_encoding",
+    "expected": "MIRROR_POLICY=true",
+    "attempted": "MIRROR_POLICY=1",
+    "inner_contract": "run_official_gate_inner.sh enables mirroring only when the value is the literal string true",
+    "observed": "all six left-turn raw summaries report mirror_policy=false",
+    "detected_by": "frozen finalizer motion-contract check before any aggregate result was written"
+  },
+  "valid_subset_diagnostic_only": {
+    "cases": 18,
+    "startup_gate_passes": 18,
+    "move_gate_passes": 15,
+    "stop_gate_passes": 18,
+    "full_gate_passes": 15,
+    "interpretation": "All contract-valid straight and right-turn cases passed the stop gate. Three right-turn repetitions failed only their pre-stop move gate; they are baseline locomotion-repeatability failures, not valid evidence of a stop-gate regression."
+  },
+  "invalid_subset_scientific_result": null,
+  "aggregate_result_written": false,
+  "repair_boundary": {
+    "allowed": true,
+    "scope": "fresh preregistration of exactly the six invalid left-turn cases with literal MIRROR_POLICY=true; reuse and do not rerun the 18 valid cases; controller and thresholds unchanged",
+    "promotion_allowed": false
+  },
+  "optimizer_steps": 0,
+  "backward_calls": 0,
+  "checkpoint_writes": 0,
+  "training_unlocked": false,
+  "export_unlocked": false,
+  "deployment_unlocked": false,
+  "baidu_access_or_upload": false,
+  "github_remote_access_or_push": false
+}
