@@ -1,0 +1,62 @@
+{
+  "schema": "x2_gpu_deadline_ledger_phase76_v1",
+  "label": "x2_privileged_posture_stop_teacher_v4",
+  "command": [
+    "/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_privileged_posture_stop_teacher_v4.py",
+    "--prereg",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_posture_stop_teacher_v4_prereg.json",
+    "--source",
+    "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt",
+    "--stationary",
+    "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx",
+    "--report",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_posture_stop_teacher_v4_screen.json",
+    "--failure",
+    "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_posture_stop_teacher_v4_failure.json",
+    "--num-envs",
+    "256",
+    "--seed",
+    "784001",
+    "--steps",
+    "820",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "log_path": "/tmp/x2_privileged_posture_stop_teacher_v4.log",
+  "child_pid": 591472,
+  "child_pgid": 591472,
+  "timeout_seconds": 1200.0,
+  "term_grace_seconds": 5.0,
+  "timed_out": false,
+  "term_sent": false,
+  "kill_sent": false,
+  "forced_cleanup": false,
+  "raw_returncode": 0,
+  "autonomous_exit": true,
+  "exit_code": 0,
+  "start_wall_ns": 1786594417809966168,
+  "elapsed_s": 599.1451837800123,
+  "disk_before": {
+    "total_bytes": 502392610816,
+    "used_bytes": 114589081600,
+    "free_bytes": 362208157696
+  },
+  "disk_after": {
+    "total_bytes": 502392610816,
+    "used_bytes": 122712309760,
+    "free_bytes": 354084929536
+  },
+  "disk_used_delta_bytes": 8123228160,
+  "log_bytes": 17010,
+  "log_sha256": "bb9bb381ca0e8f4a3b4a34ca9460264b84cacb145bfe0b2db2558c4cb329b9f6",
+  "gpu_sample_count": 1151,
+  "gpu_sample_errors": 0,
+  "gpu": {
+    "memory_total_mib": 24576.0,
+    "memory_used_peak_mib": 3399.0,
+    "utilization_peak_percent": 70.0,
+    "power_peak_w": 157.9
+  }
+}

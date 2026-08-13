@@ -1,0 +1,141 @@
+{
+  "schema": "x2_brake_handoff_panel_prereg_v1",
+  "created_at": "2026-08-13T12:36:00+08:00",
+  "purpose": "Isolate deceleration and stationary-policy acquisition from posture correction using fixed zero-training state machines.",
+  "supersedes_for_next_action_only": {
+    "v4_failure_freeze_sha256": "0e0c0d4b43be313952e2c7f27afd19f7cebeb18d55dedb6ebd92e16c881c2886",
+    "v4_formal_result_generated": false,
+    "reason": "v4 coupled posture feedback with stop acquisition; its screen was diagnostic-only and the independent finalizer was not run"
+  },
+  "runtime": {
+    "seed": 785001,
+    "num_envs": 256,
+    "steps": 820,
+    "control_dt_s": 0.02,
+    "duration_s": 16.4,
+    "reset_panel": {
+      "roll_pitch_rad": 0.006,
+      "yaw_rad": 0.02,
+      "linear_velocity_mps": 0.01,
+      "angular_velocity_radps": 0.01,
+      "joint_position_scale": [0.9975, 1.0025],
+      "joint_velocity_radps": 0.01
+    },
+    "schedule": {
+      "stand_s": 1.0,
+      "accelerate_s": 1.0,
+      "cruise_s": 4.2,
+      "decelerate_s": 2.0,
+      "hold_min_s": 8.2,
+      "speed_mps": 0.35,
+      "gait_offset_strata": 16,
+      "gait_offset_range_s": [0.0, 0.6]
+    },
+    "actuator": "ideal endpoint, fixed upper, no push, no observation corruption"
+  },
+  "screening": {
+    "seed": 785101,
+    "strategy_count": 16,
+    "environments_per_strategy": 16,
+    "validation_candidates": 3,
+    "selection": "lexicographic: moving terminations, hold terminations, absolute hold safety violations, speed, tilt, support, action slew"
+  },
+  "validation": {
+    "seed": 785201,
+    "required_controls": ["direct_mix", "locomotion_zero"],
+    "reset_fingerprint_exact": true,
+    "environment_count_per_strategy": 256
+  },
+  "handoff_gate": {
+    "speed_max_mps": 0.10,
+    "tilt_max_rad": 0.20,
+    "support_max_m": 0.015,
+    "dwell_steps": 5,
+    "blend_steps": 50
+  },
+  "strategy_names": [
+    "direct_mix",
+    "locomotion_zero",
+    "direct_main_stand",
+    "direct_stationary",
+    "gated_zero_mix",
+    "gated_brake_025_mix",
+    "gated_brake_050_mix",
+    "gated_brake_100_mix",
+    "decel_blend_2s_mix",
+    "decel_blend_4s_mix",
+    "decel_blend_2s_main",
+    "decel_blend_2s_stationary",
+    "speed_blend_mix",
+    "speed_blend_main",
+    "speed_blend_stationary",
+    "delayed_direct_mix"
+  ],
+  "prohibitions": {
+    "posture_residual": true,
+    "reward_inspection": true,
+    "optimizer": true,
+    "backward": true,
+    "checkpoint": true,
+    "model_export": true,
+    "baidu_access_or_upload": true
+  },
+  "resources": {
+    "free_before_bytes_min": 30064771072,
+    "free_after_bytes_min": 30064771072,
+    "gpu_peak_mib_max": 8192,
+    "elapsed_max_s": 1200,
+    "evidence_bytes_max": 67108864,
+    "isaaclab_temp_delta_bytes_max": 268435456,
+    "global_filesystem_delta_informational_only": true
+  },
+  "immutable_code": {
+    "design": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/docs/tasks/X2_BRAKE_HANDOFF_PANEL_20260813.md", "sha256": "1798f354e8d7cdb035177bb7a11bb05cb11a9ff9af3daa55dd0c901444bcb6d2"},
+    "runner": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_brake_handoff_panel_v5.py", "sha256": "def811bba214008dedd228b940310276eebf063dcd1d8da4b624cc8262028c7f"},
+    "shell": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_brake_handoff_panel_v5.sh", "sha256": "6be799d7bf5b5d3b2b31e5335e259e8906592424fd8cbe4be1aeadfcd7286e05"},
+    "panel_helper": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/src/cwi_x2/brake_handoff_panel.py", "sha256": "df6b62eacdf40040b1383c315c6720fecdb6fa2a97b4d87a25afa82d3bf685e7"},
+    "handoff_helper": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/src/cwi_x2/privileged_posture_stop_teacher.py", "sha256": "c9624616a9200fac700f5e755e0d4b93f228ffef70b608f287ba8161da0cad33"},
+    "finalizer": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/finalize_x2_brake_handoff_panel_v5.py", "sha256": "0b0f27c0b29af3a2b8d78d738d7bdf4292c930fb878a5903f8a7acfc3b6355e4"},
+    "panel_test": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tests/test_brake_handoff_panel.py", "sha256": "029b1e800c337c6b0554491788c0048424563ed6c6c16ec6d2fc2a7582eae517"},
+    "finalizer_test": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tests/test_finalize_x2_brake_handoff_panel_v5.py", "sha256": "76993e4e13fbe1fc775e5ee2012dc03edf20474afb463eb910ad1a0e19352203"},
+    "transition_command": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/src/cwi_x2/transition_command.py", "sha256": "f829ac7527813b99ec61c166357a7f03b1442adf9f2a18fe3e4007b0e259c0c5"},
+    "posture_metrics": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/src/x2_native_locomotion_posture_phase60.py", "sha256": "803b4ff70d6d194c64de9d9c8ff30ba775d8c20a1251a2d7b16d8220f64addbb"},
+    "deadline_ledger": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/run_with_gpu_deadline_ledger_phase76.py", "sha256": "8aa26334202f0a9ee83e106c1d296649c7b9b415b798df06f4233754d3d83704"},
+    "upper_hook": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/hooks/sitecustomize.py", "sha256": "58e572ff863093e58894027dda3a51726b1fa883d7cc9a5d54f5dd562b91f83d"},
+    "gear_base_cfg": {"path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/modular_tracking_env_cfg.py", "sha256": "c85e9d3e1412d36b47d2cafa8744f8858b39a161e67193e405ded5e7d73bc22e"},
+    "gear_robot_cfg": {"path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/robots/x2.py", "sha256": "8d9f7d22789b44d79c96789bfc569cf015bb662bc4f5b7c925deba20e10d943b"},
+    "gear_actuator_response": {"path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/manager_env/x2_actuator_response.py", "sha256": "caffb27271409da5a5954363091569f5634737e20fa249b15138f939a6cf7f5e"},
+    "gear_flat_cfg": {"path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/flat_env_cfg.py", "sha256": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8"},
+    "gear_actions": {"path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/actions.py", "sha256": "463b86ea509d5af3a454f151b98ed641618fe8312432c50c774efb430a1fce10"},
+    "gear_gait": {"path": "/home/yu/x2_teleop_final/x2_sonic/sonic_x2_sandbox/gear_sonic/envs/x2_velocity/gait.py", "sha256": "0d940c8f5363f0e6662ee9d7c85b3310edb8e90ab435bea6b8e1d1c7b79809e1"}
+  },
+  "immutable_inputs": {
+    "source_checkpoint": {"path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/model_2600.pt", "sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb", "bytes": 1809013, "iteration": 2600},
+    "source_env_yaml": {"path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/env.yaml", "sha256": "f702a358bdbc1df94ac2a54b83aa4f6d7c98c76b091ac05a65fd074c44e6f9d7"},
+    "source_agent_yaml": {"path": "/home/yu/x2_teleop_final/x2_sonic/logs/rsl_rl/x2_lower_velocity_flat/2026-07-22_10-19-57_stage219_cleanreset_yawcoverage25_sole12_selfoff_resume2550_to2650_v1/params/agent.yaml", "sha256": "38d462ad726e0e74d797f8a0ce3799aaadc02737e6e14a5cdf3443f7da0a8368"},
+    "template": {"path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz", "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"},
+    "fixed_upper_motion": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/artifacts/official_x2/x2_hybrid_phase44_upper_motion.npz", "sha256": "71db36d0206c44da05640f6e3616f918945524e891a5df8051533fcbeb2ab2ef"},
+    "sole12_urdf": {"path": "/home/humanplus/x2_teleop_final/assets/agibot_x2/x2_ultra_sonic_sole12.urdf", "sha256": "ba203bac6b5f74aa9da125508a61232b8b93747642d1ab675efc530e8db1a066", "bytes": 39525},
+    "stationary_actor": {"path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.onnx", "sha256": "edb73c7c3c5a64c3c3fcfe3020295b27058ecf0ae39b45d3fe0029cfc8367565", "bytes": 302551},
+    "stationary_export_manifest": {"path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stand_backend_scratch_i150_actor.export.json", "sha256": "72b6bed4ec40fcf14bc73867add8564dc079671d29fd7c46c894d05e0dd16d67"}
+  },
+  "immutable_evidence": {
+    "v4_failure_freeze": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_posture_stop_teacher_v4_failure_freeze.json", "sha256": "0e0c0d4b43be313952e2c7f27afd19f7cebeb18d55dedb6ebd92e16c881c2886"},
+    "v4_screen": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_privileged_posture_stop_teacher_v4_screen.json", "sha256": "2336fb738c083d61b437f6fd68ffa72ea4abf77f42130a3282716ef10e934182"},
+    "stage264_new_machine_replay": {"path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/stage264_frozen_baseline/new_machine_replay.json", "sha256": "41e160d6aa7e118a6d5d73db9ff953fa3c76e1d7ca585ba2263dbb03c819082d", "current_passes": 22, "current_cases": 24}
+  },
+  "outputs": {
+    "screen": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_screen.json",
+    "failure": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_failure.json",
+    "resource": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_resource.json",
+    "result": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5_result.json",
+    "markdown": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_brake_handoff_panel_v5.md",
+    "log": "/tmp/x2_brake_handoff_panel_v5.log",
+    "overwrite_forbidden": true
+  },
+  "decision_routes": {
+    "PASS_HANDOFF_CONTROLLER_OFFICIAL_PANEL_PREREG_ONLY": {"official_panel_preregistration_unlocked": true, "official_panel_launch_unlocked": false, "brake_skill_preregistration_unlocked": false, "new_actor_preregistration_unlocked": false, "training_unlocked": false, "deployment_unlocked": false},
+    "PARTIAL_HANDOFF_BRAKE_SKILL_PREREG_ONLY": {"official_panel_preregistration_unlocked": false, "official_panel_launch_unlocked": false, "brake_skill_preregistration_unlocked": true, "new_actor_preregistration_unlocked": false, "training_unlocked": false, "deployment_unlocked": false},
+    "FAIL_HANDOFF_NEW_ACTOR_PREREG_ONLY": {"official_panel_preregistration_unlocked": false, "official_panel_launch_unlocked": false, "brake_skill_preregistration_unlocked": false, "new_actor_preregistration_unlocked": true, "training_unlocked": false, "deployment_unlocked": false}
+  }
+}

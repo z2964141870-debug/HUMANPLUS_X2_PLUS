@@ -1,0 +1,79 @@
+{
+  "schema": "x2_privileged_posture_stop_teacher_v4_failure_freeze_v1",
+  "recorded_at": "2026-08-13T12:28:00+08:00",
+  "decision": "FAIL_RESOURCE_GATE_EXTERNAL_DISK_WRITE_DIAGNOSTIC_ONLY",
+  "promotion": "none",
+  "historical_screen_decision": "FAIL_STATE_FEEDBACK_TEACHER_NEW_ACTOR_PREREG_ONLY",
+  "formal_result_generated": false,
+  "reason": "The simulator completed autonomously, but the preregistered filesystem-wide disk delta gate observed 8123228160 bytes, above 512 MiB. Concurrent unrelated archive writes under /home/yu/rongyao_staging occurred during the same interval, so the delta cannot be attributed to this experiment. The independent finalizer was intentionally not run.",
+  "provenance": {
+    "prereg": {
+      "path": "reports/retarget/x2_privileged_posture_stop_teacher_v4_prereg.json",
+      "sha256": "3b9c7050690bbf22a1b726b7b3351ce6785e059b795fbdd6ee8c158687cea537"
+    },
+    "screen": {
+      "path": "reports/retarget/x2_privileged_posture_stop_teacher_v4_screen.json",
+      "sha256": "2336fb738c083d61b437f6fd68ffa72ea4abf77f42130a3282716ef10e934182",
+      "bytes": 2780910
+    },
+    "resource": {
+      "path": "reports/retarget/x2_privileged_posture_stop_teacher_v4_resource.json",
+      "sha256": "b7b95d1e6b89440ce92c0c22ca9bf9eec717f5f0b881b2a310ceede2dbcde71a",
+      "elapsed_s": 599.1451837800123,
+      "raw_returncode": 0,
+      "autonomous_exit": true,
+      "gpu_peak_mib": 3399.0,
+      "filesystem_delta_bytes": 8123228160
+    },
+    "log": {
+      "path": "/tmp/x2_privileged_posture_stop_teacher_v4.log",
+      "sha256": "bb9bb381ca0e8f4a3b4a34ca9460264b84cacb145bfe0b2db2558c4cb329b9f6"
+    },
+    "attributable_isaac_usd": {
+      "path": "/tmp/IsaacLab/usd_20260813_121346_4800",
+      "allocated_bytes": 134381568
+    }
+  },
+  "execution_contract": {
+    "environment_count": 256,
+    "steps_per_rollout": 820,
+    "search_iterations": 8,
+    "optimizer_steps": 0,
+    "backward_calls": 0,
+    "checkpoint_writes": 0,
+    "all_runner_technical_checks": true,
+    "reset_fingerprint_exact": true
+  },
+  "diagnostic_only_observations": {
+    "search_best": {
+      "iteration": 5,
+      "candidate": 2,
+      "candidate_environment_count": 16,
+      "lexicographic_key": [5, 8.959024047851562, 0, 0, 0.10668321698904037, 0.1011427640914917],
+      "interpretation": "The search found local cruise/deceleration improvements in a 16-environment candidate cell, but every winning candidate terminated all 16 environments during hold. The selected high-dimensional matrix failed to generalize to the 256-environment validation."
+    },
+    "validation_terminations": {
+      "source_direct": {"cruise": 0, "decelerate": 0, "hold": 251},
+      "fixed_half_direct": {"cruise": 6, "decelerate": 19, "hold": 231},
+      "feedback_gated": {"cruise": 10, "decelerate": 0, "hold": 246}
+    },
+    "validation_pitch_mean_rad": {
+      "source_direct": {"cruise": -0.19322771474253386, "decelerate": -0.11493968486320227, "hold": -0.24180235748644918},
+      "fixed_half_direct": {"cruise": -0.1579325455127819, "decelerate": -0.08160798714180054, "hold": -0.5094139099938279},
+      "feedback_gated": {"cruise": -0.2697020497987052, "decelerate": -0.19597887092570107, "hold": -0.2941400837346193}
+    },
+    "feedback_minus_source_pitch_bootstrap": {
+      "cruise": {"point": -0.07647433505617134, "ci95": [-0.14678024845473397, -0.01697127584528796]},
+      "decelerate": {"point": -0.0810391860624988, "ci95": [-0.1639026175988641, -0.009633312260200977]}
+    },
+    "interpretation": "The direct locomotion-to-stationary handoff is the dominant reproducible failure. A fixed open-loop correction improves cruise pitch locally but does not survive the transition. This particular direct 15x17 CEM teacher overfits and is not a deployable or trainable teacher. These are exploratory observations from a resource-invalid run and cannot promote any model."
+  },
+  "next_route": {
+    "name": "isolated_brake_and_handoff_feasibility",
+    "scope": "Separate transition scheduling and hold acquisition from posture correction. Compare zero-command locomotion, current direct handoff, speed/contact-gated blends, and stationary backends without any posture residual or training.",
+    "state_feedback_teacher_reuse": false,
+    "optimizer_or_training_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "baidu_access_or_upload": false
+}
