@@ -2050,6 +2050,19 @@ class Stage208OfficialAdapter(Node):
                     force_moving=True,
                     template_multiplier=ramp,
                 )
+            elif self.args.stop_controller == "locomotion_zero":
+                # Keep the trained locomotion actor in authority after the
+                # command reaches zero.  A zero command deliberately selects
+                # its standing suffix ([0, 0, 1, 1]) and disables the gait
+                # template, matching the qualified Isaac brake/hold mode.
+                # The main slot also preserves the action history that was
+                # actually executed during movement; no stationary-policy
+                # state is injected at the transition.
+                targets, obs, action = self._policy_targets(
+                    self.args.move_seconds + stop_elapsed,
+                    0.0,
+                    policy_slot="main",
+                )
             elif self.args.stop_controller == "blend_to_policy":
                 transition = max(self.args.stop_transition_seconds, 1.0e-6)
                 if stop_elapsed < transition:
@@ -2956,6 +2969,7 @@ def parse_args() -> argparse.Namespace:
             "brake_then_policy",
             "brake_blend_to_policy",
             "curriculum_then_policy",
+            "locomotion_zero",
         ),
         default="policy",
         help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",
