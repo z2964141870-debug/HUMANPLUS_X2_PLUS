@@ -1,0 +1,78 @@
+{
+  "backward_calls": 0,
+  "baidu_access_or_upload": false,
+  "cases": [
+    {
+      "case_name": "x2_locomotion_zero_v2_low_straight_r4",
+      "full_gate_pass": true,
+      "move_gate_pass": true,
+      "move_root_pitch_mean_rad": -0.18564044475362132,
+      "policy_slot_inference_counts": {
+        "main": 600,
+        "recovery": 0,
+        "stationary": 100
+      },
+      "raw_result_sha256": "90c1d55b4e4dfc2cc3cb66a42bc0fce265b41618781347e421342953929ec233",
+      "resource_checks": {
+        "effective_exit_matches": true,
+        "elapsed": true,
+        "free_space": true,
+        "label": true,
+        "no_timeout_or_signal": true,
+        "physics_exit": true,
+        "schema": true
+      },
+      "resource_sha256": "78ea982411acbca3d658d5d3c9650e80e262941fdda1b196364602449b1c39da",
+      "startup_gate_pass": true,
+      "stop_gate_pass": true,
+      "stop_last_1s_mean_speed_mps": 0.005064754323593455,
+      "stop_root_pitch_mean_rad": -0.024944503848204614,
+      "stop_root_tilt_max_rad": 0.20537660622874182,
+      "stop_root_xy_drift_m": 0.024049697196903322,
+      "stop_root_z_min_m": 0.6202759595720676
+    },
+    {
+      "case_name": "x2_locomotion_zero_v2_low_turn_right_r3",
+      "full_gate_pass": false,
+      "move_gate_pass": true,
+      "move_root_pitch_mean_rad": -0.15431757687619604,
+      "policy_slot_inference_counts": {
+        "main": 600,
+        "recovery": 0,
+        "stationary": 100
+      },
+      "raw_result_sha256": "17c41e67d259dae1bebe458497caa9d92f5aceb3082e230564ee497db3436c5a",
+      "resource_checks": {
+        "effective_exit_matches": true,
+        "elapsed": true,
+        "free_space": true,
+        "label": true,
+        "no_timeout_or_signal": true,
+        "physics_exit": true,
+        "schema": true
+      },
+      "resource_sha256": "e63452226e8b46c0540252840bd94d85b7a54b3c6e245f8f6ce654dfa520fdf6",
+      "startup_gate_pass": true,
+      "stop_gate_pass": false,
+      "stop_last_1s_mean_speed_mps": 0.007900888648826192,
+      "stop_root_pitch_mean_rad": -0.019981043998952924,
+      "stop_root_tilt_max_rad": 0.17064515746128703,
+      "stop_root_xy_drift_m": 0.16298413376024187,
+      "stop_root_z_min_m": 0.6062438359862525
+    }
+  ],
+  "checkpoint_writes": 0,
+  "decision": "PARTIAL_OFFICIAL_LOCOMOTION_ZERO_BRAKE_SKILL_ONLY",
+  "optimizer_steps": 0,
+  "permissions": {
+    "brake_skill_preregistration_unlocked": true,
+    "deployment_unlocked": false,
+    "export_unlocked": false,
+    "new_actor_preregistration_unlocked": false,
+    "official_panel_launch_unlocked": false,
+    "official_panel_preregistration_unlocked": false,
+    "training_unlocked": false
+  },
+  "prereg_sha256": "de93177ad9cd6d8b3b93ae1ace57a8c48362a40edacb0e5a736684589e3bb90b",
+  "schema": "x2_official_locomotion_zero_failure_cases_result_v1"
+}
