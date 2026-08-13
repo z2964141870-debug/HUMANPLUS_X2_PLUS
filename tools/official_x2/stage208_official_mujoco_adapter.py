@@ -2063,6 +2063,26 @@ class Stage208OfficialAdapter(Node):
                     0.0,
                     policy_slot="main",
                 )
+            elif self.args.stop_controller == "locomotion_ramp_zero":
+                # Preserve main-actor authority while reducing both command
+                # and gait-template amplitude over one explicit transition.
+                # After the transition this is exactly locomotion_zero.
+                transition = max(self.args.stop_transition_seconds, 1.0e-6)
+                ramp = max(0.0, 1.0 - stop_elapsed / transition)
+                if ramp > 0.0:
+                    targets, obs, action = self._policy_targets(
+                        self.args.move_seconds + stop_elapsed,
+                        self.args.vx * ramp,
+                        force_moving=True,
+                        template_multiplier=ramp,
+                        policy_slot="main",
+                    )
+                else:
+                    targets, obs, action = self._policy_targets(
+                        self.args.move_seconds + stop_elapsed,
+                        0.0,
+                        policy_slot="main",
+                    )
             elif self.args.stop_controller == "blend_to_policy":
                 transition = max(self.args.stop_transition_seconds, 1.0e-6)
                 if stop_elapsed < transition:
@@ -2970,6 +2990,7 @@ def parse_args() -> argparse.Namespace:
             "brake_blend_to_policy",
             "curriculum_then_policy",
             "locomotion_zero",
+            "locomotion_ramp_zero",
         ),
         default="policy",
         help="Controller used after the moving phase; ramp_policy preserves phase while reducing speed and template amplitude.",

@@ -79,7 +79,8 @@ def main() -> None:
             raise RuntimeError("resource path/order mismatch")
         payload = json.loads(case_path.read_text(encoding="utf-8"))
         summary = payload["summary"]
-        if summary["stop_controller"] != "locomotion_zero":
+        expected_controller = prereg["boundary"]["stop_controller"]
+        if summary["stop_controller"] != expected_controller:
             raise RuntimeError("candidate stop controller mismatch")
         if abs(float(summary["command_vx_mps"]) - expected["vx_mps"]) > 1.0e-12:
             raise RuntimeError("candidate speed mismatch")
@@ -96,7 +97,7 @@ def main() -> None:
         command = resource.get("command", [])
         if f"CASE_NAME={expected['case_name']}" not in command:
             raise RuntimeError("resource command case identity mismatch")
-        if "STOP_CONTROLLER=locomotion_zero" not in command:
+        if f"STOP_CONTROLLER={expected_controller}" not in command:
             raise RuntimeError("resource command stop controller mismatch")
         checks = {
             "schema": resource.get("schema") == "x2_gpu_deadline_ledger_phase76_v1",

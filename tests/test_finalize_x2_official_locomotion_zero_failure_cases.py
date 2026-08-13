@@ -10,4 +10,4 @@ def test_finalizer_has_fail_closed_three_way_decision():
     assert "PARTIAL_OFFICIAL_LOCOMOTION_ZERO_BRAKE_SKILL_ONLY" in text
     assert "FAIL_OFFICIAL_LOCOMOTION_ZERO_INTEGRATION_STOP" in text
     assert 'resource.get("raw_returncode") in (0, 2)' in text
-    assert 'summary["stop_controller"] != "locomotion_zero"' in text
+    assert 'summary["stop_controller"] != expected_controller' in text

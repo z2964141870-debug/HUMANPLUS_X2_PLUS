@@ -4,11 +4,11 @@ set -euo pipefail
 ROOT=/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim
 OFFICIAL=/home/yu/projects/ZHY/x2_official_rl_deploy_v1
 PY=/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python
-PREREG="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_prereg_v2.json"
-RAW_ROOT="$OFFICIAL/results/locomotion_zero_brake_feasibility_v2_20260813"
+PREREG="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_prereg_v3.json"
+RAW_ROOT="$OFFICIAL/results/locomotion_ramp_zero_brake_feasibility_20260813"
 LEDGER="$ROOT/tools/retarget/run_with_gpu_deadline_ledger_phase76.py"
-RESULT="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_v2_result.json"
-MARKDOWN="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_v2.md"
+RESULT="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_v3_result.json"
+MARKDOWN="$ROOT/reports/retarget/x2_official_locomotion_zero_failure_cases_v3.md"
 
 verify_sidecar() {
   local path="$1"
@@ -40,8 +40,8 @@ fi
 mkdir -p "$RAW_ROOT"
 
 cases=(
-  x2_locomotion_zero_v2_low_straight_r4
-  x2_locomotion_zero_v2_low_turn_right_r3
+  x2_locomotion_ramp_zero_low_straight_r4
+  x2_locomotion_ramp_zero_low_turn_right_r3
 )
 domains=(210 211)
 ports=(31910 31911)
@@ -64,7 +64,8 @@ for index in 0 1; do
     TEMPLATE_PATH=/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz
     MODEL_PATH=/models/stage219_s2600_actor.onnx COMMAND_VX=0.25
     STATE_QOS_DEPTH=1 STATE_PREDICTION_SECONDS=0 SIMULATOR_HTTP_PORT="${ports[$index]}"
-    MOVE_SECONDS=4.0 STOP_SECONDS=8.0 STOP_CONTROLLER=locomotion_zero
+    MOVE_SECONDS=4.0 STOP_SECONDS=8.0 STOP_CONTROLLER=locomotion_ramp_zero
+    STOP_TRANSITION_SECONDS=1.0
     MAX_ATTEMPTS=1 TIMEOUT_SECONDS=120
   )
   if [ "$motion" = straight ]; then
@@ -81,7 +82,7 @@ for index in 0 1; do
     )
   fi
   set +e
-  "$PY" "$LEDGER" --label "x2_official_locomotion_zero_v2_case${index}" \
+  "$PY" "$LEDGER" --label "x2_official_locomotion_ramp_zero_case${index}" \
     --resource-output "$resource" --log "$log" --disk-path "$ROOT" \
     --timeout-seconds 180 --term-grace-seconds 5 -- \
     env "${common[@]}" "${extra[@]}" bash "$ROOT/tools/official_x2/run_official_gate_case.sh"
@@ -93,12 +94,12 @@ for index in 0 1; do
   test -s "$raw"
   (cd "$RAW_ROOT" && sha256sum "$(basename "$raw")" > "$(basename "$raw").sha256")
   verify_sidecar "$raw"
-  jq -e --arg expected_label "x2_official_locomotion_zero_v2_case${index}" '
+  jq -e --arg expected_label "x2_official_locomotion_ramp_zero_case${index}" '
     .label == $expected_label and (.raw_returncode == 0 or .raw_returncode == 2) and
     .exit_code == .raw_returncode and .timed_out == false and .term_sent == false and
     .kill_sent == false and .forced_cleanup == false and .elapsed_s <= 180 and
     .disk_after.free_bytes >= 32212254720' "$resource" >/dev/null
-  jq -e '.summary.stop_controller == "locomotion_zero" and
+  jq -e '.summary.stop_controller == "locomotion_ramp_zero" and
          (.summary.startup_gate_pass|type)=="boolean" and
          (.summary.move_gate_pass|type)=="boolean" and
          (.summary.stop_gate_pass|type)=="boolean" and

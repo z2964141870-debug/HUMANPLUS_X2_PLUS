@@ -1,0 +1,180 @@
+{
+  "schema": "x2_official_locomotion_zero_failure_cases_prereg_v1",
+  "created_at": "2026-08-13T14:01:22+08:00",
+  "supersedes": {
+    "prereg_v2_sha256": "de93177ad9cd6d8b3b93ae1ace57a8c48362a40edacb0e5a736684589e3bb90b",
+    "result_v2_sha256": "4885a2caa83d975d225e18ac7d13b5ea74f19128850c63e77a54ab3399759172",
+    "reason": "v2 removed the catastrophic terminal fall in both cases, fully passed straight, and missed only the right-turn stop-drift gate by 0.012984 m; v3 adds one preregistered 1.0 s command/template ramp before the exact locomotion-zero hold"
+  },
+  "objective": "Test one fixed state-transition repair on each current Stage264 official failure: retain the locomotion actor, ramp command and gait-template amplitude to zero over 1.0 s, then use the already qualified locomotion-zero hold.",
+  "boundary": {
+    "case_count": 2,
+    "attempts_per_case": 1,
+    "training": false,
+    "optimizer_steps": 0,
+    "backward_calls": 0,
+    "checkpoint_writes": 0,
+    "default_adapter_behavior_changed": false,
+    "stop_controller": "locomotion_ramp_zero",
+    "stop_transition_seconds": 1.0,
+    "parameter_sweep": false,
+    "docker_image_identity": "x2-aimdk-humble@sha256:52406d45fa5c9dc74fca47d2f8ba1853f5b9059ea69f8f98596bb9bc081fb7cc",
+    "baidu_access_or_upload": false,
+    "github_remote_access_or_push": false
+  },
+  "resources": {
+    "elapsed_max_s": 180,
+    "free_before_bytes_min": 32212254720,
+    "free_after_bytes_min": 32212254720,
+    "global_filesystem_delta_informational_only": true
+  },
+  "cases": [
+    {
+      "case_name": "x2_locomotion_ramp_zero_low_straight_r4",
+      "source_failure_case": "stage264_low_straight_r4",
+      "label": "x2_official_locomotion_ramp_zero_case0",
+      "ros_domain_id": 210,
+      "vx_mps": 0.25,
+      "fixed_wz_radps": null,
+      "mirror_policy": false,
+      "raw_result": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/locomotion_ramp_zero_brake_feasibility_20260813/x2_locomotion_ramp_zero_low_straight_r4.json",
+      "resource": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_locomotion_ramp_zero_low_straight_r4_resource.json",
+      "log": "/tmp/x2_locomotion_ramp_zero_low_straight_r4.log"
+    },
+    {
+      "case_name": "x2_locomotion_ramp_zero_low_turn_right_r3",
+      "source_failure_case": "stage264_low_turn_right_r3",
+      "label": "x2_official_locomotion_ramp_zero_case1",
+      "ros_domain_id": 211,
+      "vx_mps": 0.25,
+      "fixed_wz_radps": 0.15,
+      "mirror_policy": false,
+      "raw_result": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/locomotion_ramp_zero_brake_feasibility_20260813/x2_locomotion_ramp_zero_low_turn_right_r3.json",
+      "resource": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_locomotion_ramp_zero_low_turn_right_r3_resource.json",
+      "log": "/tmp/x2_locomotion_ramp_zero_low_turn_right_r3.log"
+    }
+  ],
+  "decision_routes": {
+    "PASS_OFFICIAL_LOCOMOTION_ZERO_PANEL_PREREG_ONLY": {
+      "official_panel_preregistration_unlocked": true,
+      "official_panel_launch_unlocked": false,
+      "brake_skill_preregistration_unlocked": false,
+      "new_actor_preregistration_unlocked": false,
+      "training_unlocked": false,
+      "export_unlocked": false,
+      "deployment_unlocked": false
+    },
+    "PARTIAL_OFFICIAL_LOCOMOTION_ZERO_BRAKE_SKILL_ONLY": {
+      "official_panel_preregistration_unlocked": false,
+      "official_panel_launch_unlocked": false,
+      "brake_skill_preregistration_unlocked": true,
+      "new_actor_preregistration_unlocked": false,
+      "training_unlocked": false,
+      "export_unlocked": false,
+      "deployment_unlocked": false
+    },
+    "FAIL_OFFICIAL_LOCOMOTION_ZERO_INTEGRATION_STOP": {
+      "official_panel_preregistration_unlocked": false,
+      "official_panel_launch_unlocked": false,
+      "brake_skill_preregistration_unlocked": false,
+      "new_actor_preregistration_unlocked": true,
+      "training_unlocked": false,
+      "export_unlocked": false,
+      "deployment_unlocked": false
+    }
+  },
+  "immutable_code": {
+    "design": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/docs/tasks/X2_OFFICIAL_LOCOMOTION_ZERO_FAILURE_CASES_20260813.md",
+      "sha256": "d1101225297b9e1a6cdb5c1dd8c668ffb76825ec5b39f72ee6818046d1e98097"
+    },
+    "adapter": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/stage208_official_mujoco_adapter.py",
+      "sha256": "890b1f7ecc7249c3785a398df54a5e131dadefba0b753d87355c63ec12046b80"
+    },
+    "case_runner": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_official_gate_case.sh",
+      "sha256": "7e62f1696c31a598b227fcf0d7e0a395a18acdfd8ba2392d482032b638bc2b75"
+    },
+    "inner_runner": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/official_x2/run_official_gate_inner.sh",
+      "sha256": "c392adfbf0410d3fe306d2056b2d83691c423714426710bdb443b2d27b256057"
+    },
+    "campaign_shell": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/scripts/run_x2_official_locomotion_zero_failure_cases.sh",
+      "sha256": "37ed100f78c417ba4d63c167f8fe7e8f13a99ca14627cc643680f18a3d47d9eb"
+    },
+    "finalizer": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/finalize_x2_official_locomotion_zero_failure_cases.py",
+      "sha256": "82f12c1d466d69118a91ab3b3e51b6f053e3e878e78b1e61280f40a53aeb5669"
+    },
+    "contract_test": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tests/test_official_locomotion_zero_stop_contract.py",
+      "sha256": "033ebfbefc9bc01453918eb087c16ce144a6c2c8616cfb89d0640d242fa95577"
+    },
+    "finalizer_test": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tests/test_finalize_x2_official_locomotion_zero_failure_cases.py",
+      "sha256": "6bb0deb2d5859146a3fb7d97f58b5ba5d1826545e9b8b89a97c096bebd6912b3"
+    },
+    "deadline_ledger": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/tools/retarget/run_with_gpu_deadline_ledger_phase76.py",
+      "sha256": "8aa26334202f0a9ee83e106c1d296649c7b9b415b798df06f4233754d3d83704"
+    }
+  },
+  "immutable_inputs": {
+    "actor_onnx": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/models/stage219_s2600_actor.onnx",
+      "sha256": "b95bad3680658c7c25be50f236f070c80b7ff7ba8992355cec2ddfb1ee53c0f9"
+    },
+    "gait_template": {
+      "path": "/home/yu/x2_teleop_final/x2_sonic/data/processed/x2_official_forward_gait_phase_template_15dof.npz",
+      "sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d"
+    },
+    "official_default_yaml": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/vendor/aimdk-aarch64-a424add7-artifacts/extra/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/default.yaml",
+      "sha256": "3abe18ecb23cddccf705cb0efe1fb7f589e54563729d2cf67abf847a2fdab4c8"
+    },
+    "simulator_default_yaml": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/simulator/default.yaml",
+      "sha256": "c9af1d04a85baab88c54ca7fc31056734f6481a9f1d823d7bfe363c9421a1f02"
+    },
+    "scene_xml": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/scene.xml",
+      "sha256": "7fceb3e1357be29b72344db2f571d7e5655a7d1b1db4ea2571556aee28bb1b63"
+    },
+    "x2_xml": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/worktree/x2_rl_deploy/x2_rl_deploy_mujoco/configuration/robot/lx2501_3_t2d5/model_info/x2.xml",
+      "sha256": "3ff43f05beb57412a804ba9fe05cd9adcdfce78e9ce73a95a71ac58ad20d91a3"
+    },
+    "stage264_identity_manifest": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/stage264_frozen_baseline/manifest.json",
+      "sha256": "ad93566fe2a60cedee57df2c6f13234b864c5e566d27980f87e08e106323df79"
+    }
+  },
+  "immutable_evidence": {
+    "isaac_confirmation": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_locomotion_zero_hold_confirmation_result.json",
+      "sha256": "12f81acb8dd6c0da58296b8c8582eb1026753f77e617897e9af80b93ac5d5069"
+    },
+    "stage264_replay": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/stage264_frozen_baseline/new_machine_replay.json",
+      "sha256": "41e160d6aa7e118a6d5d73db9ff953fa3c76e1d7ca585ba2263dbb03c819082d"
+    },
+    "v2_prereg": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_locomotion_zero_failure_cases_prereg_v2.json",
+      "sha256": "de93177ad9cd6d8b3b93ae1ace57a8c48362a40edacb0e5a736684589e3bb90b"
+    },
+    "v2_result": {
+      "path": "/home/yu/projects/ZHY/CWI_CrossEmbodiment_Sim/reports/retarget/x2_official_locomotion_zero_failure_cases_v2_result.json",
+      "sha256": "4885a2caa83d975d225e18ac7d13b5ea74f19128850c63e77a54ab3399759172"
+    },
+    "v2_straight_raw": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/locomotion_zero_brake_feasibility_v2_20260813/x2_locomotion_zero_v2_low_straight_r4.json",
+      "sha256": "90c1d55b4e4dfc2cc3cb66a42bc0fce265b41618781347e421342953929ec233"
+    },
+    "v2_turn_raw": {
+      "path": "/home/yu/projects/ZHY/x2_official_rl_deploy_v1/results/locomotion_zero_brake_feasibility_v2_20260813/x2_locomotion_zero_v2_low_turn_right_r3.json",
+      "sha256": "17c41e67d259dae1bebe458497caa9d92f5aceb3082e230564ee497db3436c5a"
+    }
+  }
+}
