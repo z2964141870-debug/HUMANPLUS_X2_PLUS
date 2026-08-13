@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import hashlib
 import math
+import copy
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 
 import torch
@@ -103,6 +105,32 @@ class ObjectiveWeights:
 
     signed_backward_pitch: float
     actual_support_com: float
+
+
+@dataclass(frozen=True)
+class FullActorUpdateLimits:
+    """Post-minibatch acceptance limits for the warm-started full actor."""
+
+    source_kl_mean_max: float = 0.02
+    source_kl_max: float = 0.20
+    incremental_kl_mean_max: float = 0.01
+    incremental_kl_max: float = 0.10
+    action_drift_max: float = 0.10
+
+    def __post_init__(self) -> None:
+        values = (
+            self.source_kl_mean_max,
+            self.source_kl_max,
+            self.incremental_kl_mean_max,
+            self.incremental_kl_max,
+            self.action_drift_max,
+        )
+        if any(not math.isfinite(value) or value <= 0.0 for value in values):
+            raise ValueError("update limits must be finite and positive")
+        if self.source_kl_mean_max > self.source_kl_max:
+            raise ValueError("source mean KL cannot exceed source max KL")
+        if self.incremental_kl_mean_max > self.incremental_kl_max:
+            raise ValueError("incremental mean KL cannot exceed incremental max KL")
 
 
 def objective_weights(update_index: int) -> ObjectiveWeights:
@@ -261,14 +289,253 @@ def optimizer_parameter_groups(
     ]
 
 
+def diagonal_fixed_std_kl(
+    mean: torch.Tensor,
+    source_mean: torch.Tensor,
+    std: torch.Tensor,
+) -> torch.Tensor:
+    """KL between equal-diagonal-std Gaussians."""
+
+    if mean.shape != source_mean.shape:
+        raise ValueError("candidate and source means must have identical shapes")
+    if std.ndim == 1:
+        std = std.reshape(*([1] * (mean.ndim - 1)), -1)
+    if std.shape[-1] != mean.shape[-1] or torch.any(std <= 0.0):
+        raise ValueError("std must be positive and match the action width")
+    return 0.5 * torch.square((mean - source_mean) / std).sum(dim=-1)
+
+
+def _all_finite(tensors: Iterable[torch.Tensor]) -> bool:
+    return all(bool(torch.isfinite(tensor).all()) for tensor in tensors)
+
+
+def source_retention(
+    candidate: nn.Module,
+    source: nn.Module,
+    observations,
+) -> dict[str, float | bool]:
+    """Measure full-actor drift without consulting either critic."""
+
+    with torch.no_grad():
+        candidate_action = candidate.act_inference(observations)
+        source_action = source.act_inference(observations)
+        kl = diagonal_fixed_std_kl(
+            candidate_action,
+            source_action,
+            source.std.detach(),
+        )
+        drift = torch.abs(candidate_action - source_action)
+    return {
+        "source_kl_mean": float(kl.mean()),
+        "source_kl_max": float(kl.max()),
+        "action_drift_max": float(drift.max()),
+        "finite": bool(torch.isfinite(kl).all() and torch.isfinite(drift).all()),
+    }
+
+
+def full_actor_ppo_update(
+    algorithm,
+    source_policy: nn.Module,
+    *,
+    limits: FullActorUpdateLimits = FullActorUpdateLimits(),
+) -> dict[str, float | int | bool]:
+    """Run one fixed-rate PPO update with post-step rollback gates.
+
+    The PPO objective contains no source KL penalty.  PPO clipping supplies
+    the local optimizer geometry; the immutable source comparison is an
+    acceptance gate applied after every Adam step.  This leaves substantially
+    more capacity than the failed LoRA campaign while remaining fail-closed.
+    """
+
+    if algorithm.policy.is_recurrent:
+        raise RuntimeError("the full-actor pilot supports only feed-forward policies")
+    if getattr(algorithm, "rnd", None) is not None:
+        raise RuntimeError("the full-actor pilot does not support RND")
+    if getattr(algorithm, "symmetry", None) is not None:
+        raise RuntimeError("the full-actor pilot does not use RSL symmetry")
+    if getattr(algorithm, "schedule", "fixed") != "fixed":
+        raise RuntimeError("separate actor/critic rates require a fixed PPO schedule")
+
+    totals = {"value_function": 0.0, "surrogate": 0.0, "entropy": 0.0}
+    source_kl_total = 0.0
+    incremental_kl_total = 0.0
+    source_kl_peak = 0.0
+    incremental_kl_peak = 0.0
+    action_drift_peak = 0.0
+    gradient_norm_peak = 0.0
+    optimizer_steps = 0
+    generator = algorithm.storage.mini_batch_generator(
+        algorithm.num_mini_batches,
+        algorithm.num_learning_epochs,
+    )
+    for (
+        obs_batch,
+        actions_batch,
+        target_values_batch,
+        advantages_batch,
+        returns_batch,
+        old_actions_log_prob_batch,
+        old_mu_batch,
+        old_sigma_batch,
+        hidden_states_batch,
+        masks_batch,
+    ) in generator:
+        if algorithm.normalize_advantage_per_mini_batch:
+            with torch.no_grad():
+                advantages_batch = (
+                    advantages_batch - advantages_batch.mean()
+                ) / (advantages_batch.std() + 1.0e-8)
+
+        algorithm.policy.act(
+            obs_batch,
+            masks=masks_batch,
+            hidden_states=hidden_states_batch[0],
+        )
+        log_prob = algorithm.policy.get_actions_log_prob(actions_batch)
+        value = algorithm.policy.evaluate(
+            obs_batch,
+            masks=masks_batch,
+            hidden_states=hidden_states_batch[1],
+        )
+        entropy = algorithm.policy.entropy
+        ratio = torch.exp(log_prob - old_actions_log_prob_batch.squeeze(-1))
+        surrogate = -advantages_batch.squeeze(-1) * ratio
+        surrogate_clipped = -advantages_batch.squeeze(-1) * torch.clamp(
+            ratio,
+            1.0 - algorithm.clip_param,
+            1.0 + algorithm.clip_param,
+        )
+        surrogate_loss = torch.maximum(surrogate, surrogate_clipped).mean()
+        if algorithm.use_clipped_value_loss:
+            value_clipped = target_values_batch + (value - target_values_batch).clamp(
+                -algorithm.clip_param,
+                algorithm.clip_param,
+            )
+            value_loss = torch.maximum(
+                torch.square(value - returns_batch),
+                torch.square(value_clipped - returns_batch),
+            ).mean()
+        else:
+            value_loss = torch.square(returns_batch - value).mean()
+        loss = (
+            surrogate_loss
+            + algorithm.value_loss_coef * value_loss
+            - algorithm.entropy_coef * entropy.mean()
+        )
+        if not _all_finite((loss, surrogate_loss, value_loss, ratio)):
+            raise FloatingPointError("non-finite full-actor PPO loss")
+
+        trainable = [
+            parameter for parameter in algorithm.policy.parameters() if parameter.requires_grad
+        ]
+        if not trainable:
+            raise RuntimeError("the full-actor policy has no trainable parameters")
+        parameter_snapshot = [parameter.detach().clone() for parameter in trainable]
+        optimizer_snapshot = copy.deepcopy(algorithm.optimizer.state_dict())
+        algorithm.optimizer.zero_grad(set_to_none=True)
+        loss.backward()
+        gradients = [parameter.grad for parameter in trainable]
+        if any(gradient is None for gradient in gradients) or not _all_finite(
+            gradient for gradient in gradients if gradient is not None
+        ):
+            raise FloatingPointError("missing or non-finite full-actor gradient")
+        gradient_norm = nn.utils.clip_grad_norm_(trainable, algorithm.max_grad_norm)
+        if not torch.isfinite(gradient_norm):
+            raise FloatingPointError("non-finite full-actor gradient norm")
+        algorithm.optimizer.step()
+
+        with torch.no_grad():
+            if hasattr(algorithm.policy, "get_actor_obs"):
+                actor_obs = algorithm.policy.get_actor_obs(obs_batch)
+                actor_obs = algorithm.policy.actor_obs_normalizer(actor_obs)
+            else:
+                actor_obs = obs_batch
+            algorithm.policy.update_distribution(actor_obs)
+            post_mean = algorithm.policy.action_mean
+            post_std = algorithm.policy.action_std
+            source_mean = source_policy.act_inference(obs_batch)
+            source_kl = diagonal_fixed_std_kl(
+                post_mean,
+                source_mean,
+                source_policy.std.detach(),
+            )
+            incremental_kl = torch.sum(
+                torch.log(post_std / old_sigma_batch)
+                + (
+                    torch.square(old_sigma_batch)
+                    + torch.square(old_mu_batch - post_mean)
+                )
+                / (2.0 * torch.square(post_std))
+                - 0.5,
+                dim=-1,
+            )
+            drift = torch.abs(post_mean - source_mean)
+            accepted = bool(
+                _all_finite((source_kl, incremental_kl, drift))
+                and float(source_kl.mean()) <= limits.source_kl_mean_max
+                and float(source_kl.max()) <= limits.source_kl_max
+                and float(incremental_kl.mean()) <= limits.incremental_kl_mean_max
+                and float(incremental_kl.max()) <= limits.incremental_kl_max
+                and float(drift.max()) <= limits.action_drift_max
+            )
+        if not accepted:
+            with torch.no_grad():
+                for parameter, snapshot in zip(trainable, parameter_snapshot, strict=True):
+                    parameter.copy_(snapshot)
+            algorithm.optimizer.load_state_dict(optimizer_snapshot)
+            raise RuntimeError(
+                "full-actor trust gate failed; minibatch was rolled back: "
+                f"source_kl_mean={float(source_kl.mean()):.9g}, "
+                f"source_kl_max={float(source_kl.max()):.9g}, "
+                f"incremental_kl_mean={float(incremental_kl.mean()):.9g}, "
+                f"incremental_kl_max={float(incremental_kl.max()):.9g}, "
+                f"action_drift_max={float(drift.max()):.9g}"
+            )
+
+        optimizer_steps += 1
+        totals["value_function"] += float(value_loss.detach())
+        totals["surrogate"] += float(surrogate_loss.detach())
+        totals["entropy"] += float(entropy.mean().detach())
+        source_kl_total += float(source_kl.mean())
+        incremental_kl_total += float(incremental_kl.mean())
+        source_kl_peak = max(source_kl_peak, float(source_kl.max()))
+        incremental_kl_peak = max(incremental_kl_peak, float(incremental_kl.max()))
+        action_drift_peak = max(action_drift_peak, float(drift.max()))
+        gradient_norm_peak = max(gradient_norm_peak, float(gradient_norm))
+
+    expected_steps = algorithm.num_learning_epochs * algorithm.num_mini_batches
+    if optimizer_steps != expected_steps:
+        raise RuntimeError(
+            f"expected {expected_steps} optimizer steps, observed {optimizer_steps}"
+        )
+    algorithm.storage.clear()
+    for name in totals:
+        totals[name] /= optimizer_steps
+    return {
+        **totals,
+        "source_kl_mean": source_kl_total / optimizer_steps,
+        "source_kl_max": source_kl_peak,
+        "incremental_kl_mean": incremental_kl_total / optimizer_steps,
+        "incremental_kl_max": incremental_kl_peak,
+        "action_drift_max": action_drift_peak,
+        "gradient_norm_max": gradient_norm_peak,
+        "optimizer_steps": optimizer_steps,
+        "finite": all(math.isfinite(value) for value in totals.values()),
+    }
+
+
 __all__ = [
+    "FullActorUpdateLimits",
     "ObjectiveWeights",
     "PilotSpec",
     "ROLE_NAMES",
     "configure_full_actor_fresh_critic",
+    "diagonal_fixed_std_kl",
+    "full_actor_ppo_update",
     "module_state_hash",
     "objective_weights",
     "optimizer_parameter_groups",
     "role_count_dict",
     "role_ids",
+    "source_retention",
 ]
