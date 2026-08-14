@@ -21,4 +21,5 @@ impossible.
 
 Large model and optimizer files are intentionally excluded from Git. Their
 per-file SHA256 inventory is stored in `ARTIFACT_MANIFEST.json`; the files are
-backed up under the Baidu remote root recorded by that manifest.
+backed up under the Baidu remote root recorded by that manifest. The completed
+156-file remote byte audit is recorded in `BAIDU_SYNC_RESULT.json`.

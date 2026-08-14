@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-08-14T03:15:09.118226+00:00",
+  "file_count": 156,
+  "manifest_path": "external/bfm_zero_x2_snapshot/ARTIFACT_MANIFEST.json",
+  "manifest_sha256": "d52ef529853c574e43f57ee342eb4822b49222954d461a21272b3394cff2b69e",
+  "missing_or_mismatched": [],
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7",
+  "remote_verified": true,
+  "schema": "bfm_zero_x2_baidu_sync_result_v1",
+  "total_bytes": 1817796900
+}
