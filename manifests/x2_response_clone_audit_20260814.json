@@ -1,0 +1,51 @@
+{
+  "schema": "x2_response_clone_audit_manifest_v1",
+  "date": "2026-08-14",
+  "project": "BFM-Zero",
+  "branch": "work/codex-x2-clone-audit",
+  "base_commit": "54ef93ed1d23ca8296bff27de2c41eac78c49d64",
+  "decision": "FAIL_RESPONSE_STATE_CLONE_BLOCK_PARALLEL_MPC",
+  "permissions": {
+    "parallel_mpc_teacher_unlocked": false,
+    "student_training_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "artifacts": [
+    {
+      "role": "audit_report",
+      "data_namespace": "processed/2026-08-14/x2_clone_audit/x2_response_state_clone_v10.json",
+      "bytes": 3989,
+      "sha256": "cc50ef355289c6b8cb84068eb8de750325b817398523ed51fd417d52707ba0f7"
+    },
+    {
+      "role": "report_checksum_sidecar",
+      "data_namespace": "processed/2026-08-14/x2_clone_audit/x2_response_state_clone_v10.json.sha256",
+      "bytes": 99,
+      "sha256": "d23f58cb2382a28aaf7d847cdd89bf21f8381ddb9f5a6acb3e2bfb696811e634"
+    },
+    {
+      "role": "guarded_abort_log",
+      "data_namespace": "logs/2026-08-14/x2_clone_audit/x2_response_state_clone_v10.log",
+      "bytes": 16571,
+      "sha256": "7cc4579ad498e528feb21203132c81a7220a5801629b9eedd796bd3ee617be33",
+      "note": "The first attempt correctly aborted on an uninitialized zero-delay buffer; retained as failure evidence."
+    },
+    {
+      "role": "completed_audit_log",
+      "data_namespace": "logs/2026-08-14/x2_clone_audit/x2_response_state_clone_v10_retry1.log",
+      "bytes": 18438,
+      "sha256": "53949cabe842a76aa906918c0a10e64d5f777e9428885b6fb4170808e4474f83"
+    }
+  ],
+  "source_sha256": {
+    "humanoidverse/x2_response_clone.py": "71a875f030595d9e6988021bbe9cc900ddfaed630f3a0ccb4fbe074c9cee3eee",
+    "scripts/audit_x2_response_state_clone_v10.py": "cecce09614125c412aca09d741fd26e21537f916f5e24b868b6bb1c344fcfb75",
+    "tests/test_x2_response_clone.py": "3e63cdec7563f9e7f86fed3ef7fa6706ef3777b44936c7238f5cec3971d0ff4e"
+  },
+  "verification": {
+    "report_sidecar_check": "passed",
+    "pure_tests": "11 passed",
+    "git_diff_check": "passed"
+  },
+  "recovery": "Restore or verify artifacts by matching the data namespace, byte size, and SHA256. No source artifact was deleted."
+}
