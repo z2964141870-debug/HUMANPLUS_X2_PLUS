@@ -1,0 +1,21 @@
+{
+  "checkpoint_writes": 0,
+  "combined_action_clip_fraction": 0.2149775390625,
+  "control_steps": 400,
+  "decision": "FAIL_DIRECT_TEACHER_EQUIVALENCE",
+  "first_episode_forward_velocity_mean_mps": 0.40104323625564575,
+  "first_episode_survival_steps_mean": 156.466796875,
+  "first_episode_survival_steps_min": 56,
+  "num_envs": 512,
+  "optimizer_steps": 0,
+  "performance_claim": false,
+  "schema": "x2_stage219_reconstructed_direct_teacher_audit_v1",
+  "scratch_weights_loaded": false,
+  "survived_lanes": 15,
+  "teacher_checkpoint_sha256": "abcd49a823385bcd02e00480c9476ad5bc381e68252ad6930c85d731178f49bb",
+  "teacher_iteration": 2600,
+  "teacher_weights_loaded": true,
+  "template_scale": 0.15,
+  "template_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+  "terminated_events": 1346
+}

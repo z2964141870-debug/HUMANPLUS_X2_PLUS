@@ -1,0 +1,87 @@
+{
+  "actuator_domain": "response_only",
+  "checkpoint": {
+    "bytes": 75363791,
+    "files": 6,
+    "path": "artifacts/x2_scratch_dagger_response_v5_round2_seed770261",
+    "strict_roundtrip": true,
+    "tree_sha256": "8e0c558007770787974e5d0a37e6ddf25c25875f082a653bcab24f513b1f71e3"
+  },
+  "collection": {
+    "attempted_states": 65536,
+    "control_steps": 128,
+    "num_envs": 512,
+    "safe_labeled_states": 65536,
+    "student_actions_executed": 65536,
+    "teacher_actions_executed": 0,
+    "terminated": 0
+  },
+  "dagger_round": 2,
+  "decision": "PASS_DAGGER_FIT_ONLY",
+  "final_model_hash": "2ee6d641811e0107afabad258aa551ec3f293cc1d2bf060677c666b693bf5ce3",
+  "joint_order_reindexed": true,
+  "long_training_unlocked": false,
+  "performance_claim": false,
+  "physical_action_scale_conversion": true,
+  "schema": "x2_bfm_zero_scratch_dagger_response_contract_v5",
+  "scratch_lineage": true,
+  "source_checkpoint_tree_sha256": "1843dd53c80ede2d82be95c307be0c7a21709d14e3bd12444e0f3d693fd2c006",
+  "source_domain_contract": true,
+  "source_model_hash": "7a73eb3d0695803a4ccecd61a17a4e06f9683e2c3a20718def89542290e86721",
+  "stage219_teacher_used_for_labels": true,
+  "stage219_weights_loaded_into_student": false,
+  "teacher_iteration": 2600,
+  "training": {
+    "after": {
+      "dagger": {
+        "mae": 0.016372637823224068,
+        "max_abs": 1.3689368963241577,
+        "mse": 0.001000830321572721
+      },
+      "offline_holdout": {
+        "mae": 0.013489537872374058,
+        "max_abs": 0.3528337776660919,
+        "mse": 0.0003837722761090845
+      }
+    },
+    "before": {
+      "dagger": {
+        "mae": 0.18962492048740387,
+        "max_abs": 1.7809710502624512,
+        "mse": 0.07663242518901825
+      },
+      "offline_holdout": {
+        "mae": 0.0185261033475399,
+        "max_abs": 0.407295286655426,
+        "mse": 0.0007600114331580698
+      }
+    },
+    "dagger_fraction_per_batch": 0.5,
+    "epochs": 5,
+    "offline_fraction_per_batch": 0.5,
+    "optimizer_steps": 1280,
+    "steps_per_epoch": 256,
+    "trace": [
+      {
+        "epoch": 1,
+        "smooth_l1_mean": 0.01934347670612624
+      },
+      {
+        "epoch": 2,
+        "smooth_l1_mean": 0.008532954494512524
+      },
+      {
+        "epoch": 3,
+        "smooth_l1_mean": 0.00675417409001966
+      },
+      {
+        "epoch": 4,
+        "smooth_l1_mean": 0.005982756752928253
+      },
+      {
+        "epoch": 5,
+        "smooth_l1_mean": 0.005129009887241409
+      }
+    ]
+  }
+}

@@ -1,0 +1,950 @@
+{
+  "created_at": "2026-08-14T02:14:55.139882+00:00",
+  "file_count": 156,
+  "files": [
+    {
+      "bytes": 6033,
+      "path": "x2_scratch_512_half_million_expert_rollout_seed770041/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_expert_rollout_seed770041/config.json",
+      "sha256": "3a1817cb299d7a0ea55b09ba198ade659757af04eb3ae8def1c1a855ce0f0b6c"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_512_half_million_expert_rollout_seed770041/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_expert_rollout_seed770041/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_512_half_million_expert_rollout_seed770041/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_expert_rollout_seed770041/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_512_half_million_expert_rollout_seed770041/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_expert_rollout_seed770041/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_512_half_million_expert_rollout_seed770041/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_expert_rollout_seed770041/model/model.safetensors",
+      "sha256": "20276a46e45bfa01e697aee34db702f2497a43311d036629f5b39390e7c67e53"
+    },
+    {
+      "bytes": 38953609,
+      "path": "x2_scratch_512_half_million_expert_rollout_seed770041/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_expert_rollout_seed770041/optimizers.pth",
+      "sha256": "3505ad8e55a88af1357fcba21df0a0ecd19a118185ff610bd03f94ec8d7c3e68"
+    },
+    {
+      "bytes": 5965,
+      "path": "x2_scratch_512_half_million_seed770023/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_seed770023/config.json",
+      "sha256": "aac26b49bcba89660b5cb87fd9539fad774099612f9ee56e3a803c818d623d75"
+    },
+    {
+      "bytes": 30632,
+      "path": "x2_scratch_512_half_million_seed770023/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_seed770023/init_kwargs.json",
+      "sha256": "5106c60178637a3434488989ab5034a03a9022f895c6405245cc24afc5fae010"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_512_half_million_seed770023/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_seed770023/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 30632,
+      "path": "x2_scratch_512_half_million_seed770023/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_seed770023/model/init_kwargs.json",
+      "sha256": "5106c60178637a3434488989ab5034a03a9022f895c6405245cc24afc5fae010"
+    },
+    {
+      "bytes": 35838080,
+      "path": "x2_scratch_512_half_million_seed770023/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_seed770023/model/model.safetensors",
+      "sha256": "9f9a61833062ed0ebe2cb769dd34e303b7d595f5d8ddbd3717d22a58ce1075d1"
+    },
+    {
+      "bytes": 38421641,
+      "path": "x2_scratch_512_half_million_seed770023/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_seed770023/optimizers.pth",
+      "sha256": "644d81971961e13bc67a7914bd1cf9be25adddf5bfa5e5f2468e9f261e6d1512"
+    },
+    {
+      "bytes": 6034,
+      "path": "x2_scratch_512_half_million_state71_seed770031/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_state71_seed770031/config.json",
+      "sha256": "c06ff422b44de6b310f9018bf1e5cec96e89895e61c744d172e6ac9a3f50591c"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_512_half_million_state71_seed770031/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_state71_seed770031/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_512_half_million_state71_seed770031/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_state71_seed770031/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_512_half_million_state71_seed770031/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_state71_seed770031/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_512_half_million_state71_seed770031/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_state71_seed770031/model/model.safetensors",
+      "sha256": "ca237f5eb280dbfa16822aabf8b857f732ea1035bad161f89841b6b7e6dcd580"
+    },
+    {
+      "bytes": 38953609,
+      "path": "x2_scratch_512_half_million_state71_seed770031/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_half_million_state71_seed770031/optimizers.pth",
+      "sha256": "a00702bc0b5a8ec3781478d14be19f094b228627877b2383e764a2f8447f1ffc"
+    },
+    {
+      "bytes": 5965,
+      "path": "x2_scratch_512_pilot_seed770011/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_pilot_seed770011/config.json",
+      "sha256": "aac26b49bcba89660b5cb87fd9539fad774099612f9ee56e3a803c818d623d75"
+    },
+    {
+      "bytes": 30632,
+      "path": "x2_scratch_512_pilot_seed770011/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_pilot_seed770011/init_kwargs.json",
+      "sha256": "5106c60178637a3434488989ab5034a03a9022f895c6405245cc24afc5fae010"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_512_pilot_seed770011/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_pilot_seed770011/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 30632,
+      "path": "x2_scratch_512_pilot_seed770011/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_pilot_seed770011/model/init_kwargs.json",
+      "sha256": "5106c60178637a3434488989ab5034a03a9022f895c6405245cc24afc5fae010"
+    },
+    {
+      "bytes": 35838080,
+      "path": "x2_scratch_512_pilot_seed770011/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_pilot_seed770011/model/model.safetensors",
+      "sha256": "ff4efe279cfa78b83c9e4ca5ff6f834abde45aa5589b0471503d63f40d3f3a30"
+    },
+    {
+      "bytes": 38421641,
+      "path": "x2_scratch_512_pilot_seed770011/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_512_pilot_seed770011/optimizers.pth",
+      "sha256": "83285d8217f0f64e5e0c9aa0a7442d5c82b7fbe608fe029982664dd9c9fe9197"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_closed_loop_bc_fixed_z_seed770111/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_fixed_z_seed770111/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_fixed_z_seed770111/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_fixed_z_seed770111/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_closed_loop_bc_fixed_z_seed770111/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_fixed_z_seed770111/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_fixed_z_seed770111/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_fixed_z_seed770111/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_closed_loop_bc_fixed_z_seed770111/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_fixed_z_seed770111/model/model.safetensors",
+      "sha256": "d7848d847e95cd517f558ac673dc8ca63966456b0190d5f7389eb3824e2dac1d"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_closed_loop_bc_fixed_z_seed770111/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_fixed_z_seed770111/optimizers.pth",
+      "sha256": "e5f79d5d3aebf56ee1b33845e42b0a0c475929f4937cc37250d914ccca862c4d"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_closed_loop_bc_joint_v4_seed770191/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_joint_v4_seed770191/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_joint_v4_seed770191/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_joint_v4_seed770191/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_closed_loop_bc_joint_v4_seed770191/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_joint_v4_seed770191/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_joint_v4_seed770191/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_joint_v4_seed770191/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_closed_loop_bc_joint_v4_seed770191/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_joint_v4_seed770191/model/model.safetensors",
+      "sha256": "e0e6f6a1958c6140591a3261f146916319ed84ab92989132b135ca1eba1f0040"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_closed_loop_bc_joint_v4_seed770191/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_joint_v4_seed770191/optimizers.pth",
+      "sha256": "fc054e3c1839613d709762474d516c2feb561fe2b94a493a234d3785933a0e5c"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_closed_loop_bc_observation_v3_seed770171/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_observation_v3_seed770171/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_observation_v3_seed770171/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_observation_v3_seed770171/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_closed_loop_bc_observation_v3_seed770171/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_observation_v3_seed770171/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_observation_v3_seed770171/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_observation_v3_seed770171/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_closed_loop_bc_observation_v3_seed770171/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_observation_v3_seed770171/model/model.safetensors",
+      "sha256": "0f85d013f0a586d6bff4ca00a9e2c88c46d49c44302753031484705af4e3e01a"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_closed_loop_bc_observation_v3_seed770171/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_observation_v3_seed770171/optimizers.pth",
+      "sha256": "c4153c4f96406b1e82be0be2f5ed8f2716c14aee832b118738508caf4585bd3a"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_closed_loop_bc_physical_v2_seed770151/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_physical_v2_seed770151/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_physical_v2_seed770151/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_physical_v2_seed770151/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_closed_loop_bc_physical_v2_seed770151/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_physical_v2_seed770151/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_physical_v2_seed770151/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_physical_v2_seed770151/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_closed_loop_bc_physical_v2_seed770151/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_physical_v2_seed770151/model/model.safetensors",
+      "sha256": "814065b668db3825779bf76bed66eed7848bd2d53e82799dfeb8d077b8bfa6b7"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_closed_loop_bc_physical_v2_seed770151/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_physical_v2_seed770151/optimizers.pth",
+      "sha256": "6244cb330085682a9167172a16941d9bce152c6905c64bd47e015b4617cd5584"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_closed_loop_bc_seed770101/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_seed770101/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_seed770101/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_seed770101/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_closed_loop_bc_seed770101/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_seed770101/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_bc_seed770101/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_seed770101/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_closed_loop_bc_seed770101/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_seed770101/model/model.safetensors",
+      "sha256": "8a0c291d2549562cf04a8f3d447e5a23ea312226a86b7f99ad832f9bf15d24f4"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_closed_loop_bc_seed770101/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_bc_seed770101/optimizers.pth",
+      "sha256": "2a5c95f1fdf2fe2bb53223018606de018908581830799ec47fdd3d1a4a0b231c"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_closed_loop_expert_seed770091/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_expert_seed770091/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_expert_seed770091/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_expert_seed770091/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_closed_loop_expert_seed770091/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_expert_seed770091/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_closed_loop_expert_seed770091/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_expert_seed770091/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_closed_loop_expert_seed770091/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_expert_seed770091/model/model.safetensors",
+      "sha256": "c7db40a59da47359b9d3e792dcc57dd72be23a9d502724ef4e840ddaae4bc298"
+    },
+    {
+      "bytes": 38953609,
+      "path": "x2_scratch_closed_loop_expert_seed770091/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_closed_loop_expert_seed770091/optimizers.pth",
+      "sha256": "6a1f26429bd860df892ba7c018dd31e0e2c5b2c48085567327d2d02c350af51c"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger1_seed770121/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger1_seed770121/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger1_seed770121/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger1_seed770121/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger1_seed770121/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger1_seed770121/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger1_seed770121/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger1_seed770121/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger1_seed770121/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger1_seed770121/model/model.safetensors",
+      "sha256": "049b14d113043f919a3acdf7fdccdffc6da6a29223802cf34bb432982f0565b9"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger1_seed770121/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger1_seed770121/optimizers.pth",
+      "sha256": "a52e14121b8c8fd820e352b02812d40893da448611a6441d6d18081975160162"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger2_seed770131/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger2_seed770131/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger2_seed770131/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger2_seed770131/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger2_seed770131/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger2_seed770131/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger2_seed770131/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger2_seed770131/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger2_seed770131/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger2_seed770131/model/model.safetensors",
+      "sha256": "067a8c30c2e8843fcdc4243a9cb0a502f91fab8dc97735f19fbf26f73963c0bd"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger2_seed770131/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger2_seed770131/optimizers.pth",
+      "sha256": "b4ee9c10bd145b347698c293739a69c13426fb0e03023a1a2956e1e00d31bcc7"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger_joint_v4_round2_seed770211/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_round2_seed770211/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_joint_v4_round2_seed770211/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_round2_seed770211/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger_joint_v4_round2_seed770211/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_round2_seed770211/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_joint_v4_round2_seed770211/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_round2_seed770211/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger_joint_v4_round2_seed770211/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_round2_seed770211/model/model.safetensors",
+      "sha256": "68b04328a41ce7cf259fc3f55bf22877405ee667125d1f7f3d88150a725724bd"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger_joint_v4_round2_seed770211/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_round2_seed770211/optimizers.pth",
+      "sha256": "58d8710f7829623ff97375955176c03763755d748b0c61cdc8a9b72d2ce150df"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger_joint_v4_seed770201/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_seed770201/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_joint_v4_seed770201/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_seed770201/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger_joint_v4_seed770201/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_seed770201/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_joint_v4_seed770201/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_seed770201/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger_joint_v4_seed770201/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_seed770201/model/model.safetensors",
+      "sha256": "ed8dbfcb8d75121fdee9db20989d9e6ee28bb065445829ac7d519860e1f17eec"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger_joint_v4_seed770201/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_joint_v4_seed770201/optimizers.pth",
+      "sha256": "771338cc8c59df8be52d0e1ce96aa2fc9d98414de13139e9259c6614f401fbf4"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger_observation_v3_seed770181/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_observation_v3_seed770181/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_observation_v3_seed770181/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_observation_v3_seed770181/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger_observation_v3_seed770181/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_observation_v3_seed770181/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_observation_v3_seed770181/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_observation_v3_seed770181/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger_observation_v3_seed770181/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_observation_v3_seed770181/model/model.safetensors",
+      "sha256": "20df52e071a468a3e3b985ccb2a28246a442d8f8ea48be4862b5b9b6b8d102a2"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger_observation_v3_seed770181/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_observation_v3_seed770181/optimizers.pth",
+      "sha256": "af4500c9e01d373ef8372abd8736f9744afb7ba09b48ddc7c6f50a5a541de57f"
+    },
+    {
+      "bytes": 6241,
+      "path": "x2_scratch_dagger_phase_response_v6_seed770341/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_response_v6_seed770341/config.json",
+      "sha256": "a65fe9432b651c486a902d75c3cbc60f1a1623a2157ccd9a1a1de66ac540a336"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_dagger_phase_response_v6_seed770341/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_response_v6_seed770341/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 4314,
+      "path": "x2_scratch_dagger_phase_response_v6_seed770341/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_response_v6_seed770341/model/config.json",
+      "sha256": "9d6eacf13e368526583fb0832bdb71905da1c9ba1639e12adc0e4b79b5c42d95"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_dagger_phase_response_v6_seed770341/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_response_v6_seed770341/model/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 36522096,
+      "path": "x2_scratch_dagger_phase_response_v6_seed770341/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_response_v6_seed770341/model/model.safetensors",
+      "sha256": "44c7b8521632b2276b84069f86ec4bd51d971ef8832809895ae3490b63009cbe"
+    },
+    {
+      "bytes": 4129397,
+      "path": "x2_scratch_dagger_phase_response_v6_seed770341/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_response_v6_seed770341/optimizers.pth",
+      "sha256": "8ba093627e35b9e53dbae15adc9c6e106694130a9a1cf75dc19a1c38bea42d8c"
+    },
+    {
+      "bytes": 6241,
+      "path": "x2_scratch_dagger_phase_v6_seed770321/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_v6_seed770321/config.json",
+      "sha256": "a65fe9432b651c486a902d75c3cbc60f1a1623a2157ccd9a1a1de66ac540a336"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_dagger_phase_v6_seed770321/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_v6_seed770321/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 4314,
+      "path": "x2_scratch_dagger_phase_v6_seed770321/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_v6_seed770321/model/config.json",
+      "sha256": "9d6eacf13e368526583fb0832bdb71905da1c9ba1639e12adc0e4b79b5c42d95"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_dagger_phase_v6_seed770321/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_v6_seed770321/model/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 36522096,
+      "path": "x2_scratch_dagger_phase_v6_seed770321/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_v6_seed770321/model/model.safetensors",
+      "sha256": "e76a1998f335c6dbed6789222ac06350e29f0e81d6d0d14c599131ba5ce9792e"
+    },
+    {
+      "bytes": 4129397,
+      "path": "x2_scratch_dagger_phase_v6_seed770321/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_phase_v6_seed770321/optimizers.pth",
+      "sha256": "cbfe720c057c6bc8f0bd0fd022bff1d3c4afb9902464972fab8201528e0e9e56"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger_response_v5_round2_seed770261/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_round2_seed770261/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_response_v5_round2_seed770261/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_round2_seed770261/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger_response_v5_round2_seed770261/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_round2_seed770261/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_response_v5_round2_seed770261/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_round2_seed770261/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger_response_v5_round2_seed770261/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_round2_seed770261/model/model.safetensors",
+      "sha256": "d8f8628c9a1e94114908130fd54ed0788386aee3232e4df9a6674ca76c45476b"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger_response_v5_round2_seed770261/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_round2_seed770261/optimizers.pth",
+      "sha256": "13259840ff1bb5cded4b090f1fb81081c0cd33058db42e599ddce5a21b3c3ad5"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_dagger_response_v5_seed770241/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_seed770241/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_response_v5_seed770241/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_seed770241/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_dagger_response_v5_seed770241/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_seed770241/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_dagger_response_v5_seed770241/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_seed770241/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_dagger_response_v5_seed770241/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_seed770241/model/model.safetensors",
+      "sha256": "abb351e8cd7c70db0204f1ef4f6706fcf7385cd38647ce0875c25904badf8a81"
+    },
+    {
+      "bytes": 38956937,
+      "path": "x2_scratch_dagger_response_v5_seed770241/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_dagger_response_v5_seed770241/optimizers.pth",
+      "sha256": "4360e5226591d4bf952a4acbe458f2405d5636e3674cbfca7d56ab0394cc8735"
+    },
+    {
+      "bytes": 6241,
+      "path": "x2_scratch_phase_bc_v6_seed770301/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_phase_bc_v6_seed770301/config.json",
+      "sha256": "a65fe9432b651c486a902d75c3cbc60f1a1623a2157ccd9a1a1de66ac540a336"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_phase_bc_v6_seed770301/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_phase_bc_v6_seed770301/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 4314,
+      "path": "x2_scratch_phase_bc_v6_seed770301/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_phase_bc_v6_seed770301/model/config.json",
+      "sha256": "9d6eacf13e368526583fb0832bdb71905da1c9ba1639e12adc0e4b79b5c42d95"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_phase_bc_v6_seed770301/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_phase_bc_v6_seed770301/model/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 36522096,
+      "path": "x2_scratch_phase_bc_v6_seed770301/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_phase_bc_v6_seed770301/model/model.safetensors",
+      "sha256": "62dd3a2ede0ff93255c2695afc47ff0a49cae76380a2d08c6fea697ec9f1c5c7"
+    },
+    {
+      "bytes": 4129269,
+      "path": "x2_scratch_phase_bc_v6_seed770301/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_phase_bc_v6_seed770301/optimizers.pth",
+      "sha256": "6fd15b914166679817883cee18cbea62345042b219fcab55ac30d4f2a9f46ffc"
+    },
+    {
+      "bytes": 6241,
+      "path": "x2_scratch_response_teacher_v7_seed770361/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_response_teacher_v7_seed770361/config.json",
+      "sha256": "a65fe9432b651c486a902d75c3cbc60f1a1623a2157ccd9a1a1de66ac540a336"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_response_teacher_v7_seed770361/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_response_teacher_v7_seed770361/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 4314,
+      "path": "x2_scratch_response_teacher_v7_seed770361/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_response_teacher_v7_seed770361/model/config.json",
+      "sha256": "9d6eacf13e368526583fb0832bdb71905da1c9ba1639e12adc0e4b79b5c42d95"
+    },
+    {
+      "bytes": 32682,
+      "path": "x2_scratch_response_teacher_v7_seed770361/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_response_teacher_v7_seed770361/model/init_kwargs.json",
+      "sha256": "092fea1ee8f2b8ec1995ee328b55598f3de3ba20054ee1cb5a6c304677f27e7e"
+    },
+    {
+      "bytes": 36522096,
+      "path": "x2_scratch_response_teacher_v7_seed770361/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_response_teacher_v7_seed770361/model/model.safetensors",
+      "sha256": "2e54044b7635978938699eabea001140341a2c4c457c20302350e5f7fdcb565a"
+    },
+    {
+      "bytes": 4129397,
+      "path": "x2_scratch_response_teacher_v7_seed770361/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_response_teacher_v7_seed770361/optimizers.pth",
+      "sha256": "4ec4b4dac9f15e0dc9607326c94c48ccec69940e8378a8ae82482a72d4d0c49e"
+    },
+    {
+      "bytes": 5965,
+      "path": "x2_scratch_short_segment_seed770007/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_short_segment_seed770007/config.json",
+      "sha256": "aac26b49bcba89660b5cb87fd9539fad774099612f9ee56e3a803c818d623d75"
+    },
+    {
+      "bytes": 30632,
+      "path": "x2_scratch_short_segment_seed770007/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_short_segment_seed770007/init_kwargs.json",
+      "sha256": "5106c60178637a3434488989ab5034a03a9022f895c6405245cc24afc5fae010"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_short_segment_seed770007/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_short_segment_seed770007/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 30632,
+      "path": "x2_scratch_short_segment_seed770007/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_short_segment_seed770007/model/init_kwargs.json",
+      "sha256": "5106c60178637a3434488989ab5034a03a9022f895c6405245cc24afc5fae010"
+    },
+    {
+      "bytes": 35838080,
+      "path": "x2_scratch_short_segment_seed770007/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_short_segment_seed770007/model/model.safetensors",
+      "sha256": "c1bd0290e0ff444b355fbfeaf0b770174a0d5e91c4480ae38fdccff9678cc915"
+    },
+    {
+      "bytes": 38421641,
+      "path": "x2_scratch_short_segment_seed770007/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_short_segment_seed770007/optimizers.pth",
+      "sha256": "eb37aaf5b04a779cdae6d4f169939b77899e2f8d14489427e52000e42c969a1c"
+    },
+    {
+      "bytes": 6034,
+      "path": "x2_scratch_state71_cont1_seed770051/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_cont1_seed770051/config.json",
+      "sha256": "c06ff422b44de6b310f9018bf1e5cec96e89895e61c744d172e6ac9a3f50591c"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_state71_cont1_seed770051/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_cont1_seed770051/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_state71_cont1_seed770051/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_cont1_seed770051/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_state71_cont1_seed770051/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_cont1_seed770051/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_state71_cont1_seed770051/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_cont1_seed770051/model/model.safetensors",
+      "sha256": "4a3cebb931e950805a790779a24f3983ac8eb18cee4ea7c50f90e9b734c23984"
+    },
+    {
+      "bytes": 38955977,
+      "path": "x2_scratch_state71_cont1_seed770051/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_cont1_seed770051/optimizers.pth",
+      "sha256": "1f8a742648e148e2bcea3683e2cad96887c4e75420103b86a7146f8cf1dc298e"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_state71_safety_ft_seed770071/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_safety_ft_seed770071/config.json",
+      "sha256": "1be4b8df3fe661e7ab915681751036a76d1366cbfc0d3c69db5655cdf64b96ad"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_state71_safety_ft_seed770071/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_safety_ft_seed770071/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_state71_safety_ft_seed770071/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_safety_ft_seed770071/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_state71_safety_ft_seed770071/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_safety_ft_seed770071/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_state71_safety_ft_seed770071/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_safety_ft_seed770071/model/model.safetensors",
+      "sha256": "77828f438fd31e5aadd835030cd67b9a64d5a542827a3c855d379af759f4bd29"
+    },
+    {
+      "bytes": 38955977,
+      "path": "x2_scratch_state71_safety_ft_seed770071/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_safety_ft_seed770071/optimizers.pth",
+      "sha256": "ec63e20548cd5a023e317d555d99a9e853d8b2540b66b587316bbffdc0eac119"
+    },
+    {
+      "bytes": 5815,
+      "path": "x2_scratch_state71_taskreward_ft_seed770081/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_taskreward_ft_seed770081/config.json",
+      "sha256": "30eb9675040879fd96e863355e82a3e9f0041febb12fed89f044d2cc71b82a54"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_state71_taskreward_ft_seed770081/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_taskreward_ft_seed770081/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_state71_taskreward_ft_seed770081/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_taskreward_ft_seed770081/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_state71_taskreward_ft_seed770081/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_taskreward_ft_seed770081/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_state71_taskreward_ft_seed770081/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_taskreward_ft_seed770081/model/model.safetensors",
+      "sha256": "38b16800475ce8b8b31c841d0efdee2a5713348e926c263e0c1b6e4e7e2ff53d"
+    },
+    {
+      "bytes": 38955977,
+      "path": "x2_scratch_state71_taskreward_ft_seed770081/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_state71_taskreward_ft_seed770081/optimizers.pth",
+      "sha256": "510527e40dc42a75cb9f53e149023f2227765baaaf9eecc9c76fd416e89dec90"
+    },
+    {
+      "bytes": 6155,
+      "path": "x2_scratch_terminal_aware_seed770061/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_terminal_aware_seed770061/config.json",
+      "sha256": "ad4c787f4f38e4826b85a5f9d6d1aca1777a7cfe4bbdcb98ee9e7f95274e4c3a"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_terminal_aware_seed770061/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_terminal_aware_seed770061/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 3799,
+      "path": "x2_scratch_terminal_aware_seed770061/model/config.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_terminal_aware_seed770061/model/config.json",
+      "sha256": "b9e05e25e9c0d32ae5ed8c5241e901bbc80d459921877bf18de7515659bbc19e"
+    },
+    {
+      "bytes": 31730,
+      "path": "x2_scratch_terminal_aware_seed770061/model/init_kwargs.json",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_terminal_aware_seed770061/model/init_kwargs.json",
+      "sha256": "12c0ceac3dfa23d8337363ca05fac9eef1d05aae4d7f99eb14fec38d346fcfeb"
+    },
+    {
+      "bytes": 36333440,
+      "path": "x2_scratch_terminal_aware_seed770061/model/model.safetensors",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_terminal_aware_seed770061/model/model.safetensors",
+      "sha256": "595eb88d003a8fe6f2a41c6c513e0956112d6ba4f9639b8eefdeb7fb25cc422d"
+    },
+    {
+      "bytes": 38953609,
+      "path": "x2_scratch_terminal_aware_seed770061/optimizers.pth",
+      "remote": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7/x2_scratch_terminal_aware_seed770061/optimizers.pth",
+      "sha256": "97c9a0df98488761464a5179d6b45070a8d12e48dcfec23c62ef07400023b0a3"
+    }
+  ],
+  "remote_checked_at": null,
+  "remote_root": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-14/x2_bfm_zero_scratch_artifacts_v7",
+  "remote_verified": false,
+  "schema": "bfm_zero_x2_artifact_manifest_v1",
+  "snapshot_path": "external/bfm_zero_x2_snapshot",
+  "source_commit": "e355752c46c32271eaccad084876c61da068e8e5",
+  "source_root": "/home/yu/projects/BFM-Zero/artifacts",
+  "total_bytes": 1817796900
+}

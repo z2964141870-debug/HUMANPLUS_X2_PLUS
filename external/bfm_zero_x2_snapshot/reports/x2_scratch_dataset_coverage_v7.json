@@ -1,0 +1,147 @@
+{
+  "conclusion": {
+    "causal_factor_supported": "correct-domain closed-loop coverage",
+    "evidence": [
+      "phase-conditioned offline BC did not survive response physics",
+      "ideal-domain DAgger nearly solved ideal physics but left response survival at zero",
+      "response failure-state DAgger recovered partial response survival",
+      "full safe response-teacher trajectories recovered 512/512 response and retained 512/512 ideal survival"
+    ],
+    "more_data_helped": true,
+    "raw_count_alone_established": false,
+    "remaining_scope": [
+      "multi-command coverage",
+      "turn-right teacher competence",
+      "low-speed teacher safety",
+      "deceleration and terminal hold",
+      "posture correction"
+    ]
+  },
+  "decision": "DATASET_DOMAIN_COVERAGE_HYPOTHESIS_SUPPORTED",
+  "inputs": {
+    "full_teacher_fit": {
+      "path": "reports/x2_scratch_response_teacher_v7.json",
+      "sha256": "bef16dbfad8b9b49fe42ca250259d3edc152fde7b74b4642dadad37e6bd46868"
+    },
+    "full_teacher_ideal": {
+      "path": "reports/x2_scratch_response_teacher_v7_ideal_survival_audit.json",
+      "sha256": "a8d9c19b3ca70aa89337d5e99efdd6b57147d10515d003344fe14ddc8e370d5b"
+    },
+    "full_teacher_response": {
+      "path": "reports/x2_scratch_response_teacher_v7_survival_audit.json",
+      "sha256": "6505811af8bbfca856c800c0befeb01b529ed5f672e11165bdd81738f7e73b68"
+    },
+    "ideal_dagger_fit": {
+      "path": "reports/x2_scratch_dagger_phase_v6.json",
+      "sha256": "f7598a04e571921e2bc7c2ecef3ff3783a1d73a747f0dd7c09f94a233f8b95a4"
+    },
+    "ideal_dagger_ideal": {
+      "path": "reports/x2_scratch_dagger_phase_v6_ideal_survival_audit.json",
+      "sha256": "7556e4bba6b146bf69f50a0b9b2143ff540db543efb55335b3e247ff4933f2b9"
+    },
+    "ideal_dagger_response": {
+      "path": "reports/x2_scratch_dagger_phase_v6_response_survival_audit.json",
+      "sha256": "7c6232d4a2bee8788075e9f8c4fdef7b6723f5ddf75b259bd898eeb52f58f37d"
+    },
+    "phase_bc_fit": {
+      "path": "reports/x2_scratch_phase_bc_v6.json",
+      "sha256": "9771b6b92c0c5c66faa64d23e0786f58fcba98fa4daedcf2aae1cc851c85d1fe"
+    },
+    "phase_bc_ideal": {
+      "path": "reports/x2_scratch_phase_bc_v6_ideal_survival_audit.json",
+      "sha256": "a9a082bfc9ec9f6a69ce4c5d331cc2d2c4164ecf3c2bda66e11444e1327224ea"
+    },
+    "phase_bc_response": {
+      "path": "reports/x2_scratch_phase_bc_v6_response_survival_audit.json",
+      "sha256": "3c1388bb04bbd078c3c1fc731efd5a3039a02a680bc9a7d34ca53ef0b59110dd"
+    },
+    "response_dagger_eval": {
+      "path": "reports/x2_scratch_dagger_phase_response_v6_survival_audit.json",
+      "sha256": "db19f4236875255fbeb36e595d1a7be69664d0e58ed7d46de112cd3b0f9bd317"
+    },
+    "response_dagger_fit": {
+      "path": "reports/x2_scratch_dagger_phase_response_v6.json",
+      "sha256": "b1cfd8c1f6712a392096630cabc740b955fe4db33b06eb5104ebcbd1bb76c68d"
+    }
+  },
+  "permissions": {
+    "deployment_unlocked": false,
+    "long_training_unlocked": false
+  },
+  "schema": "x2_bfm_zero_scratch_dataset_coverage_ablation_v1",
+  "stages": [
+    {
+      "ideal": {
+        "forward_velocity_mean_mps": 0.46434811045146346,
+        "survival_fraction": 0.001953125,
+        "survival_steps_mean": 179.337890625,
+        "survived": 1,
+        "total": 512
+      },
+      "new_coverage": "deployable command and gait phase on 25,600 ideal-domain offline labels",
+      "new_safe_labels": 25600,
+      "offline_holdout_mae": 0.014474377036094666,
+      "response": {
+        "forward_velocity_mean_mps": 0.4929851683751953,
+        "survival_fraction": 0.0,
+        "survival_steps_mean": 66.208984375,
+        "survived": 0,
+        "total": 512
+      },
+      "stage": "phase_conditioned_offline_bc"
+    },
+    {
+      "ideal": {
+        "forward_velocity_mean_mps": 0.4052699257972539,
+        "survival_fraction": 0.97265625,
+        "survival_steps_mean": 396.15625,
+        "survived": 498,
+        "total": 512
+      },
+      "new_coverage": "65,009 safe labels on states visited by the student in ideal physics",
+      "new_safe_labels": 65009,
+      "offline_holdout_mae": 0.014378520660102367,
+      "response": {
+        "forward_velocity_mean_mps": 0.007064242161317782,
+        "survival_fraction": 0.0,
+        "survival_steps_mean": 90.55078125,
+        "survived": 0,
+        "total": 512
+      },
+      "stage": "ideal_student_state_dagger"
+    },
+    {
+      "new_coverage": "58,046 safe labels before the response-domain student failures",
+      "new_safe_labels": 58046,
+      "offline_holdout_mae": 0.010856210254132748,
+      "response": {
+        "forward_velocity_mean_mps": 0.3281275424573911,
+        "survival_fraction": 0.595703125,
+        "survival_steps_mean": 355.67578125,
+        "survived": 305,
+        "total": 512
+      },
+      "stage": "response_student_state_dagger"
+    },
+    {
+      "ideal": {
+        "forward_velocity_mean_mps": 0.41236634675879025,
+        "survival_fraction": 1.0,
+        "survival_steps_mean": 400.0,
+        "survived": 512,
+        "total": 512
+      },
+      "new_coverage": "204,800 safe labels spanning full response-domain teacher trajectories",
+      "new_safe_labels": 204800,
+      "offline_holdout_mae": 0.009945239871740341,
+      "response": {
+        "forward_velocity_mean_mps": 0.36657821117725686,
+        "survival_fraction": 1.0,
+        "survival_steps_mean": 400.0,
+        "survived": 512,
+        "total": 512
+      },
+      "stage": "full_response_teacher_trajectory"
+    }
+  ]
+}

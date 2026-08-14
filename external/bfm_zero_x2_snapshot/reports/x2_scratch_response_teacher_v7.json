@@ -1,0 +1,77 @@
+{
+  "actuator_domain": "response_only",
+  "checkpoint": {
+    "bytes": 40727412,
+    "files": 6,
+    "path": "artifacts/x2_scratch_response_teacher_v7_seed770361",
+    "strict_roundtrip": true,
+    "tree_sha256": "8a41f61c9896c2bb9e062c24b69924513b0d458cd11b4315cf9071758a99fded"
+  },
+  "collection": {
+    "attempted_states": 204800,
+    "control_steps": 400,
+    "num_envs": 512,
+    "safe_labeled_states": 204800,
+    "student_actions_executed": 0,
+    "teacher_actions_executed": 204800,
+    "terminated": 0
+  },
+  "command_phase_observation_contract": true,
+  "dagger_round": 0,
+  "dataset_expansion_kind": "teacher_executed_full_response_trajectory",
+  "decision": "PASS_RESPONSE_TEACHER_DATASET_FIT_ONLY",
+  "final_model_hash": "c0fdc060cef05c9b7df047043cd829592300f2cf0a02b8df81c0e09d3df7f1ec",
+  "joint_order_reindexed": false,
+  "long_training_unlocked": false,
+  "performance_claim": false,
+  "physical_action_scale_conversion": true,
+  "schema": "x2_bfm_zero_scratch_response_teacher_dataset_v7",
+  "scratch_lineage": true,
+  "source_checkpoint_tree_sha256": "5252ea30061124430e25b566089ed1aaf2f1c7816b46a2e389585c942d2162b9",
+  "source_domain_contract": true,
+  "source_model_hash": "dece7bca7fdbe58cc143e5c98d04e443a1d4752d6e7872e64208ca3311cbdb79",
+  "stage219_teacher_used_for_labels": true,
+  "stage219_weights_loaded_into_student": false,
+  "teacher_iteration": 2600,
+  "training": {
+    "after": {
+      "dagger": {
+        "mae": 0.016228223219513893,
+        "max_abs": 0.6569076180458069,
+        "mse": 0.000566608679946512
+      },
+      "offline_holdout": {
+        "mae": 0.009945239871740341,
+        "max_abs": 0.29256242513656616,
+        "mse": 0.00020872880122624338
+      }
+    },
+    "before": {
+      "dagger": {
+        "mae": 0.08261930197477341,
+        "max_abs": 1.2873423099517822,
+        "mse": 0.014191003516316414
+      },
+      "offline_holdout": {
+        "mae": 0.010856210254132748,
+        "max_abs": 0.3295636773109436,
+        "mse": 0.0002472452470101416
+      }
+    },
+    "dagger_fraction_per_batch": 0.5,
+    "epochs": 2,
+    "offline_fraction_per_batch": 0.5,
+    "optimizer_steps": 1600,
+    "steps_per_epoch": 800,
+    "trace": [
+      {
+        "epoch": 1,
+        "smooth_l1_mean": 0.007924072090536355
+      },
+      {
+        "epoch": 2,
+        "smooth_l1_mean": 0.004039452396973502
+      }
+    ]
+  }
+}

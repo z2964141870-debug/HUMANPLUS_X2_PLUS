@@ -1,0 +1,338 @@
+{
+  "after": {
+    "holdout": {
+      "mae": 0.014474377036094666,
+      "max_abs": 0.3382488787174225,
+      "mse": 0.00043525712681002915
+    },
+    "train": {
+      "mae": 0.01397906057536602,
+      "max_abs": 0.35566774010658264,
+      "mse": 0.00040239724330604076
+    }
+  },
+  "before": {
+    "holdout": {
+      "mae": 0.6064246892929077,
+      "max_abs": 1.9533740282058716,
+      "mse": 0.5399178862571716
+    },
+    "train": {
+      "mae": 0.6070390939712524,
+      "max_abs": 1.9399839639663696,
+      "mse": 0.5405735969543457
+    }
+  },
+  "bundle_sha256": "0b7f5f4026eb62ea474a2204b11b67e7c500024e1f3b814add0dffc482a07d81",
+  "canonical_latent": [
+    0.3556566536426544,
+    -1.0321823358535767,
+    0.0011144349118694663,
+    -0.3131136894226074,
+    1.0854490995407104,
+    0.8290930390357971,
+    0.8120729923248291,
+    0.0857527107000351,
+    -0.2823750376701355,
+    1.3087480068206787,
+    0.6791229844093323,
+    -1.0371017456054688,
+    1.148038625717163,
+    -1.1524327993392944,
+    0.3261306583881378,
+    0.3903544843196869,
+    -0.16205152869224548,
+    -1.3945329189300537,
+    0.03987326845526695,
+    1.0305278301239014,
+    -1.044278621673584,
+    1.0544830560684204,
+    -0.8066214919090271,
+    0.6792629361152649,
+    -0.6813158392906189,
+    0.5740745663642883,
+    -1.7014036178588867,
+    0.9002578854560852,
+    1.6209683418273926,
+    1.1742820739746094,
+    -0.9096037149429321,
+    0.10976529866456985,
+    0.7503222823143005,
+    -1.0464143753051758,
+    0.48583343625068665,
+    0.7799968719482422,
+    -1.7501020431518555,
+    3.2100441455841064,
+    -0.4780752956867218,
+    -0.7868354916572571,
+    -0.6790798306465149,
+    0.8558965921401978,
+    1.9392696619033813,
+    0.6207799315452576,
+    0.9396344423294067,
+    -0.49349305033683777,
+    -0.03467734158039093,
+    -0.9641141891479492,
+    -0.2951838970184326,
+    0.2307208925485611,
+    0.25048893690109253,
+    0.06070367991924286,
+    -0.5826606750488281,
+    0.46631866693496704,
+    0.8300948739051819,
+    0.13275213539600372,
+    1.0757781267166138,
+    1.0623091459274292,
+    -0.004302233923226595,
+    1.7289836406707764,
+    2.1803905963897705,
+    -1.019144892692566,
+    -1.2559771537780762,
+    -0.1391402781009674
+  ],
+  "checkpoint": {
+    "bytes": 40727284,
+    "files": 6,
+    "path": "artifacts/x2_scratch_phase_bc_v6_seed770301",
+    "strict_roundtrip": true,
+    "tree_sha256": "0ef2c74dedbda264fb885a434c8732aa268b3221b3a7a62d10d409ee61c191c7"
+  },
+  "chunk_count_per_env": 49,
+  "command_phase_observation_contract": true,
+  "decision": "PASS_BC_FIT_ONLY",
+  "epochs": 20,
+  "final_model_hash": "6e2dee92734843d388e221aca56d4e5d13b23a8feae6b7ec135bfe96f2631673",
+  "holdout_envs": 16,
+  "holdout_samples": 6272,
+  "initial_model_hash": "992f5adb0354985c75b741cdc8826dcaabd254339ce330100e5cb96986ff48e1",
+  "label_audit": {
+    "abs_max": 1.0,
+    "clip_fraction": 0.021347639933166247,
+    "finite": true,
+    "samples": 25536
+  },
+  "long_training_unlocked": false,
+  "observation_keys": [
+    "state",
+    "privileged_state",
+    "last_action",
+    "history_actor",
+    "command",
+    "gait_phase"
+  ],
+  "optimizer_steps": 740,
+  "performance_claim": false,
+  "random_student_initialization": true,
+  "rollout_audit": {
+    "action_dim": 15,
+    "all_finite": true,
+    "command_dim": 3,
+    "command_phase_observation_contract": true,
+    "direct_action_observation_contract": true,
+    "episode_count": 64,
+    "forward_velocity_mean_mps": 0.4106951951980591,
+    "forward_velocity_std_mps": 0.0711401104927063,
+    "frames_per_episode": 400,
+    "gait_phase_dim": 4,
+    "joint_order_reindexed": true,
+    "previous_action_abs_max": 1.0,
+    "schema": "bfm_zero_x2_stage219_closed_loop_dataset_audit_v1",
+    "source_joint_order": [
+      "left_hip_pitch_joint",
+      "right_hip_pitch_joint",
+      "waist_yaw_joint",
+      "left_hip_roll_joint",
+      "right_hip_roll_joint",
+      "waist_pitch_joint",
+      "left_hip_yaw_joint",
+      "right_hip_yaw_joint",
+      "waist_roll_joint",
+      "left_knee_joint",
+      "right_knee_joint",
+      "head_yaw_joint",
+      "left_shoulder_pitch_joint",
+      "right_shoulder_pitch_joint",
+      "left_ankle_pitch_joint",
+      "right_ankle_pitch_joint",
+      "head_pitch_joint",
+      "left_shoulder_roll_joint",
+      "right_shoulder_roll_joint",
+      "left_ankle_roll_joint",
+      "right_ankle_roll_joint",
+      "left_shoulder_yaw_joint",
+      "right_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "right_elbow_joint",
+      "left_wrist_yaw_joint",
+      "right_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "right_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_wrist_roll_joint"
+    ],
+    "state_dim": 71,
+    "target_joint_order": [
+      "left_hip_pitch_joint",
+      "left_hip_roll_joint",
+      "left_hip_yaw_joint",
+      "left_knee_joint",
+      "left_ankle_pitch_joint",
+      "left_ankle_roll_joint",
+      "right_hip_pitch_joint",
+      "right_hip_roll_joint",
+      "right_hip_yaw_joint",
+      "right_knee_joint",
+      "right_ankle_pitch_joint",
+      "right_ankle_roll_joint",
+      "waist_yaw_joint",
+      "waist_pitch_joint",
+      "waist_roll_joint",
+      "left_shoulder_pitch_joint",
+      "left_shoulder_roll_joint",
+      "left_shoulder_yaw_joint",
+      "left_elbow_joint",
+      "left_wrist_yaw_joint",
+      "left_wrist_pitch_joint",
+      "left_wrist_roll_joint",
+      "right_shoulder_pitch_joint",
+      "right_shoulder_roll_joint",
+      "right_shoulder_yaw_joint",
+      "right_elbow_joint",
+      "right_wrist_yaw_joint",
+      "right_wrist_pitch_joint",
+      "right_wrist_roll_joint",
+      "head_yaw_joint",
+      "head_pitch_joint"
+    ],
+    "total_frames": 25600
+  },
+  "schema": "x2_bfm_zero_phase_conditioned_behavior_cloning_v6",
+  "scratch_lineage": true,
+  "stage219_labels_used": true,
+  "stage219_weights_loaded_into_student": false,
+  "template_sha256": "16d77b382a5c016c9ca0ec05d8811b333ee9d805d0436381d80ab9202444ff1d",
+  "trace": [
+    {
+      "epoch": 1,
+      "holdout_mae": 0.09593884646892548,
+      "holdout_mse": 0.018051279708743095,
+      "training_smooth_l1_mean": 0.20038774367925283
+    },
+    {
+      "epoch": 2,
+      "holdout_mae": 0.05488356947898865,
+      "holdout_mse": 0.006510851439088583,
+      "training_smooth_l1_mean": 0.04979763149812415
+    },
+    {
+      "epoch": 3,
+      "holdout_mae": 0.04137254133820534,
+      "holdout_mse": 0.003815004136413336,
+      "training_smooth_l1_mean": 0.02804418175003013
+    },
+    {
+      "epoch": 4,
+      "holdout_mae": 0.03442296013236046,
+      "holdout_mse": 0.00268337014131248,
+      "training_smooth_l1_mean": 0.01977051990861828
+    },
+    {
+      "epoch": 5,
+      "holdout_mae": 0.030113643035292625,
+      "holdout_mse": 0.0021019033156335354,
+      "training_smooth_l1_mean": 0.015328752128659067
+    },
+    {
+      "epoch": 6,
+      "holdout_mae": 0.027278287336230278,
+      "holdout_mse": 0.0017527489690110087,
+      "training_smooth_l1_mean": 0.012690601744563193
+    },
+    {
+      "epoch": 7,
+      "holdout_mae": 0.02483520843088627,
+      "holdout_mse": 0.0014671809040009975,
+      "training_smooth_l1_mean": 0.010775326071558771
+    },
+    {
+      "epoch": 8,
+      "holdout_mae": 0.023133136332035065,
+      "holdout_mse": 0.0012834763620048761,
+      "training_smooth_l1_mean": 0.00941352143480971
+    },
+    {
+      "epoch": 9,
+      "holdout_mae": 0.021931501105427742,
+      "holdout_mse": 0.001160300220362842,
+      "training_smooth_l1_mean": 0.008340634418198385
+    },
+    {
+      "epoch": 10,
+      "holdout_mae": 0.020677641034126282,
+      "holdout_mse": 0.0010457010939717293,
+      "training_smooth_l1_mean": 0.007558699370034643
+    },
+    {
+      "epoch": 11,
+      "holdout_mae": 0.01948343962430954,
+      "holdout_mse": 0.0009384691365994513,
+      "training_smooth_l1_mean": 0.0068630906249824404
+    },
+    {
+      "epoch": 12,
+      "holdout_mae": 0.018698295578360558,
+      "holdout_mse": 0.0008606954361312091,
+      "training_smooth_l1_mean": 0.006316483297662155
+    },
+    {
+      "epoch": 13,
+      "holdout_mae": 0.01797337457537651,
+      "holdout_mse": 0.0007701464928686619,
+      "training_smooth_l1_mean": 0.005818152435224604
+    },
+    {
+      "epoch": 14,
+      "holdout_mae": 0.0173728596419096,
+      "holdout_mse": 0.0006823921576142311,
+      "training_smooth_l1_mean": 0.005420186506533945
+    },
+    {
+      "epoch": 15,
+      "holdout_mae": 0.016703449189662933,
+      "holdout_mse": 0.0006176940514706075,
+      "training_smooth_l1_mean": 0.005061942077166325
+    },
+    {
+      "epoch": 16,
+      "holdout_mae": 0.016373591497540474,
+      "holdout_mse": 0.0005839701043441892,
+      "training_smooth_l1_mean": 0.0047388977773890305
+    },
+    {
+      "epoch": 17,
+      "holdout_mae": 0.015619163401424885,
+      "holdout_mse": 0.0005267754895612597,
+      "training_smooth_l1_mean": 0.0044674900033184
+    },
+    {
+      "epoch": 18,
+      "holdout_mae": 0.015206458047032356,
+      "holdout_mse": 0.0004855210136156529,
+      "training_smooth_l1_mean": 0.004233742120197496
+    },
+    {
+      "epoch": 19,
+      "holdout_mae": 0.014865024015307426,
+      "holdout_mse": 0.00046151760034263134,
+      "training_smooth_l1_mean": 0.003970031853060465
+    },
+    {
+      "epoch": 20,
+      "holdout_mae": 0.014474377036094666,
+      "holdout_mse": 0.00043525712681002915,
+      "training_smooth_l1_mean": 0.003821036369363601
+    }
+  ],
+  "train_envs": 48,
+  "train_samples": 18816
+}

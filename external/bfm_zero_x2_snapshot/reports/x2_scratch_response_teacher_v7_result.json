@@ -1,0 +1,174 @@
+{
+  "all_fixed_command_gates_pass": true,
+  "closed_loop": {
+    "ideal": {
+      "action_clip_fraction_max": 0.0,
+      "forward_velocity_mean_mps": 0.41236634675879025,
+      "lanes": 512,
+      "root_height_min_m": 0.6409112215042114,
+      "survival_fraction": 1.0,
+      "survival_steps_mean": 400.0,
+      "survived_lanes": 512,
+      "terminated_lanes": 0,
+      "tilt_max_rad": 0.2546117305755615
+    },
+    "response": {
+      "action_clip_fraction_max": 2.604166666666667e-05,
+      "forward_velocity_mean_mps": 0.36657821117725686,
+      "lanes": 512,
+      "root_height_min_m": 0.548790454864502,
+      "survival_fraction": 1.0,
+      "survival_steps_mean": 400.0,
+      "survived_lanes": 512,
+      "terminated_lanes": 0,
+      "tilt_max_rad": 0.6996373534202576
+    }
+  },
+  "decision": "PASS_FIXED_COMMAND_SCRATCH_KERNEL_LOCAL_ONLY",
+  "gates": {
+    "action_clip": true,
+    "full_response_teacher_dataset": true,
+    "ideal_height": true,
+    "ideal_survival": true,
+    "ideal_tilt": true,
+    "ideal_velocity": true,
+    "response_height": true,
+    "response_survival": true,
+    "response_tilt": true,
+    "response_velocity": true,
+    "scratch_lineage": true,
+    "stage219_weights_not_loaded": true
+  },
+  "inputs": {
+    "ideal_eval": {
+      "path": "reports/x2_scratch_response_teacher_v7_ideal_survival_audit.json",
+      "sha256": "a8d9c19b3ca70aa89337d5e99efdd6b57147d10515d003344fe14ddc8e370d5b"
+    },
+    "response_eval": {
+      "path": "reports/x2_scratch_response_teacher_v7_survival_audit.json",
+      "sha256": "6505811af8bbfca856c800c0befeb01b529ed5f672e11165bdd81738f7e73b68"
+    },
+    "teacher_command_panel": {
+      "path": "reports/x2_stage219_direct_teacher_response_command_panel.json",
+      "sha256": "e82c7365ccbc9008181bb962ef5af3cdb0df3b7be96121559daecd7ec1379de3"
+    },
+    "training": {
+      "path": "reports/x2_scratch_response_teacher_v7.json",
+      "sha256": "bef16dbfad8b9b49fe42ca250259d3edc152fde7b74b4642dadad37e6bd46868"
+    }
+  },
+  "interpretation": {
+    "dataset_insufficiency_hypothesis_supported": true,
+    "fixed_vx_0p35_only": true,
+    "missing_factor": "response-domain full closed-loop teacher trajectories plus deployable command/gait phase",
+    "multi_command_kernel_proven": false,
+    "posture_or_stop_improvement_proven": false
+  },
+  "permissions": {
+    "deployment_unlocked": false,
+    "long_training_unlocked": false,
+    "multi_command_teacher_data_unlocked": false,
+    "state_feedback_teacher_feasibility_next": true
+  },
+  "schema": "x2_bfm_zero_scratch_response_teacher_v7_result_v1",
+  "teacher_command_panel": {
+    "decision": "FAIL_RESPONSE_COMMAND_TEACHER_PANEL",
+    "failed_roles": [
+      "turn_right",
+      "vx_0p20"
+    ],
+    "groups": {
+      "turn_left": {
+        "command": [
+          0.35,
+          0.0,
+          0.3
+        ],
+        "forward_velocity_mean_mps": 0.33353567123413086,
+        "lanes": 64,
+        "survival_steps_mean": 400.0,
+        "survived_lanes": 64,
+        "tracking_gate": true,
+        "velocity_error_mean_mps": 0.016616525128483772,
+        "yaw_rate_error_mean_radps": 0.18581938743591309,
+        "yaw_rate_mean_radps": 0.11418062448501587
+      },
+      "turn_right": {
+        "command": [
+          0.35,
+          0.0,
+          -0.3
+        ],
+        "forward_velocity_mean_mps": 0.36307528614997864,
+        "lanes": 64,
+        "survival_steps_mean": 400.0,
+        "survived_lanes": 64,
+        "tracking_gate": false,
+        "velocity_error_mean_mps": 0.01466454192996025,
+        "yaw_rate_error_mean_radps": 0.3140276372432709,
+        "yaw_rate_mean_radps": 0.014027607627213001
+      },
+      "vx_0p20": {
+        "command": [
+          0.2,
+          0.0,
+          0.0
+        ],
+        "forward_velocity_mean_mps": 0.18908363580703735,
+        "lanes": 128,
+        "survival_steps_mean": 390.09375,
+        "survived_lanes": 112,
+        "tracking_gate": false,
+        "velocity_error_mean_mps": 0.015852048993110657,
+        "yaw_rate_error_mean_radps": 0.06510074436664581,
+        "yaw_rate_mean_radps": -0.041268374770879745
+      },
+      "vx_0p35": {
+        "command": [
+          0.35,
+          0.0,
+          0.0
+        ],
+        "forward_velocity_mean_mps": 0.3388144373893738,
+        "lanes": 128,
+        "survival_steps_mean": 400.0,
+        "survived_lanes": 128,
+        "tracking_gate": true,
+        "velocity_error_mean_mps": 0.013359801843762398,
+        "yaw_rate_error_mean_radps": 0.10400700569152832,
+        "yaw_rate_mean_radps": 0.10400700569152832
+      },
+      "vx_0p50": {
+        "command": [
+          0.5,
+          0.0,
+          0.0
+        ],
+        "forward_velocity_mean_mps": 0.3901056945323944,
+        "lanes": 128,
+        "survival_steps_mean": 400.0,
+        "survived_lanes": 128,
+        "tracking_gate": true,
+        "velocity_error_mean_mps": 0.1098942905664444,
+        "yaw_rate_error_mean_radps": 0.06639236956834793,
+        "yaw_rate_mean_radps": 0.06639236956834793
+      }
+    },
+    "qualified_roles": [
+      "turn_left",
+      "vx_0p35",
+      "vx_0p50"
+    ]
+  },
+  "training": {
+    "checkpoint_tree_sha256": "8a41f61c9896c2bb9e062c24b69924513b0d458cd11b4315cf9071758a99fded",
+    "fresh_random_student": true,
+    "offline_holdout_mae_after": 0.009945239871740341,
+    "optimizer_steps_this_dataset_stage": 1600,
+    "stage219_weights_loaded": false,
+    "teacher_dataset_mae_after": 0.016228223219513893,
+    "teacher_dataset_mae_before": 0.08261930197477341,
+    "teacher_label_frames": 204800,
+    "teacher_trajectory_terminations": 0
+  }
+}
