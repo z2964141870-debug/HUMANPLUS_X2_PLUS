@@ -36,34 +36,36 @@ git remote -v
 4. `manifests/x2_observation_dimension_audit_20260815.json`
 5. `docs/X2_CHECKPOINT_SHAPE_AUDIT_20260815.md`
 6. `manifests/x2_checkpoint_shape_audit_20260815.json`
-7. `docs/X2_RESPONSE_CLONE_AUDIT_20260814.md`
-8. `manifests/x2_response_clone_audit_20260814.json`
-9. `docs/X2_TEACHER_FEASIBILITY_20260814.md`
-10. `manifests/x2_teacher_feasibility_20260814.json`
+7. `docs/X2_GARMENT_ADAPTER_EXISTING_SEAM_20260815.md`
+8. `manifests/x2_garment_adapter_existing_seam_20260815.json`
+9. `docs/X2_RESPONSE_CLONE_AUDIT_20260814.md`
+10. `manifests/x2_response_clone_audit_20260814.json`
+11. `docs/X2_TEACHER_FEASIBILITY_20260814.md`
+12. `manifests/x2_teacher_feasibility_20260814.json`
 
 阅读目的：理解为什么本轮停止重复 upper-body disturbance adaptation、为什么不继续并行 MPC，以及当前“15 维下肢腰部策略 + 14 维外部双臂 + 2 维锁头”的部署边界。
 
 ### B. 本轮核心代码
 
-11. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_contract.py`
-12. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_adapter.py`
-13. `tests/test_x2_extremity_contract.py`
-14. `tests/test_x2_extremity_adapter.py`
-15. `scripts/probe_x2_extremity_contract_v11.py`
+13. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_contract.py`
+14. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_adapter.py`
+15. `tests/test_x2_extremity_contract.py`
+16. `tests/test_x2_extremity_adapter.py`
+17. `scripts/probe_x2_extremity_contract_v11.py`
 
 阅读目的：理解六链目标的形状、坐标系、四元数约定、31 关节分区以及静态探针的通过条件。不要在没有核对接口的情况下直接改 observation 维度。
 
 ### C. 失败链路与可复用工具
 
-16. `external/bfm_zero_x2_snapshot/humanoidverse/x2_response_clone.py`
-17. `scripts/audit_x2_response_state_clone_v10.py`
-18. `external/bfm_zero_x2_snapshot/humanoidverse/x2_direct_teacher.py`
-19. `scripts/search_x2_direct_cem_teacher_v9.py`
-20. `external/bfm_zero_x2_snapshot/humanoidverse/x2_teacher_feedback.py`
-21. `scripts/screen_x2_state_feedback_teacher_v8.py`
-22. `tests/test_x2_response_clone.py`
-23. `tests/test_x2_direct_teacher.py`
-24. `tests/test_x2_teacher_feedback.py`
+18. `external/bfm_zero_x2_snapshot/humanoidverse/x2_response_clone.py`
+19. `scripts/audit_x2_response_state_clone_v10.py`
+20. `external/bfm_zero_x2_snapshot/humanoidverse/x2_direct_teacher.py`
+21. `scripts/search_x2_direct_cem_teacher_v9.py`
+22. `external/bfm_zero_x2_snapshot/humanoidverse/x2_teacher_feedback.py`
+23. `scripts/screen_x2_state_feedback_teacher_v8.py`
+24. `tests/test_x2_response_clone.py`
+25. `tests/test_x2_direct_teacher.py`
+26. `tests/test_x2_teacher_feedback.py`
 
 阅读目的：复用已经实现的验证框架，同时避免重跑已被证伪的方案。任何新路线都必须说明相对这些失败实验新增了什么可观测信息或可控制自由度。
 
@@ -111,6 +113,7 @@ export PYTHONPATH="$PWD/external/bfm_zero_x2_snapshot${PYTHONPATH:+:$PYTHONPATH}
 - 训练和部署权限仍为锁定状态。
 - 零破坏 adapter 原型已通过 `12 passed`，但尚未接入实际 SONIC backbone。
 - Stage152-B checkpoint 形状审计已完成，但其 1062/1745 维 contract 与 X2-native 86/89 维 contract 不兼容；接班 Agent 必须先做 `g1_dyn` named input feature 分块审计。
+- 已发现 dirty SONIC checkout 中存在可复用的 `DirectContactActionAdapter` 与命名 suffix 映射；接班 Agent 应优先评估把 `x2_extremity_goal` 接入这条 seam，而不是重新设计一套 Any2Any actor。
 
 ## 4. 明确的验收门槛
 

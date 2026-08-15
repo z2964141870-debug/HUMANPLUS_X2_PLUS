@@ -1,0 +1,28 @@
+{
+  "schema": "x2_garment_adapter_existing_seam_v1",
+  "project": "BFM-Zero",
+  "date": "2026-08-15",
+  "source_project": "x2_teleop_final/x2_sonic/sonic_x2_sandbox",
+  "source_commit": "bc38f6d0ce6cab4589e025037ad0bfbab7ba73d8",
+  "source_worktree": "detached_and_dirty",
+  "existing_classes": [
+    "gear_sonic/trl/modules/universal_token_modules.py::DirectContactActionAdapter",
+    "gear_sonic/trl/modules/universal_token_modules.py::TemporalBilinearActionAdapter"
+  ],
+  "existing_mapping": "gear_sonic/trl/utils/x2_checkpoint_semantic_mapping.py",
+  "existing_config": "gear_sonic/config/exp/manager/universal_token/all_modes/sonic_x2_phuma_direct_contact_adapter.yaml",
+  "proposed_feature": "x2_extremity_goal",
+  "proposed_feature_width": "36*H",
+  "first_horizon": 1,
+  "g1_dyn_input_layout": [
+    "token_flattened",
+    "proprioception",
+    "x2_extremity_goal"
+  ],
+  "x2_lower_output_indices_candidate": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 15, 19, 20],
+  "adapter_initialization": "zero_output_projection",
+  "adapter_residual_bound_required": true,
+  "training_unlocked": false,
+  "deployment_unlocked": false,
+  "blocker": "dirty_source_checkout_and_unresolved_garment_goal_stream"
+}
