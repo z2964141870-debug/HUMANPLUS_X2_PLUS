@@ -40,6 +40,17 @@ SONIC 的 `Actor` 包装器接收 `actor_obs`，再把 observation 交给可配�
 
 如果现有 backbone 不暴露可插入的 hidden seam，再退回“从头训练新输入维度”的独立实验；这应作为新 checkpoint、新实验名和新对照，不得覆盖旧权重。
 
+## 原型验证结果
+
+仓库中的 `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_adapter.py` 已实现一个框架无关的零破坏 residual adapter。它保留旧模块的输入和输出宽度，把 36H 维目标送入新分支，最后一层零初始化；新增测试验证了：
+
+- 目标非零时，初始化 adapter 的输出仍逐元素等于旧模块；
+- 旧模块参数被冻结且梯度为空；
+- 更新新分支后输出才改变；
+- H=1 与 H=2 的目标宽度和 batch 错误会显式拒绝。
+
+远端命令 `PYTHONPATH=external/bfm_zero_x2_snapshot PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_x2_extremity_adapter.py tests/test_x2_extremity_contract.py` 结果为 `12 passed`。这只是兼容性原型验证，不代表已经接入 SONIC backbone 或验证了控制效果。
+
 ## 当前阻塞
 
 实际 SONIC 源码 checkout 当前处于 detached HEAD `bc38f6d0ce6cab4589e025037ad0bfbab7ba73d8`，且 `flat_env_cfg.py`、`ppo_trainer.py`、`actor_critic_modules.py` 等文件均有未提交修改，同时存在 `.sonic_runtime` 和未跟踪配置。因此本轮没有直接编辑该 checkout，也没有把它复制进 GitHub。

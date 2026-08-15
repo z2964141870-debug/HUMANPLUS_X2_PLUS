@@ -44,8 +44,10 @@ git remote -v
 ### B. 本轮核心代码
 
 9. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_contract.py`
-10. `tests/test_x2_extremity_contract.py`
-11. `scripts/probe_x2_extremity_contract_v11.py`
+10. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_adapter.py`
+11. `tests/test_x2_extremity_contract.py`
+12. `tests/test_x2_extremity_adapter.py`
+13. `scripts/probe_x2_extremity_contract_v11.py`
 
 阅读目的：理解六链目标的形状、坐标系、四元数约定、31 关节分区以及静态探针的通过条件。不要在没有核对接口的情况下直接改 observation 维度。
 
@@ -105,6 +107,7 @@ export PYTHONPATH="$PWD/external/bfm_zero_x2_snapshot${PYTHONPATH:+:$PYTHONPATH}
 - 报告：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/x2_extremity_contract/x2_extremity_contract_v11.json`；
 - 报告 SHA256：`54246ae90a9e51107bd900a251f94737aab49a637511df5f80e111ae87d1dfd7`；
 - 训练和部署权限仍为锁定状态。
+- 零破坏 adapter 原型已通过 `12 passed`，但尚未接入实际 SONIC backbone。
 
 ## 4. 明确的验收门槛
 
