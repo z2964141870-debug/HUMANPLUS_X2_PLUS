@@ -2,7 +2,7 @@
 
 版本：v1.0  
 日期：2026-08-14  
-任务状态：代码入库阶段；按用户要求，本轮不执行测试或仿真
+任务状态：纯函数检查与官方 X2 `sole12` 静态探针已通过；尚未接入训练 observation 或真机
 
 ## 1. 开工信息
 
@@ -95,6 +95,14 @@ export PYTHONPATH="$PWD/external/bfm_zero_x2_snapshot${PYTHONPATH:+:$PYTHONPATH}
 3. 运行只读静态探针，确认六链名称和 31 关节分区；报告写入外部数据目录。
 4. 若静态探针失败，只修正契约或资产映射，不进入训练。
 5. 若静态探针通过，提出 observation 接入的最小 diff 和旧权重兼容方案，得到确认后再实施。
+
+本次已完成第 2、3 步：
+
+- 纯函数：`9 passed`；
+- 静态探针：`PASS_X2_SIX_LINK_CONTRACT_FOR_STATIC_TRACKING_SMOKE`；
+- 报告：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/x2_extremity_contract/x2_extremity_contract_v11.json`；
+- 报告 SHA256：`54246ae90a9e51107bd900a251f94737aab49a637511df5f80e111ae87d1dfd7`；
+- 训练和部署权限仍为锁定状态。
 
 ## 4. 明确的验收门槛
 
