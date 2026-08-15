@@ -65,6 +65,8 @@
 - `tools/official_x2/inventory_x2_motion_bank.py`：源动作统计和分层选择；
 - `tools/official_x2/analyze_x2_stratified_results.py`：按类别/速度/姿态/根部倾斜归因，并按 SHA256 去重；
 - `tools/official_x2/adapt_x2_motion_distribution.py`：关节速度、姿态幅度、根部倾斜单变量适配；
+- `tools/official_x2/x2_sonic_input_adapter.py`：无 I/O 的逐帧实时 adapter，返回姿态/限幅遥测；
+- `tools/official_x2/test_x2_sonic_input_adapter.py`：3 个单元测试和 batch 输出等价性基础检查；
 - `tools/official_x2/compare_x2_closed_loop_variants.py`：按唯一源内容比较通过/失败转移。
 
 关键 manifest/report：
@@ -78,6 +80,9 @@
 - 最终 5 秒：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/official_sonic_x2_stratified96_rottilt0_pose05_5s.json`；
 - 最终 30 秒：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/official_sonic_x2_stratified96_rottilt0_pose05_30s.json`；
 - 变量比较：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/x2_sonic_all_variant_comparison.md`。
+- 数据/代码冻结 manifest：`/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-15/x2_sonic_stability_experiment_manifest_v1.json`。
+
+逐帧 adapter 在一条完整 canonical clip 上与最终 batch artifact 做了逐元素比较：joint 和 quaternion 最大绝对差均为 `0.0`；3090 环境中的 3 个单元测试全部通过。
 
 ## 下一步
 
