@@ -115,7 +115,11 @@ def main() -> dict:
         and localization_error <= LOCALIZATION_GATE
         and finite
     )
-    env.close()
+    # Isaac Sim 5.1 can block for minutes while tearing down a headless
+    # ManagerBasedRLEnv.  This probe has no stepping loop, weights, or
+    # checkpoint writer; the process exits immediately after the report and
+    # SHA256 are written below, so keeping teardown out of the evidence path
+    # makes the static gate deterministic.
     return {
         "schema": "x2_extremity_contract_probe_v11",
         "decision": (
