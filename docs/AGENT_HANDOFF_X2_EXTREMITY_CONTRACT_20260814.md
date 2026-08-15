@@ -32,32 +32,34 @@ git remote -v
 
 1. `docs/AGENT_HANDOFF_X2_EXTREMITY_CONTRACT_20260814.md`（本卡）
 2. `docs/X2_EXTREMITY_CONTRACT_TODO_20260814.md`
-3. `docs/X2_RESPONSE_CLONE_AUDIT_20260814.md`
-4. `manifests/x2_response_clone_audit_20260814.json`
-5. `docs/X2_TEACHER_FEASIBILITY_20260814.md`
-6. `manifests/x2_teacher_feasibility_20260814.json`
+3. `docs/X2_OBSERVATION_INTEGRATION_AUDIT_20260815.md`
+4. `manifests/x2_observation_dimension_audit_20260815.json`
+5. `docs/X2_RESPONSE_CLONE_AUDIT_20260814.md`
+6. `manifests/x2_response_clone_audit_20260814.json`
+7. `docs/X2_TEACHER_FEASIBILITY_20260814.md`
+8. `manifests/x2_teacher_feasibility_20260814.json`
 
 阅读目的：理解为什么本轮停止重复 upper-body disturbance adaptation、为什么不继续并行 MPC，以及当前“15 维下肢腰部策略 + 14 维外部双臂 + 2 维锁头”的部署边界。
 
 ### B. 本轮核心代码
 
-7. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_contract.py`
-8. `tests/test_x2_extremity_contract.py`
-9. `scripts/probe_x2_extremity_contract_v11.py`
+9. `external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_contract.py`
+10. `tests/test_x2_extremity_contract.py`
+11. `scripts/probe_x2_extremity_contract_v11.py`
 
 阅读目的：理解六链目标的形状、坐标系、四元数约定、31 关节分区以及静态探针的通过条件。不要在没有核对接口的情况下直接改 observation 维度。
 
 ### C. 失败链路与可复用工具
 
-10. `external/bfm_zero_x2_snapshot/humanoidverse/x2_response_clone.py`
-11. `scripts/audit_x2_response_state_clone_v10.py`
-12. `external/bfm_zero_x2_snapshot/humanoidverse/x2_direct_teacher.py`
-13. `scripts/search_x2_direct_cem_teacher_v9.py`
-14. `external/bfm_zero_x2_snapshot/humanoidverse/x2_teacher_feedback.py`
-15. `scripts/screen_x2_state_feedback_teacher_v8.py`
-16. `tests/test_x2_response_clone.py`
-17. `tests/test_x2_direct_teacher.py`
-18. `tests/test_x2_teacher_feedback.py`
+12. `external/bfm_zero_x2_snapshot/humanoidverse/x2_response_clone.py`
+13. `scripts/audit_x2_response_state_clone_v10.py`
+14. `external/bfm_zero_x2_snapshot/humanoidverse/x2_direct_teacher.py`
+15. `scripts/search_x2_direct_cem_teacher_v9.py`
+16. `external/bfm_zero_x2_snapshot/humanoidverse/x2_teacher_feedback.py`
+17. `scripts/screen_x2_state_feedback_teacher_v8.py`
+18. `tests/test_x2_response_clone.py`
+19. `tests/test_x2_direct_teacher.py`
+20. `tests/test_x2_teacher_feedback.py`
 
 阅读目的：复用已经实现的验证框架，同时避免重跑已被证伪的方案。任何新路线都必须说明相对这些失败实验新增了什么可观测信息或可控制自由度。
 
