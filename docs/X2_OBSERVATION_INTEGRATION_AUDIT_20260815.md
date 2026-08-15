@@ -5,7 +5,7 @@
 
 ## 已确认的当前接口
 
-在官方 X2 `sole12` 任务配置中，静态探针观察到：
+在官方 X2 `sole12` lower-velocity 任务配置中，静态探针观察到：
 
 | 组 | 当前项 | 当前维度 |
 |---|---|---:|
@@ -27,6 +27,16 @@
 SONIC 的 `Actor` 包装器接收 `actor_obs`，再把 observation 交给可配置 backbone；`Critic` 单独接收 `critic_obs`。当前 `ppo_trainer.py` 已有 `_expand_appended_critic_checkpoint_features()`，能把旧 critic 的输入尾部零扩展并保持初始 value 不变，但没有对应的 actor 中性扩展函数。
 
 因此，直接追加 36 维并加载旧 actor checkpoint 会触发第一层形状不匹配，不能静默截断、填零或忽略错误。
+
+## Stage152-B checkpoint 的独立审计
+
+任务卡中常用的 `x2_stage152_B_pilot_seed0_v1/model_step_000200.pt` 属于 SONIC universal-token/Any2Any 网络，不是上表的 86/89 维 lower-velocity actor/critic。只读加载得到：
+
+- actor `g1_dyn` 第一层 `base_layer.weight`：`(2048, 1062)`；对应 LoRA-A：`(8, 1062)`；
+- critic 第一层 `base_layer.weight`：`(2048, 1745)`；对应 LoRA-A：`(8, 1745)`；
+- actor exploration `std`：`(31,)`。
+
+该 checkpoint 的 `g1_dyn` 输入由 `token_flattened + proprioception` 组成，不能把 36 维六链目标直接当成 86 维 `actor_obs` 的尾部来接。若研究目标是复用 Stage152-B，adapter 应插在 `g1_dyn` decoder 输入语义层，或在其 decoder hidden seam 注入零初始化 residual；若研究目标是 X2-native lower-velocity policy，则应另建 86/89 维实验。两条路线必须分开命名、分开 checkpoint 和分开结论。
 
 ## 推荐的最小兼容方案
 
@@ -62,7 +72,7 @@ SONIC 的 `Actor` 包装器接收 `actor_obs`，再把 observation 交给可配�
 下一位 Agent 只能先完成以下工作：
 
 - 固定 SONIC/X2 源码 commit 与依赖 manifest；
-- 写一个旧 actor/critic checkpoint 的输入维度和 state-dict 形状审计；
+- 区分 86/89 维 X2-native policy 与 1062/1745 维 Stage152-B policy，并固定各自的 checkpoint shape manifest；
 - 在纯 PyTorch 中验证“目标分支全零时 adapter 等价于旧模型”；
 - 再决定采用 residual adapter 还是全新输入维度训练。
 

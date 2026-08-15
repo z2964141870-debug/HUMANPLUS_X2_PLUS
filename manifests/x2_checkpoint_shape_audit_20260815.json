@@ -1,0 +1,33 @@
+{
+  "schema": "x2_checkpoint_shape_audit_v1",
+  "project": "BFM-Zero",
+  "date": "2026-08-15",
+  "checkpoint_relative_path": "x2_teleop_final/x2_sonic/logs/ppo_dryrun/x2_stage152_B_pilot_seed0_v1/model_step_000200.pt",
+  "bytes": 195741434,
+  "sha256": "b73c345995c5d468c18d223de96b29fff4cd4866e4d56bb6d5296c4a68540679",
+  "checkpoint_family": "SONIC_universal_token_Stage152_B",
+  "top_state_keys": [
+    "policy_state_dict",
+    "value_state_dict",
+    "optimizer_state_dict",
+    "lr_scheduler_state_dict",
+    "env_state_dict",
+    "state",
+    "args"
+  ],
+  "key_shapes": {
+    "actor_module.decoders.g1_dyn.module.0.base_layer.weight": [2048, 1062],
+    "actor_module.decoders.g1_dyn.module.0.lora_A": [8, 1062],
+    "actor_module.decoders.g1_dyn.module.12.base_layer.weight": [31, 512],
+    "critic_module.module.0.base_layer.weight": [2048, 1745],
+    "critic_module.module.0.lora_A": [8, 1745],
+    "critic_module.module.12.base_layer.weight": [1, 512],
+    "std": [31]
+  },
+  "native_x2_lower_velocity_contract": {
+    "policy": 86,
+    "critic": 89
+  },
+  "direct_cross_contract_load": "blocked",
+  "next_gate": "audit_g1_dyn_named_input_feature_partition"
+}
