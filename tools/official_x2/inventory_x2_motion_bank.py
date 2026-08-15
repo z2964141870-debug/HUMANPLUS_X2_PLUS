@@ -45,7 +45,45 @@ def bin_name(value: float, thresholds: tuple[float, float]) -> str:
     return "high"
 
 
-def inventory_one(path: pathlib.Path, ranges: np.ndarray | None) -> dict[str, object]:
+def _contact_metrics(motion: sonic.Motion, model: mujoco.MjModel,
+                     data: mujoco.MjData, foot_geom_ids: tuple[int, int]) -> dict[str, float]:
+    """Approximate foot support feasibility in the official X2 scene.
+
+    The public evaluator spawns with root XY set to zero, so this diagnostic does
+    the same.  ``geom_xpos`` is the center of each ankle/foot mesh; a center
+    height <= 8 cm is treated as near-floor, and <= 0.25 m/s as a stationary
+    contact candidate.  These are diagnostic thresholds, not a contact solver.
+    """
+    positions = np.empty((motion.frames, 2, 3), dtype=np.float64)
+    for i, (jp, rp, rq) in enumerate(zip(motion.joint_pos, motion.root_pos, motion.root_quat)):
+        data.qpos[:] = 0.0
+        data.qpos[2] = rp[2]
+        data.qpos[3:7] = rq
+        data.qpos[7:38] = jp
+        mujoco.mj_forward(model, data)
+        positions[i, 0] = data.geom_xpos[foot_geom_ids[0]]
+        positions[i, 1] = data.geom_xpos[foot_geom_ids[1]]
+    heights = positions[:, :, 2]
+    if motion.frames > 1:
+        speed = np.linalg.norm(np.diff(positions, axis=0), axis=2) * float(motion.fps)
+        speed = np.vstack([speed, speed[-1:]])
+    else:
+        speed = np.zeros((1, 2), dtype=np.float64)
+    near_floor = heights <= 0.08
+    stationary_contact = near_floor & (speed <= 0.25)
+    return {
+        "foot_center_z_min_m": float(np.min(heights)),
+        "foot_center_z_p95_m": float(np.quantile(heights, 0.95)),
+        "foot_near_floor_fraction": float(np.mean(near_floor.any(axis=1))),
+        "foot_neither_near_floor_fraction": float(np.mean(~near_floor.any(axis=1))),
+        "foot_stationary_contact_fraction": float(np.mean(stationary_contact.any(axis=1))),
+        "foot_contact_gap_fraction": float(np.mean(~stationary_contact.any(axis=1))),
+    }
+
+
+def inventory_one(path: pathlib.Path, ranges: np.ndarray | None,
+                  model: mujoco.MjModel, data: mujoco.MjData,
+                  foot_geom_ids: tuple[int, int]) -> dict[str, object]:
     motion = sonic._load_joblib_motion(path)
     fps = float(motion.fps)
     root_delta = np.diff(motion.root_pos, axis=0) * fps
@@ -103,6 +141,7 @@ def inventory_one(path: pathlib.Path, ranges: np.ndarray | None) -> dict[str, ob
         "joint_limit_violation_rad": limit_violation,
         "finite": finite,
     }
+    record.update(_contact_metrics(motion, model, data, foot_geom_ids))
     record["root_speed_bin"] = bin_name(root_p95, (0.15, 0.50))
     record["joint_speed_bin"] = bin_name(joint_p95, (2.0, 6.0))
     record["pose_amplitude_bin"] = bin_name(joint_p99_angle, (0.40, 0.90))
@@ -157,6 +196,20 @@ def main() -> int:
     model = mujoco.MjModel.from_xml_path(str(args.scene))
     scene_info = sonic._assert_scene(model)
     ranges = np.asarray(scene_info["joint_ranges"], dtype=np.float64)
+    foot_geom_ids = []
+    for body_name in ("left_ankle_roll_link", "right_ankle_roll_link"):
+        body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, body_name)
+        if body_id < 0:
+            raise RuntimeError(f"missing X2 foot body: {body_name}")
+        mesh_ids = [
+            i for i in range(model.ngeom)
+            if int(model.geom_bodyid[i]) == body_id
+            and int(model.geom_type[i]) == int(mujoco.mjtGeom.mjGEOM_MESH)
+        ]
+        if not mesh_ids:
+            raise RuntimeError(f"missing mesh foot geom: {body_name}")
+        foot_geom_ids.append(mesh_ids[0])
+    data = mujoco.MjData(model)
     paths = []
     for name in args.sets.split(","):
         subset = args.motion_root / name
@@ -167,18 +220,25 @@ def main() -> int:
     for index, path in enumerate(paths, 1):
         if index == 1 or index % 50 == 0 or index == len(paths):
             print(f"inventory {index}/{len(paths)}", flush=True)
-        records.append(inventory_one(path, ranges))
+        records.append(inventory_one(path, ranges, model, data, tuple(foot_geom_ids)))
     selected = select(records, args.per_set, args.per_stratum)
     subsets = Counter(str(r["subset"]) for r in records)
     selected_subsets = Counter(str(r["subset"]) for r in selected)
     strata = Counter(str(r["stratum"]) for r in records)
     selected_strata = Counter(str(r["stratum"]) for r in selected)
     report = {
-        "schema": "x2_sonic_motion_inventory/v1",
+        "schema": "x2_sonic_motion_inventory/v2",
         "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "motion_root": str(args.motion_root.resolve()),
         "scene": str(args.scene.resolve()),
-        "scene_info": {"joint_ranges": scene_info["joint_ranges"]},
+        "scene_info": {
+            "joint_ranges": scene_info["joint_ranges"],
+            "contact_diagnostic": {
+                "foot_geom_center_height_threshold_m": 0.08,
+                "foot_speed_threshold_mps": 0.25,
+                "foot_bodies": ["left_ankle_roll_link", "right_ankle_roll_link"],
+            },
+        },
         "records": records,
         "selection": selected,
         "summary": {

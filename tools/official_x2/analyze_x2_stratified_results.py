@@ -63,6 +63,14 @@ def root_tilt_bin(value):
     return "high"
 
 
+def contact_gap_bin(value):
+    if value < 0.25:
+        return "good"
+    if value < 0.50:
+        return "mixed"
+    return "poor"
+
+
 def pearson(xs, ys):
     pairs = [(float(x), float(y)) for x, y in zip(xs, ys) if finite(x) and finite(y)]
     if len(pairs) < 2:
@@ -115,6 +123,11 @@ def main():
             "root_tilt_max_rad": stats.get("root_tilt_max_rad", 0.0),
             "root_angular_speed_p95_radps": stats.get("root_angular_speed_p95_radps", 0.0),
             "root_tilt_bin": root_tilt_bin(float(stats.get("root_tilt_p95_rad", 0.0))),
+            "foot_center_z_min_m": stats.get("foot_center_z_min_m", 0.0),
+            "foot_center_z_p95_m": stats.get("foot_center_z_p95_m", 0.0),
+            "foot_near_floor_fraction": stats.get("foot_near_floor_fraction", 0.0),
+            "foot_contact_gap_fraction": stats.get("foot_contact_gap_fraction", 1.0),
+            "contact_gap_bin": contact_gap_bin(float(stats.get("foot_contact_gap_fraction", 1.0))),
             "joint_speed_p95_radps": stats["joint_speed_p95_radps"],
             "joint_abs_angle_p99_rad": stats["joint_abs_angle_p99_rad"],
             "root_z_range_m": stats["root_z_range_m"],
@@ -174,6 +187,10 @@ def main():
             [r["root_angular_speed_p95_radps"] for r in rows],
             [r["simulated_seconds"] for r in rows],
         ),
+        "foot_contact_gap_vs_survival": pearson(
+            [r["foot_contact_gap_fraction"] for r in rows],
+            [r["simulated_seconds"] for r in rows],
+        ),
     }
     report = {
         "schema": "x2_sonic_stratified_closed_loop_analysis_v1",
@@ -194,12 +211,14 @@ def main():
         "by_joint_speed_bin": group_summary(rows, "joint_speed_bin"),
         "by_pose_amplitude_bin": group_summary(rows, "pose_amplitude_bin"),
         "by_root_tilt_bin": group_summary(rows, "root_tilt_bin"),
+        "by_contact_gap_bin": group_summary(rows, "contact_gap_bin"),
         "by_stratum": group_summary(rows, "stratum"),
         "unique_by_category": group_summary(unique_rows, "category"),
         "unique_by_root_speed_bin": group_summary(unique_rows, "root_speed_bin"),
         "unique_by_joint_speed_bin": group_summary(unique_rows, "joint_speed_bin"),
         "unique_by_pose_amplitude_bin": group_summary(unique_rows, "pose_amplitude_bin"),
         "unique_by_root_tilt_bin": group_summary(unique_rows, "root_tilt_bin"),
+        "unique_by_contact_gap_bin": group_summary(unique_rows, "contact_gap_bin"),
         "rows": rows,
     }
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
@@ -243,6 +262,7 @@ def main():
         ("By joint-speed bin", "by_joint_speed_bin"),
         ("By pose-amplitude bin", "by_pose_amplitude_bin"),
         ("By root-tilt bin", "by_root_tilt_bin"),
+        ("By contact-gap bin", "by_contact_gap_bin"),
     ]:
         lines.extend(md_table(title, report[key]))
         lines.append("")
@@ -253,6 +273,7 @@ def main():
         ("Unique by joint-speed bin", "unique_by_joint_speed_bin"),
         ("Unique by pose-amplitude bin", "unique_by_pose_amplitude_bin"),
         ("Unique by root-tilt bin", "unique_by_root_tilt_bin"),
+        ("Unique by contact-gap bin", "unique_by_contact_gap_bin"),
     ]:
         lines.extend(md_table(title, report[key]))
         lines.append("")

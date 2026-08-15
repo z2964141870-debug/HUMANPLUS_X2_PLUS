@@ -23,7 +23,7 @@
 
 ### 原始 canonical 输入
 
-96 条记录中 50 条通过；去重后 27/51 个唯一动作通过。根部倾斜 p95 与生存时间的 Pearson 相关为 **−0.862**；低倾斜组 15/15 通过，中倾斜组 7/10，通过率在高倾斜组降到 5/26。相比之下，root XY 路径、root XY 速度和简单关节速度限幅的信号弱得多。
+96 条记录中 50 条通过；去重后 27/51 个唯一动作通过。根部倾斜 p95 与生存时间的 Pearson 相关为 **−0.862**；低倾斜组 15/15 通过，中倾斜组 7/10，通过率在高倾斜组降到 5/26。使用官方 X2 足部 mesh 做近似接触可行性诊断后，`foot_contact_gap_fraction` 与生存时间相关为 **−0.832**：唯一内容层面 good/mixed/poor 三组通过率分别为 22/24、2/5、3/22。也就是说，根部倾斜和脚部无法形成合理支撑是同一个动力学失稳链条的两个可观测侧面。相比之下，root XY 路径、root XY 速度和简单关节速度限幅的信号弱得多。
 
 ### 单变量/组合对照（5 秒闭环，唯一内容）
 
@@ -54,7 +54,7 @@
 ## 解释与限制
 
 1. 这证明公开 X2-Sonic policy 在官方仿真场景中是可运行的；之前失败的关键原因更接近输入根部姿态/动作幅度超出稳定域，而不是 ONNX 不能用或 1670-D 接口错位。
-2. 这不是最终的衣服遥操策略。完全去除人体 roll/pitch 会牺牲后仰、侧倾等表现力；它应被视为安全基线和稳定域探针。
+2. 这不是最终的衣服遥操策略。完全去除人体 roll/pitch 会牺牲后仰、侧倾等表现力；它应被视为安全基线和稳定域探针。当前接触指标是 mesh 中心高度/速度阈值，不是完整的接触动力学求解器。
 3. 当前官方 policy 的 tokenizer 使用 root orientation，不使用 root position；因此 root XY 缩放作为负对照几乎不改变结果。后续若要恢复全身位移，需要重新设计 locomotion/root-phase 接口，而不是继续调 root XY。
 4. 所有结果来自单一公开权重、单一官方 MuJoCo 场景和现有控制增益；还不能外推到真实 X2。真实机测试必须另行经过安全审批、低幅度动作和急停验证。
 
@@ -70,16 +70,18 @@
 关键 manifest/report：
 
 - 统计：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/phuma_motion_inventory_v2.json`；
+- 含足部接触可行性统计：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/phuma_motion_inventory_v3_contact.json`；
 - canonical 选择：`/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-15/phuma_stratified96_canonical_manifest_v4.json`；
 - 原始闭环：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/official_sonic_x2_stratified96_5s.json`；
 - 归因：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/baseline_analysis_v2.md`；
+- 根部/接触归因：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/baseline_analysis_v3_contact.md`；
 - 最终 5 秒：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/official_sonic_x2_stratified96_rottilt0_pose05_5s.json`；
 - 最终 30 秒：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/official_sonic_x2_stratified96_rottilt0_pose05_30s.json`；
 - 变量比较：`/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/x2_sonic_all_variant_comparison.md`。
 
 ## 下一步
 
-1. 在不改变 policy 的前提下，把“根部倾斜限幅”和“姿态幅度限幅”改成连续、可调的实时 adapter，输出安全状态和被限幅量；
+1. 在不改变 policy 的前提下，把“根部倾斜限幅”和“姿态幅度限幅”改成连续、可调的实时 adapter，输出安全状态、接触可行性和被限幅量；
 2. 用衣服离线日志做 observation parity，确认衣服的 root orientation 是否正是高倾斜来源；
 3. 只在仿真中加入 root-phase/contact 约束，寻找比 `roll/pitch=0` 更能保留表现力的安全边界；
 4. 形成 A/B/C 任务级指标（稳定性、姿态误差、表现力、延迟），再决定是否值得训练 X2 专用 policy；
