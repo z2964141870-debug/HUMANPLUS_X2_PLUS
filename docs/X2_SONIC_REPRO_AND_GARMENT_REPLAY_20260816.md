@@ -100,6 +100,34 @@ PYTHONPATH=/home/yu/projects/BFM-Zero/tools/official_x2 +  /home/yu/miniconda3/e
 /media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/x2_sonic_repro_manifest_v2.json
 ~~~
 
+## JSONL → observation/action parity
+
+新增工具：
+
+~~~text
+/home/yu/projects/BFM-Zero/tools/official_x2/parity_x2_sonic_jsonl.py
+~~~
+
+它直接读取衣服回放边界的 JSONL，不依赖 PHUMA pkl。为了把“字段/单位/顺序
+错误”和“动力学不稳定”分开，当前使用确定性的 synthetic qpos/qvel trace，
+并明确将其标记为非动力学证据。100 个 policy ticks 的结果：
+
+~~~text
+observation: shape (100,1670), max_abs=0.0, SHA identical
+action:      shape (100,31),   max_abs=0.0, SHA identical
+provider:    CUDAExecutionProvider + CPUExecutionProvider
+~~~
+
+报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/canonical_replay_smoke_observation_action_parity.json
+~~~
+
+这证明 canonical JSONL 经实时 adapter 后可以无损进入官方 tokenizer/history/ONNX
+接口；下一步只需把 synthetic state 替换为 MuJoCo replay state，才能进入真正的
+闭环稳定性判断。
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
