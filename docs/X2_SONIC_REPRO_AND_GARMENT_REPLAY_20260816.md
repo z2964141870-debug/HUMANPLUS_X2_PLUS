@@ -315,6 +315,28 @@ root tilt allowance 置零。该 proxy 平均抑制约 `4.87%` 的参考帧，5 
 纯 phase-aware 略降。它没有使用接触力、压力中心或机器人状态，因此只能证明
 “运动学接触约束值得继续研究”，不能称为 contact-aware policy。
 
+随后对 phase/contact proxy 的最大 allowance 做了边界扫描。这里的 `max` 是
+输入根部 tilt 的最大保留比例，不是机器人关节增益；所有结果仍使用同一 96 条
+分层 PHUMA、`pose_scale=0.5`、官方 ONNX/scene。`0.10`、`0.15`、`0.20`、
+`0.25`、`0.30` 和 `0.35` 在 5 秒与 30 秒门限下均为 `96/96`。增大到
+`0.40` 后变为 `92/96`，最短生存 `2.72 s`；4 个失败条目是同一个
+`animation__Ways_to_Catch_A_Cold_clip1_chunk_0000` 内容的重复采样，说明当前
+proxy 的稳定边界落在 `0.35~0.40`，而不是“任意人体倾斜都能直接交给 policy”。
+这给出了一个可复现实验结论：相位/支撑条件的连续限幅确实比全局缩放更能保留
+表达性，但它仍是输入域安全过滤器，尚未解决衣服观测误差、延迟和真机动力学。
+
+边界汇总：
+
+| phase/contact max | 5 s 通过 | 30 s 通过 | 输出根部倾斜均值 |
+|---:|---:|---:|---:|
+| 0.10 | 96/96 | 96/96 | 2.34° |
+| 0.15 | 96/96 | 96/96 | 3.36° |
+| 0.20 | 96/96 | 96/96 | 4.33° |
+| 0.25 | 96/96 | 96/96 | 5.33° |
+| 0.30 | 96/96 | 96/96 | 5.97° |
+| 0.35 | 96/96 | 96/96 | 6.85° |
+| 0.40 | 92/96 | 未跑长测 | 6.40° |
+
 探针代码：
 
 ~~~text
@@ -330,6 +352,8 @@ root tilt allowance 置零。该 proxy 平均抑制约 `4.87%` 的参考帧，5 
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_aware_root_tilt_probe_v1.md
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_probe_v1.json
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_probe_v1.md
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_boundary_v2.json
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_boundary_v2.md
 ~~~
 
 ## 下一阶段计划
