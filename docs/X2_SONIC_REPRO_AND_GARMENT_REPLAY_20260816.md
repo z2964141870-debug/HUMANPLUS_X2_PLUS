@@ -283,6 +283,45 @@ ONNX/scene 条件下，结果为：
 该负结果保留为后续研究依据：下一步若继续做恢复控制，应使用连续的根部速度、
 支撑脚位置/相位和关节力矩余量，而不是只做站立角硬拉回。
 
+## 根部倾斜 allowance 与 phase-aware 连续适配
+
+在 `pose_scale=0.5` 的同一 96 条分层动作上，进一步扫描保留人体根部
+roll/pitch 的比例。这里的比例作用于输入 root quaternion 的 tilt 分量，yaw
+保持不变；不是对机器人状态或 ONNX 权重做修改。
+
+| 输入处理 | 通过/总数 | 唯一源内容通过 | 最短生存 | 输出根部倾斜均值 |
+|---|---:|---:|---:|---:|
+| root tilt=0 | 96/96 | 51/51 | 5.00 s | 0.00° |
+| 全局 tilt=0.05 | 96/96 | 51/51 | 5.00 s | 1.64° |
+| 全局 tilt=0.10 | 94/96 | 50/51 | 1.46 s | 3.27° |
+| 全局 tilt=0.20 | 91/96 | 49/51 | 1.50 s | 6.55° |
+| 全局 tilt=0.50 | 67/96 | 37/51 | 1.06 s | 16.36° |
+| 全局 tilt=0.75 | 57/96 | 31/51 | 0.90 s | 24.52° |
+
+全局保留比例很快把根部姿态推离稳定域。随后新增了一个连续 phase-aware
+输入适配器：允许最大 tilt=0.10，但当参考根部高度低于 0.58 m 或垂向速度
+低于 -0.05 m/s 时平滑降低 allowance；它只使用动作参考的 root height/descent，
+没有读取 MuJoCo 接触力或真实机器人状态。
+
+结果：同一 96 条、5 秒测试为 `96/96`，每条动作延长到 30 秒仍为 `96/96`；
+平均输出根部倾斜为 `2.53°`，高于全局 0.05 的 `1.64°`，且没有引入全局
+0.10 的 downhill 失败。这个结果支持“根部相位相关的连续限幅”作为后续衣服
+适配研究方向，但仍不是接触感知 policy，也不能直接部署真机。
+
+探针代码：
+
+~~~text
+/home/yu/projects/BFM-Zero/tools/official_x2/phase_aware_root_tilt_adapter.py
+/home/yu/projects/BFM-Zero/tools/official_x2/summarize_root_tilt_probe.py
+~~~
+
+对照报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_aware_root_tilt_probe_v1.json
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_aware_root_tilt_probe_v1.md
+~~~
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
@@ -314,7 +353,7 @@ ONNX/scene 条件下，结果为：
 2. root tilt scale；
 3. pose scale；
 4. joint speed limit；
-5. 后续才考虑 phase/contact-aware gate。
+5. 后续继续做 phase/contact-aware gate，并用接触相位和关节余量做独立对照。
 
 每次只改一个变量，保留原始数据、输出、报告和 SHA256。当前 96 条分层实验
 中，root tilt=0 + pose=0.5 是稳定性探针，不应直接宣称为最终 expressive
