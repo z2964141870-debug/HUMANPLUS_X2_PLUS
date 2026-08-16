@@ -128,6 +128,35 @@ provider:    CUDAExecutionProvider + CPUExecutionProvider
 接口；下一步只需把 synthetic state 替换为 MuJoCo replay state，才能进入真正的
 闭环稳定性判断。
 
+## 真实 MuJoCo state parity 与 matched closed-loop 对照
+
+新增 state trace：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/state_trace_rottilt0_pose05_100ticks.json
+~~~
+
+该 trace 记录官方 MuJoCo 闭环每个 50 Hz tick 交给 policy 前的 qpos/qvel，
+100 ticks 全部采集完成，没有 root height/tilt safety gate。
+
+在这条真实 state trace 下，batch reference 与实时 JSONL replay 的
+observation/action 最大误差仍为 0.0。然后对同一条 matched motion 进行官方
+闭环对照：
+
+| 输入 | 生存时间 | loop reset | 结果 |
+|---|---:|---:|---|
+| raw canonical | 1.88 s | 0 | root height/tilt gate |
+| root_tilt=0 + pose_scale=0.5 | 30.0 s | 5 | 完成，无跌倒 |
+
+对照报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/official_raw_vs_adapted_smoke_comparison.md
+~~~
+
+这是一条 matched-motion 的因果性 smoke evidence，不是对所有 PHUMA 或衣服
+动作的普适成功声明；总体结论仍以 96 条分层、30 秒实验为准。
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）

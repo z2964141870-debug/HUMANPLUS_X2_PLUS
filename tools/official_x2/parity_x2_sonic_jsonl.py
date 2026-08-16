@@ -16,7 +16,7 @@ import hashlib
 import json
 import pathlib
 import sys
-from typing import Iterable
+from typing import Iterable, Sequence
 
 import numpy as np
 
@@ -113,15 +113,32 @@ def states(ticks: int) -> Iterable[tuple[np.ndarray, np.ndarray]]:
         yield qpos, qvel
 
 
+def load_state_trace(path: pathlib.Path, ticks: int) -> list[tuple[np.ndarray, np.ndarray]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    records = payload.get("records")
+    if not isinstance(records, list) or len(records) < ticks:
+        raise ValueError(f"{path}: state trace has fewer than {ticks} records")
+    result = []
+    for index, record in enumerate(records[:ticks]):
+        if not isinstance(record, dict):
+            raise ValueError(f"{path}: record {index} is not an object")
+        qpos = _vector(record.get("qpos"), 74, "qpos", index)
+        qvel = _vector(record.get("qvel"), 72, "qvel", index)
+        result.append((qpos.astype(np.float32), qvel.astype(np.float32)))
+    return result
+
+
 def policy_trace(
     policy: sonic.SonicPolicy,
     motion: sonic.Motion,
     ticks: int,
+    state_sequence: Sequence[tuple[np.ndarray, np.ndarray]] | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     policy.reset()
     observations = []
     actions = []
-    for tick, (qpos, qvel) in enumerate(states(ticks)):
+    sequence = states(ticks) if state_sequence is None else state_sequence[:ticks]
+    for tick, (qpos, qvel) in enumerate(sequence):
         obs, action = policy.infer(motion, tick / motion.fps, qpos, qvel)
         observations.append(obs.copy())
         actions.append(action.copy())
@@ -150,6 +167,8 @@ def main() -> int:
     parser.add_argument("--model", type=pathlib.Path, required=True)
     parser.add_argument("--ticks", type=int, default=50)
     parser.add_argument("--require-cuda", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--state-trace", type=pathlib.Path,
+                        help="optional official MuJoCo qpos/qvel trace; defaults to synthetic states")
     parser.add_argument("--output", type=pathlib.Path, required=True)
     args = parser.parse_args()
     if args.ticks <= 0:
@@ -164,9 +183,10 @@ def main() -> int:
     if args.ticks > reference.frames:
         raise ValueError(f"--ticks {args.ticks} exceeds stream frames {reference.frames}")
 
+    state_sequence = None if args.state_trace is None else load_state_trace(args.state_trace, args.ticks)
     policy = sonic.SonicPolicy(args.model, require_cuda=args.require_cuda)
-    reference_obs, reference_action = policy_trace(policy, reference, args.ticks)
-    candidate_obs, candidate_action = policy_trace(policy, candidate, args.ticks)
+    reference_obs, reference_action = policy_trace(policy, reference, args.ticks, state_sequence)
+    candidate_obs, candidate_action = policy_trace(policy, candidate, args.ticks, state_sequence)
     result = {
         "schema": SCHEMA,
         "reference": {
@@ -183,7 +203,10 @@ def main() -> int:
         },
         "providers": policy.session.get_providers(),
         "ticks": args.ticks,
-        "state_source": "deterministic synthetic qpos/qvel trace; replaceable by a simulator trace",
+        "state_source": (
+            str(args.state_trace.resolve()) if args.state_trace is not None
+            else "deterministic synthetic qpos/qvel trace"
+        ),
         "observation": array_metrics(reference_obs, candidate_obs),
         "action": array_metrics(reference_action, candidate_action),
         "pass": bool(
