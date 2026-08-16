@@ -219,6 +219,31 @@ JSON trace：
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_failure_dynamics_pose_boundary.md
 ~~~
 
+## joint-speed limit 的负结果
+
+在 `pose_scale=0.60` 和首次失败的 `pose_scale=0.65` 上，再只增加输入端
+`joint_speed_limit=1.5 rad/s`，每档仍跑 96 条、5 秒：
+
+| pose scale | 未限速 | 加 1.5 rad/s 限速 | 结论 |
+|---:|---|---|---|
+| 0.60 | 96/96，5.00 s | 96/96，5.00 s | 严格 gate 无变化 |
+| 0.65 | 94/96，最短 2.32 s | 94/96，最短 2.32 s | 同一动作、同一时间失败 |
+
+因此，当前证据不支持把输入关节速度截平当作主要稳定化机制。它只改变了部分
+motion command，不能替代 policy 的状态契约、接触相位或根部支撑处理。
+
+JSON manifest：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/x2_sonic_speed_limit_probe_v1.json
+~~~
+
+可读报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_speed_limit_probe.md
+~~~
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
