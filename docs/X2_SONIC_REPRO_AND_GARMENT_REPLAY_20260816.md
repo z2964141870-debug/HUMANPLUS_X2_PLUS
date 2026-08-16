@@ -80,6 +80,26 @@ PYTHONPATH=/home/yu/projects/BFM-Zero/tools/official_x2 +  /home/yu/miniconda3/e
 
 当前结果：5 tests passed。
 
+另外使用已有 PHUMA canonical motion 的前 120 帧做了一次真实数据格式回放，
+不是合成零输入：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/canonical_replay_smoke/
+~~~
+
+逐帧 replay 输出与同一动作的 batch root_tilt=0, pose=0.5 artifact 比较，
+120 帧的 joint 和 quaternion 最大绝对误差均为 0.0。对应 parity manifest：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/canonical_replay_smoke_root0_pose05_parity.json
+~~~
+
+本次复现和回放的总 manifest：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/x2_sonic_repro_manifest_v2.json
+~~~
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
