@@ -308,10 +308,18 @@ roll/pitch 的比例。这里的比例作用于输入 root quaternion 的 tilt �
 0.10 的 downhill 失败。这个结果支持“根部相位相关的连续限幅”作为后续衣服
 适配研究方向，但仍不是接触感知 policy，也不能直接部署真机。
 
+再加入一个仅基于官方 MuJoCo 足部几何的 support proxy：若 phase-aware 候选
+同时失去两侧名义足部支撑，而 upright/yaw-only 参考仍有支撑，就将该帧的
+root tilt allowance 置零。该 proxy 平均抑制约 `4.87%` 的参考帧，5 秒和
+30 秒均保持 `96/96`；输出根部倾斜均值为 `2.34°`，最大漂移和最大倾角相对
+纯 phase-aware 略降。它没有使用接触力、压力中心或机器人状态，因此只能证明
+“运动学接触约束值得继续研究”，不能称为 contact-aware policy。
+
 探针代码：
 
 ~~~text
 /home/yu/projects/BFM-Zero/tools/official_x2/phase_aware_root_tilt_adapter.py
+/home/yu/projects/BFM-Zero/tools/official_x2/phase_contact_root_tilt_adapter.py
 /home/yu/projects/BFM-Zero/tools/official_x2/summarize_root_tilt_probe.py
 ~~~
 
@@ -320,6 +328,8 @@ roll/pitch 的比例。这里的比例作用于输入 root quaternion 的 tilt �
 ~~~text
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_aware_root_tilt_probe_v1.json
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_aware_root_tilt_probe_v1.md
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_probe_v1.json
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_probe_v1.md
 ~~~
 
 ## 下一阶段计划

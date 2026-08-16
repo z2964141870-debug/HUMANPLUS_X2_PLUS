@@ -90,8 +90,9 @@ def main() -> None:
             "unique_source_count": len(outcomes),
             "unique_outcome": {"passed": sum(row["passed"] for row in outcomes.values()), "total": len(outcomes)},
         }
-        if name == "phase_aware_0p10":
-            all_stats = [record["scale_stats"] for record in manifest_payload["records"]]
+        if name.startswith("phase_aware"):
+            scale_key = "scale_stats" if "scale_stats" in manifest_payload["records"][0] else "phase_scale_stats"
+            all_stats = [record[scale_key] for record in manifest_payload["records"]]
             entry["allowance_stats"] = {
                 key: {
                     "mean": float(np.mean([stats[key] for stats in all_stats])),
@@ -101,8 +102,21 @@ def main() -> None:
                 }
                 for key in ("scale_mean", "scale_p50", "scale_p95", "fraction_zero", "fraction_below_max")
             }
-            entry["report_30s"] = fingerprint(report.with_name(report.stem.replace("_5s", "_30s") + report.suffix))
-            entry["summary_30s"] = json.loads(Path(entry["report_30s"]["path"]).read_text(encoding="utf-8"))["summary"]
+            report_30s = report.with_name(report.stem.replace("_5s", "_30s") + report.suffix)
+            if report_30s.exists():
+                entry["report_30s"] = fingerprint(report_30s)
+                entry["summary_30s"] = json.loads(report_30s.read_text(encoding="utf-8"))["summary"]
+            if "contact_proxy_stats" in manifest_payload["records"][0]:
+                contact_stats = [record["contact_proxy_stats"] for record in manifest_payload["records"]]
+                entry["contact_proxy_stats"] = {
+                    key: {
+                        "mean": float(np.mean([stats[key] for stats in contact_stats])),
+                        "median": float(np.median([stats[key] for stats in contact_stats])),
+                        "p95": float(np.quantile([stats[key] for stats in contact_stats], 0.95)),
+                        "max": float(np.max([stats[key] for stats in contact_stats])),
+                    }
+                    for key in ("upright_gap_fraction", "candidate_gap_fraction", "suppressed_fraction")
+                }
         variants[name] = {"entry": entry, "outcomes": outcomes}
 
     base = variants["root_tilt_0"]["outcomes"]
@@ -140,8 +154,8 @@ def main() -> None:
         "## Interpretation",
         "",
         "- Global root-tilt scale 0.05 is stable on 96/96 selected records; 0.10 drops to 94/96 (one unique downhill content duplicated twice). Larger global scales degrade further.",
-        "- The phase-aware max=0.10 gate uses only reference root height and vertical descent, with smooth attenuation below 0.58 m / during descent below -0.05 m/s. It returns to 96/96 on the same 5-second set and 96/96 for 30 seconds.",
-        "- It retains more root tilt than global 0.05 (mean output tilt shown above), but this is an offline input-domain probe, not proof of garment or hardware readiness. It has no measured contact force; the gate is a root-phase proxy.",
+        "- The phase-aware max=0.10 gate uses only reference root height and vertical descent, with smooth attenuation below 0.58 m / during descent below -0.05 m/s. The phase/contact variants are reported separately and must not be conflated with force feedback.",
+        "- These variants retain more root tilt than global 0.05 while remaining an offline input-domain probe, not proof of garment or hardware readiness. The contact variant uses only a kinematic foot-height/speed proxy and has no measured contact force.",
         "- The gate must be compared against raw input and the root-tilt=0 safety baseline with the same motion IDs; it is not a new policy or a claim that the ONNX model accepts arbitrary human tilt.",
         "",
         "## Artifacts",
