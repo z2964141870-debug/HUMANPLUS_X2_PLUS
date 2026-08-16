@@ -191,6 +191,34 @@ root-height/tilt safety gate：
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_pose_boundary_matrix.md
 ~~~
 
+## 首次失败动作的动力学定位
+
+对 `animation__Ways_to_Stand_Downhill_Skateboarding_clip1_chunk_0000` 做了同一
+动作的逐 tick trace。0.65 和 0.70 并不是先出现很大的实际 roll/pitch，而是
+root height 先跌破 safety gate：
+
+| pose scale | gate 时间 | 最低 root z | 最大实际倾角 | 双脚接触比例 | 最大关节速度 |
+|---:|---:|---:|---:|---:|---:|
+| 0.60 | 5.00 s 内未触发 | 0.5042 m | 0.1295 rad | 0.592 | 14.95 rad/s |
+| 0.65 | 2.30 s | 0.3412 m | 0.1322 rad | 0.586 | 17.31 rad/s |
+| 0.70 | 1.48 s | 0.3478 m | 0.1395 rad | 0.773 | 14.89 rad/s |
+
+这说明当前失败更接近“腿部支撑/根部高度被目标幅度推出稳定域”，不能简单
+归结为双脚同时离地；下一步应看支撑脚接触位置、髋膝踝相位、垂向速度和力矩
+余量。trace 只用于定位 failure mode，不把 0.60 宣称成衣服或真机方案。
+
+JSON trace：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_failure_dynamics_pose_boundary.json
+~~~
+
+可读报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_failure_dynamics_pose_boundary.md
+~~~
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
