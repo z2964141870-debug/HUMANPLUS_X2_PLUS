@@ -244,6 +244,45 @@ JSON manifest：
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_speed_limit_probe.md
 ~~~
 
+## support-recovery gate 探针的负结果
+
+为了验证“在即将失去支撑时把下肢目标温和拉回官方站立角”是否能拯救
+`pose_scale=0.65` 的首次失败动作，新增了一个只在离线 MuJoCo 中运行的
+support-recovery gate。它不是新 policy，也不改变 ONNX 权重；当根部高度过低，
+或垂向快速下降且检测到少于两侧足部接触时，将前 15 个下肢/腰部目标按
+`gain=0.5` 向 `DEFAULT_ANGLES_MJ` 混合。门控条件使用 X2 场景中精确的
+`left_ankle_roll_link` / `right_ankle_roll_link` 足部 body，避免把其他机器人
+模型的同名片段混入接触统计。
+
+在与 pose boundary 完全相同的 96 条分层 PHUMA、5 秒、root_tilt=0、官方
+ONNX/scene 条件下，结果为：
+
+| 条件 | 通过/总数 | 最短生存 | 门控动作数 | 结论 |
+|---|---:|---:|---:|---|
+| pose_scale=0.65，无门控 | 94/96 | 2.32 s | 0 | 基线 |
+| pose_scale=0.65，support gate (gain=0.5) | 94/96 | 1.62 s | 2/96 | 未拯救失败，反而提前 |
+
+两种条件都在同一条重复出现的
+`animation__Ways_to_Stand_Downhill_Skateboarding_clip1_chunk_0000` 内容上
+失败；门控共触发 32 个 policy ticks，但没有改变通过率。这个结果说明简单的
+“接触/根高触发后把下肢拉回站立角”不足以解决动力学失稳，且可能破坏动作相位，
+因此暂不作为实时衣服遥操方案。
+
+探针代码：
+
+~~~text
+/home/yu/projects/BFM-Zero/tools/official_x2/eval_x2_sonic_support_gate.py
+~~~
+
+报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/official_sonic_x2_stratified96_pose0p65_support_gate_v2_5s.json
+~~~
+
+该负结果保留为后续研究依据：下一步若继续做恢复控制，应使用连续的根部速度、
+支撑脚位置/相位和关节力矩余量，而不是只做站立角硬拉回。
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
