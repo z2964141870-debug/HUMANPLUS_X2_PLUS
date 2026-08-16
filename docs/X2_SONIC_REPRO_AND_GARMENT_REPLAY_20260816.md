@@ -157,6 +157,40 @@ observation/action 最大误差仍为 0.0。然后对同一条 matched motion �
 这是一条 matched-motion 的因果性 smoke evidence，不是对所有 PHUMA 或衣服
 动作的普适成功声明；总体结论仍以 96 条分层、30 秒实验为准。
 
+## pose-scale 稳定边界矩阵（96 条分层动作）
+
+为了避免把 `pose_scale=0.5` 的单点结果误认为最终方案，在相同官方 ONNX、
+官方 MuJoCo scene、`root_tilt_scale=0` 和相同 96 条 PHUMA 分层动作下，
+只扫描 pose scale。每个档位运行 5 秒，严格要求所有选中 clip 通过官方
+root-height/tilt safety gate：
+
+| pose scale | 通过/总数 | 最短生存 | 最大漂移 | 最大倾角 | 结论 |
+|---:|---:|---:|---:|---:|---|
+| 0.50 | 96/96 | 5.00 s | 1.5937 m | 0.1038 rad | 通过 |
+| 0.60 | 96/96 | 5.00 s | 2.1842 m | 0.1445 rad | 通过 |
+| 0.65 | 94/96 | 2.32 s | 2.6243 m | 0.1506 rad | 首次失败 |
+| 0.70 | 94/96 | 1.50 s | 3.0719 m | 0.1594 rad | 更早失败 |
+| 0.75 | 94/96 | 1.28 s | 3.6937 m | 0.4396 rad | 更早且更剧烈 |
+
+`0.65/0.70/0.75` 的失败都来自同一动作族
+`animation__Ways_to_Stand_Downhill_Skateboarding_clip1_chunk_0000`；由于
+96 条选择保留多个 PHUMA 子集，该内容出现两次，并不代表两个独立动作。
+这给出一个当前闭环的可复现稳定边界：在这个分层 5 秒测试中，0.60 仍在
+安全域，0.65 开始出现失稳。它只说明当前权重/动力学契约的稳定域，不能推出
+动作表达性、衣服噪声鲁棒性或真机安全性。
+
+矩阵 manifest：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/x2_sonic_pose_boundary_matrix_v1.json
+~~~
+
+可读报告：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_pose_boundary_matrix.md
+~~~
+
 ## 下一阶段计划
 
 ### A. 衣服日志接入（不涉及硬件控制）
