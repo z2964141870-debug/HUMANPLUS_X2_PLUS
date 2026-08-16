@@ -8,6 +8,12 @@ CUDAExecutionProvider 加载，输入为 1670 维、输出为 31 维，50 Hz 控
 这不是“权重无法加载”，而是 motion distribution 与 X2 动力学闭环的稳定域
 不一致。
 
+CUDA 运行库已经存在于环境的 NVIDIA Python wheels 中；评估器现在调用
+`onnxruntime.preload_dlls()` 加载它们，不再依赖手工拼接 `LD_LIBRARY_PATH`。
+同时固定 CUDA provider 的 `use_tf32=0`：默认 TF32 与 CPU 的确定性输入输出
+最大差为 `7.54e-3`，关闭后降为 `2.29e-6`，8 组输入在 `1e-4` 阈值下通过。
+因此后续新实验统一使用 CUDA-FP32，并把 provider 配置写入报告。
+
 本次小规模复现报告：
 
 ~~~text
@@ -18,9 +24,20 @@ CUDAExecutionProvider 加载，输入为 1670 维、输出为 31 维，50 Hz 控
 
 ~~~bash
 cd /home/yu/projects/BFM-Zero
-ENVROOT=/home/yu/miniconda3/envs/x2-sonic-isaaclab
-CUDA_LIBS=$(find "$ENVROOT/lib/python3.11/site-packages/nvidia" -type d -name lib -print | paste -sd: -)
-LD_LIBRARY_PATH="$CUDA_LIBS" /home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python +  tools/official_x2/eval_official_sonic_x2.py +  --model /media/yu/FAFF-E977/data/BFM-Zero/raw/sonic-x2/x2_sonic_policy.onnx +  --scene /home/yu/projects/sonic-web-demo-x2/assets/robot/scene.xml +  --motion-root /home/yu/projects/x2_teleop_final/x2_sonic/motion_lib_x2 +  --clips-per-set 2 --max-clips 8 --seconds 5 --require-cuda +  --output /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/official_sonic_x2_repro_smoke8_5s.json
+/home/yu/miniconda3/envs/x2-sonic-isaaclab/bin/python \
+  tools/official_x2/eval_official_sonic_x2.py \
+  --model /media/yu/FAFF-E977/data/BFM-Zero/raw/sonic-x2/x2_sonic_policy.onnx \
+  --scene /home/yu/projects/sonic-web-demo-x2/assets/robot/scene.xml \
+  --motion-root /home/yu/projects/x2_teleop_final/x2_sonic/motion_lib_x2 \
+  --clips-per-set 2 --max-clips 8 --seconds 5 --require-cuda \
+  --output /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/official_sonic_x2_repro_smoke8_5s.json
+~~~
+
+CUDA provider 校验：
+
+~~~text
+/media/yu/FAFF-E977/data/BFM-Zero/manifests/2026-08-16/x2_sonic_onnx_cpu_gpu_parity.json
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/official_sonic_x2_cuda_provider_smoke_1s.json
 ~~~
 
 这 8 条记录中，4 条完成 5 秒，4 条分别在约 1.08 秒或 1.88 秒触发
@@ -337,12 +354,33 @@ proxy 的稳定边界落在 `0.35~0.40`，而不是“任意人体倾斜都能�
 | 0.35 | 96/96 | 96/96 | 6.85° |
 | 0.40 | 92/96 | 未跑长测 | 6.40° |
 
+为区分收益来自 root height/descent phase gate 还是足部支撑 proxy，又用相同
+CUDA-FP32 后端做了逐动作 matched ablation：
+
+| max tilt scale | phase-only | phase+contact | 被救回样本 | 新增失败 |
+|---:|---:|---:|---:|---:|
+| 0.15 | 96/96 | 96/96 | 0 | 0 |
+| 0.20 | 96/96 | 96/96 | 0 | 0 |
+| 0.25 | 94/96 | 96/96 | 2 | 0 |
+| 0.30 | 94/96 | 96/96 | 2 | 0 |
+| 0.35 | 85/96 | 96/96 | 11 | 0 |
+| 0.40 | 78/96 | 92/96 | 14 | 0 |
+
+phase-only 的 30 秒稳定上限为 `0.20`（96/96），phase+contact 的 30 秒稳定
+上限至少为 `0.35`（96/96）。按唯一 source SHA 聚合，`0.35` 共救回 5 类内容，
+包括 slouched、levitating 和多条 bend；未观察到 pass→fail。这个配对结果比单独
+报告 `0.35` 通过更强：它表明支撑 proxy 的确改变了失败集合，而不只是降低均值。
+但 proxy 仍只使用运动学足部高度/速度，不应写成真实接触感知控制。
+
 探针代码：
 
 ~~~text
 /home/yu/projects/BFM-Zero/tools/official_x2/phase_aware_root_tilt_adapter.py
 /home/yu/projects/BFM-Zero/tools/official_x2/phase_contact_root_tilt_adapter.py
 /home/yu/projects/BFM-Zero/tools/official_x2/summarize_root_tilt_probe.py
+/home/yu/projects/BFM-Zero/tools/official_x2/summarize_phase_contact_ablation.py
+/home/yu/projects/BFM-Zero/tools/official_x2/verify_x2_sonic_onnx_providers.py
+/home/yu/projects/BFM-Zero/tools/official_x2/requirements_x2_sonic_cuda_runtime.txt
 ~~~
 
 对照报告：
@@ -354,6 +392,8 @@ proxy 的稳定边界落在 `0.35~0.40`，而不是“任意人体倾斜都能�
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_probe_v1.md
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_boundary_v2.json
 /media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_root_tilt_boundary_v2.md
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_matched_ablation_v1.json
+/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-16/x2_sonic_phase_contact_matched_ablation_v1.md
 ~~~
 
 ## 下一阶段计划

@@ -58,6 +58,27 @@ OBS_DIM = 1670
 ACTION_CLIP = 20.0
 DEFAULT_ROOT_HEIGHT = 0.60
 
+
+def preload_onnx_cuda_runtime() -> tuple[bool, str | None]:
+    """Expose pip-installed CUDA/cuDNN libraries to ONNX Runtime.
+
+    Recent ``onnxruntime-gpu`` wheels may advertise CUDAExecutionProvider
+    even when the dynamic loader cannot yet see the NVIDIA wheels installed
+    below ``site-packages/nvidia``.  ``preload_dlls`` loads those libraries
+    without modifying the system CUDA installation or global environment.
+    """
+
+    if "CUDAExecutionProvider" not in ort.get_available_providers():
+        return False, "CUDAExecutionProvider is not advertised by onnxruntime"
+    preload = getattr(ort, "preload_dlls", None)
+    if preload is None:
+        return False, "onnxruntime.preload_dlls is unavailable"
+    try:
+        preload()
+    except Exception as exc:  # pragma: no cover - depends on host runtime
+        return False, f"{type(exc).__name__}: {exc}"
+    return True, None
+
 IL_TO_MJ = np.asarray(
     [0, 6, 12, 1, 7, 13, 2, 8, 14, 3, 9, 29, 15, 22, 4, 10, 30, 16, 23,
      5, 11, 17, 24, 18, 25, 19, 26, 20, 27, 21, 28],
@@ -278,9 +299,19 @@ def prepend_stand_blend(m: Motion, blend_sec: float = 1.0) -> Motion:
 class SonicPolicy:
     def __init__(self, model_path: pathlib.Path, require_cuda: bool = True):
         available = ort.get_available_providers()
-        providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
+        # Disable TF32 so CUDA stays numerically aligned with the CPU/WASM
+        # reference path.  On RTX 3090 the default TF32 path differed by up to
+        # 7.5e-3 on a deterministic X2-Sonic provider-parity probe, whereas
+        # FP32 CUDA reduced the maximum difference below 3e-6.
+        providers = [
+            ("CUDAExecutionProvider", {"use_tf32": "0"}),
+            "CPUExecutionProvider",
+        ]
         if require_cuda and "CUDAExecutionProvider" not in available:
             raise RuntimeError(f"CUDAExecutionProvider unavailable: {available}")
+        self.cuda_runtime_preloaded, self.cuda_runtime_preload_error = (
+            preload_onnx_cuda_runtime()
+        )
         self.session = ort.InferenceSession(str(model_path), providers=providers)
         self.input = self.session.get_inputs()[0]
         self.output = self.session.get_outputs()[0]
@@ -291,7 +322,11 @@ class SonicPolicy:
         if len(self.output.shape) != 2 or self.output.shape[1] != N_JOINTS:
             raise RuntimeError(f"unexpected ONNX output {self.output.name} {self.output.shape}")
         if "CUDAExecutionProvider" not in self.session.get_providers() and require_cuda:
-            raise RuntimeError(f"session did not use CUDA: {self.session.get_providers()}")
+            raise RuntimeError(
+                "session did not use CUDA: "
+                f"{self.session.get_providers()}; "
+                f"preload_error={self.cuda_runtime_preload_error}"
+            )
         self.reset()
 
     def reset(self) -> None:
@@ -618,6 +653,11 @@ def main() -> int:
             "input_name": policy.input.name, "input_shape": list(policy.input.shape),
             "output_name": policy.output.name, "output_shape": list(policy.output.shape),
             "providers": policy.session.get_providers(),
+            "cuda_provider_options": policy.session.get_provider_options().get(
+                "CUDAExecutionProvider", {}
+            ),
+            "cuda_runtime_preloaded": policy.cuda_runtime_preloaded,
+            "cuda_runtime_preload_error": policy.cuda_runtime_preload_error,
         },
         "contract": {
             "obs_dim": OBS_DIM, "tokenizer_dim": TOK_DIM, "proprio_dim": PROP_DIM,
