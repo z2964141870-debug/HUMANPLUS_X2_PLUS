@@ -50,8 +50,18 @@ X2/
 
 ## Git remote state
 
-The local branch exists. Initial SSH fetch/push authentication was unavailable:
-the default GitHub key was rejected and the historical SSH alias's local proxy
-was not running. A commit may be prepared locally, but remote publication must
-be reported separately and must not be implied until the remote branch hash is
-verified.
+The branch is published at:
+
+```text
+https://github.com/z2964141870-debug/HUMANPLUS_X2_PLUS/tree/humanplus_sonic_x2
+```
+
+The initial organization commit was
+`f50f83228afd6f12827fda162c13379a95072270`, based on remote `main` commit
+`8fe53ba8d58e6732f52edae13ecbf5008a5de611`. Its local and remote branch
+hashes matched after push.
+
+The default SSH key and historical local proxy were unavailable. Push was
+completed through GitHub's SSH endpoint on port 443 with the existing
+project-specific key. That key path is stored only in local `.git/config` and
+is not part of this repository.
