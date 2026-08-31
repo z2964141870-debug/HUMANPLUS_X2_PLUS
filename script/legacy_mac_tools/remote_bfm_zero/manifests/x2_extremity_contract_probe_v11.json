@@ -1,0 +1,33 @@
+{
+  "schema": "x2_extremity_contract_probe_manifest_v1",
+  "project": "BFM-Zero",
+  "probe": "x2_extremity_contract_v11",
+  "date": "2026-08-15",
+  "code_commit": "2507075",
+  "branch": "work/codex-x2-extremity-contract",
+  "environment": "/home/yu/miniconda3/envs/x2-sonic-isaaclab",
+  "asset_profile": "sole12",
+  "seed": 770611,
+  "num_envs": 4,
+  "decision": "PASS_X2_SIX_LINK_CONTRACT_FOR_STATIC_TRACKING_SMOKE",
+  "observation_dim_single_frame": 36,
+  "six_link_body_indices": [0, 9, 30, 31, 20, 21],
+  "joint_partition_exact": true,
+  "sim_steps": 0,
+  "policy_weights_loaded": false,
+  "optimizer_steps": 0,
+  "checkpoint_writes": 0,
+  "permissions": {
+    "static_tracking_smoke_unlocked": true,
+    "policy_training_unlocked": false,
+    "deployment_unlocked": false
+  },
+  "external_report": {
+    "relative_path": "processed/2026-08-15/x2_extremity_contract/x2_extremity_contract_v11.json",
+    "sha256": "54246ae90a9e51107bd900a251f94737aab49a637511df5f80e111ae87d1dfd7",
+    "bytes": 1941,
+    "sidecar": "processed/2026-08-15/x2_extremity_contract/x2_extremity_contract_v11.json.sha256",
+    "log_relative_path": "logs/2026-08-15/x2_extremity_contract/x2_extremity_contract_v11.log"
+  },
+  "next_gate": "observation_dimension_and_old_checkpoint_compatibility_audit"
+}

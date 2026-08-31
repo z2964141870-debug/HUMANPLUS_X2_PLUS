@@ -1,0 +1,2 @@
+# Permit X2 operators in the bluetooth group to re-enumerate only the AX210 Bluetooth USB function.
+SUBSYSTEM=="usb", ATTR{idVendor}=="8087", ATTR{idProduct}=="0032", MODE="0660", GROUP="bluetooth"

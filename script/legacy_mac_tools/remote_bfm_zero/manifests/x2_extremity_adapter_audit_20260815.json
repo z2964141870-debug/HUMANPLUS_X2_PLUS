@@ -1,0 +1,24 @@
+{
+  "schema": "x2_extremity_adapter_audit_v1",
+  "project": "BFM-Zero",
+  "date": "2026-08-15",
+  "code_commit": "2b51a63154d7c3edffb0e8507cf9985cff1049db",
+  "adapter": "ZeroPreservingResidualAdapter",
+  "source_file": "external/bfm_zero_x2_snapshot/humanoidverse/x2_extremity_adapter.py",
+  "goal_width": {
+    "single_frame": 36,
+    "horizon_formula": "36*H"
+  },
+  "compatibility_invariants": [
+    "legacy module input/output widths remain unchanged",
+    "goal branch final projection is zero initialized",
+    "initial adapter output equals legacy output for arbitrary goal",
+    "legacy parameters can remain frozen",
+    "goal branch changes output only after optimization"
+  ],
+  "test_command": "PYTHONPATH=external/bfm_zero_x2_snapshot PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests/test_x2_extremity_adapter.py tests/test_x2_extremity_contract.py",
+  "test_result": "12 passed in 1.34s",
+  "training_unlocked": false,
+  "deployment_unlocked": false,
+  "next_gate": "integrate_adapter_at_actual_sonic_backbone_seam_and_audit_checkpoint_state_dict"
+}

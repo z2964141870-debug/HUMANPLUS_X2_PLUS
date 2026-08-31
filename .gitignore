@@ -1,58 +1,48 @@
-# Python/test caches
+# OS, editors, and Python caches
+.DS_Store
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.coverage
-htmlcov/
-
-# Local environments and editor state
-.venv/
-venv/
 .idea/
 .vscode/
 *.swp
-*.swo
+*.tmp
 
-# Secrets and machine-local configuration
+# Local environments and build output
+.venv/
+venv/
+build/
+install/
+log/
+core
+core.*
+
+# Credentials and local service state
 .env
 .env.*
 !.env.example
 *.pem
 *.key
-*credential*
-*token*
+.baidupcs_go/
+.baidu_bypy/
+.config/bdpan/
 
-# Generated training/evaluation payloads.  Keep compact reports/manifests in Git.
-/logs/
-/checkpoints/
-/videos/
-/wandb/
-/runs/
-
-# Model and deployment binaries must use an external artifact store.
+# Large artifacts belong in Baidu Netdisk and are indexed in data/manifests.
+*.onnx
 *.pt
 *.pth
 *.ckpt
-*.onnx
-*.engine
-*.plan
-
-# Raw robot/simulator captures and downloaded archives
-*.bag
-*.mcap
 *.db3
+*.mcap
+*.bag
 *.tar
 *.tar.gz
+*.tar.zst
 *.tgz
-*.tar.bz2
 *.zip
-*.7z
-
-# Generic runtime debris
-*.log
-core
-core.*
-.DS_Store
+*.uploading
+data/external/
+logs/raw/
 

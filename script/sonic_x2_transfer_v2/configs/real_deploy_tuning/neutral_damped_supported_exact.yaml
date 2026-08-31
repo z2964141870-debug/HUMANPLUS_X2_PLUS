@@ -1,0 +1,25 @@
+# Exact effective PD, supported envelope, and LPF for the fixed StandStill
+# hardware parent. Use only with eval_x2_mujoco_onnx.py
+# --supported-deploy-order; that mode applies the separate 2 rad safety clamp
+# before these supported envelopes.
+action_clip: 20.0
+
+# eval_x2_mujoco.py's raw armature-derived ankle Kp is 14.250623. The generic
+# simulator already applies one historical 1.5x deployment bump when building
+# its KP constant, while load_deploy_tuning() starts from the raw value. The
+# powered launcher applies another 1.5x to the C++ 21.375935 value. Therefore
+# 2.25x here gives the real effective 32.063902 Nm/rad without changing action
+# scale.
+kp_scale_ankle_pitch: 2.25
+kp_scale_ankle_roll: 2.25
+kd_scale_ankle_pitch: 3.31
+kd_scale_ankle_roll: 2.20
+kd_scale_waist_pitch: 3.0
+
+max_target_dev_leg: 0.60
+max_target_dev_waist: 0.20
+max_target_dev_arm: 0.25
+max_target_dev_head: 0.08
+
+target_lpf_hz: 8.0
+target_lpf_hz_waist: 2.5

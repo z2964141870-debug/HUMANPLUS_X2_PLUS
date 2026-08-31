@@ -1,0 +1,66 @@
+{
+  "schema": "bfm_zero_artifact_manifest_v1",
+  "created_at": "2026-08-14T19:53:00+08:00",
+  "project": "BFM-Zero",
+  "source_commit": "e355752c46c32271eaccad084876c61da068e8e5",
+  "source_worktree_was_dirty": true,
+  "data_root_variable": "BFM_ZERO_DATA_ROOT",
+  "artifact_prefix": "2026-08-14/x2_teacher_feasibility",
+  "recovery": "Restore each artifact from BFM_ZERO_DATA_ROOT using its destination_relative path and verify sha256 before use.",
+  "artifacts": [
+    {
+      "source": "logs/x2_direct_cem_teacher_v9_aborted_elitism.log",
+      "destination_relative": "logs/2026-08-14/x2_teacher_feasibility/x2_direct_cem_teacher_v9_aborted_elitism.log",
+      "bytes": 17011,
+      "sha256": "9ba4bdfd7a2937453d1747ebbcaca4e4308848454163b13cae1f70bc65881749"
+    },
+    {
+      "source": "logs/x2_direct_cem_teacher_v9_aborted_score_resolution.log",
+      "destination_relative": "logs/2026-08-14/x2_teacher_feasibility/x2_direct_cem_teacher_v9_aborted_score_resolution.log",
+      "bytes": 17983,
+      "sha256": "7e8119d36b18f9863420e90bc05ee5a57b740e64df1686fb1dc46ceea3acb3c8"
+    },
+    {
+      "source": "logs/x2_direct_cem_teacher_v9_aborted_score.log",
+      "destination_relative": "logs/2026-08-14/x2_teacher_feasibility/x2_direct_cem_teacher_v9_aborted_score.log",
+      "bytes": 18223,
+      "sha256": "6ab8c0fc934d68a9aadcc9af18c225add06872f60357f86de96ea79ca13bd1b3"
+    },
+    {
+      "source": "logs/x2_direct_cem_teacher_v9.log",
+      "destination_relative": "logs/2026-08-14/x2_teacher_feasibility/x2_direct_cem_teacher_v9.log",
+      "bytes": 27327,
+      "sha256": "6d3046e31bb61745de7086e3bc062afdeeae996f55a01528679f6971c2edc229"
+    },
+    {
+      "source": "logs/x2_state_feedback_teacher_v8.log",
+      "destination_relative": "logs/2026-08-14/x2_teacher_feasibility/x2_state_feedback_teacher_v8.log",
+      "bytes": 41953,
+      "sha256": "88d1b0b83b1d3f268a9177bd5ea21f6d2e5c957d2b04e468b2ab14325b6df494"
+    },
+    {
+      "source": "reports/x2_direct_cem_teacher_v9_result.json",
+      "destination_relative": "processed/2026-08-14/x2_teacher_feasibility/x2_direct_cem_teacher_v9_result.json",
+      "bytes": 11801,
+      "sha256": "9c7d2eb8fd91551931736041b26a7f4805d5207ed53b00c7cd219c27e67647d1"
+    },
+    {
+      "source": "reports/x2_direct_cem_teacher_v9_result.json.sha256",
+      "destination_relative": "processed/2026-08-14/x2_teacher_feasibility/x2_direct_cem_teacher_v9_result.json.sha256",
+      "bytes": 103,
+      "sha256": "d0de68114073882b59f926a37cbfb07a89760db8aa772e7a616f023216b06397"
+    },
+    {
+      "source": "reports/x2_state_feedback_command_teacher_v8_screen.json",
+      "destination_relative": "processed/2026-08-14/x2_teacher_feasibility/x2_state_feedback_command_teacher_v8_screen.json",
+      "bytes": 33971,
+      "sha256": "3faef50c28410d3491ae21c331d7b9f5694f059ea23f7d408c0976378ee369a1"
+    },
+    {
+      "source": "reports/x2_state_feedback_command_teacher_v8_screen.json.sha256",
+      "destination_relative": "processed/2026-08-14/x2_teacher_feasibility/x2_state_feedback_command_teacher_v8_screen.json.sha256",
+      "bytes": 115,
+      "sha256": "69f31c90b30c17eca73a69a3ef9915766441c87c9807d04b434669c5c0897d19"
+    }
+  ]
+}

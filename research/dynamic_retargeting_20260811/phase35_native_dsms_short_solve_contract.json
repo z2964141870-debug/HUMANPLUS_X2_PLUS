@@ -1,9 +1,0 @@
-{
-  "stage": "Dynamic Retargeting Phase35",
-  "status": "PREREGISTERED_ONE_SHORT_SOLVE",
-  "source_gate": "Phase34 native DSMS NLP preflight must pass byte-for-byte before solve",
-  "solver": {"linear_solver": "mumps", "max_iterations": 50, "cpu_threads": 1, "nice": 10, "gpu": false, "retry_count": 0},
-  "hard_gates": {"solver_status_0_or_1": true, "max_defect": 0.01, "root_z_min_m": 0.55, "root_tilt_max_rad": 0.3, "right_swing_off_s": 0.1, "right_clearance_m": 0.012, "left_contact_fraction": 0.95, "left_foot_speed_p95_mps": 0.1, "terminal_right_contact_40ms": true, "joint_semantic_rms_rad": 0.15},
-  "training_authorized": false,
-  "longer_solve_authorized": false
-}

@@ -1,0 +1,27 @@
+{
+  "schema": "x2-fixed-standstill-parent-v1",
+  "approval_status": "not-approved",
+  "approved_scope": "supported-stationary-live-reference",
+  "approved_by": "REPLACE_AFTER_FIXED_PARENT_ACCEPTANCE",
+  "approved_at": "REPLACE_AFTER_FIXED_PARENT_ACCEPTANCE",
+  "approval_note": "This is a schema example, not authorization.",
+  "fixed_contract": {
+    "reference": "StandStill",
+    "profile": "neutral_damped",
+    "policy_hz": 50,
+    "writer_hz": 250,
+    "imu_mode": "reconstructed_pelvis",
+    "firmware": "test-lx2501_3_t2d5-soc1-dc-v0.9.0-rc7",
+    "message_abi": "aimdk_msgs 0.8.18"
+  },
+  "artifacts": [
+    {"role": "deploy_binary", "path": "REPLACE", "sha256": "REPLACE"},
+    {"role": "model", "path": "REPLACE", "sha256": "REPLACE"},
+    {"role": "powered_launcher", "path": "REPLACE", "sha256": "REPLACE"},
+    {"role": "profile_launcher", "path": "REPLACE", "sha256": "REPLACE"}
+  ],
+  "evidence": {
+    "supported_30s_passes": [],
+    "supported_300s_pass": null
+  }
+}

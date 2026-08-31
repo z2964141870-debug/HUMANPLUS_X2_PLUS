@@ -1,47 +1,80 @@
-# CWI Cross-Embodiment Simulation
+# HumanPlus Sonic X2
 
-这是 SONIC/G1 → AgiBot X2 跨具身控制迁移的独立仿真研究工程。旧 X2/SONIC
-工程保持只读；本仓库保存新实现、实验预注册、结果卡、裁决报告与可复现脚本。
+Branch: `humanplus_sonic_x2`
 
-## 当前结论
+This branch is the project-management and version-control home for the
+garment-to-Sonic-to-X2 integration. It was reorganized on 2026-08-31 from the
+active deployment workspace without changing the robot or the deployment
+copy.
 
-- CWI 式多 critic 能改善价值估计，但没有形成 X2 物理性能 Pareto；
-- 将腿腰控制权留给 X2 下层、上层只提供有界慢速动作意图具有局部可行性；
-- Future-intent + gait phase 能跨随机初态改善聚合生存和航向，但横向鲁棒性
-  尚未通过严格门；
-- Stage208 仍是正式基线，NEUTRAL05 只保留为研究候选；当前 Future-Adapter
-  objective 已停止。
+## Directory contract
 
-优先阅读：
+| Directory | Purpose | Storage rule |
+| --- | --- | --- |
+| `data/` | Small generated data, model metadata, motion fixtures, manifests | Small reproducibility inputs may be committed. Large data is indexed here and stored in Baidu Netdisk. |
+| `logs/` | Terminal output and compact text records | Compact text logs are committed. Raw telemetry, rosbag, large CSV/JSONL, and videos go to Baidu Netdisk. |
+| `script/` | Source, launchers, tests, analysis, and project tools | GitHub is authoritative. No credentials or generated runtimes. |
+| `reports/` | Current state, decisions, experiment conclusions, and READMEs | GitHub is authoritative. Every completed stage updates a report immediately. |
 
-- [`TASK_CARD.md`](TASK_CARD.md)：研究目标和边界；
-- [`STATUS.md`](STATUS.md)：逐阶段状态；
-- [`ROUND7_RESULT_CARD.md`](ROUND7_RESULT_CARD.md)：当前最新裁决；
-- [`DECISIONS.md`](DECISIONS.md)：不可事后修改的关键决策；
-- [`FAILURES.md`](FAILURES.md)：失败假设与反例；
-- [`history/legacy_x2_migration/INDEX.md`](history/legacy_x2_migration/INDEX.md)：Stage 0–163 旧迁移历史、关键报告与完整归档恢复入口；
-- [`ARTIFACT_STORAGE.md`](ARTIFACT_STORAGE.md)：大文件存储与恢复规则。
+Do not add new top-level project directories. Root-level governance files are
+the only exception.
 
-## 仓库边界
+## Current objective
 
-普通 Git 只保存源码、配置、测试、报告和小型实验证据。以下内容故意不进入
-Git：
+The end goal is a supported first powered closed-loop segment:
 
-- `logs/`；
-- `checkpoints/`；
-- 视频、数据集、原始机器人/仿真 trace；
-- `*.pt`、`*.ckpt`、`*.onnx` 等模型二进制。
-
-这样可以避免首次提交把约 2.2 GB 的本地实验目录复制进 `.git`，造成磁盘和
-远端仓库同时膨胀。
-
-## 基础验证
-
-```bash
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-PYTHONPATH=src:tools:/home/humanplus/x2_teleop_final/x2_sonic/sonic_x2_sandbox \
-conda run --no-capture-output -n x2-sonic-isaaclab python -m pytest -q
+```text
+V2 garment BLE
+  -> SoC1 AX210 + CUDA LFP
+  -> 3588S postprocess + Fast-SMPL + native GMR
+  -> timestamp HMCP qpos36
+  -> raw ZMQ :5555
+  -> safety proxy :5557/:5556
+  -> Sonic policy 50 Hz
+  -> single HAL writer 250 Hz
+  -> X2
 ```
 
-完整 IsaacLab 运行仍依赖本机旧工程、X2 资产和 `x2-sonic-isaaclab` 环境；
-仓库本身不复制这些第三方/旧工程资产。
+As of this snapshot, the garment dry-run has passed at 35.02 Hz and the
+fixed StandStill policy has passed only under gantry support. Unsupported
+standing is not established. The robot was last reported fully suspended and
+offline after a normal `lifted` exit; official MC publisher ownership must be
+re-established before any powered work.
+
+## Source identity
+
+The versioned source snapshot is under
+`script/sonic_x2_transfer_v2/`. It was copied from the intentionally dirty
+deployment workspace:
+
+```text
+/Users/yu/projects/sonic_x2_transfer_v2
+```
+
+That deployment workspace remains untouched so existing robot paths continue
+to work. Its nested upstream Git checkout was at `70bed45`, with local Sonic
+changes and untracked integration files. Runtime identity therefore remains
+file SHA-256, not upstream `HEAD` alone.
+
+The frozen transfer model is not stored in Git:
+
+```text
+x2_sonic_frozen_g1core_lora_v2.onnx
+sha256 8ccc42a82ea2c446aa708aece58c7a638ea943a79ed88eeab259669e641271e9
+```
+
+Its provenance and action-scale sidecars are committed in
+`data/model_metadata/`.
+
+## Start here
+
+1. Read `AGENTS.md`.
+2. Read `reports/README.md` and the current operational documents linked
+   there.
+3. Run `script/project_tools/audit_git_payload.sh` before every commit.
+4. Regenerate `data/manifests/external_artifacts_20260831.tsv` after changing
+   any external model, telemetry, or archive.
+
+Storage and cleanup decisions are recorded in
+`reports/STORAGE_POLICY.md` and
+`reports/PROJECT_FILE_ORGANIZATION_20260831.md`.

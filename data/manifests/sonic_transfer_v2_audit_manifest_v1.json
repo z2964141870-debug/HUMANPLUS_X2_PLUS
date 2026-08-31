@@ -1,0 +1,210 @@
+{
+  "generated_utc": "2026-08-17T04:13:50Z",
+  "scope": "offline hp3090 MuJoCo/ONNX only; no X2/Orin/BLE/motor access",
+  "task_card": "/home/yu/projects/AGENT_TASK_CARD.md v1.1",
+  "roots": {
+    "code": "/home/yu/projects/BFM-Zero",
+    "data": "/media/yu/FAFF-E977/8_16_A2A_x2",
+    "env": "/home/yu/env/x2_teleop_final/sonic_runtime"
+  },
+  "git": {
+    "branch": "work/codex-sonic-transfer-audit",
+    "commit": "d17d66a1d6da47099c31ccfc9b7ee250b052fdf0",
+    "push": {
+      "remote": "humanplus",
+      "status": "failed_network",
+      "detail": "GitHub SSH connection closed during key exchange; local commit preserved"
+    }
+  },
+  "upstream": {
+    "sonic_x2": {
+      "path": "/media/yu/FAFF-E977/8_16_A2A_x2/sonic-x2",
+      "commit": "d2384821583007306f5feee6cffa0ed3e78ab3f8",
+      "clean": true
+    },
+    "deployment_audit": {
+      "path": "/media/yu/FAFF-E977/8_16_A2A_x2/GR00T-WholeBodyControl-X2-review-audit",
+      "commit": "70bed4539efae431621013b3df71e6f81df1ab1c",
+      "clean": true,
+      "sparse": true
+    }
+  },
+  "models": {
+    "old_actual": {
+      "path": "/media/yu/FAFF-E977/data/BFM-Zero/raw/sonic-x2/x2_sonic_policy.onnx",
+      "bytes": 58505722,
+      "sha256": "e7ccd6522010ea660facfb7265fb129dac2b580dd1483cc1dbada73c205309d7"
+    },
+    "repo_native14k": {
+      "path": "/media/yu/FAFF-E977/8_16_A2A_x2/sonic-x2/models/x2_sonic_14000_g1.onnx",
+      "bytes": 58505726,
+      "sha256": "0228147dc5aed08cd3f9388c31eb48b39abbef58c5f5ca39ea04666051de25ae"
+    },
+    "transfer_v2": {
+      "path": "/media/yu/FAFF-E977/8_16_A2A_x2/sonic-x2/models/x2_sonic_frozen_g1core_lora_v2.onnx",
+      "bytes": 57692064,
+      "sha256": "8ccc42a82ea2c446aa708aece58c7a638ea943a79ed88eeab259669e641271e9"
+    }
+  },
+  "dataset": "/media/yu/FAFF-E977/data/BFM-Zero/processed/2026-08-15/canonical_motion_bank/phuma_stratified96_v4",
+  "phuma96": {
+    "old_actual": {
+      "oracle": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/old_actual_phuma96_oracle_tracking_5s.json",
+        "clips": 96,
+        "passed": 51,
+        "mean_survival_s": 3.3739583333333334,
+        "mean_joint_tracking_mae_rad": 0.11866771142263546,
+        "mean_max_joint_tracking_error_rad": 0.8381305003480528,
+        "mean_max_root_xy_drift_m": 0.8020337413986199,
+        "mean_max_tilt_rad": 0.5731654209195167,
+        "mean_max_joint_limit_violation_rad": 0.05837591261714668
+      },
+      "hold": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/old_actual_phuma96_hold_tracking_5s.json",
+        "clips": 96,
+        "passed": 53,
+        "mean_survival_s": 3.4679166666666665,
+        "mean_joint_tracking_mae_rad": 0.11841297973485486,
+        "mean_max_joint_tracking_error_rad": 0.8253801014626336,
+        "mean_max_root_xy_drift_m": 0.8106567629116284,
+        "mean_max_tilt_rad": 0.5793418321240604,
+        "mean_max_joint_limit_violation_rad": 0.05341874296238461
+      }
+    },
+    "repo_native14k": {
+      "oracle": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/repo_native_phuma96_oracle_tracking_5s.json",
+        "clips": 96,
+        "passed": 52,
+        "mean_survival_s": 3.4433333333333334,
+        "mean_joint_tracking_mae_rad": 0.11871928169382069,
+        "mean_max_joint_tracking_error_rad": 0.7930670739958764,
+        "mean_max_root_xy_drift_m": 0.9480826337506092,
+        "mean_max_tilt_rad": 0.5652479683892262,
+        "mean_max_joint_limit_violation_rad": 0.05169155163389953
+      },
+      "hold": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/repo_native_phuma96_hold_tracking_5s.json",
+        "clips": 96,
+        "passed": 51,
+        "mean_survival_s": 3.46375,
+        "mean_joint_tracking_mae_rad": 0.12373581389257218,
+        "mean_max_joint_tracking_error_rad": 0.8106279055841925,
+        "mean_max_root_xy_drift_m": 0.8820922042271475,
+        "mean_max_tilt_rad": 0.5937938030241635,
+        "mean_max_joint_limit_violation_rad": 0.05698000687457732
+      }
+    },
+    "transfer_v2": {
+      "oracle": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/transfer_v2_phuma96_oracle_tracking_5s.json",
+        "clips": 96,
+        "passed": 54,
+        "mean_survival_s": 3.4647916666666667,
+        "mean_joint_tracking_mae_rad": 0.10519917714643275,
+        "mean_max_joint_tracking_error_rad": 0.8219012222957114,
+        "mean_max_root_xy_drift_m": 0.5967130060791536,
+        "mean_max_tilt_rad": 0.5302801133639453,
+        "mean_max_joint_limit_violation_rad": 0.032847306611388356
+      },
+      "hold": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/transfer_v2_phuma96_hold_tracking_5s.json",
+        "clips": 96,
+        "passed": 54,
+        "mean_survival_s": 3.493125,
+        "mean_joint_tracking_mae_rad": 0.10295471760179312,
+        "mean_max_joint_tracking_error_rad": 0.8600950642357309,
+        "mean_max_root_xy_drift_m": 0.5731238946603024,
+        "mean_max_tilt_rad": 0.5431238110993732,
+        "mean_max_joint_limit_violation_rad": 0.0350067498320399
+      },
+      "lookahead_0p1": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/transfer_v2_phuma96_lookahead_0p1_tracking_5s.json",
+        "clips": 96,
+        "passed": 56,
+        "mean_survival_s": 3.519375,
+        "mean_joint_tracking_mae_rad": 0.10287573399634303,
+        "mean_max_joint_tracking_error_rad": 0.8363425234289454,
+        "mean_max_root_xy_drift_m": 0.620299377919806,
+        "mean_max_tilt_rad": 0.5235471802418465,
+        "mean_max_joint_limit_violation_rad": 0.035959629915700286
+      },
+      "lookahead_0p2": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/transfer_v2_phuma96_lookahead_0p2_tracking_5s.json",
+        "clips": 96,
+        "passed": 55,
+        "mean_survival_s": 3.5272916666666667,
+        "mean_joint_tracking_mae_rad": 0.1042751883044789,
+        "mean_max_joint_tracking_error_rad": 0.8137124921229316,
+        "mean_max_root_xy_drift_m": 0.6703768840294682,
+        "mean_max_tilt_rad": 0.5227980020736833,
+        "mean_max_joint_limit_violation_rad": 0.036464871935090765
+      },
+      "lookahead_0p3": {
+        "report": "/media/yu/FAFF-E977/8_16_A2A_x2/processed/transfer_v2_phuma96_lookahead_0p3_tracking_5s.json",
+        "clips": 96,
+        "passed": 55,
+        "mean_survival_s": 3.539375,
+        "mean_joint_tracking_mae_rad": 0.10529943058296298,
+        "mean_max_joint_tracking_error_rad": 0.8304304658952226,
+        "mean_max_root_xy_drift_m": 0.6824707301456663,
+        "mean_max_tilt_rad": 0.5262956372190988,
+        "mean_max_joint_limit_violation_rad": 0.03599675783183658
+      }
+    }
+  },
+  "oracle_borderline_note": "old_actual prior report passed 50/96; deterministic-repeat environment produced 51/96 because one clip moved from fall at 4.80 s to the 5.00 s boundary",
+  "release_motion_summary": {
+    "transfer_v2_recommended": {
+      "relaxed_walk": {
+        "motion_end": true,
+        "joint_mae_rad": 0.1172,
+        "max_joint_error_rad": 0.713
+      },
+      "gangam": {
+        "motion_end": true,
+        "joint_mae_rad": 0.1873,
+        "max_joint_error_rad": 1.289
+      },
+      "idle": {
+        "motion_end": true,
+        "joint_mae_rad": 0.1555,
+        "max_joint_error_rad": 0.788
+      }
+    },
+    "repo_native_recommended": {
+      "relaxed_walk": {
+        "motion_end": true,
+        "joint_mae_rad": 0.1779
+      },
+      "gangam": {
+        "motion_end": true,
+        "joint_mae_rad": 0.2152
+      },
+      "idle": {
+        "motion_end": true,
+        "joint_mae_rad": 0.1964
+      }
+    },
+    "transfer_v2_no_wrist_freeze_max_error_rad": {
+      "relaxed_walk": 1.972,
+      "gangam": 2.173,
+      "idle": 1.951
+    }
+  },
+  "tests": {
+    "python_compile": "passed",
+    "oracle_first_obs_hash_parity": "passed",
+    "oracle_first_action_hash_parity": "passed",
+    "unittest": {
+      "eval_cuda": 3,
+      "input_adapter": 3,
+      "replay_adapter": 2,
+      "status": "passed"
+    },
+    "pytest": "not_run_pytest_not_installed"
+  },
+  "report": "/home/yu/projects/BFM-Zero/docs/reports/sonic_transfer_v2_audit_20260817.md",
+  "decision": "Use transfer-v2 as preferred sim candidate; do not deploy to hardware until clothing ZMQ v5 adapter and full C++ sim2sim parity/safety gates pass"
+}

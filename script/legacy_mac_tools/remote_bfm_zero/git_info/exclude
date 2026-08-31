@@ -1,0 +1,27 @@
+# git ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+# *.[oa]
+# *~
+artifacts/x2_scratch_short_segment_seed770007/
+artifacts/x2_scratch_512_pilot_seed770011/
+artifacts/x2_scratch_512_half_million_seed770023/
+artifacts/x2_scratch_512_half_million_state71_seed770031/
+artifacts/x2_scratch_512_half_million_expert_rollout_seed770041/
+artifacts/x2_scratch_state71_cont1_seed770051/
+artifacts/x2_scratch_terminal_aware_seed770061/
+artifacts/x2_scratch_state71_safety_ft_seed770071/
+artifacts/x2_scratch_state71_taskreward_ft_seed770081
+artifacts/x2_scratch_closed_loop_expert_seed770091
+artifacts/x2_scratch_closed_loop_bc_seed770101
+artifacts/x2_scratch_closed_loop_bc_fixed_z_seed770111
+artifacts/x2_scratch_dagger1_seed770121
+artifacts/x2_scratch_dagger2_seed770131
+# Local links to task-card-compliant external experiment storage.
+logs/x2_direct_cem_teacher_v9*.log
+logs/x2_state_feedback_teacher_v8.log
+reports/x2_direct_cem_teacher_v9_result.json
+reports/x2_direct_cem_teacher_v9_result.json.sha256
+reports/x2_state_feedback_command_teacher_v8_screen.json
+reports/x2_state_feedback_command_teacher_v8_screen.json.sha256

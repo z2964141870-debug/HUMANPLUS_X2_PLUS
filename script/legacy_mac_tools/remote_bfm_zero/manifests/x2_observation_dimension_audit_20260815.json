@@ -1,0 +1,37 @@
+{
+  "schema": "x2_observation_dimension_audit_v1",
+  "project": "BFM-Zero",
+  "date": "2026-08-15",
+  "source_project": "x2_teleop_final/x2_sonic/sonic_x2_sandbox",
+  "source_commit": "bc38f6d0ce6cab4589e025037ad0bfbab7ba73d8",
+  "source_worktree": "detached_and_dirty",
+  "source_files": {
+    "gear_sonic/envs/x2_velocity/flat_env_cfg.py": "ac101b0fc7fc401b9db5be8d3ad9fa92d44de2dbbd4105f8afc1090aa1ba65b8",
+    "gear_sonic/trl/trainer/ppo_trainer.py": "3a8f1e30a24af796c602c2846d4cfd8933ec4ab77429f806a9f77de76cbf0786",
+    "gear_sonic/trl/modules/actor_critic_modules.py": "24ee9baa373fab41e0a9e7cc13a10fe00e9ebaff267cd8c3c7ef64d0e11cf539"
+  },
+  "baseline_observation_dim": {
+    "policy": 86,
+    "critic": 89
+  },
+  "extremity_goal_dim_per_frame": 36,
+  "candidate_observation_dim": {
+    "horizon_1": {
+      "policy": 122,
+      "critic": 125
+    },
+    "formula": {
+      "policy": "86 + 36*H",
+      "critic": "89 + 36*H"
+    }
+  },
+  "static_gate": "PASS_X2_SIX_LINK_CONTRACT_FOR_STATIC_TRACKING_SMOKE",
+  "decision": "OBS_DIM_AUDIT_READY_FOR_ADAPTER_DESIGN",
+  "recommended_first_horizon": 1,
+  "old_checkpoint_direct_load": "blocked_by_actor_input_shape",
+  "existing_critic_append_expansion": true,
+  "existing_actor_append_expansion": false,
+  "training_unlocked": false,
+  "deployment_unlocked": false,
+  "next_gate": "freeze_source_commit_and_audit_checkpoint_state_dict_shapes"
+}

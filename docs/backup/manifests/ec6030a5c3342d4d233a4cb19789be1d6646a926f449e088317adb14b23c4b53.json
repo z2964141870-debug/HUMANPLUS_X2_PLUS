@@ -1,9 +1,0 @@
-{
-  "local_path": "backups/x2_phase47_official_state_faithful_s7_20260809.tar.gz",
-  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-09/phase47/x2_phase47_official_state_faithful_s7_20260809.tar.gz",
-  "sha256": "ec6030a5c3342d4d233a4cb19789be1d6646a926f449e088317adb14b23c4b53",
-  "bytes": 299929905,
-  "git_commit": "75c0d3e",
-  "uploaded_at": "2026-08-09",
-  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit"
-}

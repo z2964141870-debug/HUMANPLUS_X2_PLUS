@@ -1,0 +1,10 @@
+Package: x2-intel-ax210-bluetooth-firmware
+Version: 1.0.1
+Section: admin
+Priority: optional
+Architecture: all
+Depends: linux-firmware
+Maintainer: Local X2 Integration <local@localhost>
+Description: Intel AX210 Bluetooth firmware for the X2 custom firmware path
+ Installs only the AX210 SFI and DDC files under /etc/firmware/intel because
+ this X2 kernel boots with firmware_class.path=/etc/firmware.

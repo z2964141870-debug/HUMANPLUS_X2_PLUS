@@ -1,9 +1,0 @@
-{
-  "local_path": "backups/x2_phase55_native_upper_robust_20260809.tar.gz",
-  "remote_path_relative_to_apps_bdpan": "HUMAN+/HUMANPLUS_X2_PLUS/2026-08-09/phase55/x2_phase55_native_upper_robust_20260809.tar.gz",
-  "sha256": "7fbd1e52919f5a21e5a6036e3d5e6f7cd84856b9892b49043341328079c7e3e1",
-  "bytes": 495434849,
-  "git_commit": "0a97a90",
-  "uploaded_at": "2026-08-09",
-  "verification": "bdpan upload command succeeded; remote verification intentionally deferred to the daily manual audit"
-}
