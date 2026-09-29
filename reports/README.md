@@ -1,6 +1,10 @@
 # Reports
 
-The current operational source of truth remains in the copied Sonic tree:
+Start with the [2026-09-29 handoff](HANDOFF_20260929.md). It distinguishes
+the 2026-08-31 verified snapshot from later public model information and
+does not claim to describe the robot's live state.
+
+The last recorded operational source of truth remains in the copied Sonic tree:
 
 - [Current state](../script/sonic_x2_transfer_v2/GR00T_audit/docs/CURRENT_STATE.md)
 - [Decisions](../script/sonic_x2_transfer_v2/GR00T_audit/docs/DECISIONS.md)

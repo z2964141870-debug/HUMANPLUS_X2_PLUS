@@ -35,7 +35,7 @@ V2 garment BLE
   -> X2
 ```
 
-As of this snapshot, the garment dry-run has passed at 35.02 Hz and the
+As of the 2026-08-31 snapshot, the garment dry-run has passed at 35.02 Hz and the
 fixed StandStill policy has passed only under gantry support. Unsupported
 standing is not established. The robot was last reported fully suspended and
 offline after a normal `lifted` exit; official MC publisher ownership must be
@@ -68,8 +68,8 @@ Its provenance and action-scale sidecars are committed in
 
 ## Start here
 
-1. Read `AGENTS.md`.
-2. Read `reports/README.md` and the current operational documents linked
+1. Read `AGENTS.md` and the [2026-09-29 handoff](reports/HANDOFF_20260929.md).
+2. Read `reports/README.md` and the last recorded operational documents linked
    there.
 3. Run `script/project_tools/audit_git_payload.sh` before every commit.
 4. Regenerate `data/manifests/external_artifacts_20260831.tsv` after changing
