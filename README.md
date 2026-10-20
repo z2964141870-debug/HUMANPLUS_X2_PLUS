@@ -2,6 +2,14 @@
 
 Branch: `humanplus_sonic_x2`
 
+**Current entry point:** [2026-10-20 successor task card](reports/HANDOFF_TASK_CARD_20261020.md).
+The user approved an operator-performed reboot after the failed recovery;
+reboot completion and current robot state have not been checked. The keyboard
+v0.2 task supersedes the historical garment objective below. Credentials and
+raw binaries/telemetry are not included in the GitHub handoff.
+
+Last observed checkpoint: [2026-10-20 SSH takeover](reports/X2_SSH_TAKEOVER_20261020.md), 22:41 CST, before the approved onsite reboot. Two suspended powered attempts hit the upstream native stale protection. At that checkpoint no custom writer remained; MC existed but actual command/feedback recovery was unverified. Vendor IMU logs show approximately 2000 ms blocked Publish calls and FastDDS SHM port errors. Reboot completion and present ownership must be checked by the successor before powered work. Earlier no-publish computation passed; neither ground balance nor keyboard walking has passed. The August snapshot below is historical.
+
 This branch is the project-management and version-control home for the
 garment-to-Sonic-to-X2 integration. It was reorganized on 2026-08-31 from the
 active deployment workspace without changing the robot or the deployment
@@ -19,7 +27,7 @@ copy.
 Do not add new top-level project directories. Root-level governance files are
 the only exception.
 
-## Current objective
+## Historical August objective
 
 The end goal is a supported first powered closed-loop segment:
 
@@ -68,7 +76,7 @@ Its provenance and action-scale sidecars are committed in
 
 ## Start here
 
-1. Read `AGENTS.md` and the [2026-09-29 handoff](reports/HANDOFF_20260929.md).
+1. Read `AGENTS.md` first. For v0.2 keyboard walking, read the [2026-10-19 deployment and operation-card review](reports/SONIC_V02_KEYBOARD_WALK_REVIEW_20261019.md), then the [Planner-first successor handoff](reports/SONIC_V02_PLANNER_FIRST_HANDOFF_20261008.md). For the frozen old runtime, read the [2026-09-29 handoff](reports/HANDOFF_20260929.md).
 2. Read `reports/README.md` and the last recorded operational documents linked
    there.
 3. Run `script/project_tools/audit_git_payload.sh` before every commit.

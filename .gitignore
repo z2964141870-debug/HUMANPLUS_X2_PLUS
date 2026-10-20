@@ -46,3 +46,7 @@ core.*
 data/external/
 logs/raw/
 
+# October takeover: raw per-joint telemetry and the exact ELF remain local.
+/data/experiments/x2_nopublish20_20261020/
+/data/experiments/x2_v02_candidate_20261020/x2_deploy_onnx_ref
+

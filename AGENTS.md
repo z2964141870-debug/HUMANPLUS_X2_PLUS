@@ -4,6 +4,18 @@
 
 Before changing control code or touching the robot, read:
 
+For the October v0.2 task, start with
+`reports/HANDOFF_TASK_CARD_20261020.md`, then the latest section of
+`reports/X2_SSH_TAKEOVER_20261020.md` and
+`reports/SONIC_V02_KEYBOARD_WALK_REVIEW_20261019.md`.
+These supersede August live-state, model/tuning, and stage claims below.
+Do not add runtime thresholds stricter than the pinned upstream Sonic-X2
+configuration; the extra 100 ms runtime freshness abort was removed at the
+user's request. This does not remove upstream protections, physical E-stop,
+single-writer ownership, or the prohibition on killing a loaded writer.
+
+Then read repository governance and the historical safety/experience sources:
+
 1. `README.md`
 2. `reports/README.md`
 3. `script/sonic_x2_transfer_v2/GR00T_audit/AGENTS.md`
@@ -30,6 +42,17 @@ binding.
   rename, or reformat it while taking snapshots into this branch.
 - After each completed stage, update the relevant README or experiment ledger
   immediately.
+
+## v0.2 keyboard-walking reporting
+
+For this task, follow `reports/SONIC_V02_WALK_PROGRESS.md`. Execute only the
+stage explicitly assigned by the user. After each stage, submit its evidence,
+record the actual ending state, and wait for user review and the next task;
+do not self-approve or advance through the roadmap automatically. A review
+does not replace current physical safety confirmation for powered work.
+Waiting for review must never mean abruptly killing a loaded robot's writer
+or leaving custom powered control unattended. Follow the verified safe
+ending procedure for the assigned stage and report abnormal events promptly.
 
 ## Robot boundary
 
