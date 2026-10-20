@@ -1,6 +1,19 @@
 # X2 SSH 接管记录：2026-10-20
 
-## 交接补充：用户同意现场重启，当前状态未重查
+## 最新检查点：23:32 CST / 接班第一轮完成：重启后只读核验通过；发布阻塞收敛为“接管序列触发”
+
+本节由接班 Agent 于重启后实测写入，覆盖下方“重启状态未知”的判断。本轮全程只读：未触碰任何机器人进程、未发任何命令、未执行 stop_app/接管/powered 探针。用户确认现场已完成整机重启并保持完全吊起；以下为 23:18–23:29 CST 实测。
+
+1. **重启确认**：SoC0 22:48:36 / SoC1 22:48:52 开机；SoC0 ssh host key 已变化（新指纹已接受）。官方进程齐全（MC 2547、hal_ethercat 1572、soc0_hal_imu 3057 等），两端无任何自定义进程、无 5555–5563 监听。模型/原 binary 哈希与交接一致（7dfdec7c…、0b02df14…）。
+2. **命令归属**：双端各 15 秒只读 observer（探针 02eeff…）确认四组 `/aima/hal/joint/*/command` 每组恰 1 个官方 `mc_ros2_node` publisher（GID 010f39c2…），无自定义 writer；十路反馈全部新鲜通过。
+3. **本次 boot 厂商日志干净**：MC 零 SHM 警告（无 fastdds 告警文件）、hal_imu 仅 5 条 ≤20.5 ms 开机瞬态后 40 分钟零新增、其他进程 fastdds 亦干净。两轮 observer 加入前后无任何变化 → 排除 observer 触发。
+4. **当日五 boot 全量考古**（见 `logs/x2_round1_reboot_verify_20261020/imu_shm_archaeology.txt`）：四次 powered 接管（12:17 学弟、15:54、22:13、22:23，两套自定义 runtime、三个 boot）**全部**伴随 hal_imu `Publish()` ~2 s 阻塞（max 2003–2052 ms）；纯厂商运行、15:02 MC SIGSTOP（≤37 ms）、15:30 no-publish 计算（≤58 ms）、本轮 observer 全部无此现象。12:48 与 22:23 两次在接管/恢复失败后转为持续恶化（22:23 那次 1971 行、max ≈75.6 s，直至重启清除）；12:48 那次曾同 boot 内自行恢复。SHM NOT Healthy 仅出现在 22:01 boot 22:24 之后（42 次，全部为故障后）。
+5. **根因范围（一句话）**：反馈空窗与 IMU Publish 阻塞不是常驻故障、不是模型/PD/单一候选属性、不由 observer 或 no-publish 计算触发，而是由“MC stop_app → 自定义 writer 接管”这一交接序列在触发时刻可复现地引发；SHM unhealthy 与持续恶化是其后果/伴生，非前置根因。唯一未分解的环节：官方 stop_app/start_app 切换本身 vs 自定义 writer 实体/命令与切换的交叠（该组合从未被单独测试）。
+6. **唯一下一步（待用户授权）**：完全吊起 + 双端只读 observer 在录，单独执行一次 **MC stop_app → 固定等待 → start_app**（不启动任何自定义进程），验证官方应用切换是否单独复现反馈空窗与 IMU Publish 阻塞。若复现 → 触发器在厂商切换路径，交接方式需改（与厂商确认支持的静默/切换流程），不动模型/PD；若不复现 → 触发器在 writer 实体生命周期与切换交叠，下一轮做实体先建/命令后启的时序隔离候选。此测试会使 MC 短暂进入无命令状态（吊起下与当日四次 stop_app 同类），需用户当次授权。
+
+证据：`logs/x2_round1_reboot_verify_20261020/`（双端 observer JSONL、五 boot 直方图、进程快照、哈希索引）。本轮会话 ControlMaster `/tmp/x2-round1-20261020/soc{1,0}.sock`；未 push，仅本地保存。
+
+## 交接补充：用户同意现场重启，当前状态未重查（已被上节覆盖）
 
 用户已回复“现场重启整机，保持完全吊起”，随后要求更换 Agent 并上传交接资料。
 未代用户执行 reboot/HAL restart，未再次连接机器人确认重启完成。

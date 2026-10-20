@@ -3,12 +3,10 @@
 Branch: `humanplus_sonic_x2`
 
 **Current entry point:** [2026-10-20 successor task card](reports/HANDOFF_TASK_CARD_20261020.md).
-The user approved an operator-performed reboot after the failed recovery;
-reboot completion and current robot state have not been checked. The keyboard
-v0.2 task supersedes the historical garment objective below. Credentials and
-raw binaries/telemetry are not included in the GitHub handoff.
+The keyboard v0.2 task supersedes the historical garment objective below.
+Credentials and raw binaries/telemetry are not included in the GitHub handoff.
 
-Last observed checkpoint: [2026-10-20 SSH takeover](reports/X2_SSH_TAKEOVER_20261020.md), 22:41 CST, before the approved onsite reboot. Two suspended powered attempts hit the upstream native stale protection. At that checkpoint no custom writer remained; MC existed but actual command/feedback recovery was unverified. Vendor IMU logs show approximately 2000 ms blocked Publish calls and FastDDS SHM port errors. Reboot completion and present ownership must be checked by the successor before powered work. Earlier no-publish computation passed; neither ground balance nor keyboard walking has passed. The August snapshot below is historical.
+Last observed checkpoint: [2026-10-20 SSH takeover](reports/X2_SSH_TAKEOVER_20261020.md), 23:32 CST (successor round 1, read-only, post-reboot). Reboot verified complete (both SoCs up since 22:48); official processes healthy, no custom processes, and all four joint command topics have exactly one official `mc_ros2_node` publisher. This clean boot shows zero SHM warnings and zero IMU publish stalls; adding read-only observers changed nothing. Cross-boot log archaeology narrows the feedback gap / ~2 s vendor `Publish()` blocking to the takeover handover sequence itself (all four powered attempts, two runtimes, three boots) — not the model, PD, observers, or pre-existing transport damage; SHM errors are downstream. Proposed single next step (pending user authorization): isolate an official `stop_app -> start_app` cycle without any custom writer. Evidence: `logs/x2_round1_reboot_verify_20261020/`. Neither powered takeover, ground balance, nor keyboard walking has passed. The August snapshot below is historical.
 
 This branch is the project-management and version-control home for the
 garment-to-Sonic-to-X2 integration. It was reorganized on 2026-08-31 from the
