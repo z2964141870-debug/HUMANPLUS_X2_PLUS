@@ -64,8 +64,8 @@ class Process:
 
 def bounded_pause(target, seconds, *, clock=time.monotonic,
                   sleep=time.sleep, log=emit, cancelled=lambda: False):
-    if not math.isfinite(seconds) or not 0 < seconds <= 2.0:
-        raise ValueError("pause duration must be finite and in (0, 2] seconds")
+    if not math.isfinite(seconds) or not 0 < seconds <= 120.0:
+        raise ValueError("pause duration must be finite and in (0, 120] seconds")
     initial = target.state()
     if initial in ("T", "t", "Z", "X"):
         raise RuntimeError(f"target is not initially running: {initial}")
@@ -106,6 +106,8 @@ def main():
     parser.add_argument("--start-ticks", type=int)
     parser.add_argument("--argv-sha256")
     parser.add_argument("--execute", choices=("SUSPENDED_MC_PAUSE_2S",))
+    parser.add_argument("--pause-seconds", type=float, default=2.0,
+                        help="bounded pause length (default 2.0s; auto-CONT always applies)")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if not hasattr(os, "pidfd_open") or not hasattr(signal, "pidfd_send_signal"):
@@ -135,7 +137,9 @@ def main():
         emit("identity", identity=expected, execute=bool(args.execute))
         if not args.execute:
             return 0
-        seconds = 2.0
+        seconds = float(args.pause_seconds)
+        if not (0.05 <= seconds <= 120.0):
+            parser.error("--pause-seconds must be within 0.05-120")
 
     cancellation = {"requested": False}
 

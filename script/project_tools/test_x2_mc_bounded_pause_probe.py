@@ -55,7 +55,9 @@ class BoundedPauseTests(unittest.TestCase):
         self.assertEqual(target.signals, [])
 
     def test_invalid_duration_has_no_signals(self):
-        for seconds in (0, -1, 2.01, float("nan"), float("inf")):
+        # bound raised 2026-10-21 for the Stage-1 SIGSTOP handoff (auto-CONT
+        # in finally remains the safety net); CLI clamps 0.05-120.
+        for seconds in (0, -1, 120.01, float("nan"), float("inf")):
             target = FakeProcess()
             with self.assertRaises(ValueError):
                 self.run_pause(target, seconds=seconds)
