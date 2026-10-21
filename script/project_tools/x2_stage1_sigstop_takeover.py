@@ -39,7 +39,7 @@ def check_hash(path, expected):
 
 
 def binary_arguments(binary, directory):
-    return [str(binary), "--model", str(MODEL),
+    return [str(binary), "--model", str(MODEL), "--intra-op-threads", "3",
             "--input-type", "zmq",
             "--zmq-pose-host", "localhost", "--zmq-pose-port", "5558",
             "--zmq-pose-topic", "pose",
