@@ -11,6 +11,15 @@
 - [ ] （可选）SoC1 预检:  ls ~/gear-sonic/policies/x2_sonic_s1ft16000_g1.onnx 存在;
       ~/gear-sonic/gear_sonic_deploy/configs/real_deploy_tuning/frozen_g1.yaml 存在
 
+## 0.5 上电后先跑一次无风险预检（一次性,~2 分钟）
+```bash
+# 电池恢复、SSH 通了之后, 先在 SoC1 上:
+bash ~/walk/preflight_link.sh
+```
+等它五步全 OK（kplanner 实机起、5556 流 3936B 帧、键盘被实机接收）。
+该预检**不碰 deploy 不碰 MC，机器人零运动**。通过后再走下面的正式流程。
+（脚本由工程师在电池恢复后部署到 ~/walk/）
+
 ## 1. 三个终端，按顺序执行
 
 ### T3（第一个动!）— SoC0 冻结主控，腾出指令权
