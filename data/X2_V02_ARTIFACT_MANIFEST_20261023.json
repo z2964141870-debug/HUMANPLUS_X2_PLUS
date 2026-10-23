@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-23",
+  "task": "T01/P0 artifact fixture (read-only inventory)",
+  "host_soc1_home": "/agibot/data/home/agi",
+  "policies": [
+    {
+      "file": "x2_sonic_s1ft16000_g1.onnx",
+      "sha256": "7dfdec7cf1b1ac67635c3cd8f541c27b50d917df2e3381a6bb086b605e1959a0",
+      "bytes": 57696872,
+      "role": "v0.2 route primary actor (G1-core); 500Hz real-publish verified run14/15"
+    },
+    {
+      "file": "x2_sonic_s1ft16000_g1_token.onnx",
+      "sha256": "158e29b04506a974e6c1",
+      "bytes": 40755718,
+      "role": "token variant, not yet on-robot"
+    },
+    {
+      "file": "x2_smpl_tokenizer_v11release.onnx",
+      "sha256": "020519f4a2988d0d82b9",
+      "bytes": 18566124,
+      "role": "smpl tokenizer"
+    },
+    {
+      "file": "x2_sonic_v16ft8_45000_dual.onnx",
+      "sha256": "572d9fe6dc115246",
+      "bytes": 77064707,
+      "role": "alt family, not deployed"
+    },
+    {
+      "file": "x2_sonic_v16ft8_45000_g1.onnx",
+      "sha256": "069c2e67cbca3d42",
+      "bytes": 58505998,
+      "role": "alt family, not deployed"
+    },
+    {
+      "file": "x2_sonic_v16ft8_45000_g1_token.onnx",
+      "sha256": "747071b40471c211",
+      "bytes": 41238984,
+      "role": "alt family, not deployed"
+    },
+    {
+      "file": "x2_sonic_v16ft8_45000_smpl_tokenizer.onnx",
+      "sha256": "cffbb2d95a54491d",
+      "bytes": 18567490,
+      "role": "alt family tokenizer"
+    }
+  ],
+  "deployed_binary": {
+    "path": "soc1:~/gear-sonic/ws/install/agi_x2_deploy_onnx_ref/lib/agi_x2_deploy_onnx_ref/x2_deploy_onnx_ref",
+    "sha256": "466a9864e01d6b522e87d199ff87c6e1b98e8e07c1ba845703403c7d1167e97d",
+    "patch": "--writer-hz knob (default 500=official contract); source snapshot in repo deploy_ws/"
+  },
+  "source_snapshot": "deploy_ws/agi_x2_deploy_onnx_ref (pulled 2026-10-23 from soc1 ws/src, writer_hz patch present, 5 hits)",
+  "contract": {
+    "num_dofs": 31,
+    "joint_slices": "leg[0,12) waist[12,15) arm[15,29) head[29,31) mujoco order (aimdk_io.hpp)",
+    "control_tick": "50Hz (20ms timer)",
+    "writer_hz": "500 default (official contract; X2_WRITER_HZ knob 50-1000)",
+    "policy_io": "see deploy_ws config/obs_config_x2_ultra.yaml (g1+g1_dyn fused; source of truth eval_x2_mujoco*.py, slice-verified Phase 0)",
+    "input": "--input-type zmq pose localhost:5558/pose; debug out 5557/x2_debug",
+    "safety_driver_args": {
+      "action_clip": 20,
+      "max_target_dev": {
+        "default": 0.3,
+        "leg": 0.7,
+        "waist": 0.45,
+        "arm": 2,
+        "head": 0.4
+      },
+      "ramp_s": 2,
+      "tilt_cos": -0.3,
+      "target_lpf_hz": {
+        "default": 8,
+        "leg": 16,
+        "waist": 0,
+        "arm": 0,
+        "head": 0
+      },
+      "kp_scale": {
+        "ankle_pitch": 1,
+        "ankle_roll": 1,
+        "knee": 1,
+        "waist_yaw": 1,
+        "waist_pr": 2
+      },
+      "kd_scale": {
+        "ankle_pitch": 1,
+        "ankle_roll": 1,
+        "hip": 1,
+        "waist_pr": 5.51
+      },
+      "wrist_bypass": "ik",
+      "head_bypass": "ref",
+      "pose_ref_watchdog": "disabled"
+    },
+    "dds": "FASTRTPS_DEFAULT_PROFILES_FILE=~/dds/ros_dds_soc1.xml (vendor 20MB buffers; repo config/x2_dds/)",
+    "stage1_protocol": "script/project_tools/x2_stage1_sigstop_takeover.py + x2_mc_bounded_pause_probe.py; MC pid 3118 boot 7638c43e (2026-10-23)"
+  },
+  "verification": {
+    "runs": "run14_xml_pub500 + run15_xml_pub500_rep",
+    "result": "0 strikes both, control_window_complete, clean exit",
+    "logs": "logs/x2_native_deploy_20261023/"
+  }
+}
