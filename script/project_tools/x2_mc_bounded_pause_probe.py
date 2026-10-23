@@ -127,8 +127,10 @@ def main():
         if not all((args.pid, args.boot_id, args.start_ticks, args.argv_sha256)):
             parser.error("exact PID, boot ID, start ticks, and argv hash required")
         expected = snapshot(args.pid)
-        if expected["argv0"].rsplit("/", 1)[-1] != "mc_app_main":
-            parser.error("execute target must have exact mc_app_main argv0")
+        # Firmware >= interface v1.0.0.6 (2026-10-22 upgrade) renames the MC
+        # binary to aima-mc-app-main; accept both vendor names.
+        if expected["argv0"].rsplit("/", 1)[-1] not in ("mc_app_main", "aima-mc-app-main"):
+            parser.error("execute target must have exact mc_app_main/aima-mc-app-main argv0")
         if expected["uid"] != os.getuid():
             parser.error("target must be owned by the executing user")
         if (expected["boot_id"], expected["start_ticks"], expected["argv_sha256"]) != (

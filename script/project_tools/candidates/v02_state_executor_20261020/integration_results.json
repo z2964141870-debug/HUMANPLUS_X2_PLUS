@@ -1,0 +1,103 @@
+{
+  "binary_sha256": "d427a8314aaba53971594e7ea36a7e25b799880605832682bed08198e8299ef4",
+  "scope": "domain173 localhost unique fake topic remapping, no-publish; not hardware acceptance",
+  "cases": [
+    {
+      "case": "healthy",
+      "exit": 0,
+      "commands": {
+        "leg": 0,
+        "waist": 0,
+        "arm": 0,
+        "head": 0
+      },
+      "checks": {
+        "no_commands": true,
+        "bounded_exit": true,
+        "isolation_banner": true,
+        "control": true,
+        "no_stale": true,
+        "exit_ok": true
+      },
+      "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_healthy_1792550646170263547"
+    },
+    {
+      "case": "malformed",
+      "exit": 4,
+      "commands": {
+        "leg": 0,
+        "waist": 0,
+        "arm": 0,
+        "head": 0
+      },
+      "checks": {
+        "no_commands": true,
+        "bounded_exit": true,
+        "isolation_banner": true,
+        "failure": true,
+        "exit_four": true,
+        "no_control": true
+      },
+      "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_malformed_1792550650138413865"
+    },
+    {
+      "case": "stdin",
+      "exit": 0,
+      "commands": {
+        "leg": 0,
+        "waist": 0,
+        "arm": 0,
+        "head": 0
+      },
+      "checks": {
+        "no_commands": true,
+        "bounded_exit": true,
+        "isolation_banner": true,
+        "signal_sent": true,
+        "exit_ok": true,
+        "no_control": true
+      },
+      "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_stdin_1792550651075824986"
+    },
+    {
+      "case": "stale",
+      "exit": 0,
+      "commands": {
+        "leg": 0,
+        "waist": 0,
+        "arm": 0,
+        "head": 0
+      },
+      "checks": {
+        "no_commands": true,
+        "bounded_exit": true,
+        "isolation_banner": true,
+        "exit_ok": true,
+        "signal_sent": true,
+        "native_guard": true,
+        "control": true
+      },
+      "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_stale_1792550652084037779"
+    },
+    {
+      "case": "late_malformed",
+      "exit": 4,
+      "commands": {
+        "leg": 0,
+        "waist": 0,
+        "arm": 0,
+        "head": 0
+      },
+      "checks": {
+        "no_commands": true,
+        "bounded_exit": true,
+        "isolation_banner": true,
+        "exit_ok": true,
+        "signal_sent": true,
+        "native_guard": true,
+        "control": true
+      },
+      "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_late_malformed_1792550654559605539"
+    }
+  ]
+}

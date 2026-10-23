@@ -113,6 +113,9 @@ class AimdkIo {
                    const std::string& head_topic_prefix  = "/aima/hal/joint/head",
                    const std::string& imu_topic          = "/aima/hal/imu/torso/state");
 
+  /// Not auto-added to the node executor. Spin only on a dedicated executor.
+  rclcpp::CallbackGroup::SharedPtr StateCallbackGroup() const { return state_cbg_; }
+
   /// Thread-safe copy of the most recent assembled state. Returns true if
   /// every source has produced at least one message; false otherwise (the
   /// snapshot is still valid but some fields are still defaults).
@@ -150,10 +153,13 @@ class AimdkIo {
   /// @param stiffness_mj   31-D per-joint kp; for the trained policy use kps[]
   /// @param damping_mj     31-D per-joint kd; for the trained policy use kds[]
   ///                       (use zeros for dry-run mode)
+  /// @param fail_before_group Offline test only: -1 disables; 0/1/2/3 throws
+  ///                          before leg/waist/arm/head; incomplete batches are not counted.
   void PublishCommand(const std::array<double, NUM_DOFS>& target_pos_mj,
                       const std::array<double, NUM_DOFS>& target_vel_mj,
                       const std::array<double, NUM_DOFS>& stiffness_mj,
-                      const std::array<double, NUM_DOFS>& damping_mj);
+                      const std::array<double, NUM_DOFS>& damping_mj,
+                      int fail_before_group = -1);  // Offline test only; -1 preserves normal batch.
 
   /// Counter of commands actually published since startup. Useful for the
   /// 500 Hz watchdog to confirm the writer thread is alive.

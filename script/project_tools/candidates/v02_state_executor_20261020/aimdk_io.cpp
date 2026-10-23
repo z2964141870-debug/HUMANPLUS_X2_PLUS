@@ -39,7 +39,7 @@ AimdkIo::AimdkIo(rclcpp::Node::SharedPtr node,
   // policy a permuted observation.
   // -------------------------------------------------------------------------
   state_cbg_ = node_->create_callback_group(
-      rclcpp::CallbackGroupType::Reentrant);
+      rclcpp::CallbackGroupType::Reentrant, false);  // explicit state executor only
   rclcpp::SubscriptionOptions state_opts;
   state_opts.callback_group = state_cbg_;
 
@@ -120,8 +120,7 @@ void AimdkIo::ValidateJointNames(const aimdk_msgs::msg::JointStateArray& msg,
                                  const char* group_name,
                                  int group_index)
 {
-  if (group_validated_[group_index]) return;
-
+  // Validate size on EVERY packet, before indexing even after name validation.
   if (msg.joints.size() != group_len) {
     RCLCPP_FATAL(node_->get_logger(),
                  "AimdkIo: %s state has %zu joints, expected %zu. Refusing "
@@ -130,6 +129,8 @@ void AimdkIo::ValidateJointNames(const aimdk_msgs::msg::JointStateArray& msg,
     throw std::runtime_error(std::string("AimdkIo: ") + group_name +
                              " joint count mismatch");
   }
+  if (group_validated_[group_index]) return;
+
   for (std::size_t i = 0; i < group_len; ++i) {
     const std::string  got      = msg.joints[i].name;
     const std::string  expected = mujoco_joint_names[start_mj_idx + i];
@@ -257,14 +258,25 @@ void AimdkIo::PublishGroup(
 void AimdkIo::PublishCommand(const std::array<double, NUM_DOFS>& target_pos_mj,
                              const std::array<double, NUM_DOFS>& target_vel_mj,
                              const std::array<double, NUM_DOFS>& stiffness_mj,
-                             const std::array<double, NUM_DOFS>& damping_mj)
+                             const std::array<double, NUM_DOFS>& damping_mj,
+                             int fail_before_group)
 {
+  // Explicit offline test stimulus; default -1 follows the identical batch path.
+  auto fail_before = [fail_before_group](int group) {
+    if (fail_before_group == group)
+      throw std::runtime_error("offline injected command publication failure before group " +
+                               std::to_string(group));
+  };
+  fail_before(0);
   PublishGroup(pub_leg_,   kLegStart,   kLegLen,
                target_pos_mj, target_vel_mj, stiffness_mj, damping_mj);
+  fail_before(1);
   PublishGroup(pub_waist_, kWaistStart, kWaistLen,
                target_pos_mj, target_vel_mj, stiffness_mj, damping_mj);
+  fail_before(2);
   PublishGroup(pub_arm_,   kArmStart,   kArmLen,
                target_pos_mj, target_vel_mj, stiffness_mj, damping_mj);
+  fail_before(3);
   PublishGroup(pub_head_,  kHeadStart,  kHeadLen,
                target_pos_mj, target_vel_mj, stiffness_mj, damping_mj);
   cmd_count_.fetch_add(1, std::memory_order_relaxed);

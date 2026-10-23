@@ -1,0 +1,57 @@
+[
+  {
+    "case": "wrong_domain",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "localhost_off",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "missing_imu_remap",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "missing_command_remap",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "imu_override_escape",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "mc_service_enabled",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "prefix_escape",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "global_remap_escape",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "zmq_enabled",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "fault_without_offline_flag",
+    "exit": 2,
+    "passed": true
+  },
+  {
+    "case": "partial_without_offline_flag",
+    "exit": 2,
+    "passed": true
+  }
+]

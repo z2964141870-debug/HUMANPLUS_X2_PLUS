@@ -19,8 +19,11 @@
  *                     |         | streaming it at the firmware's command
  *                     |         | rate keeps the on-bot PD loop fed.)
  *
- * All timers attach to a MultiThreadedExecutor so subscribers can deliver
- * messages while the control timer is mid-inference.
+ * Control/writer timers remain serialized in the default callback group unless
+ * --independent-writer-offline explicitly enables a fake-domain-only writer.
+ * That experiment has NO command-age TTL and is PROHIBITED on real robots.
+ * Five state subscriptions are explicitly excluded from that executor and
+ * pumped by an owned state-only worker, independent of inference/publishing.
  *
  * ## State machine
  *
@@ -61,6 +64,8 @@
  */
 
 #include "aimdk_io.hpp"
+#include "state_executor_worker.hpp"
+#include "command_publication_gate.hpp"
 #include "deploy_logger.hpp"
 #include "math_utils.hpp"
 #include "onnx_actor.hpp"
@@ -107,7 +112,8 @@
 #include <string>
 #include <thread>
 
-#include <unistd.h>  // ::write, STDERR_FILENO for async-signal-safe stderr
+#include <poll.h>
+#include <unistd.h>  // ::read/write; interruptible operator input
 
 namespace agi_x2 {
 
@@ -217,6 +223,10 @@ struct CliArgs {
   // muting the deploy AND stopping MC would leave nothing commanding the
   // joints at all (zero torque, robot drops).
   bool        no_publish        = false;
+  bool        independent_writer_offline = false;
+  std::string offline_fake_prefix;
+  int         offline_control_block_ms = 0;
+  int         offline_publish_fail_group = -1;
   double      tilt_cos          = -0.3;
   double      ramp_seconds      = 2.0;
   // Per-joint hard clamp on |target - default_angles|, in radians. Negative
@@ -1047,6 +1057,21 @@ void PrintUsage()
       << "                             daemon owns the alerts + JSONL persistence.\n"
       << "  --mc-mode-service NAME     Override the MC mode service name\n"
       << "                             (default '/aimdk_5Fmsgs/srv/GetMcAction').\n"
+      << "  --independent-writer-offline  EXPERIMENTAL; default off; NO HARDWARE USE.\n"
+      << "                             Requires ROS_DOMAIN_ID=173, ROS_LOCALHOST_ONLY=1,\n"
+      << "                             --offline-fake-prefix /plan_a_fake_<nonce> (ASCII\n"
+      << "                             alphanumeric/underscore nonce), all nine HAL topics\n"
+      << "                             remapped to prefix + canonical absolute suffix.\n"
+      << "                             Includes resolved --imu-topic; --mc-mode-poll-s 0,\n"
+      << "                             standstill motion_file input, no ZMQ/teleop.\n"
+      << "                             No control TTL added: stale commands can repeat;\n"
+      << "                             this experiment is prohibited on real robots.\n"
+      << "  --offline-fake-prefix NAME  Explicit fake endpoint namespace for experiment.\n"
+      << "  --offline-control-block-ms MS  One-shot CONTROL stall after 5 ticks (0..500; default 0).\n"
+      << "  --offline-publish-fail-group N  Throw before group 0=leg/1=waist/2=arm/3=head\n"
+      << "                             after 50 complete writer batches (-1 disables; default -1).\n"
+      << "                             Both hooks require --independent-writer-offline and\n"
+      << "                             all its fake-domain/remap guards; test stimulus ONLY.\n"
       << "  --help, -h                 show this help\n";
 }
 
@@ -1061,6 +1086,14 @@ CliArgs ParseCli(int argc, char** argv)
       }
       return argv[++i];
     };
+    auto offline_int = [&](const char* flag, int low, int high) {
+      const std::string value = next(flag);
+      std::size_t consumed = 0;
+      const int parsed = std::stoi(value, &consumed);
+      if (consumed != value.size() || parsed < low || parsed > high)
+        throw std::runtime_error(std::string(flag) + " out of range or not an integer");
+      return parsed;
+    };
     if (s == "--help" || s == "-h") { PrintUsage(); std::exit(0); }
     else if (s == "--model")             a.model_path        = next("--model");
     else if (s == "--motion")            a.motion_path       = next("--motion");
@@ -1073,6 +1106,12 @@ CliArgs ParseCli(int argc, char** argv)
     else if (s == "--max-duration")      a.max_duration      = std::stod(next("--max-duration"));
     else if (s == "--dry-run")           a.dry_run           = true;
     else if (s == "--no-publish")        a.no_publish        = true;
+    else if (s == "--independent-writer-offline") a.independent_writer_offline = true;
+    else if (s == "--offline-fake-prefix") a.offline_fake_prefix = next("--offline-fake-prefix");
+    else if (s == "--offline-control-block-ms")
+      a.offline_control_block_ms = offline_int("--offline-control-block-ms", 0, 500);
+    else if (s == "--offline-publish-fail-group")
+      a.offline_publish_fail_group = offline_int("--offline-publish-fail-group", -1, 3);
     else if (s == "--tilt-cos")          a.tilt_cos          = std::stod(next("--tilt-cos"));
     else if (s == "--ramp-seconds")      a.ramp_seconds      = std::stod(next("--ramp-seconds"));
     else if (s == "--max-target-dev")    a.max_target_dev    = std::stod(next("--max-target-dev"));
@@ -1277,6 +1316,9 @@ CliArgs ParseCli(int argc, char** argv)
   reject_nonpos("--kd-scale-wrist",    a.kd_scale_wrist);
   reject_nonpos("--kd-scale-head",     a.kd_scale_head);
 
+  if (!a.independent_writer_offline &&
+      (a.offline_control_block_ms != 0 || a.offline_publish_fail_group != -1))
+    throw std::runtime_error("offline fault hooks require --independent-writer-offline");
   return a;
 }
 
@@ -2205,13 +2247,27 @@ class X2Deploy {
       latest_cmd_.reason     = "init_passive";
     }
 
-    // Timers. Both attach to whatever executor spins this node.
+    // Default remains serialized. Only the offline writer group is excluded
+    // from automatic executor association; main explicitly owns its worker.
+    if (cli_.independent_writer_offline)
+      writer_group_ = node_->create_callback_group(
+          rclcpp::CallbackGroupType::MutuallyExclusive, false);
     control_timer_ = node_->create_wall_timer(
         std::chrono::milliseconds(20),  // 50 Hz
         std::bind(&X2Deploy::OnControl, this));
     writer_timer_ = node_->create_wall_timer(
         std::chrono::milliseconds(4),   // 250 Hz: bounded local IO candidate
-        std::bind(&X2Deploy::OnWriter, this));
+        [this]() {
+          if (!cli_.independent_writer_offline) { OnWriter(); return; }
+          // Offline-only containment: never let a partial batch escape an executor
+          // callback or acknowledge it as completed. Default exceptions unchanged.
+          try { OnWriter(); } catch (...) {
+            RequestOfflineWriterFailure(true);
+            // Even cleanup exceptions must not escape the ROS callback.
+            try { writer_timer_->cancel(); } catch (...) {}
+            try { publication_gate_.Release(); } catch (...) {}  // NO ACK
+          }
+        }, writer_group_);
 
     // Optional autostart watchdog: flips WAIT->CONTROL after N seconds.
     if (cli_.autostart_seconds >= 0.0) {
@@ -2321,9 +2377,25 @@ class X2Deploy {
   void RequestGo()
   {
     if (state_.load() != State::WAIT_FOR_CONTROL) return;
-    autostart_target_s_ = SteadyNow();
+    go_requested_.store(true, std::memory_order_release);
     RCLCPP_INFO(node_->get_logger(),
                 "Operator GO received; transitioning on next tick.");
+  }
+
+  void RequestStateReceiverFailure() { state_receiver_failed_.store(true); }
+
+  void RequestOfflineWriterFailure(bool partial_batch = false) noexcept
+  {
+    if (!cli_.independent_writer_offline) return;
+    if (partial_batch) offline_writer_partial_.store(true);
+    offline_writer_failed_.store(true, std::memory_order_release);
+  }
+  bool OfflineWriterFailed() const { return offline_writer_failed_.load(); }
+  rclcpp::CallbackGroup::SharedPtr WriterCallbackGroup() const { return writer_group_; }
+
+  rclcpp::CallbackGroup::SharedPtr StateCallbackGroup() const
+  {
+    return aimdk_io_->StateCallbackGroup();
   }
 
  private:
@@ -2338,7 +2410,28 @@ class X2Deploy {
   void OnControl()
   {
     const double now = SteadyNow();
+    if (cli_.independent_writer_offline && offline_writer_failed_.load(std::memory_order_acquire)) {
+      // Offline failure channel only: no HOLD sentinel or successful batch ACK.
+      publication_gate_.Release();
+      RCLCPP_ERROR(node_->get_logger(),
+          "OFFLINE_WRITER_FAILURE: %s; terminal stop, NOT a release/batch ACK",
+          offline_writer_partial_.load() ? "partial/failed command batch" : "executor worker failed");
+      rclcpp::shutdown();
+      return;
+    }
+    if (go_requested_.exchange(false, std::memory_order_acq_rel))
+      autostart_target_s_ = now;  // control-owned timing field
     const State  cur = state_.load();
+    if (state_receiver_failed_.load() &&
+        (cur == State::STANDBY || cur == State::INIT || cur == State::WAIT_FOR_CONTROL)) {
+      // No command writer has been enabled in these states. Fail closed rather
+      // than leaving an apparently ready controller waiting forever.
+      RCLCPP_ERROR(node_->get_logger(), "State receiver failed before CONTROL; exiting without takeover");
+      ReleaseWriterAndShutdown();
+      return;
+    }
+    // Once powered, do not bypass native stale -> damping or stop the writer.
+    // The operator/verified handoff retains ownership of ending the process.
 
     RobotState rs{};
     const bool fresh = aimdk_io_->SnapshotState(rs);
@@ -2403,7 +2496,7 @@ class X2Deploy {
             std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
             latest_cmd_ = dc;
           }
-          latest_cmd_ready_.store(true, std::memory_order_release);
+          CommitWriterSnapshot(state_.load(), true);
           safe_hold_damped_ = true;   // SAFE_HOLD must not re-latch over this
           recorder_.Trigger("stale_state");
           state_.store(State::SAFE_HOLD);
@@ -2672,7 +2765,7 @@ class X2Deploy {
                     std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
                     latest_cmd_ = dc;
                   }
-                  latest_cmd_ready_.store(true, std::memory_order_release);
+                  CommitWriterSnapshot(state_.load(), true);
                   RCLCPP_FATAL(node_->get_logger(),
                                "SAFE_HOLD down-detect: gravity_body[z]=%.3f > %.3f for 0.3 s "
                                "-> robot is DOWN/FALLING -> auto pure damping (standing false-trips "
@@ -2701,7 +2794,7 @@ class X2Deploy {
                 std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
                 latest_cmd_ = dc;
               }
-              latest_cmd_ready_.store(true, std::memory_order_release);
+              CommitWriterSnapshot(state_.load(), true);
               RCLCPP_FATAL(node_->get_logger(),
                            "operator E-STOP honoured in SAFE_HOLD -> pure damping (%s)",
                            watchdog_.Reason().c_str());
@@ -2801,7 +2894,7 @@ class X2Deploy {
           std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
           latest_cmd_ = sc;
         }
-        latest_cmd_ready_.store(true, std::memory_order_release);
+        CommitWriterSnapshot(state_.load(), true);
         logger_.Log(now, rs.joint_pos_mj, rs.joint_vel_mj,
                     rs.base_quat_wxyz, rs.base_ang_vel,
                     last_action_il_, sc);
@@ -2822,12 +2915,13 @@ class X2Deploy {
                         "RAMP_OUT complete (%.2fs) -> shutting down. "
                         "Joints commanded back to STAND_DEFAULT pose; safe to "
                         "hand off to MC.", cli_.return_seconds);
-            rclcpp::shutdown();
+            ReleaseWriterAndShutdown();
           }
         }
         return;
       }
       case State::HOLD_FOR_MC: {
+        AnnounceHoldAfterPublish(now);
         // Static-pose hold while MC restarts. We publish MC's STAND_DEFAULT
         // pose with MC-stand kp/kd (loaded from --stand-default-pose YAML;
         // falls back to deploy gains if the YAML wasn't supplied) so the
@@ -2860,11 +2954,8 @@ class X2Deploy {
         sc.tilt_trip  = false;
         sc.ramp_alpha = 0.0;
         sc.reason     = "hold_for_mc";
-        {
-          std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
-          latest_cmd_ = sc;
-        }
-        latest_cmd_ready_.store(true, std::memory_order_release);
+        // EnterHoldForMc committed this immutable HOLD command before the
+        // transition; the writer repeats it without a redundant per-tick commit.
         logger_.Log(now, rs.joint_pos_mj, rs.joint_vel_mj,
                     rs.base_quat_wxyz, rs.base_ang_vel,
                     last_action_il_, sc);
@@ -2977,8 +3068,7 @@ class X2Deploy {
                       "Robot stayed in STAND_DEFAULT pose throughout the "
                       "handoff (no DAMPING / PASSIVE window).",
                       exit_reason, held);
-          ClearHoldForMcSentinel();
-          rclcpp::shutdown();
+          ReleaseWriterAndShutdown(true);
           return;
         }
         if (held >= cli_.hold_for_mc_timeout_s) {
@@ -2988,8 +3078,7 @@ class X2Deploy {
                        "the bus will go silent. Operator: confirm MC is "
                        "alive and in STAND_DEFAULT before re-enabling.",
                        held);
-          ClearHoldForMcSentinel();
-          rclcpp::shutdown();
+          ReleaseWriterAndShutdown(true);
         }
         return;
       }
@@ -3041,7 +3130,7 @@ class X2Deploy {
                       "disabled). Bus will be silent until MC restarts.",
                       src,
                       cli_.soft_shutdown_trigger_sentinel.c_str());
-          rclcpp::shutdown();
+          ReleaseWriterAndShutdown();
         }
         return;
       }
@@ -3078,7 +3167,7 @@ class X2Deploy {
                     "(--return-seconds disabled)%s",
                     cli_.max_duration,
                     cli_.dry_run ? " (DRY-RUN)" : "");
-        rclcpp::shutdown();
+        ReleaseWriterAndShutdown();
       }
       return;
     }
@@ -3120,7 +3209,7 @@ class X2Deploy {
           std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
           latest_cmd_ = safe_idle_cmd_;
         }
-        latest_cmd_ready_.store(true, std::memory_order_release);
+        CommitWriterSnapshot(state_.load(), true);
         safe_idle_entry_s_ = now;
         state_.store(State::SAFE_IDLE);
         return;
@@ -3505,7 +3594,7 @@ class X2Deploy {
       // the writer keeps repeating the previous one (which in --dry-run mode
       // has zero gains, so the robot stays passive). We then ask the node
       // to shut down at the next executor turn.
-      rclcpp::shutdown();
+      ReleaseWriterAndShutdown();
       return;
     }
 
@@ -3651,7 +3740,7 @@ class X2Deploy {
         std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
         latest_cmd_ = sc;
       }
-      latest_cmd_ready_.store(true, std::memory_order_release);
+      CommitWriterSnapshot(state_.load(), true);
       recorder_.Trigger("safe_hold");
       state_.store(State::SAFE_HOLD);
       return;
@@ -3662,7 +3751,7 @@ class X2Deploy {
       std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
       latest_cmd_ = sc;
     }
-    latest_cmd_ready_.store(true, std::memory_order_release);
+    CommitWriterSnapshot(state_.load(), true);
 
     // ---- Log ---------------------------------------------------------------
     logger_.Log(now, rs.joint_pos_mj, rs.joint_vel_mj,
@@ -3723,7 +3812,20 @@ class X2Deploy {
     }
 
     // ---- Periodic status ---------------------------------------------------
-    if (++control_tick_ % 50 == 0) {
+    ++control_tick_;
+    // Offline test stimulus only: no TTL or safety threshold is changed.
+    if (cli_.independent_writer_offline && cli_.offline_control_block_ms > 0 &&
+        !offline_control_block_done_ && control_tick_ >= 5) {
+      offline_control_block_done_ = true;
+      RCLCPP_WARN(node_->get_logger(),
+                  "OFFLINE_CONTROL_BLOCK_BEGIN ms=%d tick=%lu %s",
+                  cli_.offline_control_block_ms, static_cast<unsigned long>(control_tick_),
+                  aimdk_io_->StateAgeReport().c_str());
+      std::this_thread::sleep_for(std::chrono::milliseconds(cli_.offline_control_block_ms));
+      RCLCPP_WARN(node_->get_logger(), "OFFLINE_CONTROL_BLOCK_END %s",
+                  aimdk_io_->StateAgeReport().c_str());
+    }
+    if (control_tick_ % 50 == 0) {
       const int32_t mode_now = mc_action_mode_.load(std::memory_order_acquire);
       const double  pose_ref_age =
           (pose_ref_watchdog_active_ && zmq_pose_source_ != nullptr)
@@ -3747,10 +3849,37 @@ class X2Deploy {
     }
   }
 
-  // ----- 500 Hz writer loop ------------------------------------------------
+  void CommitWriterSnapshot(State mode, bool enabled = true)
+  {
+    SafeCommand command;
+    {
+      std::lock_guard<std::mutex> lock(latest_cmd_mutex_);
+      command = latest_cmd_;
+    }
+    // All callers have finished a real publishing command; mode may describe
+    // the preceding state during a transition and is diagnostic only.
+    publication_gate_.Commit(std::move(command), static_cast<int>(mode), enabled);
+  }
+
+  void ReleaseWriterAndShutdown(bool clear_hold_sentinel = false)
+  {
+    const bool batch_ok = publication_gate_.Release();
+    // Release may observe the gate failure before the writer callback catch
+    // stores its flag. Preserve exit 5 even when control wins that race.
+    if (!batch_ok) RequestOfflineWriterFailure(true);
+    if (!batch_ok || (cli_.independent_writer_offline && offline_writer_failed_.load())) {
+      RCLCPP_ERROR(node_->get_logger(), "OFFLINE_WRITER_FAILURE: gate closed, NOT a successful release ACK");
+      rclcpp::shutdown();
+      return;
+    }
+    RCLCPP_INFO(node_->get_logger(), "WRITER_RELEASE_ACK: terminal publication gate closed");
+    if (clear_hold_sentinel) ClearHoldForMcSentinel();
+    rclcpp::shutdown();
+  }
+
+  // ----- 250 Hz writer loop ------------------------------------------------
   void OnWriter()
   {
-    const State cur = state_.load();
     // OBSERVE-ONLY: mute the bus unconditionally, before any state logic.
     // Placed FIRST so no state -- CONTROL, SAFE_HOLD, RAMP_OUT, HOLD_FOR_MC
     // or a future one -- can route around it. MC keeps the robot; we only
@@ -3759,41 +3888,26 @@ class X2Deploy {
     if (cli_.no_publish) {
       return;
     }
-    if (cur == State::STANDBY
-        || cur == State::INIT
-        || cur == State::WAIT_FOR_CONTROL) {
-      // Don't publish anything in pre-control states. The robot's last-good
-      // command (from whatever was running before us) keeps the joints held.
-      // STANDBY in particular MUST be silent: bash launches us before
-      // stop_app, so MC may still be publishing on this bus -- adding our
-      // commands would make the firmware see a dual-publisher fight.
-      return;
-    }
-    // SAFE_IDLE, SAFE_HOLD, RAMP_OUT, HOLD_FOR_MC, CONTROL all publish.
-    // SAFE_IDLE in particular MUST keep the writer alive at 500 Hz so the
-    // body stays under torque while the operator wire is dark.
-    // Skip publishing until OnControl (or RAMP_OUT/SAFE_HOLD) has latched
-    // a real command. Without this guard, the first ~15 ms after WAIT ->
-    // CONTROL would publish a default-zero command (kp=0, kd=0, target=0),
-    // which on the sim bridge cancels the pre-handoff freeze prematurely
-    // and lets gravity perturb joint state before the policy ever sees it.
-    // On hardware the symptom would be different (a no-op zero-gain PD
-    // command) but it's still wrong: MC's last-good command is what should
-    // hold the joints during this sub-tick window, not our zeroed one.
-    if (!latest_cmd_ready_.load(std::memory_order_acquire)) {
-      return;
-    }
-    SafeCommand sc;
-    {
-      std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
-      sc = latest_cmd_;
-    }
-    // target_vel = zeros (the policy spec is pos-only; firmware integrates).
-    static const std::array<double, NUM_DOFS> kZeroVel{};
-    // NOTE: the black box does NOT sample here. The 500 Hz writer stays a
-    // pure re-publish -- see FlightRecorder::kFastHz for why.
-    aimdk_io_->PublishCommand(sc.target_pos_mj, kZeroVel,
-                              sc.stiffness_mj, sc.damping_mj);
+    // The immutable gate envelope alone enables publication: constructor/INIT
+    // never commit. mode is diagnostic and may lag the transition; enabled
+    // belongs to this complete command, never a separate state/ready sample.
+    publication_gate_.Publish([this](const auto& envelope) {
+      const SafeCommand& sc = envelope.command;
+      static const std::array<double, NUM_DOFS> kZeroVel{};
+      int fail_before_group = -1;
+      if (cli_.independent_writer_offline && cli_.offline_publish_fail_group >= 0 &&
+          !offline_publish_injected_ && offline_complete_batches_ >= 50) {
+        offline_publish_injected_ = true;
+        fail_before_group = cli_.offline_publish_fail_group;
+        RCLCPP_WARN(node_->get_logger(),
+                    "OFFLINE_PARTIAL_INJECTION fail_before_group=%d complete_batches=%lu",
+                    fail_before_group, static_cast<unsigned long>(offline_complete_batches_));
+      }
+      aimdk_io_->PublishCommand(sc.target_pos_mj, kZeroVel,
+                                sc.stiffness_mj, sc.damping_mj, fail_before_group);
+      if (cli_.independent_writer_offline) ++offline_complete_batches_;
+      if (sc.reason == "hold_for_mc") hold_batch_published_.store(true, std::memory_order_release);
+    });
   }
 
   void LatchSafeHold(const std::string& reason)
@@ -3816,7 +3930,7 @@ class X2Deploy {
       std::lock_guard<std::mutex> lk(latest_cmd_mutex_);
       latest_cmd_ = sc;
     }
-    latest_cmd_ready_.store(true, std::memory_order_release);
+    CommitWriterSnapshot(state_.load(), true);
     recorder_.Trigger("safe_hold");
     state_.store(State::SAFE_HOLD);
   }
@@ -3883,6 +3997,32 @@ class X2Deploy {
       mc_takeover_topic_.clear();
       mc_takeover_steady_ts_ = std::chrono::steady_clock::time_point{};
     }
+    // Advertise readiness from a later control tick only after a complete
+    // HOLD batch has returned successfully from all four publishers.
+    hold_batch_published_.store(false, std::memory_order_release);
+    hold_ready_announced_ = false;
+    SafeCommand command;
+    for (std::size_t i = 0; i < NUM_DOFS; ++i) {
+      command.target_pos_mj[i] = stand_pose_target_[i];
+      command.stiffness_mj[i] = cli_.dry_run ? 0.0 : stand_pose_stiffness_[i];
+      command.damping_mj[i] = cli_.dry_run ? 0.0 : stand_pose_damping_[i];
+    }
+    command.dry_run = cli_.dry_run;
+    command.tilt_trip = false;
+    command.ramp_alpha = 0.0;
+    command.reason = "hold_for_mc";
+    {
+      std::lock_guard<std::mutex> lock(latest_cmd_mutex_);
+      latest_cmd_ = command;
+    }
+    CommitWriterSnapshot(state_.load(), true);
+    state_.store(State::HOLD_FOR_MC);
+  }
+
+  void AnnounceHoldAfterPublish(double now)
+  {
+    if (cli_.independent_writer_offline && offline_writer_failed_.load()) return;
+    if (hold_ready_announced_ || !hold_batch_published_.load(std::memory_order_acquire)) return;
     if (!cli_.hold_for_mc_sentinel.empty()) {
       // Touch the sentinel so deploy_x2.sh knows the policy phase is
       // done and it can fire start_app + SetMcAction(STAND_DEFAULT).
@@ -3895,11 +4035,18 @@ class X2Deploy {
                      "= %d). Bash won't sequence start_app; operator "
                      "will need to bring MC back manually.",
                      cli_.hold_for_mc_sentinel.c_str(), errno);
-      } else {
-        sentinel << "hold_for_mc " << now << "\n";
+        return; // retry next control tick; never falsely latch readiness
+      }
+      sentinel << "hold_for_mc " << now << "\n";
+      sentinel.close();
+      if (!sentinel) {
+        RCLCPP_ERROR(node_->get_logger(), "HOLD readiness sentinel write/close failed; retrying");
+        std::remove(cli_.hold_for_mc_sentinel.c_str());
+        return;
       }
     }
-    state_.store(State::HOLD_FOR_MC);
+    hold_ready_announced_ = true;
+    RCLCPP_INFO(node_->get_logger(), "HOLD_FIRST_BATCH_ACK: all four publish calls completed");
   }
 
   void ClearHoldForMcSentinel()
@@ -4054,23 +4201,25 @@ class X2Deploy {
 
   rclcpp::TimerBase::SharedPtr      control_timer_;
   rclcpp::TimerBase::SharedPtr      writer_timer_;
+  rclcpp::CallbackGroup::SharedPtr writer_group_;
+  std::atomic<bool> offline_writer_failed_{false};
+  std::atomic<bool> offline_writer_partial_{false};
+  // Owned by the mutually-exclusive writer callback, never read by control.
+  std::uint64_t offline_complete_batches_ = 0;
+  bool offline_publish_injected_ = false;
+  // Owned by control, never read by writer.
+  bool offline_control_block_done_ = false;
 
   std::mutex                        latest_cmd_mutex_;
+  CommandPublicationGate<SafeCommand> publication_gate_;
+  std::atomic<bool> hold_batch_published_{false};
+  bool hold_ready_announced_ = false;
   SafeCommand                       latest_cmd_;
-  // True once OnControl has populated latest_cmd_ at least once (or
-  // RAMP_OUT/SAFE_HOLD has explicitly latched one). Until this flips,
-  // OnWriter must NOT publish, otherwise the bridge sees a default-zero
-  // JointCommand (kp=0, kd=0, target=0), which (a) silently flips its
-  // ``_first_command_received`` flag and unfreezes physics, and (b)
-  // perturbs joint state in the ~15 ms between WAIT->CONTROL and the first
-  // OnControl tick. That produced an apples-to-oranges first-tick obs
-  // (e.g. cpp jvel[5] = -0.0077 vs python jvel[5] = -0.0265 for the same
-  // motion frame) and was the source of the parity-profile fall-at-~5 s.
-  // See gear_sonic_deploy/scripts/x2_mujoco_ros_bridge.py:_sim_step_once
-  // for the freeze counterpart on the bridge side.
-  std::atomic<bool>                 latest_cmd_ready_{false};
+  // No separate ready bit: only a complete enabled envelope can publish.
 
   std::atomic<State>                state_{State::INIT};
+  std::atomic<bool>                 go_requested_{false};
+  std::atomic<bool>                 state_receiver_failed_{false};
   // Latched true the first time OnControl runs in STANDBY -- prevents
   // the ready-sentinel from being touched + logged on every tick.
   bool                              standby_ready_logged_ = false;
@@ -4398,7 +4547,12 @@ int main(int argc, char** argv)
 
   CliArgs cli;
   try {
-    cli = ParseCli(argc, argv);
+    // Preserve ROS topic remaps for isolated fake-HAL integration. Application
+    // parser must not reject --ros-args after rclcpp consumes them.
+    auto app_args = rclcpp::remove_ros_arguments(argc, argv);
+    std::vector<char*> app_argv;
+    for (auto& arg : app_args) app_argv.push_back(arg.data());
+    cli = ParseCli(static_cast<int>(app_argv.size()), app_argv.data());
   } catch (const std::exception& e) {
     std::cerr << "Argument error: " << e.what() << "\n\n";
     PrintUsage();
@@ -4502,6 +4656,53 @@ int main(int argc, char** argv)
               "x2_deploy_onnx_ref starting%s%s%s",
               banner_dry.c_str(), banner_auto.c_str(), banner_dur.c_str());
 
+  // Fail CLOSED before constructing any HAL publishers/subscribers or models.
+  // Check actual node resolution (including ROS remaps and the IMU CLI override),
+  // not just the raw spellings. No firmware endpoint changes are made here.
+  if (cli.independent_writer_offline) {
+    try {
+      const char* domain = std::getenv("ROS_DOMAIN_ID");
+      const char* local = std::getenv("ROS_LOCALHOST_ONLY");
+      const std::string stem = "/plan_a_fake_";
+      const auto& prefix = cli.offline_fake_prefix;
+      if (!domain || std::string(domain) != "173" ||
+          !local || std::string(local) != "1")
+        throw std::runtime_error("requires exact ROS_DOMAIN_ID=173 and ROS_LOCALHOST_ONLY=1");
+      if (prefix.compare(0, stem.size(), stem) != 0 || prefix.size() == stem.size() ||
+          !std::all_of(prefix.begin() + stem.size(), prefix.end(), [](unsigned char c) {
+            return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+                   (c >= '0' && c <= '9') || c == '_';
+          }))
+        throw std::runtime_error("requires explicit --offline-fake-prefix /plan_a_fake_<nonce>");
+      if (cli.mc_mode_poll_s != 0.0 || cli.input_type != "motion_file" ||
+          !cli.motion_path.empty() || cli.whole_body_teleop ||
+          !cli.token_model_path.empty() || !cli.dual_model_path.empty() ||
+          cli.smpl_intent_port != 0 || cli.zmq_debug_port != 0)
+        throw std::runtime_error("requires standstill input, --mc-mode-poll-s 0, no ZMQ/teleop");
+      auto require_endpoint = [&](const std::string& source, const std::string& suffix) {
+        const auto resolved = node->get_node_topics_interface()->resolve_topic_name(source);
+        if (resolved != prefix + suffix)
+          throw std::runtime_error("endpoint " + source + " resolves to " + resolved +
+                                   ", expected " + prefix + suffix);
+      };
+      for (const char* joint : {"leg", "waist", "arm", "head"}) {
+        const std::string base = std::string("/aima/hal/joint/") + joint;
+        require_endpoint(base + "/state", base + "/state");
+        require_endpoint(base + "/command", base + "/command");
+      }
+      const std::string imu = "/aima/hal/imu/torso/state";
+      require_endpoint(cli.imu_topic.empty() ? imu : cli.imu_topic, imu);
+      RCLCPP_WARN(node->get_logger(),
+          "INDEPENDENT_WRITER_OFFLINE: fake domain/endpoints ONLY; REAL ROBOT USE PROHIBITED. "
+          "No control-command TTL is implemented: a stalled control loop can repeat stale commands. "
+          "No hardware/firmware safety claim; ZMQ and MC service interactions disabled.");
+    } catch (const std::exception& e) {
+      RCLCPP_FATAL(node->get_logger(), "INDEPENDENT_WRITER_OFFLINE CLOSED: %s", e.what());
+      rclcpp::shutdown();
+      return 2;
+    }
+  }
+
   std::unique_ptr<X2Deploy> deploy;
   try {
     deploy = std::make_unique<X2Deploy>(node, cli);
@@ -4511,32 +4712,82 @@ int main(int argc, char** argv)
     return 3;
   }
 
-  // Operator-go gate: when --autostart-after is not used, read a single line from
-  // stdin to advance from WAIT_FOR_CONTROL to CONTROL. We do this in a
-  // dedicated thread so it doesn't block the executor.
-  std::thread operator_thread;
-  if (cli.autostart_seconds < 0.0) {
-    operator_thread = std::thread([&deploy]() {
-      std::cout << "\n[operator] Type 'go' + Enter to enter CONTROL state.\n"
-                   "          (or Ctrl-C to abort)\n"
-                << std::flush;
-      std::string line;
-      while (rclcpp::ok() && std::getline(std::cin, line)) {
-        if (line == "go") {
-          deploy->RequestGo();
-          break;
-        }
-        std::cout << "[operator] (ignored '" << line
-                  << "'; type 'go' to start)\n" << std::flush;
-      }
-    });
-  }
+  // Owned, interruptible stdin reader; declared after state worker below.
+
 
   rclcpp::executors::MultiThreadedExecutor executor;
   executor.add_node(node);
-  executor.spin();
-
-  if (operator_thread.joinable()) operator_thread.join();
+  rclcpp::executors::SingleThreadedExecutor state_executor;
+  state_executor.add_callback_group(deploy->StateCallbackGroup(),
+                                    node->get_node_base_interface());
+  RCLCPP_INFO(node->get_logger(),
+              "STATE_EXECUTOR_ISOLATED: five feedback callbacks on dedicated worker; "
+              "default control/writer serialization, QoS and native protections unchanged");
+  agi_x2::StateExecutorWorker<rclcpp::executors::SingleThreadedExecutor> state_worker(
+      state_executor, [&deploy, node]() {
+        deploy->RequestStateReceiverFailure();
+        RCLCPP_ERROR(node->get_logger(),
+                     "State executor failed: no further feedback ingestion; "
+                     "pre-control exit or native stale/damping handled by control");
+      });
+  // All callback owners are complete before either owned worker starts.
+  // Declaration order joins writer worker before writer executor/deploy/node.
+  rclcpp::executors::SingleThreadedExecutor writer_executor;
+  using WriterWorker = agi_x2::StateExecutorWorker<rclcpp::executors::SingleThreadedExecutor>;
+  std::unique_ptr<WriterWorker> writer_worker;
+  if (cli.independent_writer_offline) {
+    writer_executor.add_callback_group(deploy->WriterCallbackGroup(),
+                                       node->get_node_base_interface());
+    writer_worker = std::make_unique<WriterWorker>(writer_executor, [&deploy]() {
+      deploy->RequestOfflineWriterFailure();  // offline channel only
+    });
+  }
+  struct OperatorReader {
+    std::atomic<bool> stop{false};
+    std::thread thread;
+    ~OperatorReader() {
+      stop.store(true);
+      if (thread.joinable()) thread.join();
+    }
+  } operator_reader;
+  if (cli.autostart_seconds < 0.0) {
+    operator_reader.thread = std::thread([&deploy, &operator_reader]() {
+      std::cout << "[operator] Type 'go' + Enter to enter CONTROL.\n" << std::flush;
+      std::string line;
+      while (!operator_reader.stop.load() && rclcpp::ok()) {
+        pollfd input{STDIN_FILENO, POLLIN, 0};
+        int ready = ::poll(&input, 1, 100);
+        if (ready < 0) { if (errno == EINTR) continue; break; }
+        if (ready == 0) continue;
+        if (!(input.revents & (POLLIN | POLLHUP))) break;
+        char ch;
+        if (::read(STDIN_FILENO, &ch, 1) != 1) break;
+        if (ch == '\n') {
+          if (line == "go") { deploy->RequestGo(); break; }
+          line.clear();
+        } else if (ch != '\r' && line.size() < 256) line.push_back(ch);
+      }
+    });
+  }
+  try {
+    executor.spin();
+  } catch (...) {
+    if (writer_worker) writer_worker->Stop();
+    state_worker.Stop();
+    throw;  // owned operator reader stops/joins during unwinding
+  }
+  if (writer_worker) writer_worker->Stop();
+  state_worker.Stop();
+  operator_reader.stop.store(true);
+  if (operator_reader.thread.joinable()) operator_reader.thread.join();
+  try {
+    state_worker.RethrowIfFailed();
+  } catch (const std::exception& e) {
+    RCLCPP_ERROR(node->get_logger(), "State receiver stopped with failure: %s", e.what());
+    rclcpp::shutdown();
+    return 4;
+  }
+  const bool offline_writer_failed = deploy->OfflineWriterFailed();
   rclcpp::shutdown();
-  return 0;
+  return offline_writer_failed ? 5 : 0;
 }

@@ -1,0 +1,1448 @@
+[
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "healthy",
+    "exit": 0,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "control": true,
+      "no_stale": true,
+      "exit_ok": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_healthy_1792557800125773484"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "malformed",
+    "exit": 4,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "failure": true,
+      "exit_four": true,
+      "no_control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_malformed_1792557804395980387"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "stdin",
+    "exit": 0,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "signal_sent": true,
+      "exit_ok": true,
+      "no_control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_stdin_1792557805625833159"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "stale",
+    "exit": 0,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "exit_ok": true,
+      "signal_sent": true,
+      "native_guard": true,
+      "control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_stale_1792557806934488298"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "late_malformed",
+    "exit": 4,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "exit_ok": true,
+      "signal_sent": true,
+      "native_guard": true,
+      "control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_late_malformed_1792557809745104889"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 645,
+        "mean_ms": 4.641214497674394,
+        "max_ms": 13.084256000070127
+      },
+      "waist": {
+        "count": 644,
+        "mean_ms": 4.647288229813673,
+        "max_ms": 14.558501999999862
+      },
+      "arm": {
+        "count": 644,
+        "mean_ms": 4.647218021739122,
+        "max_ms": 15.393318000064937
+      },
+      "head": {
+        "count": 643,
+        "mean_ms": 4.654826818040324,
+        "max_ms": 15.508160999957
+      }
+    },
+    "case": "fake_publish",
+    "exit": 0,
+    "commands": {
+      "leg": 646,
+      "waist": 645,
+      "arm": 645,
+      "head": 644
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "release_ack": true,
+      "exit_ok": true,
+      "control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_publish_1792557812540136302"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 349,
+        "mean_ms": 4.421590501432388,
+        "max_ms": 13.968128000101387
+      },
+      "waist": {
+        "count": 347,
+        "mean_ms": 4.444948317002983,
+        "max_ms": 14.031518000024334
+      },
+      "arm": {
+        "count": 347,
+        "mean_ms": 4.4433759510087265,
+        "max_ms": 14.042461000030926
+      },
+      "head": {
+        "count": 346,
+        "mean_ms": 4.452237471098202,
+        "max_ms": 13.59390299990082
+      }
+    },
+    "case": "fake_stale",
+    "exit": 0,
+    "commands": {
+      "leg": 350,
+      "waist": 348,
+      "arm": 348,
+      "head": 347
+    },
+    "damping_commands": {
+      "leg": 3,
+      "waist": 3,
+      "arm": 3,
+      "head": 3
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "exit_ok": true,
+      "control": true,
+      "damping_on_all_groups": true,
+      "native_guard": true,
+      "signal_sent": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_stale_1792557816807200144"
+  },
+  {
+    "mode": "serial",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": false,
+    "receive_intervals": {
+      "leg": {
+        "count": 744,
+        "mean_ms": 4.635250885752629,
+        "max_ms": 13.983839000047737
+      },
+      "waist": {
+        "count": 744,
+        "mean_ms": 4.634977692204444,
+        "max_ms": 13.750374999972337
+      },
+      "arm": {
+        "count": 743,
+        "mean_ms": 4.641093014804877,
+        "max_ms": 13.419152999972539
+      },
+      "head": {
+        "count": 742,
+        "mean_ms": 4.647341172506677,
+        "max_ms": 13.688554000054864
+      }
+    },
+    "case": "fake_hold",
+    "exit": 0,
+    "commands": {
+      "leg": 745,
+      "waist": 745,
+      "arm": 744,
+      "head": 743
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "release_ack": true,
+      "exit_ok": true,
+      "control": true,
+      "hold_ready_seen": true,
+      "ready_cleared": true,
+      "first_batch_ack": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_hold_1792557819641448422"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "healthy",
+    "exit": 0,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "control": true,
+      "no_stale": true,
+      "exit_ok": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_healthy_1792557824607084546"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "malformed",
+    "exit": 4,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "failure": true,
+      "exit_four": true,
+      "no_control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_malformed_1792557828874872491"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "stdin",
+    "exit": 0,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "signal_sent": true,
+      "exit_ok": true,
+      "no_control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_stdin_1792557830114420386"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "stale",
+    "exit": 0,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "exit_ok": true,
+      "signal_sent": true,
+      "native_guard": true,
+      "control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_stale_1792557831406722462"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "waist": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "arm": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      },
+      "head": {
+        "count": 0,
+        "mean_ms": null,
+        "max_ms": null
+      }
+    },
+    "case": "late_malformed",
+    "exit": 4,
+    "commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "no_commands": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "exit_ok": true,
+      "signal_sent": true,
+      "native_guard": true,
+      "control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_late_malformed_1792557834206300877"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 724,
+        "mean_ms": 4.164766801104998,
+        "max_ms": 11.552280000046267
+      },
+      "waist": {
+        "count": 722,
+        "mean_ms": 4.171295923822653,
+        "max_ms": 11.231941000005463
+      },
+      "arm": {
+        "count": 722,
+        "mean_ms": 4.171153303324145,
+        "max_ms": 11.022316999969917
+      },
+      "head": {
+        "count": 722,
+        "mean_ms": 4.1710288102493855,
+        "max_ms": 10.82053300001462
+      }
+    },
+    "case": "fake_publish",
+    "exit": 0,
+    "commands": {
+      "leg": 725,
+      "waist": 723,
+      "arm": 723,
+      "head": 723
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "release_ack": true,
+      "exit_ok": true,
+      "control": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_publish_1792557837029296680"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 367,
+        "mean_ms": 4.216541683923568,
+        "max_ms": 11.559389000012743
+      },
+      "waist": {
+        "count": 367,
+        "mean_ms": 4.206901166212422,
+        "max_ms": 11.21876100000918
+      },
+      "arm": {
+        "count": 367,
+        "mean_ms": 4.201047487738497,
+        "max_ms": 10.764282999957686
+      },
+      "head": {
+        "count": 367,
+        "mean_ms": 4.197919108991962,
+        "max_ms": 10.977139000033276
+      }
+    },
+    "case": "fake_stale",
+    "exit": 0,
+    "commands": {
+      "leg": 368,
+      "waist": 368,
+      "arm": 368,
+      "head": 368
+    },
+    "damping_commands": {
+      "leg": 3,
+      "waist": 3,
+      "arm": 3,
+      "head": 3
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "exit_ok": true,
+      "control": true,
+      "damping_on_all_groups": true,
+      "native_guard": true,
+      "signal_sent": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_stale_1792557841314802399"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 776,
+        "mean_ms": 4.462567208762804,
+        "max_ms": 12.651279000010618
+      },
+      "waist": {
+        "count": 776,
+        "mean_ms": 4.4612985979380575,
+        "max_ms": 12.479253999913453
+      },
+      "arm": {
+        "count": 776,
+        "mean_ms": 4.460486260309306,
+        "max_ms": 11.082189000035214
+      },
+      "head": {
+        "count": 776,
+        "mean_ms": 4.4599266945875655,
+        "max_ms": 12.05200699996567
+      }
+    },
+    "case": "fake_hold",
+    "exit": 0,
+    "commands": {
+      "leg": 777,
+      "waist": 777,
+      "arm": 777,
+      "head": 777
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "release_ack": true,
+      "exit_ok": true,
+      "control": true,
+      "hold_ready_seen": true,
+      "ready_cleared": true,
+      "first_batch_ack": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_hold_1792557844136071110"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": {
+      "leg": 17,
+      "waist": 17,
+      "arm": 17,
+      "head": 17
+    },
+    "block_counts_after": {
+      "leg": 90,
+      "waist": 90,
+      "arm": 89,
+      "head": 89
+    },
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 720,
+        "mean_ms": 4.176077586111167,
+        "max_ms": 8.708650999892598
+      },
+      "waist": {
+        "count": 720,
+        "mean_ms": 4.175192554166705,
+        "max_ms": 8.942843999989236
+      },
+      "arm": {
+        "count": 720,
+        "mean_ms": 4.174622890277785,
+        "max_ms": 8.63671100000829
+      },
+      "head": {
+        "count": 718,
+        "mean_ms": 4.186060310584903,
+        "max_ms": 8.51173099999869
+      }
+    },
+    "case": "fake_block",
+    "exit": 0,
+    "commands": {
+      "leg": 721,
+      "waist": 721,
+      "arm": 721,
+      "head": 719
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "release_ack": true,
+      "exit_ok": true,
+      "control": true,
+      "block_seen": true,
+      "writer_progress": true,
+      "no_native_stale": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_block_1792557848856608999"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 45,
+        "mean_ms": 4.919071555554587,
+        "max_ms": 9.44747300002291
+      },
+      "waist": {
+        "count": 45,
+        "mean_ms": 4.911747377779345,
+        "max_ms": 8.482933999971465
+      },
+      "arm": {
+        "count": 45,
+        "mean_ms": 4.90180359999815,
+        "max_ms": 8.855240000002595
+      },
+      "head": {
+        "count": 44,
+        "mean_ms": 4.924665477274588,
+        "max_ms": 9.466064999969603
+      }
+    },
+    "case": "fake_partial0",
+    "exit": 5,
+    "commands": {
+      "leg": 46,
+      "waist": 46,
+      "arm": 46,
+      "head": 45
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "exit_ok": true,
+      "control": true,
+      "injected": true,
+      "fault_channel": true,
+      "no_false_ack": true,
+      "no_hold_ack": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_partial0_1792557853142441026"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 47,
+        "mean_ms": 4.610089999999295,
+        "max_ms": 8.319035999988955
+      },
+      "waist": {
+        "count": 46,
+        "mean_ms": 4.615919282608284,
+        "max_ms": 7.444542999905934
+      },
+      "arm": {
+        "count": 46,
+        "mean_ms": 4.607331086956294,
+        "max_ms": 7.527003000063814
+      },
+      "head": {
+        "count": 45,
+        "mean_ms": 4.616950422220928,
+        "max_ms": 8.008264999944004
+      }
+    },
+    "case": "fake_partial1",
+    "exit": 5,
+    "commands": {
+      "leg": 48,
+      "waist": 47,
+      "arm": 47,
+      "head": 46
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "exit_ok": true,
+      "control": true,
+      "injected": true,
+      "fault_channel": true,
+      "no_false_ack": true,
+      "no_hold_ack": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_partial1_1792557854654123161"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 50,
+        "mean_ms": 4.313114560000031,
+        "max_ms": 9.361586999943938
+      },
+      "waist": {
+        "count": 50,
+        "mean_ms": 4.327672719998645,
+        "max_ms": 8.768362000068919
+      },
+      "arm": {
+        "count": 48,
+        "mean_ms": 4.3284040833337185,
+        "max_ms": 8.18924899999729
+      },
+      "head": {
+        "count": 48,
+        "mean_ms": 4.326756812498426,
+        "max_ms": 8.821544999932485
+      }
+    },
+    "case": "fake_partial2",
+    "exit": 5,
+    "commands": {
+      "leg": 51,
+      "waist": 51,
+      "arm": 49,
+      "head": 49
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "exit_ok": true,
+      "control": true,
+      "injected": true,
+      "fault_channel": true,
+      "no_false_ack": true,
+      "no_hold_ack": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_partial2_1792557856161733454"
+  },
+  {
+    "mode": "independent",
+    "block_counts_before": null,
+    "block_counts_after": null,
+    "state_publisher_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1,
+      "imu": 1
+    },
+    "command_sink_matches": {
+      "leg": 1,
+      "waist": 1,
+      "arm": 1,
+      "head": 1
+    },
+    "independent_writer": true,
+    "receive_intervals": {
+      "leg": {
+        "count": 46,
+        "mean_ms": 4.803684108695882,
+        "max_ms": 7.365730000060466
+      },
+      "waist": {
+        "count": 46,
+        "mean_ms": 4.7881285434775,
+        "max_ms": 7.410368000023482
+      },
+      "arm": {
+        "count": 45,
+        "mean_ms": 4.789328000000144,
+        "max_ms": 7.725747999984378
+      },
+      "head": {
+        "count": 44,
+        "mean_ms": 4.782986659090614,
+        "max_ms": 7.4768299999732335
+      }
+    },
+    "case": "fake_partial3",
+    "exit": 5,
+    "commands": {
+      "leg": 47,
+      "waist": 47,
+      "arm": 46,
+      "head": 45
+    },
+    "damping_commands": {
+      "leg": 0,
+      "waist": 0,
+      "arm": 0,
+      "head": 0
+    },
+    "checks": {
+      "state_publishers_matched": true,
+      "command_sinks_matched": true,
+      "independent_banner": true,
+      "bounded_exit": true,
+      "isolation_banner": true,
+      "fake_commands_observed": true,
+      "exit_ok": true,
+      "control": true,
+      "injected": true,
+      "fault_channel": true,
+      "no_false_ack": true,
+      "no_hold_ack": true
+    },
+    "output": "/agibot/data/home/agi/x2-v02-state-executor-20261021.rMYM0G/integration_fake_partial3_1792557857661951527"
+  }
+]

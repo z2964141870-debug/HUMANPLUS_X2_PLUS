@@ -14,12 +14,13 @@ Order (root-cause driven, 2026-10-21):
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import signal
 import subprocess
 import time
 
-ROOT = Path("/agibot/data/home/agi/gear-sonic")
+ROOT = Path(os.environ.get("X2_STAGE1_ROOT", "/agibot/data/home/agi/gear-sonic"))
 MODEL = ROOT / "policies/x2_sonic_s1ft16000_g1.onnx"
 MODEL_SHA = "7dfdec7cf1b1ac67635c3cd8f541c27b50d917df2e3381a6bb086b605e1959a0"
 CONTROL_WINDOW_S = 4.0
@@ -39,7 +40,12 @@ def check_hash(path, expected):
 
 
 def binary_arguments(binary, directory):
-    return [str(binary), "--model", str(MODEL), "--intra-op-threads", "3",
+    # Supported stock knob (--writer-hz, range 50-1000) for starvation A/B.
+    writer_hz = os.environ.get("X2_WRITER_HZ", "").strip()
+    extra = ["--writer-hz", writer_hz] if writer_hz.isdigit() else []
+    # Generic passthrough for isolation experiments (space-separated flags).
+    extra += [a for a in os.environ.get("X2_EXTRA_ARGS", "").split() if a]
+    return [str(binary), *extra, "--model", str(MODEL), "--intra-op-threads", "3",
             "--input-type", "zmq",
             "--zmq-pose-host", "localhost", "--zmq-pose-port", "5558",
             "--zmq-pose-topic", "pose",
@@ -190,7 +196,12 @@ def main():
             spin()
             owners = ownership()
             time.sleep(0.25)
-        if any(v != ["mc_ros2_node"] for v in owners.values()):
+        # Firmware >= interface v1.0.0.6 suffixes the PID to the ROS node
+        # name (mc_ros2_node3214); accept the family, still require sole owner.
+        def official(names):
+            return (len(names) == 1 and names[0].startswith("mc_ros2_node"))
+
+        if any(not official(v) for v in owners.values()):
             raise RuntimeError(f"not sole official ownership: {owners}")
         emit("baseline", ownership=owners, binary_sha256=cli.binary_sha256)
 
