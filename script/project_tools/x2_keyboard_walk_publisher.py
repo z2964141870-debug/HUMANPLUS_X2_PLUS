@@ -183,9 +183,11 @@ def main():
         # CONFLATE belongs on the SUB side (V51 spec); on PUB it silently
         # drops everything with this libzmq build (A/B verified 40 vs 0).
         cmd = ctx.socket(zmq.PUB)
-        cmd.bind(f"tcp://{a.host}:{a.cmd_port}")
-        time.sleep(0.2)
-        print(f"PUB tcp://{a.host}:{a.cmd_port}/planner-cmd (JSON, latch semantics)")
+        # kplanner BINDS 5563 as the SUB server (rendezvous); we are a PUB
+        # CLIENT and must connect. (bind here collides: Address already in use)
+        cmd.connect(f"tcp://{a.host}:{a.cmd_port}")
+        time.sleep(0.5)   # PUB slow-joiner: let the SUB pick us up before first frame
+        print(f"PUB->tcp://{a.host}:{a.cmd_port}/planner-cmd (JSON, latch semantics)")
         intent = Intent()
         sent, t0 = 0, time.monotonic()
         period = 1.0 / 30.0
