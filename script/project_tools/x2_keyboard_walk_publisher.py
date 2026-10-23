@@ -14,6 +14,14 @@ Strict field set (spec section 4):
 Total bytes: 4 + 1280 + 2652 = 3936.
 
 Modes:
+  planner-cmd  faithful keyboard path: JSON planner_cmd on :5563 consumed by
+            pc2_kplanner_onnx.py (SUB :5563; fields validated at ingest:
+            target_velocity 4-list [vx,vy,vz,yaw], intent/stick_* optional).
+            Chain: this tool :5563 -> kplanner PUB :5556 (V51 pose, 50Hz,
+            x2_planner_template.onnx) -> deploy --zmq-pose-port 5556.
+            Velocities latch (VR/Quest direct-velocity semantics, kplanner
+            clamps at ingest: FWD 0.35 m/s, turn 0.65 rad/s from
+            robot_env.env KPLANNER_FIXED_*).
   stand     publish vendor stand pose continuously (bring-up bootstrap)
   swing     sinusoidal in-place weight-shift surrogate (SIM ONLY; exercises
             the pipeline until the real KPlanner is wired; NOT a walk gait)
@@ -146,7 +154,10 @@ def load_planner(path, hz):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--mode", choices=["stand", "swing", "kplanner"], default="stand")
+    ap.add_argument("--mode", choices=["stand", "swing", "kplanner", "planner-cmd"], default="stand")
+    ap.add_argument("--cmd-port", type=int, default=5563, help="planner_cmd PUB port (mode=planner-cmd)")
+    ap.add_argument("--fwd-mps", type=float, default=0.35, help="KPLANNER_FIXED_FWD_MPS")
+    ap.add_argument("--turn-rad-s", type=float, default=0.65, help="KPLANNER_FIXED_TURN_RAD_S")
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=5556)
     ap.add_argument("--topic", default="pose")
@@ -166,8 +177,54 @@ def main():
         print(f"SELF-TEST OK: {len(msg)} bytes, fields={sorted(d)}")
         return
 
-    ctx = zmq.Context(); sock = ctx.socket(zmq.PUB)
-    sock.setsockopt(zmq.CONFLATE, 1)
+    ctx = zmq.Context()
+    sock = None
+    if a.mode == "planner-cmd":
+        # CONFLATE belongs on the SUB side (V51 spec); on PUB it silently
+        # drops everything with this libzmq build (A/B verified 40 vs 0).
+        cmd = ctx.socket(zmq.PUB)
+        cmd.bind(f"tcp://{a.host}:{a.cmd_port}")
+        time.sleep(0.2)
+        print(f"PUB tcp://{a.host}:{a.cmd_port}/planner-cmd (JSON, latch semantics)")
+        intent = Intent()
+        sent, t0 = 0, time.monotonic()
+        period = 1.0 / 30.0
+        try:
+            kb = sys.stdin.isatty()
+            with KeyReader() if kb else open("/dev/null") as kr:
+                while True:
+                    now = time.monotonic()
+                    if a.duration and now - t0 >= a.duration: break
+                    if kb:
+                        k = kr.key()
+                        if k == "w":
+                            intent.vx = a.fwd_mps; intent.yaw_rate = 0.0
+                        elif k == "s":
+                            intent.vx = -0.1; intent.yaw_rate = 0.0
+                        elif k == "a":
+                            intent.yaw_rate = a.turn_rad_s
+                        elif k == "d":
+                            intent.yaw_rate = -a.turn_rad_s
+                        elif k == " ":
+                            intent.vx = 0.0; intent.yaw_rate = 0.0
+                        if k in ("w", "s", "a", "d", " "):
+                            print(f"cmd vx={intent.vx:+.2f} yaw={intent.yaw_rate:+.2f}")
+                        if k == "q": print("quit key"); break
+                    vx, yaw = intent.vx, intent.yaw_rate
+                    tv = [vx, 0.0, 0.0, yaw]
+                    payload = {"intent": "target_velocity",
+                               "target_velocity": tv,
+                               "stick_fwd": vx, "stick_side": 0.0,
+                               "stick_yaw": yaw}
+                    cmd.send_multipart([b"planner_cmd", json.dumps(payload).encode()])
+                    sent += 1
+                    time.sleep(max(0.0, t0 + sent * period - time.monotonic()))
+        except KeyboardInterrupt:
+            print("interrupted: stream ends (kplanner watchdog owns recovery)")
+        print(f"planner_cmd frames sent: {sent}")
+        cmd.close(linger=0); ctx.term(); return
+
+    sock = ctx.socket(zmq.PUB)
     sock.bind(f"tcp://{a.host}:{a.port}")
     time.sleep(0.2)
     print(f"PUB tcp://{a.host}:{a.port}/{a.topic} mode={a.mode} hz={a.hz}")
