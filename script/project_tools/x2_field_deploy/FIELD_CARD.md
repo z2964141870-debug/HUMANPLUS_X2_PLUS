@@ -25,10 +25,10 @@ bash ~/walk/preflight_link.sh
 ### T3（第一个动!）— SoC0 冻结主控，腾出指令权
 ```bash
 ssh run@10.0.1.40
-bash ~/walk/pause_mc.sh 7200
+bash ~/walk/pause_mc.sh hold 7200
 ```
 等它打印 `MC identity: pid=... ` 后 `stop_confirmed`（约 20-40s，指令静默期）。
-**此窗口 7200s；到点或 Ctrl-C 都会自动恢复 MC（auto-CONT），不会永久冻结。**
+**此窗口 7200s；到点自动恢复 MC。提前收工/中断: 开第二个终端跑 `bash ~/walk/pause_mc.sh release`（或在 T3 窗口按 Ctrl-C）。断 ssh 不会误放行——MC 保持冻结直到期限或 release。**
 
 ### T1 — SoC1 点火作者仪式链（watchdog+桥+kplanner+门禁+deploy）
 ```bash
@@ -60,7 +60,7 @@ bash ~/walk/t2_keyboard.sh
 ## 3. 收尾（顺序固定）
 1. T2: 按 `space` 再 `q`
 2. T1: `tmux send-keys -t x2_deploy C-C`（软停机，坡度归零后退出）
-3. T3: Ctrl-C → 等 `resume_confirmed state=S`（MC 恢复）
+3. T3: Ctrl-C 或 `bash ~/walk/pause_mc.sh release` → 等 `RELEASED`（MC 恢复）
 4. 观察机器人 30s 无异动后解除吊装
 
 ## 4. 异常处置梯（从轻到重）
