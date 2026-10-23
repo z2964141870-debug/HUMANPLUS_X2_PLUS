@@ -213,7 +213,7 @@ def main():
                             print(f"cmd vx={intent.vx:+.2f} yaw={intent.yaw_rate:+.2f}")
                         if k == "q": print("quit key"); break
                     vx, yaw = intent.vx, intent.yaw_rate
-                    tv = [vx, 0.0, 0.0, yaw]
+                    tv = [yaw, 0.0, vx, 0.687]  # kplanner tuple = (yaw, lateral_x, fwd_z, hip_h)
                     payload = {"intent": "target_velocity",
                                "target_velocity": tv,
                                "stick_fwd": vx, "stick_side": 0.0,
